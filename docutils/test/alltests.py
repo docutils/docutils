@@ -6,6 +6,8 @@
 #         Garth Kidd <garth@deadlybloodyserious.com>
 # Copyright: This module has been placed in the public domain.
 
+from __future__ import annotations
+
 __doc__ = """\
 All modules named 'test_*.py' in the current directory, and recursively in
 subdirectories (packages) called 'test_*', are loaded and test suites within
@@ -22,6 +24,8 @@ import os                   # noqa: E402
 from pathlib import Path    # noqa: E402
 import platform             # noqa: E402
 import sys                  # noqa: E402
+from typing import TYPE_CHECKING  # noqa: E402
+
 
 # Prepend the "docutils root" to the Python library path
 # so we import the local `docutils` package.
@@ -30,34 +34,48 @@ sys.path.insert(0, str(DOCUTILS_ROOT))
 
 import docutils             # noqa: E402
 
+if TYPE_CHECKING:
+    import types
+    from typing import TextIO
+    from unittest.case import TestCase
+
+    from typing_extensions import TypeAlias
+
+    ErrorTriple: TypeAlias = tuple[
+        type[BaseException],
+        BaseException,
+        types.TracebackType,
+    ]
+
 
 class Tee:
+    """Write to a file and stdout simultaneously."""
 
-    """Write to a file and a stream (default: stdout) simultaneously."""
-
-    def __init__(self, filename, stream=sys.__stdout__):
-        self.file = open(filename, 'w', encoding='utf-8',
-                         errors='backslashreplace')
+    def __init__(self, filename: str) -> None:
+        self.file: TextIO | None = open(
+            filename, 'w', encoding='utf-8', errors='backslashreplace',
+        )
         atexit.register(self.close)
-        self.stream = stream
-        self.encoding = getattr(stream, 'encoding', None)
+        self.stream = sys.__stdout__
+        self.encoding: str = sys.__stdout__.encoding
 
-    def close(self):
-        self.file.close()
-        self.file = None
+    def close(self) -> None:
+        if self.file is not None:
+            self.file.close()
+            self.file = None
 
-    def write(self, string):
+    def write(self, string: str) -> None:
         try:
             self.stream.write(string)
         except UnicodeEncodeError:
             bstring = string.encode(self.encoding, errors='backslashreplace')
             self.stream.write(bstring.decode())
-        if self.file:
+        if self.file is not None:
             self.file.write(string)
 
-    def flush(self):
+    def flush(self) -> None:
         self.stream.flush()
-        if self.file:
+        if self.file is not None:
             self.file.flush()
 
 
@@ -69,7 +87,9 @@ import unittest  # NoQA: E402
 
 class NumbersTestResult(unittest.TextTestResult):
     """Result class that counts subTests."""
-    def addSubTest(self, test, subtest, error):
+    def addSubTest(
+        self, test: TestCase, subtest: TestCase, error: ErrorTriple | None,
+    ) -> None:
         super().addSubTest(test, subtest, error)
         self.testsRun += 1
         if self.dots:
