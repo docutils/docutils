@@ -69,32 +69,31 @@ From the shell::
     cd docutils
     tox
 
-To test a specific version, use the ``pyNN`` environment. For example::
+To test a specific version, use the ``pyNNN`` environment. For example::
 
-    tox -e py37
+    tox -e py312
 
 `pyenv`_ can be installed and configured (see `installing pyenv`_) to
 get multiple Python versions::
 
-    # assuming your system runs 3.9.x
-    pyenv install 3.7.12
-    pyenv install 3.8.12
-    pyenv install 3.10.1
-    pyenv global system 3.7.12 3.8.12 3.10.1 3.11.0
+    # assuming your system runs Python 3.12
+    pyenv install 3.10
+    pyenv install 3.11
+    pyenv global system 3.10 3.11 3.12
 
     # reset your shims
     rm -rf ~/.pyenv/shims && pyenv rehash
 
-This will give you ``python3.7`` through ``python3.11``.
+This will give you ``python3.10`` through ``python3.12``.
 Then run::
 
-    python3.7 -u alltests.py
+    python3.10 -u alltests.py
     [...]
-    python3.11 -u alltests.py
+    python3.12 -u alltests.py
 
 .. note::
    When using the `Python launcher for Windows`__, specify the Python version
-   as option, e.g., ``py -3.9 -u alltests.py`` for Python 3.9.
+   as option, e.g., ``py -3.12 -u alltests.py`` for Python 3.12.
 
    .. cf. https://sourceforge.net/p/docutils/bugs/434/
    __ https://docs.python.org/3/using/windows.html#python-launcher-for-windows
