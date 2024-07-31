@@ -390,6 +390,8 @@ def make_paths_absolute(pathdict, keys, base_path=None):
         base_path = Path.cwd()
     else:
         base_path = Path(base_path)
+        if sys.platform == 'win32' and sys.version_info[:2] <= (3, 9):
+            base_path = base_path.absolute()
     for key in keys:
         if key in pathdict:
             value = pathdict[key]
