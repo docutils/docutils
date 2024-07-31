@@ -332,12 +332,12 @@ class HelperFunctionsTests(unittest.TestCase):
             self.assertEqual(frontend.validate_comma_separated_list(v), result)
 
     def test_validate_math_output(self):
-        tests = (('', []),
-                 ('LaTeX ', ['latex', '']),
-                 ('MathML', ['mathml', '']),
-                 ('MathML  PanDoc', ['mathml', 'pandoc']),
-                 ('HTML  math.css, X.css', ['html', 'math.css, X.css']),
-                 ('MathJax  /MathJax.js', ['mathjax', '/MathJax.js']),
+        tests = (('', ()),
+                 ('LaTeX ', ('latex', '')),
+                 ('MathML', ('mathml', '')),
+                 ('MathML  PanDoc', ('mathml', 'pandoc')),
+                 ('HTML  math.css, X.css', ('html', 'math.css, X.css')),
+                 ('MathJax  /MathJax.js', ('mathjax', '/MathJax.js')),
                  )
         for v, result in tests:
             self.assertEqual(frontend.validate_math_output(v), result)
