@@ -430,7 +430,7 @@ class ListTable(Table):
         node = nodes.Element()          # anonymous container for parsing
         self.state.nested_parse(self.content, self.content_offset, node)
         try:
-            num_cols, col_widths = self.check_list_content(node)
+            _num_cols, col_widths = self.check_list_content(node)
             table_data = [[item.children for item in row_list[0]]
                           for row_list in node[0]]
             header_rows = self.options.get('header-rows', 0)

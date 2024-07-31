@@ -1202,10 +1202,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.literal_block_env = ''
         self.literal_block_options = ''
         if settings.literal_block_env:
-            (none,
+            (_none,
              self.literal_block_env,
              self.literal_block_options,
-             none) = re.split(r'(\w+)(.*)', settings.literal_block_env)
+             _none) = re.split(r'(\w+)(.*)', settings.literal_block_env)
         elif settings.use_verbatim_when_possible:
             self.literal_block_env = 'verbatim'
 

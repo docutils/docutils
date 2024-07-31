@@ -25,7 +25,7 @@ class GridTableParserTestCase(unittest.TestCase):
         parser = tableparser.GridTableParser()
         for name, cases in totest.items():
             for casenum, case in enumerate(cases):
-                case_input, case_table, case_expected = case
+                case_input, case_table, _case_expected = case
                 lines_input = StringList(string2lines(case_input), 'test data')
                 parser.setup(lines_input)
                 try:
@@ -40,7 +40,7 @@ class GridTableParserTestCase(unittest.TestCase):
         parser = tableparser.GridTableParser()
         for name, cases in totest.items():
             for casenum, case in enumerate(cases):
-                case_input, case_table, case_expected = case
+                case_input, _case_table, case_expected = case
                 lines_input = StringList(string2lines(case_input), 'test data')
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     try:

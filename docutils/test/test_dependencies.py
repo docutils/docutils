@@ -76,7 +76,7 @@ class RecordDependenciesTests(unittest.TestCase):
         if PIL and os.path.exists('../docs/user/rst/images/'):
             keys += ['figure-image']
         expected = [paths[key] for key in keys]
-        record, output = self.get_record(writer='xml')
+        record, _output = self.get_record(writer='xml')
         # the order of the files is arbitrary
         self.assertEqual(sorted(expected), sorted(record))
 
@@ -123,23 +123,23 @@ class RecordDependenciesTests(unittest.TestCase):
                     'stylesheet': None}
         settings.update(latex_settings_overwrites)
         settings['embed_stylesheet'] = False
-        record, output = self.get_record(writer='html',
-                                         settings_overrides=settings)
+        record, _output = self.get_record(writer='html',
+                                          settings_overrides=settings)
         self.assertTrue(stylesheet not in record,
                         f'{stylesheet!r} should not be in {record!r}')
-        record, output = self.get_record(writer='latex',
-                                         settings_overrides=settings)
+        record, _output = self.get_record(writer='latex',
+                                          settings_overrides=settings)
         self.assertTrue(stylesheet not in record,
                         f'{stylesheet!r} should not be in {record!r}')
 
         settings['embed_stylesheet'] = True
-        record, output = self.get_record(writer='html',
-                                         settings_overrides=settings)
+        record, _output = self.get_record(writer='html',
+                                          settings_overrides=settings)
         self.assertTrue(stylesheet in record,
                         f'{stylesheet!r} should be in {record!r}')
         settings['embed_stylesheet'] = True
-        record, output = self.get_record(writer='latex',
-                                         settings_overrides=settings)
+        record, _output = self.get_record(writer='latex',
+                                          settings_overrides=settings)
         self.assertTrue(stylesheet in record,
                         f'{stylesheet!r} should be in {record!r}')
 

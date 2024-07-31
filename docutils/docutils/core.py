@@ -438,7 +438,7 @@ def publish_file(source=None, source_path=None,
     # The "*_name" arguments are deprecated.
     _name_arg_warning(reader_name, parser_name, writer_name)
     # The default is set in publish_programmatically().
-    output, publisher = publish_programmatically(
+    output, _publisher = publish_programmatically(
         source_class=io.FileInput, source=source, source_path=source_path,
         destination_class=io.FileOutput,
         destination=destination, destination_path=destination_path,
@@ -480,7 +480,7 @@ def publish_string(source, source_path=None, destination_path=None,
     # The "*_name" arguments are deprecated.
     _name_arg_warning(reader_name, parser_name, writer_name)
     # The default is set in publish_programmatically().
-    output, publisher = publish_programmatically(
+    output, _publisher = publish_programmatically(
         source_class=io.StringInput, source=source, source_path=source_path,
         destination_class=io.StringOutput,
         destination=None, destination_path=destination_path,
@@ -521,7 +521,7 @@ def publish_parts(source, source_path=None, source_class=io.StringInput,
     # The "*_name" arguments are deprecated.
     _name_arg_warning(reader_name, parser_name, writer_name)
     # The default is set in publish_programmatically().
-    output, publisher = publish_programmatically(
+    _output, publisher = publish_programmatically(
         source=source, source_path=source_path, source_class=source_class,
         destination_class=io.StringOutput,
         destination=None, destination_path=destination_path,

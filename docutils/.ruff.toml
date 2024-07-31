@@ -1,0 +1,143 @@
+target-version = "py39"  # Pin Ruff to Python 3.9
+line-length = 88
+output-format = "full"
+
+[lint]
+preview = true
+select = [
+    "E",  # pycodestyle
+    "F",  # pyflakes
+    "W",  # pycodestyle
+]
+ignore = [
+    "E226",  # missing whitespace around arithmetic operator
+    "E228",  # missing whitespace around modulo operator
+    # not generally frowned on by PEP 8:
+    # "If operators with different priorities are used, consider adding
+    # whitespace around the operators with the lowest priority(ies).
+    # Use your own judgment; …"
+]
+
+[lint.per-file-ignores]
+# class definitions with "…: pass" on one line
+"docutils/__init__.py" = [
+    "E302",
+    "E701",
+]
+"docutils/nodes.py" = [
+    "E302",
+    "E701",
+]
+"docutils/io.py" = [
+    "E302",
+    "E701",
+]
+"docutils/statemachine.py" = [
+    "E302",
+    "E701",
+    "F841",
+]
+"docutils/utils/__init__.py" = [
+    "E302",
+    "E701",
+]
+
+# complex regexp definitions
+"docutils/parsers/rst/states.py" = [
+    "E302",
+    "E701",
+    "F841",
+]
+# deprecated module, will be removed
+"docutils/utils/error_reporting.py" = [
+    "E261",
+]
+
+# module with 3rd-party origin
+"docutils/utils/math/math2html.py" = [
+    "E241",
+    "E501",
+    "E731",
+]
+
+# generated auxiliary files
+"docutils/utils/math/tex2unichar.py" = [
+    "E262",
+    "E501",
+]
+"docutils/utils/math/mathalphabet2unichar.py" = [
+    "E501",
+]
+
+# allow aligning values in data-collections
+"docutils/utils/smartquotes.py" = [
+    "E241",
+]
+"docutils/utils/roman.py" = [
+    "E241",
+    "E701",
+]
+"docutils/utils/math/latex2mathml.py" = [
+    "E221",
+    "E241",
+    "E272",
+    "E501",
+    "E701",
+]
+"docutils/writers/xetex/__init__.py" = [
+    "E241",
+]
+
+# also allow '##' to mark deactivated code:
+"docutils/writers/latex2e/__init__.py" = [
+    "E241",
+    "E266",
+]
+
+# ignore unused variables
+"docutils/parsers/rst/directives/misc.py" = [
+    "F841",
+]
+"docutils/writers/odf_odt/__init__.py" = [
+    "F841",
+]
+
+# included configuration files referencing externally defined variables
+"test/functional/tests/*" = [
+    "F821",
+]
+
+# deprecated module, will be removed
+"test/test_error_reporting.py" = [
+    "E261",
+]
+
+# Lists with multi-line test output samples
+# may contain long lines (E501)
+# and are not indented (E122, E124, E128)
+"test/test_parsers/*" = [
+    "E501",
+]
+"test/test_publisher.py" = [
+    "E501",
+]
+"test/test_readers/test_pep/*" = [
+    "E501",
+]
+"test/test_transforms/*" = [
+    "E501",
+]
+"test/test_writers/*" = [
+    "E501",
+]
+
+# test output contains trailing whitespace, long lines, operator at end
+"test/test_writers/test_manpage.py" = [
+    "W291",
+    "E501",
+]
+
+# ignore long line in string templates
+"tools/dev/generate_punctuation_chars.py" = [
+    "E501",
+]

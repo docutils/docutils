@@ -747,7 +747,7 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_footnote(self, node):
-        num, text = node.astext().split(None, 1)
+        num, _text = node.astext().split(maxsplit=1)
         num = num.strip()
         self.body.append('.IP [%s] 5\n' % self.deunicode(num))
 

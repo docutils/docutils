@@ -102,7 +102,7 @@ class MockState(statemachine.StateWS):
         return [match.string], next_state, ['text%s' % self.level]
 
     def literalblock(self):
-        indented, indent, offset, good = self.state_machine.get_indented()
+        _indented, indent, _offset, _good = self.state_machine.get_indented()
         if self.debug:
             print('literalblock%s(%s)' % (self.level, indent), file=sys.stderr)
         return ['literalblock%s(%s)' % (self.level, indent)]

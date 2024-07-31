@@ -34,7 +34,9 @@ TOOLS_ROOT = Path(__file__).resolve().parent.parent
 BUILDHTML_PATH = TOOLS_ROOT / 'buildhtml.py'
 
 
-def process_and_return_filelist(options: list[str]) -> tuple[list[str], list[str]]:
+def process_and_return_filelist(
+    options: list[str],
+) -> tuple[list[str], list[str]]:
     dirs = []
     files = []
     ret = subprocess.run(
@@ -80,7 +82,7 @@ class BuildHtmlTests(unittest.TestCase):
 
     def test_1(self):
         opts = ["--dry-run", str(self.root)]
-        dirs, files = process_and_return_filelist(opts)
+        _dirs, files = process_and_return_filelist(opts)
         self.assertEqual(files.count("one.txt"), 4)
 
     def test_local(self):

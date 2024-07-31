@@ -44,7 +44,6 @@ directives = {
     'ნაგულისხმევი-როლი': 'default-role',
     'სათაური': 'title',
     'განყ-ნომერი': 'sectnum',
-    'განყ-ნომერი': 'sectnum',
     'საფრთხე': 'danger',
     'ფრთხილად': 'caution',
     'შეცდომა': 'error',
