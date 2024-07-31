@@ -30,6 +30,7 @@ import docutils
 import docutils.io
 from docutils import core, frontend, ApplicationError
 from docutils.parsers import rst
+from docutils.utils import relative_path
 from docutils.readers import standalone, pep
 from docutils.writers import html4css1, html5_polyglot, pep_html
 
@@ -248,13 +249,13 @@ class Builder:
         errout = docutils.io.ErrorOutput(encoding=settings.error_encoding)
         if match_patterns(dirpath, settings.prune):
             errout.write('/// ...Skipping directory (pruned): %s\n'
-                         % os.path.relpath(dirpath))
+                         % relative_path(None, dirpath))
             sys.stderr.flush()
             del dirnames[:]  # modify in-place to control `os.walk()` run
             return
         if not self.initial_settings.silent:
             errout.write('/// Processing directory: %s\n'
-                         % os.path.relpath(dirpath))
+                         % relative_path(None, dirpath))
             sys.stderr.flush()
         for name in sorted(filenames):
             if match_patterns(name, settings.ignore):
