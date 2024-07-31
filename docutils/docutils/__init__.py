@@ -50,7 +50,37 @@ Subpackages:
 - writers: Format-specific output translators.
 """
 
+from __future__ import annotations
+
 from collections import namedtuple
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from typing import Any, ClassVar, Literal, Protocol, Union
+
+    from docutils.nodes import Element
+    from docutils.transforms import Transform
+
+    _OptionTuple = tuple[str, list[str], dict[str, Any]]
+    _SettingsSpecTuple = Union[
+        tuple[
+            Union[str, None], Union[str, None], Sequence[_OptionTuple],
+        ],
+        tuple[
+            Union[str, None], Union[str, None], Sequence[_OptionTuple],
+            Union[str, None], Union[str, None], Sequence[_OptionTuple],
+        ],
+        tuple[
+            Union[str, None], Union[str, None], Sequence[_OptionTuple],
+            Union[str, None], Union[str, None], Sequence[_OptionTuple],
+            Union[str, None], Union[str, None], Sequence[_OptionTuple],
+        ],
+    ]
+
+    class _UnknownReferenceResolver(Protocol):
+        def __call__(self, node: Element, /) -> bool: ...  # NoQA: E704
+        priority: int
 
 __docformat__ = 'reStructuredText'
 
@@ -74,9 +104,18 @@ For development and release status, use `__version__ and `__version_info__`.
 
 class VersionInfo(namedtuple('VersionInfo',
                              'major minor micro releaselevel serial release')):
+    major: int
+    minor: int
+    micro: int
+    releaselevel: Literal['alpha', 'beta', 'candidate', 'final']
+    serial: int
+    release: bool
 
-    def __new__(cls, major=0, minor=0, micro=0,
-                releaselevel='final', serial=0, release=True):
+    def __new__(
+        cls, major: int = 0, minor: int = 0, micro: int = 0,
+        releaselevel: Literal['alpha', 'beta', 'candidate', 'final'] = 'final',
+        serial: int = 0, release: bool = True,
+    ) -> VersionInfo:
         releaselevels = ('alpha', 'beta', 'candidate', 'final')
         if releaselevel not in releaselevels:
             raise ValueError('releaselevel must be one of %r.'
@@ -93,22 +132,22 @@ class VersionInfo(namedtuple('VersionInfo',
         return super().__new__(cls, major, minor, micro,
                                releaselevel, serial, release)
 
-    def __lt__(self, other):
+    def __lt__(self, other: object) -> bool:
         if isinstance(other, tuple):
             other = VersionInfo(*other)
         return tuple.__lt__(self, other)
 
-    def __gt__(self, other):
+    def __gt__(self, other: object) -> bool:
         if isinstance(other, tuple):
             other = VersionInfo(*other)
         return tuple.__gt__(self, other)
 
-    def __le__(self, other):
+    def __le__(self, other: object) -> bool:
         if isinstance(other, tuple):
             other = VersionInfo(*other)
         return tuple.__le__(self, other)
 
-    def __ge__(self, other):
+    def __ge__(self, other: object) -> bool:
         if isinstance(other, tuple):
             other = VersionInfo(*other)
         return tuple.__ge__(self, other)
@@ -151,7 +190,7 @@ class SettingsSpec:
     #   https://github.com/sphinx-doc/sphinx/blob/4.x/sphinx/writers/html.py
     #   This should be changed (before retiring the old format)
     #   to use `settings_default_overrides` instead.
-    settings_spec = ()
+    settings_spec: ClassVar[_SettingsSpecTuple] = ()
     """Runtime settings specification.  Override in subclasses.
 
     Defines runtime settings and associated command-line options, as used by
@@ -190,25 +229,25 @@ class SettingsSpec:
       needed.  Thus, `settings_spec` tuples can be simply concatenated.
     """
 
-    settings_defaults = None
+    settings_defaults: ClassVar[dict[str, Any] | None] = None
     """A dictionary of defaults for settings not in `settings_spec` (internal
     settings, intended to be inaccessible by command-line and config file).
     Override in subclasses."""
 
-    settings_default_overrides = None
+    settings_default_overrides: ClassVar[dict[str, Any] | None] = None
     """A dictionary of auxiliary defaults, to override defaults for settings
     defined in other components' `setting_specs`.  Override in subclasses."""
 
-    relative_path_settings = ()
+    relative_path_settings: ClassVar[tuple[str, ...]] = ()
     """Settings containing filesystem paths.  Override in subclasses.
     Settings listed here are to be interpreted relative to the current working
     directory."""
 
-    config_section = None
+    config_section: ClassVar[str | None] = None
     """The name of the config file section specific to this component
     (lowercase, no brackets).  Override in subclasses."""
 
-    config_section_dependencies = None
+    config_section_dependencies: ClassVar[tuple[str, ...] | None] = None
     """A list of names of config file sections that are to be applied before
     `config_section`, in order (from general to specific).  In other words,
     the settings in `config_section` are to be overlaid on top of the settings
@@ -226,7 +265,7 @@ class TransformSpec:
     https://docutils.sourceforge.io/docs/ref/transforms.html
     """
 
-    def get_transforms(self):
+    def get_transforms(self) -> list[type[Transform]]:
         """Transforms required by this class.  Override in subclasses."""
         if self.default_transforms != ():
             import warnings
@@ -238,9 +277,9 @@ class TransformSpec:
         return []
 
     # Deprecated; for compatibility.
-    default_transforms = ()
+    default_transforms: ClassVar[tuple[()]] = ()
 
-    unknown_reference_resolvers = ()
+    unknown_reference_resolvers: Sequence[_UnknownReferenceResolver] = ()
     """List of functions to try to resolve unknown references.
 
     Unknown references have a 'refname' attribute which doesn't correspond
@@ -274,14 +313,16 @@ class Component(SettingsSpec, TransformSpec):
 
     """Base class for Docutils components."""
 
-    component_type = None
+    component_type: ClassVar[
+        Literal['reader', 'parser', 'writer', 'input', 'output'] | None
+    ] = None
     """Name of the component type ('reader', 'parser', 'writer').  Override in
     subclasses."""
 
-    supported = ()
+    supported: ClassVar[tuple[str, ...]] = ()
     """Name and aliases for this component.  Override in subclasses."""
 
-    def supports(self, format):
+    def supports(self, format: str) -> bool:
         """
         Is `format` supported by this component?
 
