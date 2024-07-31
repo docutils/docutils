@@ -10,11 +10,12 @@ Test module for `docutils.io`.
 
 import codecs
 import locale
-from io import StringIO, BytesIO
 import os.path
-from pathlib import Path
 import sys
 import unittest
+import warnings
+from io import StringIO, BytesIO
+from pathlib import Path
 
 if __name__ == '__main__':
     # prepend the "docutils root" to the Python library path
@@ -23,12 +24,23 @@ if __name__ == '__main__':
 
 from docutils import io as du_io
 
+# For when we intentionally do things that trigger EncodingWarning
+# (When using ``-X warn_default_encoding`` or PYTHONWARNDEFAULTENCODING=1)
+# See: https://docs.python.org/3/library/io.html#io-encoding-warning
+SUPPRESS_ENCODING_WARNING = (
+    sys.version_info[:2] > (3, 9)
+    and sys.flags.warn_default_encoding
+)
+
 # DATA_ROOT is ./test/data/ from the docutils root
 DATA_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
 
 # normalize the preferred encoding's name:
-preferredencoding = codecs.lookup(
-    locale.getpreferredencoding(do_setlocale=False)).name
+with warnings.catch_warnings():
+    if SUPPRESS_ENCODING_WARNING:
+        warnings.filterwarnings('ignore', category=EncodingWarning)
+    preferredencoding = codecs.lookup(
+        locale.getpreferredencoding(do_setlocale=False)).name
 
 
 # Stub: Buffer with 'strict' auto-conversion of input to byte string:
@@ -260,26 +272,35 @@ class FileInputTests(unittest.TestCase):
     def test_bom_utf_8(self):
         """Drop optional BOM from utf-8 encoded files.
         """
-        source = du_io.FileInput(
-            source_path=os.path.join(DATA_ROOT, 'utf-8-sig.txt'),
-            encoding=None)
+        with warnings.catch_warnings():
+            if SUPPRESS_ENCODING_WARNING:
+                warnings.filterwarnings('ignore', category=EncodingWarning)
+            source = du_io.FileInput(
+                source_path=os.path.join(DATA_ROOT, 'utf-8-sig.txt'),
+                encoding=None)
         self.assertTrue(source.read().startswith('Grüße'))
 
     def test_bom_utf_16(self):
         """Drop BOM from utf-16 encoded files, use correct encoding.
         """
         # Assert correct decoding, BOM is gone.
-        source = du_io.FileInput(
-            source_path=os.path.join(DATA_ROOT, 'utf-16-le-sig.txt'),
-            encoding=None)
+        with warnings.catch_warnings():
+            if SUPPRESS_ENCODING_WARNING:
+                warnings.filterwarnings('ignore', category=EncodingWarning)
+            source = du_io.FileInput(
+                source_path=os.path.join(DATA_ROOT, 'utf-16-le-sig.txt'),
+                encoding=None)
         self.assertTrue(source.read().startswith('Grüße'))
 
     def test_coding_slug(self):
         """Use self-declared encoding.
         """
-        source = du_io.FileInput(
-            source_path=os.path.join(DATA_ROOT, 'latin2.txt'),
-            encoding=None)
+        with warnings.catch_warnings():
+            if SUPPRESS_ENCODING_WARNING:
+                warnings.filterwarnings('ignore', category=EncodingWarning)
+            source = du_io.FileInput(
+                source_path=os.path.join(DATA_ROOT, 'latin2.txt'),
+                encoding=None)
         self.assertTrue(source.read().endswith('škoda\n'))
 
     def test_fallback_utf8(self):
