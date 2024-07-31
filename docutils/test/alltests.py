@@ -25,8 +25,6 @@ import sys                  # noqa: E402
 
 # Prepend the "docutils root" to the Python library path
 # so we import the local `docutils` package.
-# For Python < 3.9, we need `resolve()` to ensure an absolute path.
-# https://docs.python.org/3/whatsnew/3.9.html#other-language-changes
 DOCUTILS_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(DOCUTILS_ROOT))
 
