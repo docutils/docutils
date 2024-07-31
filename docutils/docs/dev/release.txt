@@ -63,11 +63,6 @@ Steps to take and watch
 
 * Generate wheel and source-distribution::
 
-    python3 -m pip install flit
-    python3 -m flit build
-
-  or ::
-
     python3 -m pip install build
     python3 -m build .
 
@@ -128,7 +123,7 @@ Steps to take and watch
 * Update your source directory.
 * Rebuild wheel and source-distribution ::
 
-    python3 -m flit build
+    python3 -m build
 
 * Now upload to pypi::
 
