@@ -53,7 +53,7 @@ class CliSettingsSpec(docutils.SettingsSpec):
                                    'applications')
 
 
-def main():
+def main() -> None:
     """Generic command line interface for the Docutils Publisher.
     """
     locale.setlocale(locale.LC_ALL, '')
