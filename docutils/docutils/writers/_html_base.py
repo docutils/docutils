@@ -476,7 +476,10 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.messages.append(self.document.reporter.error(
                 f'Cannot parse SVG image "{node["uri"]}":\n  {err}',
                 base_node=node))
-            return imagedata.decode('utf-8')
+            # We initially open the file in binary mode,
+            # meaning universal newlines are not applied.
+            # Manually convert here before decoding.
+            return imagedata.replace(b'\r\n', b'\n').decode('utf-8')
         # apply image node attributes:
         if size_declaration:  # append to style, replacing width & height
             declarations = [d.strip() for d in svg.get('style', '').split(';')]
