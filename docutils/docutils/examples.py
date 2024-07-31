@@ -11,12 +11,28 @@ that you copy and paste the parts you need into your own code, modifying as
 necessary.
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from docutils import core, io
 
+if TYPE_CHECKING:
+    import os
+    from typing import Any, Literal
 
-def html_parts(input_string, source_path=None, destination_path=None,
-               input_encoding='unicode', doctitle=True,
-               initial_header_level=1):
+    from docutils import nodes
+    from docutils.core import Publisher
+
+
+def html_parts(
+    input_string: str | bytes,
+    source_path: str | os.PathLike[str] | None = None,
+    destination_path: str | os.PathLike[str] | None = None,
+    input_encoding: Literal['unicode'] | str = 'unicode',
+    doctitle: bool = True,
+    initial_header_level: int = 1,
+) -> dict[str, str]:
     """
     Given an input string, returns a dictionary of HTML document parts.
 
@@ -50,9 +66,15 @@ def html_parts(input_string, source_path=None, destination_path=None,
     return parts
 
 
-def html_body(input_string, source_path=None, destination_path=None,
-              input_encoding='unicode', output_encoding='unicode',
-              doctitle=True, initial_header_level=1):
+def html_body(
+    input_string: str | bytes,
+    source_path: str | os.PathLike[str] | None = None,
+    destination_path: str | os.PathLike[str] | None = None,
+    input_encoding: Literal['unicode'] | str = 'unicode',
+    output_encoding: Literal['unicode'] | str = 'unicode',
+    doctitle: bool = True,
+    initial_header_level: int = 1,
+) -> str | bytes:
     """
     Given an input string, returns an HTML fragment as a string.
 
@@ -74,8 +96,12 @@ def html_body(input_string, source_path=None, destination_path=None,
     return fragment
 
 
-def internals(source, source_path=None, destination_path=None,
-              input_encoding='unicode', settings_overrides=None):
+def internals(
+    source: str,
+    source_path: str | os.PathLike[str] | None = None,
+    input_encoding: Literal['unicode'] | str = 'unicode',
+    settings_overrides: dict[str, Any] | None = None,
+) -> tuple[nodes.document, Publisher]:
     """
     Return the document tree and publisher, for exploring Docutils internals.
 
