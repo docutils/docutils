@@ -13,6 +13,8 @@ custom component objects first, and pass *them* to
     https://docutils.sourceforge.io/docs/api/publisher.html
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
 import locale
