@@ -18,6 +18,7 @@ select = [
     "PIE",  # flake8-pie
     "PT",   # flake8-pytest
     "RSE",  # flake8-raise
+    "SLOT", # flake8-slots
     "W",    # pycodestyle
 ]
 ignore = [

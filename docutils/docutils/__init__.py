@@ -104,6 +104,8 @@ For development and release status, use `__version__ and `__version_info__`.
 
 class VersionInfo(namedtuple('VersionInfo',
                              'major minor micro releaselevel serial release')):
+    __slots__ = ()
+
     major: int
     minor: int
     micro: int

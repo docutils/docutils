@@ -392,7 +392,7 @@ class Node:
             return None
 
 
-class Text(Node, str):
+class Text(Node, str):  # NoQA: SLOT000 (Node doesn't define __slots__)
     """
     Instances are terminal nodes (leaves) containing text only; no child
     nodes or attributes.  Initialize by passing a string to the constructor.
