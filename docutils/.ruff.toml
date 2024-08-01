@@ -5,6 +5,7 @@ output-format = "full"
 [lint]
 preview = true
 select = [
+    "C4",   # flake8-comprehensions
     "E",    # pycodestyle
     "EXE",  # flake8-executable
     "DTZ",  # flake8-datetimez

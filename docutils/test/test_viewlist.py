@@ -46,7 +46,7 @@ class ViewListTests(unittest.TestCase):
         self.assertEqual(self.c, self.c_list)
         self.assertEqual(len(self.a), len(self.a_list))
         self.assertTrue('d' in self.a)  # __contains__
-        self.assertEqual([value for value in self.a], self.a_list)
+        self.assertEqual(list(self.a), self.a_list)
         # get and set values
         self.assertEqual(self.a[2], self.a_list[2])
         a = self.a[:]

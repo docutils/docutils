@@ -918,7 +918,7 @@ if __name__ == "__main__":
     defaultlanguage = defaultlanguage.lower().replace('-', '_')
     # split (except singletons, which mark the following tag as non-standard):
     defaultlanguage = re.sub(r'_([a-zA-Z0-9])_', r'_\1-', defaultlanguage)
-    _subtags = [subtag for subtag in defaultlanguage.split('_')]
+    _subtags = list(defaultlanguage.split('_'))
     _basetag = _subtags.pop(0)
     # find all combinations of subtags
     for n in range(len(_subtags), 0, -1):

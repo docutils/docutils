@@ -81,7 +81,7 @@ class Image(Directive):
         if 'target' in self.options:
             block = states.escape2null(
                 self.options['target']).splitlines()
-            block = [line for line in block]
+            block = list(block)
             target_type, data = self.state.parse_target(
                 block, self.block_text, self.lineno)
             if target_type == 'refuri':

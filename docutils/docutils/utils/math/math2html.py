@@ -1316,7 +1316,7 @@ class Container:
     begin = None
 
     def __init__(self) -> None:
-        self.contents = list()
+        self.contents = []
 
     def process(self) -> None:
         "Process contents"

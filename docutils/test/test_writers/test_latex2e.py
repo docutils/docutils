@@ -121,24 +121,24 @@ $fallbacks$pdfsetup
 \begin{document}
 $titledata""")
 
-parts = dict(
-head_prefix=r"""\documentclass[a4paper]{article}
+parts = {
+'head_prefix': r"""\documentclass[a4paper]{article}
 """,
-requirements=r"""\usepackage{ifthen}
+'requirements': r"""\usepackage{ifthen}
 \usepackage[T1]{fontenc}
 """,
-latex_preamble=r"""% PDF Standard Fonts
+'latex_preamble': r"""% PDF Standard Fonts
 \usepackage{mathptmx} % Times
 \usepackage[scaled=.90]{helvet}
 \usepackage{courier}
 """,
-longtable=r"""\usepackage{longtable,ltcaption,array}
+'longtable': r"""\usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables
 """,
-stylesheet='',
-fallbacks='',
-fallbacks_highlight=r"""
+'stylesheet': '',
+'fallbacks': '',
+'fallbacks_highlight': r"""
 % basic code highlight:
 \providecommand*\DUrolecomment[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
 \providecommand*\DUroledeleted[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
@@ -154,7 +154,7 @@ fallbacks_highlight=r"""
   \fi%
 }
 """,
-pdfsetup=r"""
+'pdfsetup': r"""
 % hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
@@ -162,7 +162,7 @@ pdfsetup=r"""
   \urlstyle{same} % normal text font (alternatives: tt, rm, sf)
 }{}
 """,
-titledata='')
+'titledata': ''}
 
 head = head_template.substitute(parts)
 

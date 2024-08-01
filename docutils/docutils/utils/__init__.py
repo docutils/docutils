@@ -720,7 +720,7 @@ def normalize_language_tag(tag):
     tag = tag.lower().replace('-', '_')
     # split (except singletons, which mark the following tag as non-standard):
     tag = re.sub(r'_([a-zA-Z0-9])_', r'_\1-', tag)
-    subtags = [subtag for subtag in tag.split('_')]
+    subtags = list(tag.split('_'))
     base_tag = (subtags.pop(0),)
     # find all combinations of subtags
     taglist = []
