@@ -117,11 +117,14 @@ class Headers(Transform):
                 space = nodes.Text(' ')
                 for refpep in re.split(r',?\s+', body.astext()):
                     pepno = int(refpep)
-                    newbody.append(nodes.reference(
-                        refpep, refpep,
-                        refuri=(self.document.settings.pep_base_url
-                                + self.pep_url % pepno)))
-                    newbody.append(space)
+                    newbody.extend((
+                        nodes.reference(
+                            refpep, refpep,
+                            refuri=(self.document.settings.pep_base_url
+                                    + self.pep_url % pepno)
+                        ),
+                        space,
+                    ))
                 para[:] = newbody[:-1]  # drop trailing space
             elif name == 'last-modified':
                 utils.clean_rcs_keywords(para, self.rcs_keyword_substitutions)

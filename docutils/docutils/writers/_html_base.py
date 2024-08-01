@@ -159,8 +159,8 @@ class Writer(writers.Writer):
         self.output = self.apply_template()
 
     def apply_template(self):
-        with open(self.document.settings.template, encoding='utf-8') as fp:
-            template = fp.read()
+        template_path = Path(self.document.settings.template)
+        template = template_path.read_text(encoding='utf-8')
         subs = self.interpolation_dict()
         return template % subs
 
@@ -506,8 +506,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             adjust_path = bool(self.settings.stylesheet_path)
         if self.settings.embed_stylesheet:
             try:
-                with open(path, encoding='utf-8') as f:
-                    content = f.read()
+                content = Path(path).read_text(encoding='utf-8')
             except OSError as err:
                 msg = f'Cannot embed stylesheet: {err}'
                 self.document.reporter.error(msg)
@@ -1170,8 +1169,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         elif loading == 'embed':
             try:
                 imagepath = self.uri2imagepath(uri)
-                with open(imagepath, 'rb') as imagefile:
-                    imagedata = imagefile.read()
+                imagedata = Path(imagepath).read_bytes()
             except (ValueError, OSError) as err:
                 self.messages.append(self.document.reporter.error(
                     f'Cannot embed image "{uri}":\n  {err}', base_node=node))

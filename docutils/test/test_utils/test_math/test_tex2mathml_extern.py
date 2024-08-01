@@ -146,8 +146,7 @@ class MathMLConverterTestCase(unittest.TestCase):
                                   'buggy-maths',
                                   writer='html5',
                                   settings_overrides=settings)
-            with open(out_path, "w") as fd:
-                fd.write(parts['whole'])
+            Path(out_path).write_text(parts['whole'])
             with self.subTest(converter=math_output[1] or 'latex2mathml()'):
                 compare_output(parts['whole'], out_path, expected_path)
 

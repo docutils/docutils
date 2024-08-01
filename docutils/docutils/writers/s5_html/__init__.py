@@ -9,9 +9,11 @@ S5/HTML Slideshow Writer.
 
 __docformat__ = 'reStructuredText'
 
-import sys
 import os
 import re
+import sys
+from pathlib import Path
+
 import docutils
 from docutils import frontend, nodes, utils
 from docutils.writers import html4css1
@@ -266,14 +268,12 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
             if os.path.exists(dest) and not settings.overwrite_theme_files:
                 settings.record_dependencies.add(dest)
             else:
-                with open(source, 'rb') as src_file:
-                    src_data = src_file.read()
-                with open(dest, 'wb') as dest_file:
-                    dest_dir = dest_dir.replace(os.sep, '/')
-                    dest_file.write(src_data.replace(
-                        b'ui/default',
-                        dest_dir[dest_dir.rfind('ui/'):].encode(
-                            sys.getfilesystemencoding())))
+                src_data = Path(source).read_bytes()
+                dest_dir = dest_dir.replace(os.sep, '/')
+                Path(dest).write_bytes(src_data.replace(
+                    b'ui/default',
+                    dest_dir[dest_dir.rfind('ui/'):].encode(
+                        sys.getfilesystemencoding())))
                 settings.record_dependencies.add(source)
             return True
         if os.path.isfile(dest):

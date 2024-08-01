@@ -626,8 +626,10 @@ def escape2null(text):
         if found == -1:
             parts.append(text[start:])
             return ''.join(parts)
-        parts.append(text[start:found])
-        parts.append('\x00' + text[found+1:found+2])
+        parts.extend((
+            text[start:found],
+            '\x00' + text[found + 1:found + 2],
+        ))
         start = found + 2               # skip character after escape
 
 

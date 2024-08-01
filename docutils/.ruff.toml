@@ -12,6 +12,7 @@ select = [
     "DTZ",  # flake8-datetimez
     "F",    # pyflakes
     "FA",   # flake8-future-annotations
+    "FURB", # refurb
     "G",    # flake8-logging-format
     "ICN",  # flake8-import-conventions
     "INP",  # flake8-no-pep420

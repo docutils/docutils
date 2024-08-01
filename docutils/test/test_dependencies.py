@@ -65,8 +65,8 @@ class RecordDependenciesTests(unittest.TestCase):
                                             **kwargs)
         recorder.close()
         # Read the record file:
-        with open(recordfile, encoding='utf-8') as record:
-            return record.read().splitlines(), output
+        records = Path(recordfile).read_text(encoding='utf-8').splitlines()
+        return records, output
 
     def test_dependencies_xml(self):
         # Note: currently, raw input files are read (and hence recorded) while

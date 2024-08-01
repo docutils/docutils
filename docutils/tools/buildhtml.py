@@ -295,7 +295,7 @@ class Builder:
             errout.write('/// ...Skipping directory (pruned): %s\n'
                          % relative_path(None, dirpath))
             sys.stderr.flush()
-            del dirnames[:]  # modify in-place to control `os.walk()` run
+            dirnames.clear()  # modify in-place to control `os.walk()` run
             return
         if not self.initial_settings.silent:
             errout.write('/// Processing directory: %s\n'

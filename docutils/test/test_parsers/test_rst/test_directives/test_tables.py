@@ -67,8 +67,7 @@ csv_unknown_url = "'bogus.csv'"
 
 
 try:
-    with open(utf_16_csv, 'rb') as f:
-        csv_data = f.read()
+    csv_data = Path(utf_16_csv).read_bytes()
     csv_data = str(csv_data, 'latin1').splitlines()
     reader = csv.reader([line + '\n' for line in csv_data])
     next(reader)

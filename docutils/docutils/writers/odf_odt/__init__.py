@@ -930,8 +930,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         stylespath = self.settings.stylesheet
         ext = os.path.splitext(stylespath)[1]
         if ext == '.xml':
-            with open(stylespath, 'r', encoding='utf-8') as stylesfile:
-                s1 = stylesfile.read()
+            s1 = Path(stylespath).read_text(encoding='utf-8')
         elif ext == extension:
             zfile = zipfile.ZipFile(stylespath, 'r')
             s1 = zfile.read('styles.xml')
@@ -2629,8 +2628,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             my_lines.append(my_line)
         my_lines_str = '<text:line-break/>'.join(my_lines)
         my_lines_str2 = wrapper1 % (my_lines_str, )
-        lines1.append(my_lines_str2)
-        lines1.append('</wrappertag1>')
+        lines1.extend((my_lines_str2, '</wrappertag1>'))
         s1 = ''.join(lines1)
         s1 = s1.encode("utf-8")
         el1 = etree.fromstring(s1)

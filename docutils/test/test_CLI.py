@@ -85,8 +85,7 @@ class CliTests(unittest.TestCase):
 
         # compare to stored version
         docutils_txt = os.path.join(DATA_ROOT, 'help/docutils.txt')
-        with open(docutils_txt, encoding='utf-8') as samplefile:
-            expected = samplefile.read()
+        expected = Path(docutils_txt).read_text(encoding='utf-8')
         if expected != output:
             print_mismatch(expected, output)
 
@@ -95,8 +94,7 @@ class CliTests(unittest.TestCase):
         output = self.get_help_text('rst2html', core.rst2html)
         # compare to stored version
         rst2html_txt = os.path.join(DATA_ROOT, 'help/rst2html.txt')
-        with open(rst2html_txt, encoding='utf-8') as samplefile:
-            expected = samplefile.read()
+        expected = Path(rst2html_txt).read_text(encoding='utf-8')
         if expected != output:
             print_mismatch(expected, output)
 
@@ -105,8 +103,7 @@ class CliTests(unittest.TestCase):
         output = self.get_help_text('rst2latex', core.rst2latex)
         # compare to stored version
         rst2latex_txt = os.path.join(DATA_ROOT, 'help/rst2latex.txt')
-        with open(rst2latex_txt, encoding='utf-8') as samplefile:
-            expected = samplefile.read()
+        expected = Path(rst2latex_txt).read_text(encoding='utf-8')
         if expected != output:
             print_mismatch(expected, output)
 
