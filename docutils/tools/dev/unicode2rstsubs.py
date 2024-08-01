@@ -24,11 +24,11 @@ from __future__ import annotations
 import os
 import re
 import sys
-from typing import TYPE_CHECKING, TextIO
+from typing import TYPE_CHECKING
 from xml.parsers.expat import ParserCreate
 
 if TYPE_CHECKING:
-    from typing import BinaryIO, NoReturn
+    from typing import BinaryIO, NoReturn, TextIO
     from xml.parsers.expat import XMLParserType
 
 

@@ -1733,7 +1733,7 @@ class section(Structural, Element):
     # recursive content model, see below
 
 
-section.content_model: Final = (
+section.content_model = (
     # (title, subtitle?, %structure.model;)
     (title, '.'),
     (subtitle, '?'),
@@ -2382,7 +2382,7 @@ class line_block(General, Element):
     # recursive content model: (line | line_block)+
 
 
-line_block.content_model: Final = (((line, line_block), '+'),)
+line_block.content_model = (((line, line_block), '+'),)
 
 
 # Admonitions
