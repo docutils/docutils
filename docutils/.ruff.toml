@@ -11,6 +11,7 @@ select = [
     "FA",   # flake8-future-annotations
     "ICN",  # flake8-import-conventions
     "INP",  # flake8-no-pep420
+    "INT",  # flake8-gettext
     "W",    # pycodestyle
 ]
 ignore = [
