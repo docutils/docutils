@@ -37,7 +37,6 @@ if TYPE_CHECKING:
         Callable,
         Iterable,
         Iterator,
-        Literal,
         Mapping,
         Sequence,
     )
@@ -45,6 +44,7 @@ if TYPE_CHECKING:
         Any,
         ClassVar,
         Final,
+        Literal,
         Self,
         SupportsIndex,
         TypeAlias,
