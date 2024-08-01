@@ -19,6 +19,11 @@ Release 0.22b.dev (unpublished)
 
 * General
 
+  - We have started to add type hints to Docutils.
+    This will be a complex programme of work, and as such
+    for the time being these type hints are 'provisional',
+    and should not be relied upon by consumers of Docutils.
+    (feature-request #87)
   - Add tox.ini to pyproject.toml to be in sdist (bug #486).
   - Fix license issue (bug #487).
 
