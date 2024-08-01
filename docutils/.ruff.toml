@@ -17,6 +17,7 @@ select = [
     "PGH",  # pygrep-hooks
     "PIE",  # flake8-pie
     "PT",   # flake8-pytest
+    "RSE",  # flake8-raise
     "W",    # pycodestyle
 ]
 ignore = [

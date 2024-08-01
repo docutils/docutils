@@ -1743,7 +1743,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.list_level -= 1
 
     def visit_caption(self, node):
-        raise nodes.SkipChildren()
+        raise nodes.SkipChildren
 
     def depart_caption(self, node) -> None:
         pass
@@ -1802,7 +1802,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         el = self.append_p('deflist-term-%d' % self.def_list_level)
         el.text = node.astext()
         self.set_current_element(el)
-        raise nodes.SkipChildren()
+        raise nodes.SkipChildren
 
     def depart_term(self, node) -> None:
         self.set_to_parent()
@@ -2039,7 +2039,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 })
                 el2.text = footnote_char
             self.footnote_ref_dict[id] = el1
-        raise nodes.SkipChildren()
+        raise nodes.SkipChildren
 
     def depart_footnote_reference(self, node) -> None:
         pass
@@ -2079,7 +2079,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_label(self, node):
         if isinstance(node.parent, docutils.nodes.footnote):
-            raise nodes.SkipChildren()
+            raise nodes.SkipChildren
         elif self.citation_id is not None:
             el = self.append_p('textbody')
             self.set_current_element(el)
@@ -2809,7 +2809,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         el1 = SubElement(el, 'text:p', attrib={
             'text:style-name': 'Table_20_Contents'})
         el1.text = node.astext()
-        raise nodes.SkipChildren()
+        raise nodes.SkipChildren
 
     def depart_description(self, node) -> None:
         pass
@@ -2864,7 +2864,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                         pass
                     else:
                         self.current_element.append(el1)
-        raise nodes.SkipChildren()
+        raise nodes.SkipChildren
 
     def depart_raw(self, node) -> None:
         if self.in_header:
@@ -2949,7 +2949,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_to_parent()
 
     def visit_substitution_definition(self, node):
-        raise nodes.SkipChildren()
+        raise nodes.SkipChildren
 
     def depart_substitution_definition(self, node) -> None:
         pass
@@ -3207,7 +3207,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         el = self.append_child('text:span', attrib={
             'text:style-name': self.rststyle('quotation')})
         el.text = self.encode(node.astext())
-        raise nodes.SkipChildren()
+        raise nodes.SkipChildren
 
     def depart_title_reference(self, node) -> None:
         pass
