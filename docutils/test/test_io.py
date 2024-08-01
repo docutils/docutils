@@ -42,6 +42,7 @@ with warnings.catch_warnings():
     preferredencoding = codecs.lookup(
         locale.getpreferredencoding(do_setlocale=False)).name
 
+
 # Stub: Buffer with 'strict' auto-conversion of input to byte string:
 class BBuf(BytesIO):
     def write(self, data):
