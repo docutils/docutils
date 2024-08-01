@@ -160,7 +160,10 @@ class Input(TransformSpec):
                 # data that *IS* UTF-8:
                 encoding_candidates = ['utf-8']
                 # If UTF-8 fails, fall back to the locale's preferred encoding:
-                fallback = locale.getpreferredencoding(do_setlocale=False)
+                if sys.version_info[:2] >= (3, 11):
+                    fallback = locale.getencoding()
+                else:
+                    fallback = locale.getpreferredencoding(do_setlocale=False)
                 if fallback and fallback.lower() != 'utf-8':
                     encoding_candidates.append(fallback)
         for enc in encoding_candidates:
