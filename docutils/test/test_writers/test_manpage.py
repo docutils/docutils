@@ -121,7 +121,7 @@ External hyperlinks, like
 .UR https://www.python.org/
 Python
 .UE
-\&.
+\\&.
 .\\" End of generated man page.
 """],
         ]
@@ -137,7 +137,7 @@ embedded External hyperlinks, like \n\
 .UR https://www.python.org/
 Python
 .UE
-\&.
+\\&.
 .\\" End of generated man page.
 """],
         ]
