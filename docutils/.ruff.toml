@@ -10,6 +10,7 @@ select = [
     "F",    # pyflakes
     "FA",   # flake8-future-annotations
     "ICN",  # flake8-import-conventions
+    "INP",  # flake8-no-pep420
     "W",    # pycodestyle
 ]
 ignore = [
@@ -113,6 +114,7 @@ ignore = [
 # included configuration files referencing externally defined variables
 "test/functional/tests/*" = [
     "F821",
+    "INP001",
 ]
 
 # deprecated module, will be removed
