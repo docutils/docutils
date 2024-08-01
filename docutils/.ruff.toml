@@ -12,6 +12,7 @@ select = [
     "ICN",  # flake8-import-conventions
     "INP",  # flake8-no-pep420
     "INT",  # flake8-gettext
+    "LOG",  # flake8-logging
     "W",    # pycodestyle
 ]
 ignore = [
