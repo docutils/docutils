@@ -9,6 +9,7 @@ select = [
     "EXE",  # flake8-executable
     "F",    # pyflakes
     "FA",   # flake8-future-annotations
+    "G",    # flake8-logging-format
     "ICN",  # flake8-import-conventions
     "INP",  # flake8-no-pep420
     "INT",  # flake8-gettext
