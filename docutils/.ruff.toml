@@ -5,9 +5,10 @@ output-format = "full"
 [lint]
 preview = true
 select = [
-    "E",  # pycodestyle
-    "F",  # pyflakes
-    "W",  # pycodestyle
+    "E",    # pycodestyle
+    "EXE",  # flake8-executable
+    "F",    # pyflakes
+    "W",    # pycodestyle
 ]
 ignore = [
     "E226",  # missing whitespace around arithmetic operator
@@ -100,6 +101,11 @@ ignore = [
 ]
 "docutils/writers/odf_odt/__init__.py" = [
     "F841",
+]
+
+# shebang to enable unbuffered mode
+"test/alltests.py" = [
+    "EXE003",
 ]
 
 # included configuration files referencing externally defined variables
