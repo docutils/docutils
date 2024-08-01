@@ -57,6 +57,21 @@ class WriterPublishTestCase(unittest.TestCase):
                         }).decode()
                     self.assertEqual(case_expected, output)
 
+    def test_reference_macros(self):
+        writer = 'manpage'
+        for name, cases in totest_refs.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'totest_refs[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer=writer,
+                        settings_overrides={
+                            '_disable_config': True,
+                            'strict_visitor': True,
+                            'use_reference_macros': True,
+                        }).decode()
+                    self.assertEqual(case_expected, output)
+
 
 document_start = r""".\" Man page generated from reStructuredText by manpage writer
 .\" from docutils 0.22b.dev.
@@ -91,6 +106,60 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
 """
+
+totest_refs = {}
+
+totest_refs['ext hyperlink'] = [
+        [r"""External hyperlinks, like Python_.
+
+.. _Python: https://www.python.org/
+""",
+         document_start + indend_macros + """.TH "" "" "" ""
+.SH Name
+ \\- \n\
+External hyperlinks, like 
+.UR https://www.python.org/
+Python
+.UE
+\&.
+.\\" End of generated man page.
+"""],
+        ]
+
+totest_refs['emb hyperlink'] = [
+        [r"""embedded External hyperlinks, like `Python
+<https://www.python.org/>`_.
+""",
+         document_start + indend_macros + """.TH "" "" "" ""
+.SH Name
+ \\- \n\
+embedded External hyperlinks, like \n\
+.UR https://www.python.org/
+Python
+.UE
+\&.
+.\\" End of generated man page.
+"""],
+        ]
+
+totest_refs['email'] = [
+        [r"""`Write to me`_ with your questions.
+
+.. _Write to me: jdoe@example.com
+
+whatever.""",
+         document_start + indend_macros + """.TH "" "" "" ""
+.SH Name
+ \\- \n\
+.UR mailto:jdoe@example.com
+Write to me
+.UE
+ with your questions.
+.sp
+whatever.
+.\\" End of generated man page.
+"""],
+        ]
 
 totest = {}
 
