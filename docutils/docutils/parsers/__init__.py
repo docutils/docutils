@@ -58,7 +58,7 @@ class Parser(Component):
         """Override to parse `inputstring` into document tree `document`."""
         raise NotImplementedError('subclass must override this method')
 
-    def setup_parse(self, inputstring, document):
+    def setup_parse(self, inputstring, document) -> None:
         """Initial parse setup.  Call at start of `self.parse()`."""
         self.inputstring = inputstring
         # provide fallbacks in case the document has only generic settings
@@ -68,7 +68,7 @@ class Parser(Component):
         self.document = document
         document.reporter.attach_observer(document.note_parse_message)
 
-    def finish_parse(self):
+    def finish_parse(self) -> None:
         """Finalize parse details.  Call at end of `self.parse()`."""
         self.document.reporter.detach_observer(
             self.document.note_parse_message)

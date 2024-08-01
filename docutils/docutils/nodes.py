@@ -61,10 +61,10 @@ class Node:
             return None
 
     @document.setter
-    def document(self, value):
+    def document(self, value) -> None:
         self._document = value
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         """
         Node instances are always true, even if they're empty.  A node is more
         than a simple container.  Its boolean "truth" does not depend on
@@ -101,7 +101,7 @@ class Node:
         """Return a string representation of this Node."""
         raise NotImplementedError
 
-    def setup_child(self, child):
+    def setup_child(self, child) -> None:
         child.parent = self
         if self.document:
             child.document = self.document
@@ -352,13 +352,13 @@ class Text(Node, str):
                           DeprecationWarning, stacklevel=2)
         return str.__new__(cls, data)
 
-    def shortrepr(self, maxlen=18):
+    def shortrepr(self, maxlen=18) -> str:
         data = self
         if len(data) > maxlen:
             data = data[:maxlen-4] + ' ...'
         return '<%s: %r>' % (self.tagname, str(data))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.shortrepr(maxlen=68)
 
     def astext(self):
@@ -398,11 +398,11 @@ class Text(Node, str):
     def lstrip(self, chars=None):
         return self.__class__(str.lstrip(self, chars))
 
-    def validate(self, recursive=True):
+    def validate(self, recursive=True) -> None:
         """Validate Docutils Document Tree element ("doctree")."""
         # Text nodes have no attributes and no children.
 
-    def check_position(self):
+    def check_position(self) -> None:
         """Hook for additional checks of the parent's content model."""
         # no special placement requirements for Text nodes
 
@@ -511,7 +511,7 @@ class Element(Node):
     child_text_separator = '\n\n'
     """Separator for child nodes, used by `astext()` method."""
 
-    def __init__(self, rawsource='', *children, **attributes):
+    def __init__(self, rawsource='', *children, **attributes) -> None:
         self.rawsource = rawsource
         """The raw text from which this element was constructed.
 
@@ -555,7 +555,7 @@ class Element(Node):
             element.appendChild(child._dom_node(domroot))
         return element
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         data = ''
         for c in self.children:
             data += c.shortrepr()
@@ -568,14 +568,14 @@ class Element(Node):
         else:
             return '<%s: %s>' % (self.__class__.__name__, data)
 
-    def shortrepr(self):
+    def shortrepr(self) -> str:
         if self['names']:
             return '<%s "%s"...>' % (self.__class__.__name__,
                                      '; '.join(self['names']))
         else:
             return '<%s...>' % self.tagname
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self.children:
             return '%s%s%s' % (self.starttag(),
                                ''.join(str(c) for c in self.children),
@@ -583,7 +583,7 @@ class Element(Node):
         else:
             return self.emptytag()
 
-    def starttag(self, quoteattr=None):
+    def starttag(self, quoteattr=None) -> str:
         # the optional arg is used by the docutils_xml writer
         if quoteattr is None:
             quoteattr = pseudo_quoteattr
@@ -603,17 +603,17 @@ class Element(Node):
             parts.append('%s=%s' % (name, value))
         return '<%s>' % ' '.join(parts)
 
-    def endtag(self):
+    def endtag(self) -> str:
         return '</%s>' % self.tagname
 
-    def emptytag(self):
+    def emptytag(self) -> str:
         attributes = ('%s="%s"' % (n, v) for n, v in self.attlist())
         return '<%s/>' % ' '.join((self.tagname, *attributes))
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.children)
 
-    def __contains__(self, key):
+    def __contains__(self, key) -> bool:
         # Test for both, children and attributes with operator ``in``.
         if isinstance(key, str):
             return key in self.attributes
@@ -631,7 +631,7 @@ class Element(Node):
             raise TypeError('element index must be an integer, a slice, or '
                             'an attribute name string')
 
-    def __setitem__(self, key, item):
+    def __setitem__(self, key, item) -> None:
         if isinstance(key, str):
             self.attributes[str(key)] = item
         elif isinstance(key, int):
@@ -646,7 +646,7 @@ class Element(Node):
             raise TypeError('element index must be an integer, a slice, or '
                             'an attribute name string')
 
-    def __delitem__(self, key):
+    def __delitem__(self, key) -> None:
         if isinstance(key, str):
             del self.attributes[key]
         elif isinstance(key, int):
@@ -689,10 +689,10 @@ class Element(Node):
     def get(self, key, failobj=None):
         return self.attributes.get(key, failobj)
 
-    def hasattr(self, attr):
+    def hasattr(self, attr) -> bool:
         return attr in self.attributes
 
-    def delattr(self, attr):
+    def delattr(self, attr) -> None:
         if attr in self.attributes:
             del self.attributes[attr]
 
@@ -716,15 +716,15 @@ class Element(Node):
         except AttributeError:
             return fallback
 
-    def append(self, item):
+    def append(self, item) -> None:
         self.setup_child(item)
         self.children.append(item)
 
-    def extend(self, item):
+    def extend(self, item) -> None:
         for node in item:
             self.append(node)
 
-    def insert(self, index, item):
+    def insert(self, index, item) -> None:
         if isinstance(item, Node):
             self.setup_child(item)
             self.children.insert(index, item)
@@ -734,7 +734,7 @@ class Element(Node):
     def pop(self, i=-1):
         return self.children.pop(i)
 
-    def remove(self, item):
+    def remove(self, item) -> None:
         self.children.remove(item)
 
     def index(self, item, start=0, stop=sys.maxsize):
@@ -748,13 +748,13 @@ class Element(Node):
             return None
         return self.parent[i-1] if i > 0 else None
 
-    def is_not_default(self, key):
+    def is_not_default(self, key) -> int:
         if self[key] == [] and key in self.list_attributes:
             return 0
         else:
             return 1
 
-    def update_basic_atts(self, dict_):
+    def update_basic_atts(self, dict_) -> None:
         """
         Update basic attributes ('ids', 'names', 'classes',
         'dupnames', but not 'source') from node or dictionary `dict_`.
@@ -766,7 +766,7 @@ class Element(Node):
         for att in self.basic_attributes:
             self.append_attr_list(att, dict_.get(att, []))
 
-    def append_attr_list(self, attr, values):
+    def append_attr_list(self, attr, values) -> None:
         """
         For each element in values, if it does not exist in self[attr], append
         it.
@@ -779,7 +779,7 @@ class Element(Node):
             if value not in self[attr]:
                 self[attr].append(value)
 
-    def coerce_append_attr_list(self, attr, value):
+    def coerce_append_attr_list(self, attr, value) -> None:
         """
         First, convert both self[attr] and value to a non-string sequence
         type; if either is not already a sequence, convert it to a list of one
@@ -794,7 +794,7 @@ class Element(Node):
             value = [value]
         self.append_attr_list(attr, value)
 
-    def replace_attr(self, attr, value, force=True):
+    def replace_attr(self, attr, value, force=True) -> None:
         """
         If self[attr] does not exist or force is True or omitted, set
         self[attr] to value, otherwise do nothing.
@@ -803,7 +803,7 @@ class Element(Node):
         if force or self.get(attr) is None:
             self[attr] = value
 
-    def copy_attr_convert(self, attr, value, replace=True):
+    def copy_attr_convert(self, attr, value, replace=True) -> None:
         """
         If attr is an attribute of self, set self[attr] to
         [self[attr], value], otherwise set self[attr] to value.
@@ -814,7 +814,7 @@ class Element(Node):
         if self.get(attr) is not value:
             self.coerce_append_attr_list(attr, value)
 
-    def copy_attr_coerce(self, attr, value, replace):
+    def copy_attr_coerce(self, attr, value, replace) -> None:
         """
         If attr is an attribute of self and either self[attr] or value is a
         list, convert all non-sequence values to a sequence of 1 element and
@@ -830,7 +830,7 @@ class Element(Node):
             else:
                 self.replace_attr(attr, value, replace)
 
-    def copy_attr_concatenate(self, attr, value, replace):
+    def copy_attr_concatenate(self, attr, value, replace) -> None:
         """
         If attr is an attribute of self and both self[attr] and value are
         lists, concatenate the two sequences, setting the result to
@@ -845,7 +845,7 @@ class Element(Node):
             else:
                 self.replace_attr(attr, value, replace)
 
-    def copy_attr_consistent(self, attr, value, replace):
+    def copy_attr_consistent(self, attr, value, replace) -> None:
         """
         If replace is True or self[attr] is None, replace self[attr] with
         value.  Otherwise, do nothing.
@@ -854,7 +854,7 @@ class Element(Node):
             self.replace_attr(attr, value, replace)
 
     def update_all_atts(self, dict_, update_fun=copy_attr_consistent,
-                        replace=True, and_source=False):
+                        replace=True, and_source=False) -> None:
         """
         Updates all attributes from node or dictionary `dict_`.
 
@@ -892,7 +892,7 @@ class Element(Node):
             update_fun(self, att, dict_[att], replace)
 
     def update_all_atts_consistantly(self, dict_, replace=True,
-                                     and_source=False):
+                                     and_source=False) -> None:
         """
         Updates all attributes from node or dictionary `dict_`.
 
@@ -913,7 +913,7 @@ class Element(Node):
                              and_source)
 
     def update_all_atts_concatenating(self, dict_, replace=True,
-                                      and_source=False):
+                                      and_source=False) -> None:
         """
         Updates all attributes from node or dictionary `dict_`.
 
@@ -937,7 +937,7 @@ class Element(Node):
                              and_source)
 
     def update_all_atts_coercion(self, dict_, replace=True,
-                                 and_source=False):
+                                 and_source=False) -> None:
         """
         Updates all attributes from node or dictionary `dict_`.
 
@@ -961,7 +961,7 @@ class Element(Node):
         self.update_all_atts(dict_, Element.copy_attr_coerce, replace,
                              and_source)
 
-    def update_all_atts_convert(self, dict_, and_source=False):
+    def update_all_atts_convert(self, dict_, and_source=False) -> None:
         """
         Updates all attributes from node or dictionary `dict_`.
 
@@ -982,10 +982,10 @@ class Element(Node):
         self.update_all_atts(dict_, Element.copy_attr_convert,
                              and_source=and_source)
 
-    def clear(self):
+    def clear(self) -> None:
         self.children = []
 
-    def replace(self, old, new):
+    def replace(self, old, new) -> None:
         """Replace one child `Node` with another child or children."""
         index = self.index(old)
         if isinstance(new, Node):
@@ -994,7 +994,7 @@ class Element(Node):
         elif new is not None:
             self[index:index+1] = new
 
-    def replace_self(self, new):
+    def replace_self(self, new) -> None:
         """
         Replace `self` node with `new`, where `new` is a node or a
         list of nodes.
@@ -1076,7 +1076,7 @@ class Element(Node):
         copy.extend([child.deepcopy() for child in self.children])
         return copy
 
-    def note_referenced_by(self, name=None, id=None):
+    def note_referenced_by(self, name=None, id=None) -> None:
         """Note that this Element has been referenced by its name
         `name` or id `id`."""
         self.referenced = True
@@ -1094,7 +1094,7 @@ class Element(Node):
             by_id.referenced = True
 
     @classmethod
-    def is_not_list_attribute(cls, attr):
+    def is_not_list_attribute(cls, attr) -> bool:
         """
         Returns True if and only if the given attribute is NOT one of the
         basic list attributes defined for all Elements.
@@ -1102,7 +1102,7 @@ class Element(Node):
         return attr not in cls.list_attributes
 
     @classmethod
-    def is_not_known_attribute(cls, attr):
+    def is_not_known_attribute(cls, attr) -> bool:
         """
         Return True if `attr` is NOT defined for all Element instances.
 
@@ -1177,7 +1177,7 @@ class Element(Node):
                     child = None
         return [] if child is None else [child, *ichildren]
 
-    def _report_child(self, child, category):
+    def _report_child(self, child, category) -> str:
         # Return a str reporting a missing child or child of wrong category.
         try:
             type = category.__name__
@@ -1192,7 +1192,7 @@ class Element(Node):
         return (f'{msg}  Expecting child of type <{type}>, '
                 f'not {child.starttag()}.')
 
-    def check_position(self):
+    def check_position(self) -> None:
         """Hook for additional checks of the parent's content model.
 
         Raise ValidationError, if `self` is at an invalid position.
@@ -1336,7 +1336,7 @@ class BackLinkable:
     list_attributes = Element.list_attributes + ('backrefs',)
     valid_attributes = Element.valid_attributes + ('backrefs',)
 
-    def add_backref(self, refid):
+    def add_backref(self, refid) -> None:
         self['backrefs'].append(refid)
 
 
@@ -1379,7 +1379,7 @@ class TextElement(Element):
     child_text_separator = ''
     """Separator for child nodes, used by `astext()` method."""
 
-    def __init__(self, rawsource='', text='', *children, **attributes):
+    def __init__(self, rawsource='', text='', *children, **attributes) -> None:
         if text:
             textnode = Text(text)
             Element.__init__(self, rawsource, textnode, *children,
@@ -1393,7 +1393,7 @@ class FixedTextElement(TextElement):
 
     valid_attributes = Element.valid_attributes + ('xml:space',)
 
-    def __init__(self, rawsource='', text='', *children, **attributes):
+    def __init__(self, rawsource='', text='', *children, **attributes) -> None:
         super().__init__(rawsource, text, *children, **attributes)
         self.attributes['xml:space'] = 'preserve'
 
@@ -1571,7 +1571,7 @@ class document(Root, Element):
     # Additional restrictions for `subtitle` and `transition` are tested
     # with the respective `check_position()` methods.
 
-    def __init__(self, settings, reporter, *args, **kwargs):
+    def __init__(self, settings, reporter, *args, **kwargs) -> None:
         Element.__init__(self, *args, **kwargs)
 
         self.current_source = None
@@ -1725,7 +1725,7 @@ class document(Root, Element):
         self.ids[id] = node
         return id
 
-    def set_name_id_map(self, node, id, msgnode=None, explicit=None):
+    def set_name_id_map(self, node, id, msgnode=None, explicit=None) -> None:
         """
         `self.nameids` maps names to IDs, while `self.nametypes` maps names to
         booleans representing hyperlink type (True==explicit,
@@ -1766,7 +1766,7 @@ class document(Root, Element):
                 self.nameids[name] = id
                 self.nametypes[name] = explicit
 
-    def set_duplicate_name_id(self, node, id, name, msgnode, explicit):
+    def set_duplicate_name_id(self, node, id, name, msgnode, explicit) -> None:
         old_id = self.nameids[name]
         old_explicit = self.nametypes[name]
         self.nametypes[name] = old_explicit or explicit
@@ -1808,66 +1808,66 @@ class document(Root, Element):
             if msgnode is not None:
                 msgnode += msg
 
-    def has_name(self, name):
+    def has_name(self, name) -> bool:
         return name in self.nameids
 
     # "note" here is an imperative verb: "take note of".
-    def note_implicit_target(self, target, msgnode=None):
+    def note_implicit_target(self, target, msgnode=None) -> None:
         id = self.set_id(target, msgnode)
         self.set_name_id_map(target, id, msgnode, explicit=False)
 
-    def note_explicit_target(self, target, msgnode=None):
+    def note_explicit_target(self, target, msgnode=None) -> None:
         id = self.set_id(target, msgnode)
         self.set_name_id_map(target, id, msgnode, explicit=True)
 
-    def note_refname(self, node):
+    def note_refname(self, node) -> None:
         self.refnames.setdefault(node['refname'], []).append(node)
 
-    def note_refid(self, node):
+    def note_refid(self, node) -> None:
         self.refids.setdefault(node['refid'], []).append(node)
 
-    def note_indirect_target(self, target):
+    def note_indirect_target(self, target) -> None:
         self.indirect_targets.append(target)
         if target['names']:
             self.note_refname(target)
 
-    def note_anonymous_target(self, target):
+    def note_anonymous_target(self, target) -> None:
         self.set_id(target)
 
-    def note_autofootnote(self, footnote):
+    def note_autofootnote(self, footnote) -> None:
         self.set_id(footnote)
         self.autofootnotes.append(footnote)
 
-    def note_autofootnote_ref(self, ref):
+    def note_autofootnote_ref(self, ref) -> None:
         self.set_id(ref)
         self.autofootnote_refs.append(ref)
 
-    def note_symbol_footnote(self, footnote):
+    def note_symbol_footnote(self, footnote) -> None:
         self.set_id(footnote)
         self.symbol_footnotes.append(footnote)
 
-    def note_symbol_footnote_ref(self, ref):
+    def note_symbol_footnote_ref(self, ref) -> None:
         self.set_id(ref)
         self.symbol_footnote_refs.append(ref)
 
-    def note_footnote(self, footnote):
+    def note_footnote(self, footnote) -> None:
         self.set_id(footnote)
         self.footnotes.append(footnote)
 
-    def note_footnote_ref(self, ref):
+    def note_footnote_ref(self, ref) -> None:
         self.set_id(ref)
         self.footnote_refs.setdefault(ref['refname'], []).append(ref)
         self.note_refname(ref)
 
-    def note_citation(self, citation):
+    def note_citation(self, citation) -> None:
         self.citations.append(citation)
 
-    def note_citation_ref(self, ref):
+    def note_citation_ref(self, ref) -> None:
         self.set_id(ref)
         self.citation_refs.setdefault(ref['refname'], []).append(ref)
         self.note_refname(ref)
 
-    def note_substitution_def(self, subdef, def_name, msgnode=None):
+    def note_substitution_def(self, subdef, def_name, msgnode=None) -> None:
         name = whitespace_normalize_name(def_name)
         if name in self.substitution_defs:
             msg = self.reporter.error(
@@ -1882,19 +1882,19 @@ class document(Root, Element):
         # case-insensitive mapping:
         self.substitution_names[fully_normalize_name(name)] = name
 
-    def note_substitution_ref(self, subref, refname):
+    def note_substitution_ref(self, subref, refname) -> None:
         subref['refname'] = whitespace_normalize_name(refname)
 
-    def note_pending(self, pending, priority=None):
+    def note_pending(self, pending, priority=None) -> None:
         self.transformer.add_pending(pending, priority)
 
-    def note_parse_message(self, message):
+    def note_parse_message(self, message) -> None:
         self.parse_messages.append(message)
 
-    def note_transform_message(self, message):
+    def note_transform_message(self, message) -> None:
         self.transform_messages.append(message)
 
-    def note_source(self, source, offset):
+    def note_source(self, source, offset) -> None:
         self.current_source = source
         if offset is None:
             self.current_line = offset
@@ -2301,7 +2301,7 @@ class system_message(Special, BackLinkable, PreBibliographic, Element):
                            'level', 'line', 'type')
     content_model = ((Body, '+'),)  # (%body.elements;)+
 
-    def __init__(self, message=None, *children, **attributes):
+    def __init__(self, message=None, *children, **attributes) -> None:
         rawsource = attributes.pop('rawsource', '')
         if message:
             p = paragraph('', message)
@@ -2312,7 +2312,7 @@ class system_message(Special, BackLinkable, PreBibliographic, Element):
             print('system_message: children=%r' % (children,))
             raise
 
-    def astext(self):
+    def astext(self) -> str:
         line = self.get('line', '')
         return '%s:%s: (%s/%s) %s' % (self['source'], line, self['type'],
                                       self['level'], Element.astext(self))
@@ -2348,7 +2348,7 @@ class pending(Invisible, Element):
     """
 
     def __init__(self, transform, details=None,
-                 rawsource='', *children, **attributes):
+                 rawsource='', *children, **attributes) -> None:
         Element.__init__(self, rawsource, *children, **attributes)
 
         self.transform = transform
@@ -2514,7 +2514,7 @@ class NodeVisitor:
     Used to ensure transitional compatibility with existing 3rd-party writers.
     """
 
-    def __init__(self, document):
+    def __init__(self, document) -> None:
         self.document = document
 
     def dispatch_visit(self, node):
@@ -2603,19 +2603,19 @@ class GenericNodeVisitor(NodeVisitor):
         raise NotImplementedError
 
 
-def _call_default_visit(self, node):
+def _call_default_visit(self, node) -> None:
     self.default_visit(node)
 
 
-def _call_default_departure(self, node):
+def _call_default_departure(self, node) -> None:
     self.default_departure(node)
 
 
-def _nop(self, node):
+def _nop(self, node) -> None:
     pass
 
 
-def _add_node_class_names(names):
+def _add_node_class_names(names) -> None:
     """Save typing with dynamic assignments:"""
     for _name in names:
         setattr(GenericNodeVisitor, "visit_" + _name, _call_default_visit)
@@ -2632,7 +2632,7 @@ class TreeCopyVisitor(GenericNodeVisitor):
     Make a complete copy of a tree or branch, including element attributes.
     """
 
-    def __init__(self, document):
+    def __init__(self, document) -> None:
         GenericNodeVisitor.__init__(self, document)
         self.parent_stack = []
         self.parent = []
@@ -2640,14 +2640,14 @@ class TreeCopyVisitor(GenericNodeVisitor):
     def get_tree_copy(self):
         return self.parent[0]
 
-    def default_visit(self, node):
+    def default_visit(self, node) -> None:
         """Copy the current node, and make it the new acting parent."""
         newnode = node.copy()
         self.parent.append(newnode)
         self.parent_stack.append(self.parent)
         self.parent = newnode
 
-    def default_departure(self, node):
+    def default_departure(self, node) -> None:
         """Restore the previous acting parent."""
         self.parent = self.parent_stack.pop()
 
@@ -2657,7 +2657,7 @@ class TreeCopyVisitor(GenericNodeVisitor):
 
 class ValidationError(ValueError):
     """Invalid Docutils Document Tree Element."""
-    def __init__(self, msg, problematic_element=None):
+    def __init__(self, msg, problematic_element=None) -> None:
         super().__init__(msg)
         self.problematic_element = problematic_element
 
@@ -2827,7 +2827,7 @@ _non_id_translate_digraphs = {
 }
 
 
-def dupname(node, name):
+def dupname(node, name) -> None:
     node['dupnames'].append(name)
     node['names'].remove(name)
     # Assume that `node` is referenced, even though it isn't;
@@ -2870,7 +2870,7 @@ def split_name_list(s):
             for name in names]
 
 
-def pseudo_quoteattr(value):
+def pseudo_quoteattr(value) -> str:
     """Quote attributes for pseudo-xml"""
     return '"%s"' % value
 

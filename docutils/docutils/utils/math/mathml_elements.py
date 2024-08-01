@@ -62,7 +62,7 @@ class MathElement(ET.Element):
     parent = None
     """Parent node in MathML element tree."""
 
-    def __init__(self, *children, **attributes):
+    def __init__(self, *children, **attributes) -> None:
         """Set up node with `children` and `attributes`.
 
         Attribute names are normalised to lowercase.
@@ -87,7 +87,7 @@ class MathElement(ET.Element):
             return str(v).lower()
         return str(v)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Return full string representation."""
         args = [repr(child) for child in self]
         if self.text:
@@ -99,7 +99,7 @@ class MathElement(ET.Element):
         args += [f'{k}={v!r}' for k, v in self.items() if v is not None]
         return f'{self.tag}({", ".join(args)})'
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return concise, informal string representation."""
         if self.text:
             args = repr(self.text)
@@ -107,10 +107,10 @@ class MathElement(ET.Element):
             args = ', '.join(f'{child}' for child in self)
         return f'{self.tag}({args})'
 
-    def set(self, key, value):
+    def set(self, key, value) -> None:
         super().set(key, self.a_str(value))
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value) -> None:
         if self.nchildren == 0:
             raise TypeError(f'Element "{self}" does not take children.')
         if isinstance(value, MathElement):
@@ -186,7 +186,7 @@ class MathElement(ET.Element):
 
     # XML output:
 
-    def indent_xml(self, space='  ', level=0):
+    def indent_xml(self, space='  ', level=0) -> None:
         """Format XML output with indents.
 
         Use with care:
@@ -195,7 +195,7 @@ class MathElement(ET.Element):
         """
         ET.indent(self, space, level)
 
-    def unindent_xml(self):
+    def unindent_xml(self) -> None:
         """Strip whitespace at the end of `text` and `tail` attributes...
 
         to revert changes made by the `indent_xml()` method.
@@ -252,7 +252,7 @@ class MathSchema(MathElement):
     """
     nchildren = 2
 
-    def __init__(self, *children, **kwargs):
+    def __init__(self, *children, **kwargs) -> None:
         self.switch = kwargs.pop('switch', False)
         super().__init__(*children, **kwargs)
 
@@ -275,7 +275,7 @@ class MathToken(MathElement):
     """
     nchildren = 0
 
-    def __init__(self, text, **attributes):
+    def __init__(self, text, **attributes) -> None:
         super().__init__(**attributes)
         if not isinstance(text, (str, numbers.Number)):
             raise ValueError('MathToken element expects `str` or number,'
@@ -344,7 +344,7 @@ class mrow(MathRow):
     Removed on closing if not required (see `mrow.close()`).
     """
 
-    def transfer_attributes(self, other):
+    def transfer_attributes(self, other) -> None:
         """Transfer attributes from self to other.
 
         "List values" (class, style) are appended to existing values,

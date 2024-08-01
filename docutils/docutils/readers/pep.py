@@ -41,7 +41,7 @@ class Reader(standalone.Reader):
 
     inliner_class = rst.states.Inliner
 
-    def __init__(self, parser=None, parser_name=None):
+    def __init__(self, parser=None, parser_name=None) -> None:
         """`parser` should be ``None``, `parser_name` is ignored.
 
         The default parser is "rst" with PEP-specific settings

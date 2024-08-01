@@ -36,7 +36,7 @@ class Decorations(Transform):
 
     default_priority = 820
 
-    def apply(self):
+    def apply(self) -> None:
         header_nodes = self.generate_header()
         if header_nodes:
             decoration = self.document.get_decoration()
@@ -99,10 +99,10 @@ class ExposeInternals(Transform):
 
     default_priority = 840
 
-    def not_Text(self, node):
+    def not_Text(self, node) -> bool:
         return not isinstance(node, nodes.Text)
 
-    def apply(self):
+    def apply(self) -> None:
         if self.document.settings.expose_internals:
             for node in self.document.findall(self.not_Text):
                 for att in self.document.settings.expose_internals:
@@ -121,7 +121,7 @@ class Messages(Transform):
 
     default_priority = 860
 
-    def apply(self):
+    def apply(self) -> None:
         messages = [*self.document.parse_messages,
                     *self.document.transform_messages]
         loose_messages = [msg for msg in messages if not msg.parent]
@@ -145,7 +145,7 @@ class FilterMessages(Transform):
 
     default_priority = 870
 
-    def apply(self):
+    def apply(self) -> None:
         removed_ids = []  # IDs of removed system messages
         for node in tuple(self.document.findall(nodes.system_message)):
             if node['level'] < self.document.reporter.report_level:
@@ -174,7 +174,7 @@ class TestMessages(Transform):
 
     default_priority = 880
 
-    def apply(self):
+    def apply(self) -> None:
         for msg in self.document.transform_messages:
             if not msg.parent:
                 self.document += msg
@@ -189,7 +189,7 @@ class StripComments(Transform):
 
     default_priority = 740
 
-    def apply(self):
+    def apply(self) -> None:
         if self.document.settings.strip_comments:
             for node in tuple(self.document.findall(nodes.comment)):
                 node.parent.remove(node)
@@ -205,7 +205,7 @@ class StripClassesAndElements(Transform):
 
     default_priority = 420
 
-    def apply(self):
+    def apply(self) -> None:
         if self.document.settings.strip_elements_with_classes:
             self.strip_elements = {*self.document.settings
                                    .strip_elements_with_classes}
@@ -224,7 +224,7 @@ class StripClassesAndElements(Transform):
                 except ValueError:
                     pass
 
-    def check_classes(self, node):
+    def check_classes(self, node) -> bool:
         if not isinstance(node, nodes.Element):
             return False
         for class_value in node['classes'][:]:
@@ -258,7 +258,7 @@ class SmartQuotes(Transform):
     em- and en-dashes (---, --) and ellipses (...).
     """
 
-    def __init__(self, document, startnode):
+    def __init__(self, document, startnode) -> None:
         Transform.__init__(self, document, startnode=startnode)
         self.unsupported_languages = set()
 
@@ -275,7 +275,7 @@ class SmartQuotes(Transform):
                 txt = re.sub('(?<=\x00)([-\\\'".`])', r'\\\1', str(node))
                 yield 'plain', txt
 
-    def apply(self):
+    def apply(self) -> None:
         smart_quotes = self.document.settings.setdefault('smart_quotes',
                                                          False)
         if not smart_quotes:
@@ -346,7 +346,7 @@ class Validate(Transform):
 
     default_priority = 835  # between misc.Transitions and  universal.Messages
 
-    def apply(self):
+    def apply(self) -> None:
         if not getattr(self.document.settings, 'validate', False):
             return
         for node in self.document.findall():

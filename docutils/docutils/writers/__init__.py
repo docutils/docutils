@@ -53,7 +53,7 @@ class Writer(Component):
     Set by `write()`.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         self.parts = {}
         """Mapping of document part names to fragments of `self.output`.
@@ -94,7 +94,7 @@ class Writer(Component):
         """
         raise NotImplementedError('subclass must override this method')
 
-    def assemble_parts(self):
+    def assemble_parts(self) -> None:
         """Assemble the `self.parts` dictionary.  Extend in subclasses.
 
         See <https://docutils.sourceforge.io/docs/api/publisher.html>.

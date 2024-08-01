@@ -52,11 +52,11 @@ class Writer(writers.Writer):
     output = None
     """Final translated form of `document`."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         writers.Writer.__init__(self)
         self.translator_class = XMLTranslator
 
-    def translate(self):
+    def translate(self) -> None:
         self.visitor = visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = ''.join(visitor.output)
@@ -77,7 +77,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
     xmlparser.setFeature(
         "http://xml.org/sax/features/external-general-entities", True)
 
-    def __init__(self, document):
+    def __init__(self, document) -> None:
         nodes.NodeVisitor.__init__(self, document)
 
         # Reporter
@@ -114,7 +114,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
     simple_nodes = (nodes.TextElement, nodes.meta,
                     nodes.image, nodes.colspec, nodes.transition)
 
-    def default_visit(self, node):
+    def default_visit(self, node) -> None:
         """Default node visit method."""
         if not self.in_simple:
             self.output.append(self.indent*self.level)
@@ -130,7 +130,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
         if not self.in_simple:
             self.output.append(self.newline)
 
-    def default_departure(self, node):
+    def default_departure(self, node) -> None:
         """Default node depart method."""
         if not isinstance(node, nodes.Inline):
             self.level -= 1
@@ -147,14 +147,14 @@ class XMLTranslator(nodes.GenericNodeVisitor):
     # specific visit and depart methods
     # ---------------------------------
 
-    def visit_Text(self, node):
+    def visit_Text(self, node) -> None:
         text = xml.sax.saxutils.escape(node.astext())
         # indent text if we are not in a FixedText element:
         if not self.fixed_text:
             text = text.replace('\n', '\n'+self.indent*self.level)
         self.output.append(text)
 
-    def depart_Text(self, node):
+    def depart_Text(self, node) -> None:
         pass
 
     def visit_raw(self, node):
@@ -185,5 +185,5 @@ class XMLTranslator(nodes.GenericNodeVisitor):
 
 class TestXml(xml.sax.handler.ContentHandler):
 
-    def setDocumentLocator(self, locator):
+    def setDocumentLocator(self, locator) -> None:
         self.locator = locator

@@ -104,7 +104,7 @@ class Writer(_html_base.Writer):
 
     config_section = 'html5 writer'
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.parts = {}
         self.translator_class = HTMLTranslator
 
@@ -123,44 +123,44 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     documenttag_args = {'tagname': 'main'}
 
     # add meta tag to fix rendering in mobile browsers
-    def __init__(self, document):
+    def __init__(self, document) -> None:
         super().__init__(document)
         self.meta.append('<meta name="viewport" '
                          'content="width=device-width, initial-scale=1" />\n')
 
     # <acronym> tag obsolete in HTML5. Use the <abbr> tag instead.
-    def visit_acronym(self, node):
+    def visit_acronym(self, node) -> None:
         # @@@ implementation incomplete ("title" attribute)
         self.body.append(self.starttag(node, 'abbr', ''))
 
-    def depart_acronym(self, node):
+    def depart_acronym(self, node) -> None:
         self.body.append('</abbr>')
 
     # no standard meta tag name in HTML5, use separate "author" meta tags
     # https://www.w3.org/TR/html5/document-metadata.html#standard-metadata-names
-    def visit_authors(self, node):
+    def visit_authors(self, node) -> None:
         self.visit_docinfo_item(node, 'authors', meta=False)
         for subnode in node:
             self.meta.append('<meta name="author" content='
                              f'"{self.attval(subnode.astext())}" />\n')
 
-    def depart_authors(self, node):
+    def depart_authors(self, node) -> None:
         self.depart_docinfo_item()
 
     # use the <figcaption> semantic tag.
-    def visit_caption(self, node):
+    def visit_caption(self, node) -> None:
         if isinstance(node.parent, nodes.figure):
             self.body.append('<figcaption>\n')
         self.body.append(self.starttag(node, 'p', ''))
 
-    def depart_caption(self, node):
+    def depart_caption(self, node) -> None:
         self.body.append('</p>\n')
         # <figcaption> is closed in depart_figure(), as legend may follow.
 
     # use HTML block-level tags if matching class value found
     supported_block_tags = {'ins', 'del'}
 
-    def visit_container(self, node):
+    def visit_container(self, node) -> None:
         # If there is exactly one of the "supported block tags" in
         # the list of class values, use it as tag name:
         classes = node['classes']
@@ -174,31 +174,31 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         self.body.append(self.starttag(node, node.html5tagname,
                                        CLASS='docutils container'))
 
-    def depart_container(self, node):
+    def depart_container(self, node) -> None:
         self.body.append(f'</{node.html5tagname}>\n')
         del node.html5tagname
 
     # no standard meta tag name in HTML5, use dcterms.rights
     # see https://wiki.whatwg.org/wiki/MetaExtensions
-    def visit_copyright(self, node):
+    def visit_copyright(self, node) -> None:
         self.visit_docinfo_item(node, 'copyright', meta=False)
         self.meta.append('<meta name="dcterms.rights" '
                          f'content="{self.attval(node.astext())}" />\n')
 
-    def depart_copyright(self, node):
+    def depart_copyright(self, node) -> None:
         self.depart_docinfo_item()
 
     # no standard meta tag name in HTML5, use dcterms.date
-    def visit_date(self, node):
+    def visit_date(self, node) -> None:
         self.visit_docinfo_item(node, 'date', meta=False)
         self.meta.append('<meta name="dcterms.date" '
                          f'content="{self.attval(node.astext())}" />\n')
 
-    def depart_date(self, node):
+    def depart_date(self, node) -> None:
         self.depart_docinfo_item()
 
     # use new HTML5 <figure> and <figcaption> elements
-    def visit_figure(self, node):
+    def visit_figure(self, node) -> None:
         atts = {}
         if node.get('width'):
             atts['style'] = f"width: {node['width']}"
@@ -206,16 +206,16 @@ class HTMLTranslator(_html_base.HTMLTranslator):
             atts['class'] = f"align-{node['align']}"
         self.body.append(self.starttag(node, 'figure', **atts))
 
-    def depart_figure(self, node):
+    def depart_figure(self, node) -> None:
         if len(node) > 1:
             self.body.append('</figcaption>\n')
         self.body.append('</figure>\n')
 
     # use HTML5 <footer> element
-    def visit_footer(self, node):
+    def visit_footer(self, node) -> None:
         self.context.append(len(self.body))
 
-    def depart_footer(self, node):
+    def depart_footer(self, node) -> None:
         start = self.context.pop()
         footer = [self.starttag(node, 'footer')]
         footer.extend(self.body[start:])
@@ -225,10 +225,10 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         del self.body[start:]
 
     # use HTML5 <header> element
-    def visit_header(self, node):
+    def visit_header(self, node) -> None:
         self.context.append(len(self.body))
 
-    def depart_header(self, node):
+    def depart_header(self, node) -> None:
         start = self.context.pop()
         header = [self.starttag(node, 'header')]
         header.extend(self.body[start:])
@@ -243,7 +243,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
                              'b', 'i', 'q', 's', 'u'}
 
     # Use `supported_inline_tags` if found in class values
-    def visit_inline(self, node):
+    def visit_inline(self, node) -> None:
         classes = node['classes']
         node.html5tagname = 'span'
         # Special handling for "code" directive content
@@ -266,7 +266,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
                 classes.remove(node.html5tagname)
         self.body.append(self.starttag(node, node.html5tagname, ''))
 
-    def depart_inline(self, node):
+    def depart_inline(self, node) -> None:
         self.body.append(f'</{node.html5tagname}>')
         if (node.html5tagname == 'small' and node.get('classes') == ['ln']
             and isinstance(node.parent, nodes.literal_block)):
@@ -274,12 +274,12 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         del node.html5tagname
 
     # place inside HTML5 <figcaption> element (together with caption)
-    def visit_legend(self, node):
+    def visit_legend(self, node) -> None:
         if not isinstance(node.parent[1], nodes.caption):
             self.body.append('<figcaption>\n')
         self.body.append(self.starttag(node, 'div', CLASS='legend'))
 
-    def depart_legend(self, node):
+    def depart_legend(self, node) -> None:
         self.body.append('</div>\n')
         # <figcaption> closed in visit_figure()
 
@@ -314,52 +314,52 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         # Content already processed:
         raise nodes.SkipNode
 
-    def depart_literal(self, node):
+    def depart_literal(self, node) -> None:
         # skipped unless literal element is from "code" role:
         self.depart_inline(node)
 
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     # HTML5/polyglot recommends using both
-    def visit_meta(self, node):
+    def visit_meta(self, node) -> None:
         if node.hasattr('lang'):
             node['xml:lang'] = node['lang']
         self.meta.append(self.emptytag(node, 'meta',
                                        **node.non_default_attributes()))
 
-    def depart_meta(self, node):
+    def depart_meta(self, node) -> None:
         pass
 
     # no standard meta tag name in HTML5
-    def visit_organization(self, node):
+    def visit_organization(self, node) -> None:
         self.visit_docinfo_item(node, 'organization', meta=False)
 
-    def depart_organization(self, node):
+    def depart_organization(self, node) -> None:
         self.depart_docinfo_item()
 
     # use the new HTML5 element <section>
-    def visit_section(self, node):
+    def visit_section(self, node) -> None:
         self.section_level += 1
         self.body.append(
             self.starttag(node, 'section'))
 
-    def depart_section(self, node):
+    def depart_section(self, node) -> None:
         self.section_level -= 1
         self.body.append('</section>\n')
 
     # use the new HTML5 element <aside>
-    def visit_sidebar(self, node):
+    def visit_sidebar(self, node) -> None:
         self.body.append(
             self.starttag(node, 'aside', CLASS='sidebar'))
         self.in_sidebar = True
 
-    def depart_sidebar(self, node):
+    def depart_sidebar(self, node) -> None:
         self.body.append('</aside>\n')
         self.in_sidebar = False
 
     # Use new HTML5 element <aside> or <nav>
     # Add class value to <body>, if there is a ToC in the document
     # (see responsive.css how this is used for a navigation sidebar).
-    def visit_topic(self, node):
+    def visit_topic(self, node) -> None:
         atts = {'classes': ['topic']}
         if 'contents' in node['classes']:
             node.html5tagname = 'nav'
@@ -377,7 +377,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
             node.html5tagname = 'aside'
         self.body.append(self.starttag(node, node.html5tagname, **atts))
 
-    def depart_topic(self, node):
+    def depart_topic(self, node) -> None:
         self.body.append(f'</{node.html5tagname}>\n')
         del node.html5tagname
 

@@ -57,7 +57,7 @@ class Writer(latex2e.Writer):
                         {'default': default_preamble}),
         )
 
-    def __init__(self):
+    def __init__(self) -> None:
         latex2e.Writer.__init__(self)
         self.settings_defaults.update({'fontencoding': ''})  # use default (TU)
         self.translator_class = XeLaTeXTranslator
@@ -108,7 +108,7 @@ class Babel(latex2e.Babel):
                 ):
         del language_codes[key.lower()]
 
-    def __init__(self, language_code, reporter):
+    def __init__(self, language_code, reporter) -> None:
         self.language_code = language_code
         self.reporter = reporter
         self.language = self.language_name(language_code)
@@ -137,7 +137,7 @@ class XeLaTeXTranslator(latex2e.LaTeXTranslator):
     notes on and examples of safe subclassing.
     """
 
-    def __init__(self, document):
+    def __init__(self, document) -> None:
         self.is_xetex = True  # typeset with XeTeX or LuaTeX engine
         latex2e.LaTeXTranslator.__init__(self, document, Babel)
         if self.latex_encoding == 'utf8':

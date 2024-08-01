@@ -27,7 +27,7 @@ NAMESPACES = {
 }
 
 
-def prepstyle(filename):
+def prepstyle(filename) -> None:
 
     zin = zipfile.ZipFile(filename)
     styles = zin.open("styles.xml")
@@ -64,7 +64,7 @@ def prepstyle(filename):
     shutil.move(tempname[1], filename)
 
 
-def main():
+def main() -> None:
     args = sys.argv[1:]
     if len(args) != 1 or args[0] in ('-h', '--help'):
         print(__doc__, file=sys.stderr)

@@ -29,7 +29,7 @@ class Reader(readers.ReReader):
     config_section = 'doctree reader'
     config_section_dependencies = ('readers',)
 
-    def parse(self):
+    def parse(self) -> None:
         """
         No parsing to do; refurbish the document tree instead.
         Overrides the inherited method.

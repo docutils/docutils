@@ -60,7 +60,7 @@ def check_encoding(stream, encoding):
         return None
 
 
-def error_string(err):
+def error_string(err) -> str:
     """Return string representation of Exception `err`.
     """
     return f'{err.__class__.__name__}: {err}'
@@ -83,7 +83,7 @@ class Input(TransformSpec):
     default_source_path = None
 
     def __init__(self, source=None, source_path=None, encoding='utf-8',
-                 error_handler='strict'):
+                 error_handler='strict') -> None:
         self.encoding = encoding
         """Text encoding for the input source."""
 
@@ -102,7 +102,7 @@ class Input(TransformSpec):
         self.successful_encoding = None
         """The encoding that successfully decoded the source data."""
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '%s: source=%r, source_path=%r' % (self.__class__, self.source,
                                                   self.source_path)
 
@@ -218,7 +218,7 @@ class Output(TransformSpec):
     default_destination_path = None
 
     def __init__(self, destination=None, destination_path=None,
-                 encoding=None, error_handler='strict'):
+                 encoding=None, error_handler='strict') -> None:
         self.encoding = encoding
         """Text encoding for the output destination."""
 
@@ -234,7 +234,7 @@ class Output(TransformSpec):
         if not destination_path:
             self.destination_path = self.default_destination_path
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ('%s: destination=%r, destination_path=%r'
                 % (self.__class__, self.destination, self.destination_path))
 
@@ -272,7 +272,7 @@ class ErrorOutput:
 
     def __init__(self, destination=None, encoding=None,
                  encoding_errors='backslashreplace',
-                 decoding_errors='replace'):
+                 decoding_errors='replace') -> None:
         """
         :Parameters:
             - `destination`: a file-like object,
@@ -303,7 +303,7 @@ class ErrorOutput:
         self.decoding_errors = decoding_errors
         """Decoding error handler."""
 
-    def write(self, data):
+    def write(self, data) -> None:
         """
         Write `data` to self.destination. Ignore, if self.destination is False.
 
@@ -329,7 +329,7 @@ class ErrorOutput:
                 self.destination.write(str(data, self.encoding,
                                            self.decoding_errors))
 
-    def close(self):
+    def close(self) -> None:
         """
         Close the error-output stream.
 
@@ -358,7 +358,7 @@ class FileInput(Input):
     """
     def __init__(self, source=None, source_path=None,
                  encoding='utf-8', error_handler='strict',
-                 autoclose=True, mode='r'):
+                 autoclose=True, mode='r') -> None:
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
@@ -421,7 +421,7 @@ class FileInput(Input):
         """
         return self.read().splitlines(True)
 
-    def close(self):
+    def close(self) -> None:
         if self.source is not sys.stdin:
             self.source.close()
 
@@ -440,7 +440,7 @@ class FileOutput(Output):
 
     def __init__(self, destination=None, destination_path=None,
                  encoding=None, error_handler='strict', autoclose=True,
-                 handle_io_errors=None, mode=None):
+                 handle_io_errors=None, mode=None) -> None:
         """
         :Parameters:
             - `destination`: either a file-like object (which is written
@@ -545,7 +545,7 @@ class FileOutput(Output):
                 self.close()
         return data
 
-    def close(self):
+    def close(self) -> None:
         if self.destination not in (sys.stdout, sys.stderr):
             self.destination.close()
             self.opened = False
@@ -561,7 +561,7 @@ class BinaryFileOutput(FileOutput):
     # Used by core.publish_cmdline_to_binary() which is also deprecated.
     mode = 'wb'
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         warnings.warn('"BinaryFileOutput" is obsoleted by "FileOutput"'
                       ' and will be removed in Docutils 0.24.',
                       DeprecationWarning, stacklevel=2)
@@ -614,7 +614,7 @@ class NullInput(Input):
 
     default_source_path = 'null input'
 
-    def read(self):
+    def read(self) -> str:
         """Return an empty string."""
         return ''
 
@@ -625,7 +625,7 @@ class NullOutput(Output):
 
     default_destination_path = 'null output'
 
-    def write(self, data):
+    def write(self, data) -> None:
         """Do nothing, return None."""
         pass
 

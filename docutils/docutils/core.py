@@ -38,7 +38,7 @@ class Publisher:
     def __init__(self, reader=None, parser=None, writer=None,
                  source=None, source_class=io.FileInput,
                  destination=None, destination_class=io.FileOutput,
-                 settings=None):
+                 settings=None) -> None:
         """
         Initial setup.
 
@@ -89,7 +89,7 @@ class Publisher:
 
         self._stderr = io.ErrorOutput()
 
-    def set_reader(self, reader, parser=None, parser_name=None):
+    def set_reader(self, reader, parser=None, parser_name=None) -> None:
         """Set `self.reader` by name.
 
         The "paser_name" argument is deprecated,
@@ -102,12 +102,12 @@ class Publisher:
         elif self.parser is not None:
             self.reader.parser = self.parser
 
-    def set_writer(self, writer_name):
+    def set_writer(self, writer_name) -> None:
         """Set `self.writer` by name."""
         writer_class = writers.get_writer_class(writer_name)
         self.writer = writer_class()
 
-    def set_components(self, reader_name, parser_name, writer_name):
+    def set_components(self, reader_name, parser_name, writer_name) -> None:
         warnings.warn('`Publisher.set_components()` will be removed in '
                       'Docutils 2.0.  Specify component names '
                       'at instantiation.',
@@ -162,7 +162,7 @@ class Publisher:
 
     def process_programmatic_settings(self, settings_spec,
                                       settings_overrides,
-                                      config_section):
+                                      config_section) -> None:
         if self.settings is None:
             defaults = settings_overrides.copy() if settings_overrides else {}
             # Propagate exceptions by default when used programmatically:
@@ -173,7 +173,7 @@ class Publisher:
 
     def process_command_line(self, argv=None, usage=None, description=None,
                              settings_spec=None, config_section=None,
-                             **defaults):
+                             **defaults) -> None:
         """
         Parse command line arguments and set ``self.settings``.
 
@@ -188,7 +188,7 @@ class Publisher:
             argv = sys.argv[1:]
         self.settings = option_parser.parse_args(argv)
 
-    def set_io(self, source_path=None, destination_path=None):
+    def set_io(self, source_path=None, destination_path=None) -> None:
         if self.source is None:
             self.set_source(source_path=source_path)
         if self.destination is None:
@@ -233,7 +233,7 @@ class Publisher:
             encoding=self.settings.output_encoding,
             error_handler=self.settings.output_encoding_error_handler)
 
-    def apply_transforms(self):
+    def apply_transforms(self) -> None:
         self.document.transformer.populate_from_components(
             (self.source, self.reader, self.reader.parser, self.writer,
              self.destination))
@@ -281,7 +281,7 @@ class Publisher:
             sys.exit(exit_status)
         return output
 
-    def debugging_dumps(self):
+    def debugging_dumps(self) -> None:
         if not self.document:
             return
         if self.settings.dump_settings:
@@ -304,7 +304,7 @@ class Publisher:
             print(self.document.pformat().encode(
                 'raw_unicode_escape'), file=self._stderr)
 
-    def prompt(self):
+    def prompt(self) -> None:
         """Print info and prompt when waiting for input from a terminal."""
         try:
             if not (self.source.isatty() and self._stderr.isatty()):
@@ -326,7 +326,7 @@ class Publisher:
               'on an empty line):',
               file=self._stderr)
 
-    def report_Exception(self, error):
+    def report_Exception(self, error) -> None:
         if isinstance(error, utils.SystemMessage):
             self.report_SystemMessage(error)
         elif isinstance(error, UnicodeEncodeError):
@@ -348,12 +348,12 @@ Include "--traceback" output, Docutils version ({__version__}\
 Python version ({sys.version.split()[0]}), your OS type & version, \
 and the command line used.""", file=self._stderr)
 
-    def report_SystemMessage(self, error):
+    def report_SystemMessage(self, error) -> None:
         print('Exiting due to level-%s (%s) system message.' % (
                   error.level, utils.Reporter.levels[error.level]),
               file=self._stderr)
 
-    def report_UnicodeError(self, error):
+    def report_UnicodeError(self, error) -> None:
         data = error.object[error.start:error.end]
         self._stderr.write(
             '%s\n'
@@ -658,7 +658,7 @@ def publish_cmdline_to_binary(reader=None, reader_name='standalone',
     return output
 
 
-def _name_arg_warning(*name_args):
+def _name_arg_warning(*name_args) -> None:
     for component, name_arg in zip(('reader', 'parser', 'writer'), name_args):
         if name_arg is not None:
             warnings.warn(f'Argument "{component}_name" will be removed in '
@@ -787,7 +787,7 @@ def publish_programmatically(source_class, source, source_path,
 # "Entry points" with functionality of the "tools/rst2*.py" scripts
 # cf. https://packaging.python.org/en/latest/specifications/entry-points/
 
-def rst2something(writer, documenttype, doc_path=''):
+def rst2something(writer, documenttype, doc_path='') -> None:
     # Helper function for the common parts of `rst2*()`
     #   writer:       writer name
     #   documenttype: output document type
@@ -801,41 +801,41 @@ def rst2something(writer, documenttype, doc_path=''):
     publish_cmdline(writer=writer, description=description)
 
 
-def rst2html():
+def rst2html() -> None:
     rst2something('html', 'HTML', 'user/html.html#html')
 
 
-def rst2html4():
+def rst2html4() -> None:
     rst2something('html4', 'XHTML 1.1', 'user/html.html#html4css1')
 
 
-def rst2html5():
+def rst2html5() -> None:
     rst2something('html5', 'HTML5', 'user/html.html#html5-polyglot')
 
 
-def rst2latex():
+def rst2latex() -> None:
     rst2something('latex', 'LaTeX', 'user/latex.html')
 
 
-def rst2man():
+def rst2man() -> None:
     rst2something('manpage', 'Unix manual (troff)', 'user/manpage.html')
 
 
-def rst2odt():
+def rst2odt() -> None:
     rst2something('odt', 'OpenDocument text (ODT)', 'user/odt.html')
 
 
-def rst2pseudoxml():
+def rst2pseudoxml() -> None:
     rst2something('pseudoxml', 'pseudo-XML (test)', 'ref/doctree.html')
 
 
-def rst2s5():
+def rst2s5() -> None:
     rst2something('s5', 'S5 HTML slideshow', 'user/slide-shows.html')
 
 
-def rst2xetex():
+def rst2xetex() -> None:
     rst2something('xetex', 'LaTeX (XeLaTeX/LuaLaTeX)', 'user/latex.html')
 
 
-def rst2xml():
+def rst2xml() -> None:
     rst2something('xml', 'Docutils-native XML', 'ref/doctree.html')

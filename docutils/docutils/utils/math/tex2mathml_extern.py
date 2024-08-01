@@ -45,7 +45,7 @@ def _check_result(result, details=[]):
         raise MathError(msg, details=details)
 
 
-def blahtexml(math_code, as_block=False):
+def blahtexml(math_code, as_block=False) -> str:
     """Convert LaTeX math code to MathML with blahtexml__.
 
     __ http://gva.noekeon.org/blahtexml/

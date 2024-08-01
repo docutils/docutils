@@ -40,13 +40,13 @@ class Trace:
 
     prefix = None
 
-    def debug(cls, message):
+    def debug(cls, message) -> None:
         "Show a debug message"
         if not Trace.debugmode or Trace.quietmode:
             return
         Trace.show(message, sys.stdout)
 
-    def message(cls, message):
+    def message(cls, message) -> None:
         "Show a trace message"
         if Trace.quietmode:
             return
@@ -54,14 +54,14 @@ class Trace:
             message = Trace.prefix + message
         Trace.show(message, sys.stdout)
 
-    def error(cls, message):
+    def error(cls, message) -> None:
         "Show an error message"
         message = '* ' + message
         if Trace.prefix and Trace.showlinesmode:
             message = Trace.prefix + message
         Trace.show(message, sys.stderr)
 
-    def show(cls, message, channel):
+    def show(cls, message, channel) -> None:
         "Show a message out of a channel"
         channel.write(message + '\n')
 
@@ -540,7 +540,7 @@ class FormulaConfig:
 class CommandLineParser:
     "A parser for runtime options"
 
-    def __init__(self, options):
+    def __init__(self, options) -> None:
         self.options = options
 
     def parseoptions(self, args):
@@ -619,7 +619,7 @@ class Options:
 
     branches = {}
 
-    def parseoptions(self, args):
+    def parseoptions(self, args) -> None:
         "Parse command line options"
         Options.location = args[0]
         del args[0]
@@ -630,7 +630,7 @@ class Options:
             self.usage()
         self.processoptions()
 
-    def processoptions(self):
+    def processoptions(self) -> None:
         "Process all options parsed."
         if Options.help:
             self.usage()
@@ -641,14 +641,14 @@ class Options:
             if param.endswith('mode'):
                 setattr(Trace, param, getattr(self, param[:-4]))
 
-    def usage(self):
+    def usage(self) -> None:
         "Show correct usage"
         Trace.error(f'Usage: {pathlib.Path(Options.location).parent}'
                     ' [options] "input string"')
         Trace.error('Convert input string with LaTeX math to MathML')
         self.showoptions()
 
-    def showoptions(self):
+    def showoptions(self) -> None:
         "Show all possible options"
         Trace.error('    --help:                 show this online help')
         Trace.error('    --quiet:                disables all runtime messages')
@@ -657,7 +657,7 @@ class Options:
         Trace.error('    --simplemath:           do not generate fancy math constructions')
         sys.exit()
 
-    def showversion(self):
+    def showversion(self) -> None:
         "Return the current eLyXer version string"
         Trace.error('math2html '+__version__)
         sys.exit()
@@ -693,7 +693,7 @@ class ContainerExtractor:
     All other containers are silently ignored.
     """
 
-    def __init__(self, config):
+    def __init__(self, config) -> None:
         self.allowed = config['allowed']
         self.extracted = config['extracted']
 
@@ -706,7 +706,7 @@ class ContainerExtractor:
         container.recursivesearch(locate, recursive, process)
         return list
 
-    def process(self, container, list):
+    def process(self, container, list) -> None:
         "Add allowed containers."
         name = container.__class__.__name__
         if name in self.allowed:
@@ -725,7 +725,7 @@ class ContainerExtractor:
 class Parser:
     "A generic parser"
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.begin = 0
         self.parameters = {}
 
@@ -736,7 +736,7 @@ class Parser:
         self.begin = reader.linenumber
         return header
 
-    def parseparameter(self, reader):
+    def parseparameter(self, reader) -> None:
         "Parse a parameter"
         split = reader.currentline().strip().split(' ', 1)
         reader.nextline()
@@ -752,7 +752,7 @@ class Parser:
         doublesplit = split[1].split('"')
         self.parameters[key] = doublesplit[1]
 
-    def parseending(self, reader, process):
+    def parseending(self, reader, process) -> None:
         "Parse until the current ending is found"
         if not self.ending:
             Trace.error('No ending for ' + str(self))
@@ -760,13 +760,13 @@ class Parser:
         while not reader.currentline().startswith(self.ending):
             process()
 
-    def parsecontainer(self, reader, contents):
+    def parsecontainer(self, reader, contents) -> None:
         container = self.factory.createcontainer(reader)
         if container:
             container.parent = self.parent
             contents.append(container)
 
-    def __str__(self):
+    def __str__(self) -> str:
         "Return a description"
         return self.__class__.__name__ + ' (' + str(self.begin) + ')'
 
@@ -784,7 +784,7 @@ class TextParser(Parser):
 
     stack = []
 
-    def __init__(self, container):
+    def __init__(self, container) -> None:
         Parser.__init__(self)
         self.ending = None
         if container.__class__.__name__ in ContainerConfig.endings:
@@ -802,7 +802,7 @@ class TextParser(Parser):
             self.parsecontainer(reader, contents)
         return contents
 
-    def isending(self, reader):
+    def isending(self, reader) -> bool:
         "Check if text is ending"
         current = reader.currentline().split()
         if len(current) == 0:
@@ -866,11 +866,11 @@ class StringParser(Parser):
 class ContainerOutput:
     "The generic HTML output for a container."
 
-    def gethtml(self, container):
+    def gethtml(self, container) -> None:
         "Show an error."
         Trace.error('gethtml() not implemented for ' + str(self))
 
-    def isempty(self):
+    def isempty(self) -> bool:
         "Decide if the output is empty: by default, not empty."
         return False
 
@@ -881,7 +881,7 @@ class EmptyOutput(ContainerOutput):
         "Return empty HTML code."
         return []
 
-    def isempty(self):
+    def isempty(self) -> bool:
         "This output is particularly empty."
         return True
 
@@ -967,7 +967,7 @@ class TaggedOutput(ContentsOutput):
             return selfclosing + '\n'
         return selfclosing
 
-    def checktag(self, container):
+    def checktag(self, container) -> bool:
         "Check that the tag is valid."
         if not self.tag:
             Trace.error('No tag in ' + str(container))
@@ -981,11 +981,11 @@ class FilteredOutput(ContentsOutput):
     "Returns the output in the contents, but filtered:"
     "some strings are replaced by others."
 
-    def __init__(self):
+    def __init__(self) -> None:
         "Initialize the filters."
         self.filters = []
 
-    def addfilter(self, original, replacement):
+    def addfilter(self, original, replacement) -> None:
         "Add a new filter: replace the original by the replacement."
         self.filters.append((original, replacement))
 
@@ -1020,27 +1020,27 @@ class Globable:
 
     leavepending = False
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.endinglist = EndingList()
 
-    def checkbytemark(self):
+    def checkbytemark(self) -> None:
         "Check for a Unicode byte mark and skip it."
         if self.finished():
             return
         if ord(self.current()) == 0xfeff:
             self.skipcurrent()
 
-    def isout(self):
+    def isout(self) -> bool:
         "Find out if we are out of the position yet."
         Trace.error('Unimplemented isout()')
         return True
 
-    def current(self):
+    def current(self) -> str:
         "Return the current character."
         Trace.error('Unimplemented current()')
         return ''
 
-    def checkfor(self, string):
+    def checkfor(self, string) -> bool:
         "Check for the given string in the current position."
         Trace.error('Unimplemented checkfor()')
         return False
@@ -1053,7 +1053,7 @@ class Globable:
             return True
         return self.endinglist.checkin(self)
 
-    def skipcurrent(self):
+    def skipcurrent(self) -> str:
         "Return the current character and skip it."
         Trace.error('Unimplemented skipcurrent()')
         return ''
@@ -1073,7 +1073,7 @@ class Globable:
         "Glob a row of digits."
         return self.glob(lambda: self.current().isdigit())
 
-    def isidentifier(self):
+    def isidentifier(self) -> bool:
         "Return if the current character is alphanumeric or _."
         if self.current().isalnum() or self.current() == '_':
             return True
@@ -1083,7 +1083,7 @@ class Globable:
         "Glob alphanumeric and _ symbols."
         return self.glob(self.isidentifier)
 
-    def isvalue(self):
+    def isvalue(self) -> bool:
         "Return if the current character is a value character:"
         "not a bracket or a space."
         if self.current().isspace():
@@ -1110,7 +1110,7 @@ class Globable:
         "Glob a bit of text up until (excluding) any excluded character."
         return self.glob(lambda: self.current() not in excluded)
 
-    def pushending(self, ending, optional=False):
+    def pushending(self, ending, optional=False) -> None:
         "Push a new ending to the bottom"
         self.endinglist.add(ending, optional)
 
@@ -1135,18 +1135,18 @@ class Globable:
 class EndingList:
     "A list of position endings"
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.endings = []
 
-    def add(self, ending, optional=False):
+    def add(self, ending, optional=False) -> None:
         "Add a new ending to the list"
         self.endings.append(PositionEnding(ending, optional))
 
-    def pickpending(self, pos):
+    def pickpending(self, pos) -> None:
         "Pick any pending endings from a parse position."
         self.endings += pos.endinglist.endings
 
-    def checkin(self, pos):
+    def checkin(self, pos) -> bool:
         "Search for an ending"
         if self.findending(pos):
             return True
@@ -1181,12 +1181,12 @@ class EndingList:
                 return None
         return None
 
-    def checkpending(self):
+    def checkpending(self) -> None:
         "Check if there are any pending endings"
         if len(self.endings) != 0:
             Trace.error('Pending ' + str(self) + ' left open')
 
-    def __str__(self):
+    def __str__(self) -> str:
         "Printable representation"
         string = 'endings ['
         for ending in self.endings:
@@ -1199,7 +1199,7 @@ class EndingList:
 class PositionEnding:
     "An ending for a parsing position"
 
-    def __init__(self, ending, optional):
+    def __init__(self, ending, optional) -> None:
         self.ending = ending
         self.optional = optional
 
@@ -1207,7 +1207,7 @@ class PositionEnding:
         "Check for the ending"
         return pos.checkfor(self.ending)
 
-    def __str__(self):
+    def __str__(self) -> str:
         "Printable representation"
         string = 'Ending ' + self.ending
         if self.optional:
@@ -1220,14 +1220,14 @@ class Position(Globable):
     Including those in Globable, functions to implement by subclasses are:
     skip(), identifier(), extract(), isout() and current()."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         Globable.__init__(self)
 
-    def skip(self, string):
+    def skip(self, string) -> None:
         "Skip a string"
         Trace.error('Unimplemented skip()')
 
-    def identifier(self):
+    def identifier(self) -> str:
         "Return an identifier for the current position."
         Trace.error('Unimplemented identifier()')
         return 'Error'
@@ -1260,14 +1260,14 @@ class Position(Globable):
         self.skipcurrent()
         return self.current()
 
-    def checkskip(self, string):
+    def checkskip(self, string) -> bool:
         "Check for a string at the given position; if there, skip it"
         if not self.checkfor(string):
             return False
         self.skip(string)
         return True
 
-    def error(self, message):
+    def error(self, message) -> None:
         "Show an error message and the position identifier."
         Trace.error(message + ': ' + self.identifier())
 
@@ -1275,14 +1275,14 @@ class Position(Globable):
 class TextPosition(Position):
     "A parse position based on a raw text."
 
-    def __init__(self, text):
+    def __init__(self, text) -> None:
         "Create the position from some text."
         Position.__init__(self)
         self.pos = 0
         self.text = text
         self.checkbytemark()
 
-    def skip(self, string):
+    def skip(self, string) -> None:
         "Skip a string of characters."
         self.pos += len(string)
 
@@ -1315,10 +1315,10 @@ class Container:
     parent = None
     begin = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.contents = list()
 
-    def process(self):
+    def process(self) -> None:
         "Process contents"
         pass
 
@@ -1367,18 +1367,18 @@ class Container:
             container.parent.contents.remove(container)
         return list
 
-    def searchprocess(self, type, process):
+    def searchprocess(self, type, process) -> None:
         "Search for elements of a given type and process them"
         self.locateprocess(lambda container: isinstance(container, type), process)
 
-    def locateprocess(self, locate, process):
+    def locateprocess(self, locate, process) -> None:
         "Search for all embedded containers and process them"
         for container in self.contents:
             container.locateprocess(locate, process)
             if locate(container):
                 process(container)
 
-    def recursivesearch(self, locate, recursive, process):
+    def recursivesearch(self, locate, recursive, process) -> None:
         "Perform a recursive search in the container."
         for container in self.contents:
             if recursive(container):
@@ -1391,7 +1391,7 @@ class Container:
         constants = ContainerExtractor(ContainerConfig.extracttext).extract(self)
         return ''.join(constant.string for constant in constants)
 
-    def group(self, index, group, isingroup):
+    def group(self, index, group, isingroup) -> None:
         "Group some adjoining elements into a group"
         if index >= len(self.contents):
             return
@@ -1403,14 +1403,14 @@ class Container:
             self.contents.pop(index)
         self.contents.insert(index, group)
 
-    def remove(self, index):
+    def remove(self, index) -> None:
         "Remove a container but leave its contents"
         container = self.contents[index]
         self.contents.pop(index)
         while len(container.contents) > 0:
             self.contents.insert(index, container.contents.pop())
 
-    def tree(self, level=0):
+    def tree(self, level=0) -> None:
         "Show in a tree"
         Trace.debug("  " * level + str(self))
         for container in self.contents:
@@ -1429,7 +1429,7 @@ class Container:
             return []
         return paramtext.split(',')
 
-    def hasemptyoutput(self):
+    def hasemptyoutput(self) -> bool:
         "Check if the parent's output is empty."
         current = self.parent
         while current:
@@ -1438,7 +1438,7 @@ class Container:
             current = current.parent
         return False
 
-    def __str__(self):
+    def __str__(self) -> str:
         "Get a description"
         if not self.begin:
             return self.__class__.__name__
@@ -1448,7 +1448,7 @@ class Container:
 class BlackBox(Container):
     "A container that does not output anything"
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.parser = LoneCommand()
         self.output = EmptyOutput()
         self.contents = []
@@ -1459,12 +1459,12 @@ class StringContainer(Container):
 
     parsed = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.parser = StringParser()
         self.output = StringOutput()
         self.string = ''
 
-    def process(self):
+    def process(self) -> None:
         "Replace special chars from the contents."
         if self.parsed:
             self.string = self.replacespecial(self.parsed)
@@ -1490,7 +1490,7 @@ class StringContainer(Container):
         "Return all text."
         return self.string
 
-    def __str__(self):
+    def __str__(self) -> str:
         "Return a printable representation."
         result = 'StringContainer'
         if self.begin:
@@ -1504,12 +1504,12 @@ class StringContainer(Container):
 class Constant(StringContainer):
     "A constant string"
 
-    def __init__(self, text):
+    def __init__(self, text) -> None:
         self.contents = []
         self.string = text
         self.output = StringOutput()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Constant: ' + self.string
 
 
@@ -1631,7 +1631,7 @@ class FormulaBit(Container):
     size = 1
     original = ''
 
-    def __init__(self):
+    def __init__(self) -> None:
         "The formula bit type can be 'alpha', 'number', 'font'."
         self.contents = []
         self.output = ContentsOutput()
@@ -1641,13 +1641,13 @@ class FormulaBit(Container):
         self.factory = factory
         return self
 
-    def add(self, bit):
+    def add(self, bit) -> None:
         "Add any kind of formula bit already processed"
         self.contents.append(bit)
         self.original += bit.original
         bit.parent = self
 
-    def skiporiginal(self, string, pos):
+    def skiporiginal(self, string, pos) -> None:
         "Skip a string and add it to the original formula"
         self.original += string
         if not pos.checkskip(string):
@@ -1664,7 +1664,7 @@ class FormulaBit(Container):
         "Return a copy of itself."
         return self.factory.parseformula(self.original)
 
-    def __str__(self):
+    def __str__(self) -> str:
         "Get a string representation"
         return self.__class__.__name__ + ' read in ' + self.original
 
@@ -1693,7 +1693,7 @@ class TaggedBit(FormulaBit):
 class FormulaConstant(Constant):
     "A constant string in a formula"
 
-    def __init__(self, string):
+    def __init__(self, string) -> None:
         "Set the constant string"
         Constant.__init__(self, string)
         self.original = string
@@ -1708,7 +1708,7 @@ class FormulaConstant(Constant):
         "Return a copy of itself."
         return FormulaConstant(self.original)
 
-    def __str__(self):
+    def __str__(self) -> str:
         "Return a printable representation."
         return 'Formula constant: ' + self.string
 
@@ -1720,7 +1720,7 @@ class RawText(FormulaBit):
         "Detect a bit of raw text"
         return pos.current().isalpha()
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse alphabetic text"
         alpha = pos.globalpha()
         self.add(FormulaConstant(alpha))
@@ -1733,7 +1733,7 @@ class FormulaSymbol(FormulaBit):
     modified = FormulaConfig.modified
     unmodified = FormulaConfig.unmodified['characters']
 
-    def detect(self, pos):
+    def detect(self, pos) -> bool:
         "Detect a symbol"
         if pos.current() in FormulaSymbol.unmodified:
             return True
@@ -1741,7 +1741,7 @@ class FormulaSymbol(FormulaBit):
             return True
         return False
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse the symbol"
         if pos.current() in FormulaSymbol.unmodified:
             self.addsymbol(pos.current(), pos)
@@ -1751,7 +1751,7 @@ class FormulaSymbol(FormulaBit):
             return
         Trace.error('Symbol ' + pos.current() + ' not found')
 
-    def addsymbol(self, symbol, pos):
+    def addsymbol(self, symbol, pos) -> None:
         "Add a symbol"
         self.skiporiginal(pos.current(), pos)
         self.contents.append(FormulaConstant(symbol))
@@ -1764,7 +1764,7 @@ class FormulaNumber(FormulaBit):
         "Detect a digit"
         return pos.current().isdigit()
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse a bunch of digits"
         digits = pos.glob(lambda: pos.current().isdigit())
         self.add(FormulaConstant(digits))
@@ -1780,7 +1780,7 @@ class Comment(FormulaBit):
         "Detect the %."
         return pos.current() == self.start
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse to the end of the line."
         self.original += pos.globincluding('\n')
 
@@ -1792,11 +1792,11 @@ class WhiteSpace(FormulaBit):
         "Detect the white space."
         return pos.current().isspace()
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse all whitespace."
         self.original += pos.skipspace()
 
-    def __str__(self):
+    def __str__(self) -> str:
         "Return a printable representation."
         return 'Whitespace: *' + self.original + '*'
 
@@ -1807,7 +1807,7 @@ class Bracket(FormulaBit):
     start = FormulaConfig.starts['bracket']
     ending = FormulaConfig.endings['bracket']
 
-    def __init__(self):
+    def __init__(self) -> None:
         "Create a (possibly literal) new bracket"
         FormulaBit.__init__(self)
         self.inner = None
@@ -1842,12 +1842,12 @@ class Bracket(FormulaBit):
         self.original += pos.popending(self.ending)
         self.computesize()
 
-    def innerformula(self, pos):
+    def innerformula(self, pos) -> None:
         "Parse a whole formula inside the bracket"
         while not pos.finished():
             self.add(self.factory.parseany(pos))
 
-    def innertext(self, pos):
+    def innertext(self, pos) -> None:
         "Parse some text inside the bracket, following textual rules."
         specialchars = list(FormulaConfig.symbolfunctions.keys())
         specialchars.append(FormulaConfig.starts['command'])
@@ -1861,7 +1861,7 @@ class Bracket(FormulaBit):
             else:
                 self.add(FormulaConstant(pos.skipcurrent()))
 
-    def innerliteral(self, pos):
+    def innerliteral(self, pos) -> None:
         "Parse a literal inside the bracket, which does not generate HTML."
         self.literal = ''
         while not pos.finished() and not pos.current() == self.ending:
@@ -1888,11 +1888,11 @@ class SquareBracket(Bracket):
 class MathsProcessor:
     "A processor for a maths construction inside the FormulaProcessor."
 
-    def process(self, contents, index):
+    def process(self, contents, index) -> None:
         "Process an element inside a formula."
         Trace.error('Unimplemented process() in ' + str(self))
 
-    def __str__(self):
+    def __str__(self) -> str:
         "Return a printable description."
         return 'Maths processor ' + self.__class__.__name__
 
@@ -1902,13 +1902,13 @@ class FormulaProcessor:
 
     processors = []
 
-    def process(self, bit):
+    def process(self, bit) -> None:
         "Process the contents of every formula bit, recursively."
         self.processcontents(bit)
         self.processinsides(bit)
         self.traversewhole(bit)
 
-    def processcontents(self, bit):
+    def processcontents(self, bit) -> None:
         "Process the contents of a formula bit."
         if not isinstance(bit, FormulaBit):
             return
@@ -1916,7 +1916,7 @@ class FormulaProcessor:
         for element in bit.contents:
             self.processcontents(element)
 
-    def processinsides(self, bit):
+    def processinsides(self, bit) -> None:
         "Process the insides (limits, brackets) in a formula bit."
         if not isinstance(bit, FormulaBit):
             return
@@ -1926,7 +1926,7 @@ class FormulaProcessor:
             # continue with recursive processing
             self.processinsides(element)
 
-    def traversewhole(self, formula):
+    def traversewhole(self, formula) -> None:
         "Traverse over the contents to alter variables and space units."
         last = None
         for bit, contents in self.traverse(formula):
@@ -1944,7 +1944,7 @@ class FormulaProcessor:
             elif isinstance(element, FormulaBit):
                 yield from self.traverse(element)
 
-    def italicize(self, bit, contents):
+    def italicize(self, bit, contents) -> None:
         "Italicize the given bit of text."
         index = contents.index(bit)
         contents[index] = TaggedBit().complete([bit], 'i')
@@ -1953,11 +1953,11 @@ class FormulaProcessor:
 class Formula(Container):
     "A LaTeX formula"
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.parser = FormulaParser()
         self.output = TaggedOutput().settag('span class="formula"')
 
-    def process(self):
+    def process(self) -> None:
         "Convert the formula to tags"
         if self.header[0] == 'inline':
             DocumentParameters.displaymode = False
@@ -1966,7 +1966,7 @@ class Formula(Container):
             self.output.settag('div class="formula"', True)
         self.classic()
 
-    def classic(self):
+    def classic(self) -> None:
         "Make the contents using classic output generation with XHTML and CSS."
         whole = FormulaFactory().parseformula(self.parsed)
         FormulaProcessor().process(whole)
@@ -1988,41 +1988,41 @@ class Formula(Container):
         self.process()
         return self
 
-    def parsedollarinline(self, pos):
+    def parsedollarinline(self, pos) -> None:
         "Parse a $...$ formula."
         self.header = ['inline']
         self.parsedollar(pos)
 
-    def parsedollarblock(self, pos):
+    def parsedollarblock(self, pos) -> None:
         "Parse a $$...$$ formula."
         self.header = ['block']
         self.parsedollar(pos)
         if not pos.checkskip('$'):
             pos.error('Formula should be $$...$$, but last $ is missing.')
 
-    def parsedollar(self, pos):
+    def parsedollar(self, pos) -> None:
         "Parse to the next $."
         pos.pushending('$')
         self.parsed = pos.globexcluding('$')
         pos.popending('$')
 
-    def parseinlineto(self, pos, limit):
+    def parseinlineto(self, pos, limit) -> None:
         "Parse a \\(...\\) formula."
         self.header = ['inline']
         self.parseupto(pos, limit)
 
-    def parseblockto(self, pos, limit):
+    def parseblockto(self, pos, limit) -> None:
         "Parse a \\[...\\] formula."
         self.header = ['block']
         self.parseupto(pos, limit)
 
-    def parseupto(self, pos, limit):
+    def parseupto(self, pos, limit) -> None:
         "Parse a formula that ends with the given command."
         pos.pushending(limit)
         self.parsed = pos.glob(lambda: True)
         pos.popending(limit)
 
-    def __str__(self):
+    def __str__(self) -> str:
         "Return a printable representation."
         if self.partkey and self.partkey.number:
             return 'Formula (' + self.partkey.number + ')'
@@ -2032,11 +2032,11 @@ class Formula(Container):
 class WholeFormula(FormulaBit):
     "Parse a whole formula"
 
-    def detect(self, pos):
+    def detect(self, pos) -> bool:
         "Not outside the formula is enough."
         return not pos.finished()
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse with any formula bit"
         while not pos.finished():
             self.add(self.factory.parseany(pos))
@@ -2050,7 +2050,7 @@ class FormulaFactory:
     skippedtypes = [Comment, WhiteSpace]
     defining = False
 
-    def __init__(self):
+    def __init__(self) -> None:
         "Initialize the map of instances."
         self.instances = {}
 
@@ -2070,7 +2070,7 @@ class FormulaFactory:
         "Create a new formula bit of the given type."
         return Cloner.create(type).setfactory(self)
 
-    def clearskipped(self, pos):
+    def clearskipped(self, pos) -> None:
         "Clear any skipped types."
         while not pos.finished():
             if not self.skipany(pos):
@@ -2204,7 +2204,7 @@ class FormulaCommand(FormulaBit):
 class CommandBit(FormulaCommand):
     "A formula bit that includes a command"
 
-    def setcommand(self, command):
+    def setcommand(self, command) -> None:
         "Set the command in the bit"
         self.command = command
         if self.commandmap:
@@ -2266,7 +2266,7 @@ class EmptyCommand(CommandBit):
 
     commandmap = FormulaConfig.commands
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse a command without parameters"
         self.contents = [FormulaConstant(self.translated)]
 
@@ -2276,7 +2276,7 @@ class SpacedCommand(CommandBit):
 
     commandmap = FormulaConfig.spacedcommands
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Place as contents the command translated and spaced."
         # pad with MEDIUM MATHEMATICAL SPACE (4/18 em): too wide in STIX fonts :(
         # self.contents = [FormulaConstant('\u205f' + self.translated + '\u205f')]
@@ -2292,7 +2292,7 @@ class AlphaCommand(EmptyCommand):
                       '\\Lambda', '\\Phi', '\\Psi', '\\Delta',
                       '\\Upsilon', '\\Omega')
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse the command and set type to alpha"
         EmptyCommand.parsebit(self, pos)
         if self.command not in self.greek_capitals:
@@ -2307,13 +2307,13 @@ class OneParamFunction(CommandBit):
     commandmap = FormulaConfig.onefunctions
     simplified = False
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse a function with one parameter"
         self.output = TaggedOutput().settag(self.translated)
         self.parseparameter(pos)
         self.simplifyifpossible()
 
-    def simplifyifpossible(self):
+    def simplifyifpossible(self) -> None:
         "Try to simplify to a single character."
         if self.original in self.commandmap:
             self.output = FixedOutput()
@@ -2326,11 +2326,11 @@ class SymbolFunction(CommandBit):
 
     commandmap = FormulaConfig.symbolfunctions
 
-    def detect(self, pos):
+    def detect(self, pos) -> bool:
         "Find the symbol"
         return pos.current() in SymbolFunction.commandmap
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse the symbol"
         self.setcommand(pos.current())
         pos.skip(self.command)
@@ -2343,12 +2343,12 @@ class TextFunction(CommandBit):
 
     commandmap = FormulaConfig.textfunctions
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse a text parameter"
         self.output = TaggedOutput().settag(self.translated)
         self.parsetext(pos)
 
-    def process(self):
+    def process(self) -> None:
         "Set the type to font"
         self.type = 'font'
 
@@ -2359,7 +2359,7 @@ class FontFunction(OneParamFunction):
 
     commandmap = FormulaConfig.fontfunctions
 
-    def process(self):
+    def process(self) -> None:
         "Simplify if possible using a single character."
         self.type = 'font'
         self.simplifyifpossible()
@@ -2374,7 +2374,7 @@ FormulaCommand.types = [
 class BigBracket:
     "A big bracket generator."
 
-    def __init__(self, size, bracket, alignment='l'):
+    def __init__(self, size, bracket, alignment='l') -> None:
         "Set the size and symbol for the bracket."
         self.size = size
         self.original = bracket
@@ -2438,7 +2438,7 @@ class FormulaEquation(CommandBit):
 
     piece = 'equation'
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse the array"
         self.output = ContentsOutput()
         self.add(self.factory.parsetype(WholeFormula, pos))
@@ -2453,7 +2453,7 @@ class FormulaCell(FormulaCommand):
                                             + alignment + '"', True)
         return self
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         self.factory.clearskipped(pos)
         if pos.finished():
             return
@@ -2470,7 +2470,7 @@ class FormulaRow(FormulaCommand):
         self.output = TaggedOutput().settag('span class="arrayrow"', True)
         return self
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse a whole row"
         index = 0
         pos.pushending(self.cellseparator, optional=True)
@@ -2492,7 +2492,7 @@ class FormulaRow(FormulaCommand):
 class MultiRowFormula(CommandBit):
     "A formula with multiple rows."
 
-    def parserows(self, pos):
+    def parserows(self, pos) -> None:
         "Parse all rows, finish when no more row ends"
         self.rows = []
         first = True
@@ -2518,7 +2518,7 @@ class MultiRowFormula(CommandBit):
             else:
                 return
 
-    def addempty(self):
+    def addempty(self) -> None:
         "Add an empty row."
         row = self.factory.create(FormulaRow).setalignments(self.alignments)
         for index, originalcell in enumerate(self.rows[-1].contents):
@@ -2527,7 +2527,7 @@ class MultiRowFormula(CommandBit):
             row.add(cell)
         self.addrow(row)
 
-    def addrow(self, row):
+    def addrow(self, row) -> None:
         "Add a row to the contents and to the list of rows."
         self.rows.append(row)
         self.add(row)
@@ -2538,13 +2538,13 @@ class FormulaArray(MultiRowFormula):
 
     piece = 'array'
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse the array"
         self.output = TaggedOutput().settag('span class="array"', False)
         self.parsealignments(pos)
         self.parserows(pos)
 
-    def parsealignments(self, pos):
+    def parsealignments(self, pos) -> None:
         "Parse the different alignments"
         # vertical
         self.valign = 'c'
@@ -2563,7 +2563,7 @@ class FormulaMatrix(MultiRowFormula):
 
     piece = 'matrix'
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse the matrix, set alignments to 'c'."
         self.output = TaggedOutput().settag('span class="array"', False)
         self.valign = 'c'
@@ -2576,7 +2576,7 @@ class FormulaCases(MultiRowFormula):
 
     piece = 'cases'
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse the cases"
         self.output = ContentsOutput()
         self.alignments = ['l', 'l']
@@ -2593,7 +2593,7 @@ class FormulaCases(MultiRowFormula):
 class EquationEnvironment(MultiRowFormula):
     "A \\begin{}...\\end equation environment with rows and cells."
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse the whole environment."
         environment = self.piece.replace('*', '')
         self.output = TaggedOutput().settag(
@@ -2617,7 +2617,7 @@ class BeginCommand(CommandBit):
 
     types = [FormulaEquation, FormulaArray, FormulaCases, FormulaMatrix]
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse the begin command"
         command = self.parseliteral(pos)
         bit = self.findbit(command)
@@ -2645,7 +2645,7 @@ class CombiningFunction(OneParamFunction):
 
     commandmap = FormulaConfig.combiningfunctions
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse a combining function."
         combining = self.translated
         parameter = self.parsesingleparameter(pos)
@@ -2684,7 +2684,7 @@ class OversetFunction(OneParamFunction):
 
     commandmap = FormulaConfig.oversetfunctions
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse an overset-function"
         symbol = self.translated
         self.symbol = TaggedBit().constant(symbol, 'sup')
@@ -2700,7 +2700,7 @@ class UndersetFunction(OneParamFunction):
 
     commandmap = FormulaConfig.undersetfunctions
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse an underset-function"
         symbol = self.translated
         self.symbol = TaggedBit().constant(symbol, 'sub')
@@ -2716,7 +2716,7 @@ class LimitCommand(EmptyCommand):
 
     commandmap = FormulaConfig.limitcommands
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse a limit command."
         self.output = TaggedOutput().settag('span class="limits"')
         symbol = self.translated
@@ -2728,12 +2728,12 @@ class LimitPreviousCommand(LimitCommand):
 
     commandmap = None
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Do nothing."
         self.output = TaggedOutput().settag('span class="limits"')
         self.factory.clearskipped(pos)
 
-    def __str__(self):
+    def __str__(self) -> str:
         "Return a printable representation."
         return 'Limit previous command'
 
@@ -2741,7 +2741,7 @@ class LimitPreviousCommand(LimitCommand):
 class LimitsProcessor(MathsProcessor):
     "A processor for limits inside an element."
 
-    def process(self, contents, index):
+    def process(self, contents, index) -> None:
         "Process the limits for an element."
         if Options.simplemath:
             return
@@ -2762,12 +2762,12 @@ class LimitsProcessor(MathsProcessor):
             return False
         return self.checkscript(contents, index + 1)
 
-    def limitsahead(self, contents, index):
+    def limitsahead(self, contents, index) -> None:
         "Limit the current element based on the next."
         contents[index + 1].add(contents[index].clone())
         contents[index].output = EmptyOutput()
 
-    def modifylimits(self, contents, index):
+    def modifylimits(self, contents, index) -> None:
         "Modify a limits commands so that the limits appear above and below."
         limited = contents[index]
         subscript = self.getlimit(contents, index + 1)
@@ -2787,7 +2787,7 @@ class LimitsProcessor(MathsProcessor):
         limit.output.tag = limit.output.tag.replace('script', 'limit')
         return limit
 
-    def modifyscripts(self, contents, index):
+    def modifyscripts(self, contents, index) -> None:
         "Modify the super- and subscript to appear vertically aligned."
         subscript = self.getscript(contents, index)
         # subscript removed so instead of index + 1 we get index again
@@ -2821,7 +2821,7 @@ class BracketCommand(OneParamFunction):
 
     commandmap = FormulaConfig.bracketcommands
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse the bracket."
         OneParamFunction.parsebit(self, pos)
 
@@ -2843,7 +2843,7 @@ class BracketProcessor(MathsProcessor):
         if self.checkleft(contents, index):
             return self.processleft(contents, index)
 
-    def processleft(self, contents, index):
+    def processleft(self, contents, index) -> None:
         "Process a left bracket."
         rightindex = self.findright(contents, index + 1)
         if not rightindex:
@@ -2884,7 +2884,7 @@ class BracketProcessor(MathsProcessor):
         sliced = contents[leftindex:rightindex]
         return max(element.size for element in sliced)
 
-    def resize(self, command, size):
+    def resize(self, command, size) -> None:
         "Resize a bracket command to the given size."
         character = command.extracttext()
         alignment = command.command.replace('\\', '')
@@ -2910,7 +2910,7 @@ class ParameterDefinition:
 
     parambrackets = [('[', ']'), ('{', '}')]
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.name = None
         self.literal = False
         self.optional = False
@@ -2936,7 +2936,7 @@ class ParameterDefinition:
         Trace.error('Wrong character in parameter template: ' + pos.skipcurrent())
         return None
 
-    def read(self, pos, function):
+    def read(self, pos, function) -> None:
         "Read the parameter itself using the definition."
         if self.literal:
             if self.optional:
@@ -2950,7 +2950,7 @@ class ParameterDefinition:
         else:
             self.value = function.parseparameter(pos)
 
-    def __str__(self):
+    def __str__(self) -> str:
         "Return a printable representation."
         result = 'param ' + self.name
         if self.value:
@@ -2964,7 +2964,7 @@ class ParameterFunction(CommandBit):
     "A function with a variable number of parameters defined in a template."
     "The parameters are defined as a parameter definition."
 
-    def readparams(self, readtemplate, pos):
+    def readparams(self, readtemplate, pos) -> None:
         "Read the params according to the template."
         self.params = {}
         for paramdef in self.paramdefs(readtemplate):
@@ -3017,7 +3017,7 @@ class HybridFunction(ParameterFunction):
 
     commandmap = FormulaConfig.hybridfunctions
 
-    def parsebit(self, pos):
+    def parsebit(self, pos) -> None:
         "Parse a function with [] and {} parameters"
         readtemplate = self.translated[0]
         writetemplate = self.translated[1]
@@ -3109,7 +3109,7 @@ class HybridFunction(ParameterFunction):
         "Return a new bracket looking at the given direction."
         return self.factory.create(BracketCommand).create(direction, character)
 
-    def computehybridsize(self):
+    def computehybridsize(self) -> None:
         "Compute the size of the hybrid function."
         if self.command not in HybridSize.configsizes:
             self.computesize()
@@ -3150,7 +3150,7 @@ def math2html(formula):
     return ''.join(whole.gethtml())
 
 
-def main():
+def main() -> None:
     "Main function, called if invoked from the command line"
     args = sys.argv
     Options().parseoptions(args)

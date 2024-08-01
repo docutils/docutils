@@ -25,7 +25,7 @@ from docutils.nodes import unescape  # noqa: F401
 
 class SystemMessage(ApplicationError):
 
-    def __init__(self, system_message, level):
+    def __init__(self, system_message, level) -> None:
         Exception.__init__(self, system_message.astext())
         self.level = level
 
@@ -75,8 +75,16 @@ class Reporter:
      ERROR_LEVEL,
      SEVERE_LEVEL) = range(5)
 
-    def __init__(self, source, report_level, halt_level, stream=None,
-                 debug=False, encoding=None, error_handler='backslashreplace'):
+    def __init__(
+        self,
+        source,
+        report_level,
+        halt_level,
+        stream=None,
+        debug=False,
+        encoding=None,
+        error_handler='backslashreplace',
+    ) -> None:
         """
         :Parameters:
             - `source`: The path to or description of the source data.
@@ -126,17 +134,17 @@ class Reporter:
         self.max_level = -1
         """The highest level system message generated so far."""
 
-    def attach_observer(self, observer):
+    def attach_observer(self, observer) -> None:
         """
         The `observer` parameter is a function or bound method which takes one
         argument, a `nodes.system_message` instance.
         """
         self.observers.append(observer)
 
-    def detach_observer(self, observer):
+    def detach_observer(self, observer) -> None:
         self.observers.remove(observer)
 
-    def notify_observers(self, message):
+    def notify_observers(self, message) -> None:
         for observer in self.observers:
             observer(message)
 
@@ -452,7 +460,7 @@ def new_document(source_path, settings=None):
     return document
 
 
-def clean_rcs_keywords(paragraph, keyword_substitutions):
+def clean_rcs_keywords(paragraph, keyword_substitutions) -> None:
     if len(paragraph) == 1 and isinstance(paragraph[0], nodes.Text):
         textnode = paragraph[0]
         for pattern, substitution in keyword_substitutions:
@@ -723,7 +731,7 @@ def normalize_language_tag(tag):
     return taglist
 
 
-def xml_declaration(encoding=None):
+def xml_declaration(encoding=None) -> str:
     """Return an XML text declaration.
 
     Include an encoding declaration, if `encoding`
@@ -745,7 +753,7 @@ class DependencyList:
     to explicitly call the close() method.
     """
 
-    def __init__(self, output_file=None, dependencies=()):
+    def __init__(self, output_file=None, dependencies=()) -> None:
         """
         Initialize the dependency list, automatically setting the
         output file to `output_file` (see `set_output()`) and adding
@@ -759,7 +767,7 @@ class DependencyList:
             self.set_output(output_file)
         self.add(*dependencies)
 
-    def set_output(self, output_file):
+    def set_output(self, output_file) -> None:
         """
         Set the output file and clear the list of already added
         dependencies.
@@ -775,7 +783,7 @@ class DependencyList:
             else:
                 self.file = open(output_file, 'w', encoding='utf-8')
 
-    def add(self, *paths):
+    def add(self, *paths) -> None:
         """
         Append `path` to `self.list` unless it is already there.
 
@@ -790,7 +798,7 @@ class DependencyList:
                 if self.file is not None:
                     self.file.write(path+'\n')
 
-    def close(self):
+    def close(self) -> None:
         """
         Close the output file.
         """
@@ -798,7 +806,7 @@ class DependencyList:
             self.file.close()
         self.file = None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         try:
             output_file = self.file.name
         except AttributeError:

@@ -40,7 +40,7 @@ class Admonitions(Transform):
 
     default_priority = 920
 
-    def apply(self):
+    def apply(self) -> None:
         language = languages.get_language(self.document.settings.language_code,
                                           self.document.reporter)
         for node in self.document.findall(nodes.Admonition):

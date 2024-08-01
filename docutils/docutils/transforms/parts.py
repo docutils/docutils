@@ -28,7 +28,7 @@ class SectNum(Transform):
     default_priority = 710
     """Should be applied before `Contents`."""
 
-    def apply(self):
+    def apply(self) -> None:
         self.maxdepth = self.startnode.details.get('depth', None)
         self.startvalue = self.startnode.details.get('start', 1)
         self.prefix = self.startnode.details.get('prefix', '')
@@ -44,7 +44,7 @@ class SectNum(Transform):
             self.document.settings.sectnum_prefix = self.prefix
             self.document.settings.sectnum_suffix = self.suffix
 
-    def update_section_numbers(self, node, prefix=(), depth=0):
+    def update_section_numbers(self, node, prefix=(), depth=0) -> None:
         depth += 1
         if prefix:
             sectnum = 1
@@ -84,7 +84,7 @@ class Contents(Transform):
 
     default_priority = 720
 
-    def apply(self):
+    def apply(self) -> None:
         # let the writer (or output software) build the contents list?
         toc_by_writer = getattr(self.document.settings, 'use_latex_toc', False)
         # TODO: handle "generate_oowriter_toc" setting of the "ODT" writer.

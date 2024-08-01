@@ -38,7 +38,7 @@ class Parser(parsers.Parser):
                                   'validate': True,
                                   }
 
-    def parse(self, inputstring, document):
+    def parse(self, inputstring, document) -> None:
         """
         Parse `inputstring` and populate `document`, a "document tree".
 
@@ -175,7 +175,7 @@ def element2node(element, document=None, unindent=True):
     return node
 
 
-def append_text(node, text, unindent):
+def append_text(node, text, unindent) -> None:
     # Format `text`, wrap in a TextElement and append to `node`.
     # Skip if `text` is empty or just formatting whitespace.
     if not text:

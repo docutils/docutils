@@ -37,7 +37,7 @@ class Transform:
     default_priority = None
     """Numerical priority of this transform, 0 through 999 (override)."""
 
-    def __init__(self, document, startnode=None):
+    def __init__(self, document, startnode=None) -> None:
         """
         Initial setup for in-place document transforms.
         """
@@ -72,7 +72,7 @@ class Transformer(TransformSpec):
     https://docutils.sourceforge.io/docs/peps/pep-0258.html#transformer
     """
 
-    def __init__(self, document):
+    def __init__(self, document) -> None:
         self.transforms = []
         """List of transforms to apply.  Each item is a 4-tuple:
         ``(priority string, transform class, pending node or None, kwargs)``.
@@ -100,7 +100,7 @@ class Transformer(TransformSpec):
         """Internal serial number to keep track of the add order of
         transforms."""
 
-    def add_transform(self, transform_class, priority=None, **kwargs):
+    def add_transform(self, transform_class, priority=None, **kwargs) -> None:
         """
         Store a single transform.  Use `priority` to override the default.
         `kwargs` is a dictionary whose contents are passed as keyword
@@ -114,7 +114,7 @@ class Transformer(TransformSpec):
             (priority_string, transform_class, None, kwargs))
         self.sorted = False
 
-    def add_transforms(self, transform_list):
+    def add_transforms(self, transform_list) -> None:
         """Store multiple transforms, with default priorities."""
         for transform_class in transform_list:
             priority_string = self.get_priority_string(
@@ -123,7 +123,7 @@ class Transformer(TransformSpec):
                 (priority_string, transform_class, None, {}))
         self.sorted = False
 
-    def add_pending(self, pending, priority=None):
+    def add_pending(self, pending, priority=None) -> None:
         """Store a transform with an associated `pending` node."""
         transform_class = pending.transform
         if priority is None:
@@ -133,7 +133,7 @@ class Transformer(TransformSpec):
             (priority_string, transform_class, pending, {}))
         self.sorted = False
 
-    def get_priority_string(self, priority):
+    def get_priority_string(self, priority) -> str:
         """
         Return a string, `priority` combined with `self.serialno`.
 
@@ -142,7 +142,7 @@ class Transformer(TransformSpec):
         self.serialno += 1
         return '%03d-%03d' % (priority, self.serialno)
 
-    def populate_from_components(self, components):
+    def populate_from_components(self, components) -> None:
         """
         Store each component's default transforms and reference resolvers
 
@@ -167,7 +167,7 @@ class Transformer(TransformSpec):
         resolvers.sort(key=keyfun)
         self.unknown_reference_resolvers += resolvers
 
-    def apply_transforms(self):
+    def apply_transforms(self) -> None:
         """Apply all of the stored transforms, in priority order."""
         self.document.reporter.attach_observer(
             self.document.note_transform_message)

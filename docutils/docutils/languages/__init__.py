@@ -31,7 +31,7 @@ class LanguageImporter:
     fallback = 'en'
     # TODO: use a dummy module returning empty strings?, configurable?
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.cache = {}
 
     def import_from_packages(self, name, reporter=None):

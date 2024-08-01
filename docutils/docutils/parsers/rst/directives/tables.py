@@ -89,7 +89,7 @@ class Table(Directive):
                     line=self.lineno)
                 raise SystemMessagePropagation(error)
 
-    def set_table_width(self, table_node):
+    def set_table_width(self, table_node) -> None:
         if 'width' in self.options:
             table_node['width'] = self.options.get('width')
 
@@ -116,7 +116,7 @@ class Table(Directive):
             raise SystemMessagePropagation(error)
         return col_widths
 
-    def extend_short_rows_with_empty_cells(self, columns, parts):
+    def extend_short_rows_with_empty_cells(self, columns, parts) -> None:
         for part in parts:
             for row in part:
                 if len(row) < columns:
@@ -206,7 +206,7 @@ class CSVTable(Table):
         lineterminator = '\n'
         quoting = csv.QUOTE_MINIMAL
 
-        def __init__(self, options):
+        def __init__(self, options) -> None:
             if 'delim' in options:
                 self.delimiter = options['delim']
             if 'keepspace' in options:
@@ -247,14 +247,14 @@ class CSVTable(Table):
         lineterminator = '\n'
         quoting = csv.QUOTE_MINIMAL
 
-        def __init__(self):
+        def __init__(self) -> None:
             warnings.warn('CSVTable.HeaderDialect will be removed '
                           'in Docutils 1.0',
                           DeprecationWarning, stacklevel=2)
             super().__init__()
 
     @staticmethod
-    def check_requirements():
+    def check_requirements() -> None:
         warnings.warn('CSVTable.check_requirements()'
                       ' is not required with Python 3'
                       ' and will be removed in Docutils 0.22.',

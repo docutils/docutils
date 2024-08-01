@@ -33,7 +33,7 @@ class MathError(ValueError):
     The additional attribute `details` may hold a list of Docutils
     nodes suitable as children for a ``<system_message>``.
     """
-    def __init__(self, msg, details=[]):
+    def __init__(self, msg, details=[]) -> None:
         super().__init__(msg)
         self.details = details
 
@@ -64,7 +64,7 @@ def pick_math_environment(code, numbered=False):
     return env
 
 
-def wrap_math_code(code, as_block):
+def wrap_math_code(code, as_block) -> str:
     # Wrap math-code in mode-switching TeX command/environment.
     # If `as_block` is True, use environment for displayed equation(s).
     if as_block:

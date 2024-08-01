@@ -20,5 +20,5 @@ class Writer(writers.UnfilteredWriter):
     config_section = 'null writer'
     config_section_dependencies = ('writers',)
 
-    def translate(self):
+    def translate(self) -> None:
         self.output = ''

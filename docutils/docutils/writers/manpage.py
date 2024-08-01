@@ -130,11 +130,11 @@ class Writer(writers.Writer):
     output = None
     """Final translated form of `document`."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         writers.Writer.__init__(self)
         self.translator_class = Translator
 
-    def translate(self):
+    def translate(self) -> None:
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.astext()
@@ -144,20 +144,20 @@ class Table:
     """
     man package table handling.
     """
-    def __init__(self):
+    def __init__(self) -> None:
         self._rows = []
         self._options = ['box', 'center']
         self._tab_char = '\t'
         self._coldefs = []
 
-    def new_row(self):
+    def new_row(self) -> None:
         self._rows.append([])
 
-    def append_separator(self, separator):
+    def append_separator(self, separator) -> None:
         """Append the separator for table head."""
         self._rows.append([separator])
 
-    def append_cell(self, cell_lines):
+    def append_cell(self, cell_lines) -> None:
         """cell_lines is an array of lines"""
         start = 0
         if len(cell_lines) > 0 and cell_lines[0] == '.sp\n':
@@ -166,7 +166,7 @@ class Table:
         if len(self._coldefs) < len(self._rows[-1]):
             self._coldefs.append('l')
 
-    def _minimize_cell(self, cell_lines):
+    def _minimize_cell(self, cell_lines) -> None:
         """Remove leading and trailing blank and ``.sp`` lines"""
         while cell_lines and cell_lines[0] in ('\n', '.sp\n'):
             del cell_lines[0]
@@ -209,7 +209,7 @@ class Translator(nodes.NodeVisitor):
         f'from docutils {docutils.__version__}.'
     )
 
-    def __init__(self, document):
+    def __init__(self, document) -> None:
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
         if settings.use_reference_macros:
@@ -313,7 +313,7 @@ class Translator(nodes.NodeVisitor):
         """Return commented version of the passed text."""
         return self.comment_begin(text)+'.\n'
 
-    def ensure_eol(self):
+    def ensure_eol(self) -> None:
         """Ensure the last line in body is terminated by new line."""
         if len(self.body) > 0 and self.body[-1][-1] != '\n':
             self.body.append('\n')
@@ -346,7 +346,7 @@ class Translator(nodes.NodeVisitor):
         text = text.replace('\u2020', '\\(dg')
         return text
 
-    def visit_Text(self, node):
+    def visit_Text(self, node) -> None:
         text = node.astext()
         text = text.replace('\\', '\\e')
         replace_pairs = [
@@ -367,17 +367,17 @@ class Translator(nodes.NodeVisitor):
             text = text.replace('\n.', '\n\\&.')
         self.body.append(text)
 
-    def depart_Text(self, node):
+    def depart_Text(self, node) -> None:
         pass
 
-    def list_start(self, node):
+    def list_start(self, node) -> None:
         class EnumChar:
             """list item numbering/markup handling"""
             enum_style = {
                     'bullet': '\\(bu',
                      }
 
-            def __init__(self, style):
+            def __init__(self, style) -> None:
                 self._style = style
                 if 'start' in node:
                     self._cnt = node['start'] - 1
@@ -416,7 +416,7 @@ class Translator(nodes.NodeVisitor):
             def get_width(self):
                 return self._indent
 
-            def __repr__(self):
+            def __repr__(self) -> str:
                 return 'enum_style-%s' % list(self._style)
 
         if 'enumtype' in node:
@@ -431,7 +431,7 @@ class Translator(nodes.NodeVisitor):
         else:
             self.indent(self._list_char[-1].get_width())
 
-    def list_end(self):
+    def list_end(self) -> None:
         self.dedent()
         self._list_char.pop()
 
@@ -445,7 +445,7 @@ class Translator(nodes.NodeVisitor):
                    "%(title)s \\- %(subtitle)s\n")
         return th + sh_tmpl % self._docinfo
 
-    def append_header(self):
+    def append_header(self) -> None:
         """append header with .TH and .SH Name"""
         # NOTE before everything
         # .TH title section date source manual
@@ -456,13 +456,13 @@ class Translator(nodes.NodeVisitor):
         self.head.append(self.header())
         self.header_written = 1
 
-    def visit_address(self, node):
+    def visit_address(self, node) -> None:
         self.visit_docinfo_item(node, 'address')
 
-    def depart_address(self, node):
+    def depart_address(self, node) -> None:
         pass
 
-    def visit_admonition(self, node, name=None):
+    def visit_admonition(self, node, name=None) -> None:
         #
         # Make admonitions a simple block quote
         # with a strong heading
@@ -482,10 +482,10 @@ class Translator(nodes.NodeVisitor):
             self.body.append(name)
         self.visit_block_quote(node)
 
-    def depart_admonition(self, node):
+    def depart_admonition(self, node) -> None:
         self.depart_block_quote(node)
 
-    def visit_attention(self, node):
+    def visit_attention(self, node) -> None:
         self.visit_admonition(node, 'attention')
 
     depart_attention = depart_admonition
@@ -498,74 +498,74 @@ class Translator(nodes.NodeVisitor):
         self._docinfo_keys.append(name)
         raise nodes.SkipNode
 
-    def depart_docinfo_item(self, node):
+    def depart_docinfo_item(self, node) -> None:
         pass
 
-    def visit_author(self, node):
+    def visit_author(self, node) -> None:
         self.visit_docinfo_item(node, 'author')
 
     depart_author = depart_docinfo_item
 
-    def visit_authors(self, node):
+    def visit_authors(self, node) -> None:
         # _author is called anyway.
         pass
 
-    def depart_authors(self, node):
+    def depart_authors(self, node) -> None:
         pass
 
-    def visit_block_quote(self, node):
+    def visit_block_quote(self, node) -> None:
         # BUG/HACK: indent always uses the _last_ indentation,
         # thus we need two of them.
         self.indent(BLOCKQOUTE_INDENT)
         self.indent(0)
 
-    def depart_block_quote(self, node):
+    def depart_block_quote(self, node) -> None:
         self.dedent()
         self.dedent()
 
-    def visit_bullet_list(self, node):
+    def visit_bullet_list(self, node) -> None:
         self.list_start(node)
 
-    def depart_bullet_list(self, node):
+    def depart_bullet_list(self, node) -> None:
         self.list_end()
 
-    def visit_caption(self, node):
+    def visit_caption(self, node) -> None:
         pass
 
-    def depart_caption(self, node):
+    def depart_caption(self, node) -> None:
         pass
 
-    def visit_caution(self, node):
+    def visit_caution(self, node) -> None:
         self.visit_admonition(node, 'caution')
 
     depart_caution = depart_admonition
 
-    def visit_citation(self, node):
+    def visit_citation(self, node) -> None:
         num = node.astext().split(None, 1)[0]
         num = num.strip()
         self.body.append('.IP [%s] 5\n' % num)
 
-    def depart_citation(self, node):
+    def depart_citation(self, node) -> None:
         pass
 
     def visit_citation_reference(self, node):
         self.body.append('['+node.astext()+']')
         raise nodes.SkipNode
 
-    def visit_classifier(self, node):
+    def visit_classifier(self, node) -> None:
         self.body.append('(')
 
-    def depart_classifier(self, node):
+    def depart_classifier(self, node) -> None:
         self.body.append(')')
         self.depart_term(node)  # close the term element after last classifier
 
-    def visit_colspec(self, node):
+    def visit_colspec(self, node) -> None:
         self.colspecs.append(node)
 
-    def depart_colspec(self, node):
+    def depart_colspec(self, node) -> None:
         pass
 
-    def write_colspecs(self):
+    def write_colspecs(self) -> None:
         self.body.append("%s.\n" % ('L '*len(self.colspecs)))
 
     def visit_comment(self, node,
@@ -573,87 +573,87 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.comment(node.astext()))
         raise nodes.SkipNode
 
-    def visit_contact(self, node):
+    def visit_contact(self, node) -> None:
         self.visit_docinfo_item(node, 'contact')
 
     depart_contact = depart_docinfo_item
 
-    def visit_container(self, node):
+    def visit_container(self, node) -> None:
         pass
 
-    def depart_container(self, node):
+    def depart_container(self, node) -> None:
         pass
 
-    def visit_compound(self, node):
+    def visit_compound(self, node) -> None:
         pass
 
-    def depart_compound(self, node):
+    def depart_compound(self, node) -> None:
         pass
 
-    def visit_copyright(self, node):
+    def visit_copyright(self, node) -> None:
         self.visit_docinfo_item(node, 'copyright')
 
-    def visit_danger(self, node):
+    def visit_danger(self, node) -> None:
         self.visit_admonition(node, 'danger')
 
     depart_danger = depart_admonition
 
-    def visit_date(self, node):
+    def visit_date(self, node) -> None:
         self.visit_docinfo_item(node, 'date')
 
-    def visit_decoration(self, node):
+    def visit_decoration(self, node) -> None:
         pass
 
-    def depart_decoration(self, node):
+    def depart_decoration(self, node) -> None:
         pass
 
-    def visit_definition(self, node):
+    def visit_definition(self, node) -> None:
         pass
 
-    def depart_definition(self, node):
+    def depart_definition(self, node) -> None:
         pass
 
-    def visit_definition_list(self, node):
+    def visit_definition_list(self, node) -> None:
         self.indent(DEFINITION_LIST_INDENT)
 
-    def depart_definition_list(self, node):
+    def depart_definition_list(self, node) -> None:
         self.dedent()
 
-    def visit_definition_list_item(self, node):
+    def visit_definition_list_item(self, node) -> None:
         self.body.append(self.defs['definition_list_item'][0])
 
-    def depart_definition_list_item(self, node):
+    def depart_definition_list_item(self, node) -> None:
         self.body.append(self.defs['definition_list_item'][1])
 
-    def visit_description(self, node):
+    def visit_description(self, node) -> None:
         pass
 
-    def depart_description(self, node):
+    def depart_description(self, node) -> None:
         pass
 
-    def visit_docinfo(self, node):
+    def visit_docinfo(self, node) -> None:
         self._in_docinfo = 1
 
-    def depart_docinfo(self, node):
+    def depart_docinfo(self, node) -> None:
         self._in_docinfo = None
         # NOTE nothing should be written before this
         self.append_header()
 
-    def visit_doctest_block(self, node):
+    def visit_doctest_block(self, node) -> None:
         self.body.append(self.defs['literal_block'][0])
         self._in_literal = True
 
-    def depart_doctest_block(self, node):
+    def depart_doctest_block(self, node) -> None:
         self._in_literal = False
         self.body.append(self.defs['literal_block'][1])
 
-    def visit_document(self, node):
+    def visit_document(self, node) -> None:
         # no blank line between comment and header.
         self.head.append(self.comment(self.document_start).rstrip()+'\n')
         # writing header is postponed
         self.header_written = 0
 
-    def depart_document(self, node):
+    def depart_document(self, node) -> None:
         if self._docinfo['author']:
             self.body.append('.SH Author\n%s\n'
                              % ', '.join(self._docinfo['author']))
@@ -681,13 +681,13 @@ class Translator(nodes.NodeVisitor):
                              % self._docinfo['copyright'])
         self.body.append(self.comment_begin('End of generated man page.'))
 
-    def visit_emphasis(self, node):
+    def visit_emphasis(self, node) -> None:
         self.body.append(self.defs['emphasis'][0])
 
-    def depart_emphasis(self, node):
+    def depart_emphasis(self, node) -> None:
         self.body.append(self.defs['emphasis'][1])
 
-    def visit_entry(self, node):
+    def visit_entry(self, node) -> None:
         # a cell in a table row
         if 'morerows' in node:
             self.document.reporter.warning(
@@ -697,26 +697,26 @@ class Translator(nodes.NodeVisitor):
                 '"table cell spanning" not supported', base_node=node)
         self.context.append(len(self.body))
 
-    def depart_entry(self, node):
+    def depart_entry(self, node) -> None:
         start = self.context.pop()
         self._active_table.append_cell(self.body[start:])
         del self.body[start:]
 
-    def visit_enumerated_list(self, node):
+    def visit_enumerated_list(self, node) -> None:
         self.list_start(node)
 
-    def depart_enumerated_list(self, node):
+    def depart_enumerated_list(self, node) -> None:
         self.list_end()
 
-    def visit_error(self, node):
+    def visit_error(self, node) -> None:
         self.visit_admonition(node, 'error')
 
     depart_error = depart_admonition
 
-    def visit_field(self, node):
+    def visit_field(self, node) -> None:
         pass
 
-    def depart_field(self, node):
+    def depart_field(self, node) -> None:
         pass
 
     def visit_field_body(self, node):
@@ -726,13 +726,13 @@ class Translator(nodes.NodeVisitor):
             self.visit_docinfo_item(node, name_normalized)
             raise nodes.SkipNode
 
-    def depart_field_body(self, node):
+    def depart_field_body(self, node) -> None:
         pass
 
-    def visit_field_list(self, node):
+    def visit_field_list(self, node) -> None:
         self.indent(FIELD_LIST_INDENT)
 
-    def depart_field_list(self, node):
+    def depart_field_list(self, node) -> None:
         self.dedent()
 
     def visit_field_name(self, node):
@@ -741,14 +741,14 @@ class Translator(nodes.NodeVisitor):
             raise nodes.SkipNode
         self.body.append(self.defs['field_name'][0])
 
-    def depart_field_name(self, node):
+    def depart_field_name(self, node) -> None:
         self.body.append(self.defs['field_name'][1])
 
-    def visit_figure(self, node):
+    def visit_figure(self, node) -> None:
         self.indent(2.5)
         self.indent(0)
 
-    def depart_figure(self, node):
+    def depart_figure(self, node) -> None:
         self.dedent()
         self.dedent()
 
@@ -758,18 +758,18 @@ class Translator(nodes.NodeVisitor):
         # avoid output the link to document source
         raise nodes.SkipNode
 
-    def depart_footer(self, node):
+    def depart_footer(self, node) -> None:
         pass
 
-    def visit_footnote(self, node):
+    def visit_footnote(self, node) -> None:
         num, _text = node.astext().split(maxsplit=1)
         num = num.strip()
         self.body.append('.IP [%s] 5\n' % self.deunicode(num))
 
-    def depart_footnote(self, node):
+    def depart_footnote(self, node) -> None:
         pass
 
-    def footnote_backrefs(self, node):
+    def footnote_backrefs(self, node) -> None:
         self.document.reporter.warning('"footnote_backrefs" not supported',
                                        base_node=node)
 
@@ -777,42 +777,42 @@ class Translator(nodes.NodeVisitor):
         self.body.append('['+self.deunicode(node.astext())+']')
         raise nodes.SkipNode
 
-    def depart_footnote_reference(self, node):
+    def depart_footnote_reference(self, node) -> None:
         pass
 
-    def visit_generated(self, node):
+    def visit_generated(self, node) -> None:
         pass
 
-    def depart_generated(self, node):
+    def depart_generated(self, node) -> None:
         pass
 
     def visit_header(self, node):
         raise NotImplementedError(node.astext())
 
-    def depart_header(self, node):
+    def depart_header(self, node) -> None:
         pass
 
-    def visit_hint(self, node):
+    def visit_hint(self, node) -> None:
         self.visit_admonition(node, 'hint')
 
     depart_hint = depart_admonition
 
-    def visit_subscript(self, node):
+    def visit_subscript(self, node) -> None:
         self.body.append('\\s-2\\d')
 
-    def depart_subscript(self, node):
+    def depart_subscript(self, node) -> None:
         self.body.append('\\u\\s0')
 
-    def visit_superscript(self, node):
+    def visit_superscript(self, node) -> None:
         self.body.append('\\s-2\\u')
 
-    def depart_superscript(self, node):
+    def depart_superscript(self, node) -> None:
         self.body.append('\\d\\s0')
 
-    def visit_attribution(self, node):
+    def visit_attribution(self, node) -> None:
         self.body.append('\\(em ')
 
-    def depart_attribution(self, node):
+    def depart_attribution(self, node) -> None:
         self.body.append('\n')
 
     def visit_image(self, node):
@@ -826,15 +826,15 @@ class Translator(nodes.NodeVisitor):
         self.body.append('[image: %s]\n' % ('/'.join(text)))
         raise nodes.SkipNode
 
-    def visit_important(self, node):
+    def visit_important(self, node) -> None:
         self.visit_admonition(node, 'important')
 
     depart_important = depart_admonition
 
-    def visit_inline(self, node):
+    def visit_inline(self, node) -> None:
         pass
 
-    def depart_inline(self, node):
+    def depart_inline(self, node) -> None:
         pass
 
     def visit_label(self, node):
@@ -845,17 +845,17 @@ class Translator(nodes.NodeVisitor):
                                        base_node=node)
         self.body.append('[')
 
-    def depart_label(self, node):
+    def depart_label(self, node) -> None:
         self.body.append(']\n')
 
-    def visit_legend(self, node):
+    def visit_legend(self, node) -> None:
         pass
 
-    def depart_legend(self, node):
+    def depart_legend(self, node) -> None:
         pass
 
     # WHAT should we use .INDENT, .UNINDENT ?
-    def visit_line_block(self, node):
+    def visit_line_block(self, node) -> None:
         self._line_block += 1
         if self._line_block == 1:
             # TODO: separate inline blocks from previous paragraphs
@@ -866,7 +866,7 @@ class Translator(nodes.NodeVisitor):
         else:
             self.body.append('.in +2\n')
 
-    def depart_line_block(self, node):
+    def depart_line_block(self, node) -> None:
         self._line_block -= 1
         if self._line_block == 0:
             self.body.append('.fi\n')
@@ -874,28 +874,28 @@ class Translator(nodes.NodeVisitor):
         else:
             self.body.append('.in -2\n')
 
-    def visit_line(self, node):
+    def visit_line(self, node) -> None:
         pass
 
-    def depart_line(self, node):
+    def depart_line(self, node) -> None:
         self.body.append('\n')
 
-    def visit_list_item(self, node):
+    def visit_list_item(self, node) -> None:
         # man 7 man argues to use ".IP" instead of ".TP"
         self.body.append('.IP %s %d\n' % (
                 next(self._list_char[-1]),
                 self._list_char[-1].get_width(),))
 
-    def depart_list_item(self, node):
+    def depart_list_item(self, node) -> None:
         pass
 
-    def visit_literal(self, node):
+    def visit_literal(self, node) -> None:
         self.body.append(self.defs['literal'][0])
 
-    def depart_literal(self, node):
+    def depart_literal(self, node) -> None:
         self.body.append(self.defs['literal'][1])
 
-    def visit_literal_block(self, node):
+    def visit_literal_block(self, node) -> None:
         # BUG/HACK: indent always uses the _last_ indentation,
         # thus we need two of them.
         self.indent(LITERAL_BLOCK_INDENT)
@@ -903,26 +903,26 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.defs['literal_block'][0])
         self._in_literal = True
 
-    def depart_literal_block(self, node):
+    def depart_literal_block(self, node) -> None:
         self._in_literal = False
         self.body.append(self.defs['literal_block'][1])
         self.dedent()
         self.dedent()
 
-    def visit_math(self, node):
+    def visit_math(self, node) -> None:
         self.document.reporter.warning('"math" role not supported',
                                        base_node=node)
         self.visit_literal(node)
 
-    def depart_math(self, node):
+    def depart_math(self, node) -> None:
         self.depart_literal(node)
 
-    def visit_math_block(self, node):
+    def visit_math_block(self, node) -> None:
         self.document.reporter.warning('"math" directive not supported',
                                        base_node=node)
         self.visit_literal_block(node)
 
-    def depart_math_block(self, node):
+    def depart_math_block(self, node) -> None:
         self.depart_literal_block(node)
 
     # <meta> shall become an optional standard node:
@@ -932,35 +932,35 @@ class Translator(nodes.NodeVisitor):
     # def depart_meta(self, node):
     #     pass
 
-    def visit_note(self, node):
+    def visit_note(self, node) -> None:
         self.visit_admonition(node, 'note')
 
     depart_note = depart_admonition
 
-    def indent(self, by=0.5):
+    def indent(self, by=0.5) -> None:
         # if we are in a section ".SH" there already is a .RS
         step = self._indent[-1]
         self._indent.append(by)
         self.body.append(self.defs['indent'][0] % step)
 
-    def dedent(self):
+    def dedent(self) -> None:
         self._indent.pop()
         self.body.append(self.defs['indent'][1])
 
-    def visit_option_list(self, node):
+    def visit_option_list(self, node) -> None:
         self.indent(OPTION_LIST_INDENT)
 
-    def depart_option_list(self, node):
+    def depart_option_list(self, node) -> None:
         self.dedent()
 
-    def visit_option_list_item(self, node):
+    def visit_option_list_item(self, node) -> None:
         # one item of the list
         self.body.append(self.defs['option_list_item'][0])
 
-    def depart_option_list_item(self, node):
+    def depart_option_list_item(self, node) -> None:
         self.body.append(self.defs['option_list_item'][1])
 
-    def visit_option_group(self, node):
+    def visit_option_group(self, node) -> None:
         # as one option could have several forms it is a group
         # options without parameter bold only, .B, -v
         # options with parameter bold italic, .BI, -f file
@@ -970,14 +970,14 @@ class Translator(nodes.NodeVisitor):
         self.context.append(len(self.body))  # to be able to insert later
         self.context.append(0)               # option counter
 
-    def depart_option_group(self, node):
+    def depart_option_group(self, node) -> None:
         self.context.pop()  # the counter
         start_position = self.context.pop()
         text = self.body[start_position:]
         del self.body[start_position:]
         self.body.append('%s%s\n' % (self.context.pop(), ''.join(text)))
 
-    def visit_option(self, node):
+    def visit_option(self, node) -> None:
         # each form of the option will be presented separately
         if self.context[-1] > 0:
             if self.context[-3] == '.BI':
@@ -988,17 +988,17 @@ class Translator(nodes.NodeVisitor):
             self.body.append('\\')
         self.body.append(' ')
 
-    def depart_option(self, node):
+    def depart_option(self, node) -> None:
         self.context[-1] += 1
 
-    def visit_option_string(self, node):
+    def visit_option_string(self, node) -> None:
         # do not know if .B or .BI
         pass
 
-    def depart_option_string(self, node):
+    def depart_option_string(self, node) -> None:
         pass
 
-    def visit_option_argument(self, node):
+    def visit_option_argument(self, node) -> None:
         self.context[-3] = '.BI'  # bold/italic alternate
         if node['delimiter'] != ' ':
             self.body.append('\\fB%s ' % node['delimiter'])
@@ -1009,16 +1009,16 @@ class Translator(nodes.NodeVisitor):
             # blank backslash blank, switch font then a blank
             self.body.append(' \\ ')
 
-    def depart_option_argument(self, node):
+    def depart_option_argument(self, node) -> None:
         pass
 
-    def visit_organization(self, node):
+    def visit_organization(self, node) -> None:
         self.visit_docinfo_item(node, 'organization')
 
-    def depart_organization(self, node):
+    def depart_organization(self, node) -> None:
         pass
 
-    def first_child(self, node):
+    def first_child(self, node) -> int:
         first = isinstance(node.parent[0], nodes.label)  # skip label
         for child in node.parent.children[first:]:
             if isinstance(child, nodes.Invisible):
@@ -1028,7 +1028,7 @@ class Translator(nodes.NodeVisitor):
             break
         return 0
 
-    def visit_paragraph(self, node):
+    def visit_paragraph(self, node) -> None:
         # ``.PP`` : Start standard indented paragraph.
         # ``.LP`` : Start block paragraph, all except the first.
         # ``.P [type]``  : Start paragraph type.
@@ -1040,14 +1040,14 @@ class Translator(nodes.NodeVisitor):
         # set in literal to escape dots after a new-line-character
         self._in_literal = True
 
-    def depart_paragraph(self, node):
+    def depart_paragraph(self, node) -> None:
         self._in_literal = False
         self.body.append('\n')
 
-    def visit_problematic(self, node):
+    def visit_problematic(self, node) -> None:
         self.body.append(self.defs['problematic'][0])
 
-    def depart_problematic(self, node):
+    def depart_problematic(self, node) -> None:
         self.body.append(self.defs['problematic'][1])
 
     def visit_raw(self, node):
@@ -1058,7 +1058,7 @@ class Translator(nodes.NodeVisitor):
 
     # references ----
 
-    def _visit_reference_no_macro(self, node):
+    def _visit_reference_no_macro(self, node) -> None:
         """E.g. link or email address."""
         # For .UR/.UE and .MT/.ME macros groff might use OSC8 escape sequences
         # which are not supported everywhere yet
@@ -1071,7 +1071,7 @@ class Translator(nodes.NodeVisitor):
                 self.body.append(" <")
         # TODO elif 'refid' in node:
 
-    def _depart_reference_no_macro(self, node):
+    def _depart_reference_no_macro(self, node) -> None:
         if 'refuri' in node:
             # if content has the "email" do not output "mailto:email"
             if node['refuri'].endswith(node.astext()):
@@ -1080,7 +1080,7 @@ class Translator(nodes.NodeVisitor):
                 self.body.append(" <%s>\n" % node['refuri'])
         # TODO elif 'refid' in node:
 
-    def _visit_reference_with_macro(self, node):
+    def _visit_reference_with_macro(self, node) -> None:
         # use UR/UE or MT/ME not yet
         # TODO insert_URI_breakpoints in text or refuri
         self.ensure_eol()
@@ -1089,48 +1089,48 @@ class Translator(nodes.NodeVisitor):
             if not node['refuri'].endswith(node.astext()):
                 self.body.append("%s\n" % node['refuri'])
 
-    def _depart_reference_with_macro(self, node):
+    def _depart_reference_with_macro(self, node) -> None:
         self.ensure_eol()
         self.body.append(".UE\n")
     # ----
 
-    def visit_revision(self, node):
+    def visit_revision(self, node) -> None:
         self.visit_docinfo_item(node, 'revision')
 
     depart_revision = depart_docinfo_item
 
-    def visit_row(self, node):
+    def visit_row(self, node) -> None:
         self._active_table.new_row()
 
-    def depart_row(self, node):
+    def depart_row(self, node) -> None:
         pass
 
-    def visit_section(self, node):
+    def visit_section(self, node) -> None:
         self.section_level += 1
 
-    def depart_section(self, node):
+    def depart_section(self, node) -> None:
         self.section_level -= 1
 
-    def visit_status(self, node):
+    def visit_status(self, node) -> None:
         self.visit_docinfo_item(node, 'status')
 
     depart_status = depart_docinfo_item
 
-    def visit_strong(self, node):
+    def visit_strong(self, node) -> None:
         self.body.append(self.defs['strong'][0])
 
-    def depart_strong(self, node):
+    def depart_strong(self, node) -> None:
         self.body.append(self.defs['strong'][1])
 
     def visit_substitution_definition(self, node):
         """Internal only."""
         raise nodes.SkipNode
 
-    def visit_substitution_reference(self, node):
+    def visit_substitution_reference(self, node) -> None:
         self.document.reporter.warning(
             '"substitution_reference" not supported', base_node=node)
 
-    def visit_subtitle(self, node):
+    def visit_subtitle(self, node) -> None:
         if isinstance(node.parent, nodes.sidebar):
             self.body.append(self.defs['strong'][0])
         elif isinstance(node.parent, nodes.document):
@@ -1138,11 +1138,11 @@ class Translator(nodes.NodeVisitor):
         elif isinstance(node.parent, nodes.section):
             self.body.append(self.defs['strong'][0])
 
-    def depart_subtitle(self, node):
+    def depart_subtitle(self, node) -> None:
         # document subtitle calls SkipNode
         self.body.append(self.defs['strong'][1]+'\n.PP\n')
 
-    def visit_system_message(self, node):
+    def visit_system_message(self, node) -> None:
         # TODO add report_level
         # if node['level'] < self.document.reporter['writer'].report_level:
         #    Level is too low to display:
@@ -1157,17 +1157,17 @@ class Translator(nodes.NodeVisitor):
         self.body.append('.IP "System Message: %s/%s (%s:%s)"\n'
                          % (node['type'], node['level'], node['source'], line))
 
-    def depart_system_message(self, node):
+    def depart_system_message(self, node) -> None:
         pass
 
-    def visit_table(self, node):
+    def visit_table(self, node) -> None:
         self._active_table = Table()
         if not self._has_a_table:
             self._has_a_table = True
             # the comment to hint that preprocessor tbl should be called
             self.head.insert(0, "'\\\" t\n")  # ``'\" t`` + newline
 
-    def depart_table(self, node):
+    def depart_table(self, node) -> None:
         self.ensure_eol()
         self.body.extend(self._active_table.as_list())
         self._active_table = None
@@ -1176,16 +1176,16 @@ class Translator(nodes.NodeVisitor):
         # targets are in-document hyper targets, without any use for man-pages.
         raise nodes.SkipNode
 
-    def visit_tbody(self, node):
+    def visit_tbody(self, node) -> None:
         pass
 
-    def depart_tbody(self, node):
+    def depart_tbody(self, node) -> None:
         pass
 
-    def visit_term(self, node):
+    def visit_term(self, node) -> None:
         self.body.append('\n.B ')
 
-    def depart_term(self, node):
+    def depart_term(self, node) -> None:
         _next = node.next_node(None, descend=False, siblings=True)
         # Nest (optional) classifier(s) in the <term> element
         if isinstance(_next, nodes.classifier):
@@ -1197,21 +1197,21 @@ class Translator(nodes.NodeVisitor):
         else:
             self.body.append('\n')
 
-    def visit_tgroup(self, node):
+    def visit_tgroup(self, node) -> None:
         pass
 
-    def depart_tgroup(self, node):
+    def depart_tgroup(self, node) -> None:
         pass
 
-    def visit_thead(self, node):
+    def visit_thead(self, node) -> None:
         # MAYBE double line '='
         pass
 
-    def depart_thead(self, node):
+    def depart_thead(self, node) -> None:
         # MAYBE double line '='
         pass
 
-    def visit_tip(self, node):
+    def visit_tip(self, node) -> None:
         self.visit_admonition(node, 'tip')
 
     depart_tip = depart_admonition
@@ -1232,49 +1232,49 @@ class Translator(nodes.NodeVisitor):
         else:
             self.body.append('.SS ')
 
-    def depart_title(self, node):
+    def depart_title(self, node) -> None:
         if isinstance(node.parent, nodes.admonition):
             self.body.append('"')
         self.body.append('\n')
 
-    def visit_title_reference(self, node):
+    def visit_title_reference(self, node) -> None:
         """inline citation reference"""
         self.body.append(self.defs['title_reference'][0])
 
-    def depart_title_reference(self, node):
+    def depart_title_reference(self, node) -> None:
         self.body.append(self.defs['title_reference'][1])
 
-    def visit_topic(self, node):
+    def visit_topic(self, node) -> None:
         pass
 
-    def depart_topic(self, node):
+    def depart_topic(self, node) -> None:
         pass
 
-    def visit_sidebar(self, node):
+    def visit_sidebar(self, node) -> None:
         pass
 
-    def depart_sidebar(self, node):
+    def depart_sidebar(self, node) -> None:
         pass
 
-    def visit_rubric(self, node):
+    def visit_rubric(self, node) -> None:
         pass
 
-    def depart_rubric(self, node):
+    def depart_rubric(self, node) -> None:
         self.body.append('\n')
 
-    def visit_transition(self, node):
+    def visit_transition(self, node) -> None:
         # .PP      Begin a new paragraph and reset prevailing indent.
         # .sp N    leaves N lines of blank space.
         # .ce      centers the next line
         self.body.append('\n.sp\n.ce\n----\n')
 
-    def depart_transition(self, node):
+    def depart_transition(self, node) -> None:
         self.body.append('\n.ce 0\n.sp\n')
 
-    def visit_version(self, node):
+    def visit_version(self, node) -> None:
         self.visit_docinfo_item(node, 'version')
 
-    def visit_warning(self, node):
+    def visit_warning(self, node) -> None:
         self.visit_admonition(node, 'warning')
 
     depart_warning = depart_admonition

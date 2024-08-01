@@ -16,5 +16,5 @@ class Parser(parsers.Parser):
     config_section = 'null parser'
     config_section_dependencies = ('parsers',)
 
-    def parse(self, inputstring, document):
+    def parse(self, inputstring, document) -> None:
         pass

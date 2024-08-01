@@ -35,7 +35,7 @@ class TableMarkupError(DataError):
     from the table's start line.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         self.offset = kwargs.pop('offset', 0)
         DataError.__init__(self, *args)
 
@@ -143,7 +143,7 @@ class GridTableParser(TableParser):
 
     head_body_separator_pat = re.compile(r'\+=[=+]+=\+ *$')
 
-    def setup(self, block):
+    def setup(self, block) -> None:
         self.block = block[:]           # make a copy; it may be modified
         self.block.disconnect()         # don't propagate changes to parent
         self.bottom = len(block) - 1
@@ -190,7 +190,7 @@ class GridTableParser(TableParser):
         if not self.check_parse_complete():
             raise TableMarkupError('Malformed table; parse incomplete.')
 
-    def mark_done(self, top, left, bottom, right):
+    def mark_done(self, top, left, bottom, right) -> None:
         """For keeping track of how much of each text column has been seen."""
         before = top - 1
         after = bottom - 1
@@ -198,7 +198,7 @@ class GridTableParser(TableParser):
             assert self.done[col] == before
             self.done[col] = after
 
-    def check_parse_complete(self):
+    def check_parse_complete(self) -> bool:
         """Each text column should have been completely seen."""
         last = self.bottom - 1
         for col in range(self.right):
@@ -372,7 +372,7 @@ class SimpleTableParser(TableParser):
     head_body_separator_pat = re.compile('=[ =]*$')
     span_pat = re.compile('-[ -]*$')
 
-    def setup(self, block):
+    def setup(self, block) -> None:
         self.block = block[:]           # make a copy; it will be modified
         self.block.disconnect()         # don't propagate changes to parent
         # Convert top & bottom borders to column span underlines:
@@ -386,7 +386,7 @@ class SimpleTableParser(TableParser):
         self.rowseps = {0: [0]}
         self.colseps = {0: [0]}
 
-    def parse_table(self):
+    def parse_table(self) -> None:
         """
         First determine the column boundaries from the top border, then
         process rows.  Each row may consist of multiple lines; accumulate
@@ -459,7 +459,7 @@ class SimpleTableParser(TableParser):
             i += 1
         return cells
 
-    def parse_row(self, lines, start, spanline=None):
+    def parse_row(self, lines, start, spanline=None) -> None:
         """
         Given the text `lines` of a row, parse it and append to `self.table`.
 
@@ -529,7 +529,7 @@ class SimpleTableParser(TableParser):
                 self.table[first_body_row:])
 
 
-def update_dict_of_lists(master, newdata):
+def update_dict_of_lists(master, newdata) -> None:
     """
     Extend the list values of `master` with those from `newdata`.
 

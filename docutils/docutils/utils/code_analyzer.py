@@ -44,7 +44,7 @@ class Lexer:
       'none':  skip lexical analysis.
     """
 
-    def __init__(self, code, language, tokennames='short'):
+    def __init__(self, code, language, tokennames='short') -> None:
         """
         Set up a lexical analyzer for `code` in `language`.
         """
@@ -118,7 +118,7 @@ class NumberLines:
     ``(['ln'], '<the line number>')`` token added for every code line.
     Multi-line tokens are split."""
 
-    def __init__(self, tokens, startline, endline):
+    def __init__(self, tokens, startline, endline) -> None:
         self.tokens = tokens
         self.startline = startline
         # pad linenumbers, e.g. endline == 100 -> fmt_str = '%3d '

@@ -41,7 +41,7 @@ class Filter(Transform):
 
     default_priority = 780
 
-    def apply(self):
+    def apply(self) -> None:
         pending = self.startnode
         component_type = pending.details['component']  # 'reader' or 'writer'
         formats = (pending.details['format']).split(',')

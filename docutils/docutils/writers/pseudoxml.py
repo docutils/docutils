@@ -32,9 +32,9 @@ class Writer(writers.Writer):
     output = None
     """Final translated form of `document`."""
 
-    def translate(self):
+    def translate(self) -> None:
         self.output = self.document.pformat()
 
-    def supports(self, format):
+    def supports(self, format) -> bool:
         """This writer supports all format-specific elements."""
         return True

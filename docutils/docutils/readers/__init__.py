@@ -35,7 +35,7 @@ class Reader(Component):
                                            universal.ExposeInternals,
                                            universal.StripComments]
 
-    def __init__(self, parser=None, parser_name=None):
+    def __init__(self, parser=None, parser_name=None) -> None:
         """
         Initialize the Reader instance.
 
@@ -67,7 +67,7 @@ class Reader(Component):
         """Raw text input; either a single string or, for more complex cases,
         a collection of strings."""
 
-    def set_parser(self, parser_name):
+    def set_parser(self, parser_name) -> None:
         """Set `self.parser` by name."""
         parser_class = parsers.get_parser_class(parser_name)
         self.parser = parser_class()
@@ -81,7 +81,7 @@ class Reader(Component):
         self.parse()
         return self.document
 
-    def parse(self):
+    def parse(self) -> None:
         """Parse `self.input` into a document tree."""
         self.document = document = self.new_document()
         self.parser.parse(self.input, document)

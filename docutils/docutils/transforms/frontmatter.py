@@ -35,7 +35,7 @@ class TitlePromoter(Transform):
     Abstract base class for DocTitle and SectionSubTitle transforms.
     """
 
-    def promote_title(self, node):
+    def promote_title(self, node) -> bool:
         """
         Transform the following tree::
 
@@ -78,7 +78,7 @@ class TitlePromoter(Transform):
         assert isinstance(node[0], nodes.title)
         return True
 
-    def promote_subtitle(self, node):
+    def promote_subtitle(self, node) -> bool:
         """
         Transform the following node tree::
 
@@ -197,7 +197,7 @@ class DocTitle(TitlePromoter):
 
     default_priority = 320
 
-    def set_metadata(self):
+    def set_metadata(self) -> None:
         """
         Set document['title'] metadata title from the following
         sources, listed in order of priority:
@@ -213,7 +213,7 @@ class DocTitle(TitlePromoter):
                                                    nodes.title):
                 self.document['title'] = self.document[0].astext()
 
-    def apply(self):
+    def apply(self) -> None:
         if self.document.settings.setdefault('doctitle_xform', True):
             # promote_(sub)title defined in TitlePromoter base class.
             if self.promote_title(self.document):
@@ -251,7 +251,7 @@ class SectionSubTitle(TitlePromoter):
 
     default_priority = 350
 
-    def apply(self):
+    def apply(self) -> None:
         if not self.document.settings.setdefault('sectsubtitle_xform', True):
             return
         for section in self.document.findall(nodes.section):
@@ -355,7 +355,7 @@ class DocInfo(Transform):
     """Canonical field name (lowcased) to node class name mapping for
     bibliographic fields (field_list)."""
 
-    def apply(self):
+    def apply(self) -> None:
         if not self.document.settings.setdefault('docinfo_xform', True):
             return
         document = self.document
@@ -423,7 +423,7 @@ class DocInfo(Transform):
                 nodelist.append(topics[name])
         return nodelist
 
-    def check_empty_biblio_field(self, field, name):
+    def check_empty_biblio_field(self, field, name) -> bool:
         if len(field[-1]) < 1:
             field[-1] += self.document.reporter.warning(
                   f'Cannot extract empty bibliographic field "{name}".',
@@ -431,7 +431,7 @@ class DocInfo(Transform):
             return False
         return True
 
-    def check_compound_biblio_field(self, field, name):
+    def check_compound_biblio_field(self, field, name) -> bool:
         # Check that the `field` body contains a single paragraph
         # (i.e. it must *not* be a compound element).
         f_body = field[-1]

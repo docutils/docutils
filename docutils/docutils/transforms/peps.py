@@ -145,7 +145,7 @@ class Contents(Transform):
 
     default_priority = 380
 
-    def apply(self):
+    def apply(self) -> None:
         language = languages.get_language(self.document.settings.language_code,
                                           self.document.reporter)
         name = language.labels['contents']
@@ -171,7 +171,7 @@ class TargetNotes(Transform):
 
     default_priority = 520
 
-    def apply(self):
+    def apply(self) -> None:
         doc = self.document
         i = len(doc) - 1
         refsect = copyright = None
@@ -201,7 +201,7 @@ class TargetNotes(Transform):
         refsect.append(pending)
         self.document.note_pending(pending, 1)
 
-    def cleanup_callback(self, pending):
+    def cleanup_callback(self, pending) -> None:
         """
         Remove an empty "References" section.
 
@@ -219,7 +219,7 @@ class PEPZero(Transform):
 
     default_priority = 760
 
-    def apply(self):
+    def apply(self) -> None:
         visitor = PEPZeroSpecial(self.document)
         self.document.walk(visitor)
         self.startnode.parent.remove(self.startnode)
@@ -238,29 +238,29 @@ class PEPZeroSpecial(nodes.SparseNodeVisitor):
 
     pep_url = Headers.pep_url
 
-    def unknown_visit(self, node):
+    def unknown_visit(self, node) -> None:
         pass
 
-    def visit_reference(self, node):
+    def visit_reference(self, node) -> None:
         node.replace_self(mask_email(node))
 
     def visit_field_list(self, node):
         if 'rfc2822' in node['classes']:
             raise nodes.SkipNode
 
-    def visit_tgroup(self, node):
+    def visit_tgroup(self, node) -> None:
         self.pep_table = node['cols'] == 4
         self.entry = 0
 
-    def visit_colspec(self, node):
+    def visit_colspec(self, node) -> None:
         self.entry += 1
         if self.pep_table and self.entry == 2:
             node['classes'].append('num')
 
-    def visit_row(self, node):
+    def visit_row(self, node) -> None:
         self.entry = 0
 
-    def visit_entry(self, node):
+    def visit_entry(self, node) -> None:
         self.entry += 1
         if self.pep_table and self.entry == 2 and len(node) == 1:
             node['classes'].append('num')

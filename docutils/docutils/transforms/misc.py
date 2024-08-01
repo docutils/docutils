@@ -26,7 +26,7 @@ class CallBack(Transform):
 
     default_priority = 990
 
-    def apply(self):
+    def apply(self) -> None:
         pending = self.startnode
         pending.details['callback'](pending)
         pending.parent.remove(pending)
@@ -41,7 +41,7 @@ class ClassAttribute(Transform):
 
     default_priority = 210
 
-    def apply(self):
+    def apply(self) -> None:
         pending = self.startnode
         parent = pending.parent
         child = pending
@@ -93,11 +93,11 @@ class Transitions(Transform):
 
     default_priority = 830
 
-    def apply(self):
+    def apply(self) -> None:
         for node in self.document.findall(nodes.transition):
             self.visit_transition(node)
 
-    def visit_transition(self, node):
+    def visit_transition(self, node) -> None:
         index = node.parent.index(node)
         previous_sibling = node.previous_sibling()
         msg = ''

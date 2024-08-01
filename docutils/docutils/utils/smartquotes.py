@@ -494,7 +494,7 @@ class smartchars:
         'zh-tw':        '「」『』',
         }
 
-    def __init__(self, language='en'):
+    def __init__(self, language='en') -> None:
         self.language = language
         try:
             (self.opquote, self.cpquote,
@@ -974,7 +974,7 @@ if __name__ == "__main__":
 
         class TestSmartypantsAllAttributes(unittest.TestCase):
             # the default attribute is "1", which means "all".
-            def test_dates(self):
+            def test_dates(self) -> None:
                 self.assertEqual(smartyPants("1440-80's"), "1440-80’s")
                 self.assertEqual(smartyPants("1440-'80s"), "1440-’80s")
                 self.assertEqual(smartyPants("1440---'80s"), "1440–’80s")
@@ -982,11 +982,11 @@ if __name__ == "__main__":
                 self.assertEqual(smartyPants("one two '60s"), "one two ’60s")
                 self.assertEqual(smartyPants("'60s"), "’60s")
 
-            def test_educated_quotes(self):
+            def test_educated_quotes(self) -> None:
                 self.assertEqual(smartyPants('"Isn\'t this fun?"'),
                                  '“Isn’t this fun?”')
 
-            def test_html_tags(self):
+            def test_html_tags(self) -> None:
                 text = '<a src="foo">more</a>'
                 self.assertEqual(smartyPants(text), text)
 

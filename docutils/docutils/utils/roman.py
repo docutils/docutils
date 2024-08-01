@@ -136,7 +136,7 @@ def parse_args():
     return args
 
 
-def main():
+def main() -> int:
     args = parse_args()
     if args.reverse:
         u = args.number.upper()
