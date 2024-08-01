@@ -614,8 +614,7 @@ structure is recommended::
                 ...
             tools/      # For front ends etc.
                 ...
-            setup.py    # Install the component code and tools/ files
-                        # into the right places.
+            pyproject.toml   # Project metadata
         userid/       # For *temporary* personal space.
 
 Some sandbox projects are destined to move to the Docutils core once

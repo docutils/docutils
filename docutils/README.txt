@@ -127,7 +127,7 @@ The `Python Packaging User Guide`_ gives details how to
 
   1. Open a shell
 
-  2. Go to the directory containing the file ``setup.py``.
+  2. Go to the directory containing the ``pyproject.toml`` file.
 
   3. Install the package with **one** of the following commands::
 
@@ -245,7 +245,8 @@ Project Files & Directories
 
 * THANKS.txt: List of contributors.
 
-* setup.py: Installation script.  See "Installation" below.
+* pyproject.toml: Project metadata.
+  See "Installation" above.
 
 * docutils: The project source directory, installed as a Python
   package.
@@ -295,7 +296,7 @@ Snapshots:
   Unpack in a temporary directory,
   **not** directly in Python's ``site-packages``.
 
-Continue with the `Installation`_ instructions below.
+See the `Installation`_ instructions above.
 
 __ docs/dev/repository.html#checking-out-the-repository
 .. _Docutils version repository: docs/dev/repository.html
