@@ -2589,7 +2589,7 @@ class system_message(Special, BackLinkable, PreBibliographic, Element):
             children = (p,) + children
         try:
             Element.__init__(self, rawsource, *children, **attributes)
-        except:  # noqa  catchall
+        except:  # NoQA: E722
             print('system_message: children=%r' % (children,))
             raise
 

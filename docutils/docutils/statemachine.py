@@ -264,7 +264,7 @@ class StateMachine:
                 else:
                     transitions = None
                 state = self.get_state(next_state)
-        except:  # noqa  catchall
+        except:  # NoQA: E722
             if self.debug:
                 self.error()
             raise
@@ -674,7 +674,7 @@ class State:
         try:
             del self.transitions[name]
             self.transition_order.remove(name)
-        except:  # noqa  catchall
+        except:  # NoQA: E722
             raise UnknownTransitionError(name)
 
     def make_transition(self, name, next_state=None):
@@ -1103,12 +1103,23 @@ class ViewList:
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}({self.data}, items={self.items})'
 
-    def __lt__(self, other): return self.data < self.__cast(other)   # noqa
-    def __le__(self, other): return self.data <= self.__cast(other)  # noqa
-    def __eq__(self, other): return self.data == self.__cast(other)  # noqa
-    def __ne__(self, other): return self.data != self.__cast(other)  # noqa
-    def __gt__(self, other): return self.data > self.__cast(other)   # noqa
-    def __ge__(self, other): return self.data >= self.__cast(other)  # noqa
+    def __lt__(self, other):
+        return self.data < self.__cast(other)
+
+    def __le__(self, other):
+        return self.data <= self.__cast(other)
+
+    def __eq__(self, other):
+        return self.data == self.__cast(other)
+
+    def __ne__(self, other):
+        return self.data != self.__cast(other)
+
+    def __gt__(self, other):
+        return self.data > self.__cast(other)
+
+    def __ge__(self, other):
+        return self.data >= self.__cast(other)
 
     def __cast(self, other):
         if isinstance(other, ViewList):

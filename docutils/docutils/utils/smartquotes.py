@@ -911,7 +911,7 @@ if __name__ == "__main__":
     try:
         locale.setlocale(locale.LC_ALL, '')  # set to user defaults
         defaultlanguage = locale.getlocale()[0]
-    except:  # noqa  catchall
+    except:  # NoQA: E722
         defaultlanguage = 'en'
 
     # Normalize and drop unsupported subtags:

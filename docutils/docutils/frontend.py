@@ -677,7 +677,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
     default_error_encoding: ClassVar[str] = (
         getattr(sys.stderr, 'encoding', None)
-        or io._locale_encoding  # noqa
+        or io._locale_encoding
         or 'ascii'
     )
 

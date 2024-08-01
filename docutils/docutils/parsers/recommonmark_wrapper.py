@@ -35,7 +35,8 @@ except ImportError:
     import sys
     import types
 
-    class pending_xref(nodes.Inline, nodes.Element): ... # NoQA
+    class pending_xref(nodes.Inline, nodes.Element):
+        ...
 
     sys.modules['sphinx'] = sphinx = types.ModuleType('sphinx')
     sphinx.addnodes = addnodes = types.SimpleNamespace()

@@ -39,7 +39,8 @@ try:
         _locale_encoding: str | None = (
             locale.getlocale()[1] or locale.getdefaultlocale()[1]
         ).lower()
-except:  # noqa  any other problems determining the locale -> use None
+except:  # NoQA: E722
+    # any other problems determining the locale -> use None
     _locale_encoding = None
 try:
     codecs.lookup(_locale_encoding)

@@ -18,7 +18,7 @@ if __name__ == '__main__':
     # so we import the local `docutils` package.
     sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
 
-from docutils.io import _locale_encoding  # noqa
+from docutils.io import _locale_encoding
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
 from docutils.utils import new_document
