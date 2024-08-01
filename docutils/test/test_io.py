@@ -42,6 +42,12 @@ with warnings.catch_warnings():
     preferredencoding = codecs.lookup(
         locale.getpreferredencoding(do_setlocale=False)).name
 
+if preferredencoding in {'cp1252', 'iso8859-1'}:
+    expected_failure_on_non_utf8 = unittest.expectedFailure
+else:
+    def expected_failure_on_non_utf8(test_item):
+        return test_item
+
 
 # Stub: Buffer with 'strict' auto-conversion of input to byte string:
 class BBuf(BytesIO):
@@ -309,6 +315,9 @@ class FileInputTests(unittest.TestCase):
             source_path=os.path.join(DATA_ROOT, 'utf8.txt'))
         self.assertEqual('Grüße\n', source.read())
 
+    # Failing on non-UTF-8 locales (with UTF-8 mode disabled):
+    # see https://sourceforge.net/p/docutils/bugs/490/#43b7
+    @expected_failure_on_non_utf8
     @unittest.skipIf(preferredencoding in (None, 'ascii', 'utf-8'),
                      'locale encoding not set or UTF-8')
     def test_fallback_no_utf8(self):
