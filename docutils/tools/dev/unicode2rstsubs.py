@@ -19,23 +19,30 @@ Recommentation XML source, and is available from
 <https://www.w3.org/2003/entities/xml/>.
 """
 
-import sys
+from __future__ import annotations
+
 import os
 import re
+import sys
+from typing import TYPE_CHECKING, TextIO
 from xml.parsers.expat import ParserCreate
+
+if TYPE_CHECKING:
+    from typing import BinaryIO, NoReturn
+    from xml.parsers.expat import XMLParserType
 
 
 usage_msg = """Usage: %s [unicode.xml]\n"""
 
 
-def usage(prog, status=0, msg=None):
+def usage(prog: str, status: int = 0, msg: str | None = None) -> NoReturn:
     sys.stderr.write(usage_msg % prog)
     if msg:
         sys.stderr.write(msg + '\n')
     sys.exit(status)
 
 
-def main(argv=None):
+def main(argv: list[str] | None = None) -> None:
     if argv is None:
         argv = sys.argv
     if len(argv) == 2:
@@ -51,7 +58,7 @@ def main(argv=None):
     process(infile)
 
 
-def process(infile):
+def process(infile: BinaryIO) -> None:
     grouper = CharacterEntitySetExtractor(infile)
     grouper.group()
     grouper.write_sets()
@@ -75,42 +82,42 @@ class CharacterEntitySetExtractor:
    <https://docutils.sourceforge.io>.
 """
 
-    def __init__(self, infile):
+    def __init__(self, infile: BinaryIO) -> None:
         self.infile = infile
         """Input unicode.xml file."""
 
-        self.parser = self.setup_parser()
+        self.parser: XMLParserType = self.setup_parser()
         """XML parser."""
 
-        self.elements = []
+        self.elements: list[str] = []
         """Stack of element names.  Last is current element."""
 
-        self.sets = {}
+        self.sets: dict[str, dict[str, str]] = {}
         """Mapping of charent set name to set dict."""
 
-        self.charid = None
+        self.charid: str | None = None
         """Current character's "id" attribute value."""
 
-        self.descriptions = {}
+        self.descriptions: dict[str, str] = {}
         """Mapping of character ID to description."""
 
-    def setup_parser(self):
+    def setup_parser(self) -> XMLParserType:
         parser = ParserCreate()
         parser.StartElementHandler = self.StartElementHandler
         parser.EndElementHandler = self.EndElementHandler
         parser.CharacterDataHandler = self.CharacterDataHandler
         return parser
 
-    def group(self):
+    def group(self) -> None:
         self.parser.ParseFile(self.infile)
 
-    def StartElementHandler(self, name, attributes):
+    def StartElementHandler(self, name: str, attributes) -> None:
         self.elements.append(name)
         handler = name + '_start'
         if hasattr(self, handler):
             getattr(self, handler)(name, attributes)
 
-    def EndElementHandler(self, name):
+    def EndElementHandler(self, name: str) -> None:
         assert self.elements[-1] == name, \
                'unknown end-tag %r (%r)' % (name, self.element)
         self.elements.pop()
@@ -118,15 +125,15 @@ class CharacterEntitySetExtractor:
         if hasattr(self, handler):
             getattr(self, handler)(name)
 
-    def CharacterDataHandler(self, data):
+    def CharacterDataHandler(self, data) -> None:
         handler = self.elements[-1] + '_data'
         if hasattr(self, handler):
             getattr(self, handler)(data)
 
-    def character_start(self, name, attributes):
+    def character_start(self, name: str, attributes) -> None:
         self.charid = attributes['id']
 
-    def entity_start(self, name, attributes):
+    def entity_start(self, name, attributes) -> None:
         set = self.entity_set_name(attributes['set'])
         if not set:
             return
@@ -140,14 +147,14 @@ class CharacterEntitySetExtractor:
                     % (set, entity, self.sets[set][entity], self.charid))
         self.sets[set][entity] = self.charid
 
-    def description_data(self, data):
+    def description_data(self, data) -> None:
         self.descriptions.setdefault(self.charid, '')
         self.descriptions[self.charid] += data
 
     entity_set_name_pat = re.compile(r'[0-9-]*(.+)$')
     """Pattern to strip ISO numbers off the beginning of set names."""
 
-    def entity_set_name(self, name):
+    def entity_set_name(self, name: str) -> str | None:
         """
         Return lowcased and standard-number-free entity set name.
         Return ``None`` for unwanted entity sets.
@@ -159,12 +166,12 @@ class CharacterEntitySetExtractor:
         self.sets.setdefault(name, {})
         return name
 
-    def write_sets(self):
+    def write_sets(self) -> None:
         sets = sorted(self.sets.keys())
         for set_name in sets:
             self.write_set(set_name)
 
-    def write_set(self, set_name, wide=None):
+    def write_set(self, set_name: str, wide: bool = False) -> None:
         if wide:
             outname = set_name + '-wide.txt'
         else:
@@ -177,24 +184,32 @@ class CharacterEntitySetExtractor:
         longest = 0
         for _, entity_name in entities:
             longest = max(longest, len(entity_name))
-        has_wide = None
+        has_wide = False
         for _, entity_name in entities:
             has_wide = self.write_entity(
                 set, set_name, entity_name, outfile, longest, wide) or has_wide
         if has_wide and not wide:
-            self.write_set(set_name, 1)
+            self.write_set(set_name, wide=True)
 
-    def write_entity(self, set, set_name, entity_name, outfile, longest,
-                     wide=None):
+    def write_entity(
+        self,
+        set: dict[str, str],
+        set_name: str,
+        entity_name: str,
+        outfile: TextIO,
+        longest: int,
+        wide: bool = False,
+    ) -> bool:
         charid = set[entity_name]
         if not wide:
             for code in charid[1:].split('-'):
                 if int(code, 16) > 0xFFFF:
-                    return 1            # wide-Unicode character
+                    return True         # wide-Unicode character
         codes = ' '.join('U+%s' % code for code in charid[1:].split('-'))
         outfile.write('.. %-*s unicode:: %s .. %s\n'
                       % (longest + 2, '|' + entity_name + '|',
                          codes, self.descriptions[charid]))
+        return False
 
 
 if __name__ == '__main__':

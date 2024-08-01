@@ -11,8 +11,11 @@ Source files are understood to be standalone reStructuredText documents.
 Files with names starting ``pep-`` are interpreted as reStructuredText PEPs.
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
+from pathlib import Path
 
 try:
     import locale
@@ -20,11 +23,13 @@ try:
 except Exception:
     pass
 
-from fnmatch import fnmatch
 import os
 import os.path
 import sys
 import warnings
+from fnmatch import fnmatch
+from types import SimpleNamespace
+from typing import TYPE_CHECKING
 
 import docutils
 import docutils.io
@@ -34,6 +39,10 @@ from docutils.utils import relative_path
 from docutils.readers import standalone, pep
 from docutils.writers import html4css1, html5_polyglot, pep_html
 
+if TYPE_CHECKING:
+    from typing import Literal
+
+    from docutils.frontend import Values
 
 usage = '%prog [options] [<directory> ...]'
 description = ('Generate .html from all reStructuredText files '
@@ -114,52 +123,73 @@ class OptionParser(frontend.OptionParser):
     Command-line option processing for the ``buildhtml.py`` front end.
     """
 
-    def check_values(self, values, args):
+    def check_values(self, values: Values, args: list[str]) -> Values:
         super().check_values(values, args)
         values._source = None
         return values
 
-    def check_args(self, args):
+    def check_args(self, args: list[str]) -> tuple[None, None]:
         self.values._directories = args or [os.getcwd()]
         # backwards compatibility:
         return None, None
 
 
-class Struct:
-
-    """Stores data attributes for dotted-attribute access."""
-
-    def __init__(self, **keywordargs):
-        self.__dict__.update(keywordargs)
+class Struct(SimpleNamespace):
+    components: tuple[docutils.SettingsSpec, ...]
+    reader: str
+    writer: str
+    option_parser: OptionParser
+    setting_defaults: Values
+    config_settings: Values
 
 
 class Builder:
+    publishers: dict[str, Struct] = {
+        '': Struct(
+            components=(
+                pep.Reader, rst.Parser, pep_html.Writer, SettingsSpec,
+            ),
+        ),
+        'html4': Struct(
+            components=(
+                rst.Parser, standalone.Reader, html4css1.Writer, SettingsSpec,
+            ),
+            reader='standalone',
+            writer='html4',
+        ),
+        'html5': Struct(
+            components=(
+                rst.Parser, standalone.Reader, html5_polyglot.Writer,
+                SettingsSpec,
+            ),
+            reader='standalone',
+            writer='html5',
+        ),
+        'PEPs': Struct(
+            components=(
+                rst.Parser, pep.Reader, pep_html.Writer, SettingsSpec,
+            ),
+            reader='pep',
+            writer='pep_html',
+        ),
+    }
+    """Publisher-specific settings.  Key '' is for the front-end script
+    itself.  ``self.publishers[''].components`` must contain a superset of
+    all components used by individual publishers."""
 
-    def __init__(self):
-        self.publishers = {
-            '': Struct(components=(pep.Reader, rst.Parser, pep_html.Writer,
-                                   SettingsSpec)),
-            'html4': Struct(components=(rst.Parser, standalone.Reader,
-                                        html4css1.Writer, SettingsSpec),
-                            reader='standalone',
-                            writer='html4'),
-            'html5': Struct(components=(rst.Parser, standalone.Reader,
-                                        html5_polyglot.Writer, SettingsSpec),
-                            reader='standalone',
-                            writer='html5'),
-            'PEPs': Struct(components=(rst.Parser, pep.Reader,
-                                       pep_html.Writer, SettingsSpec),
-                           reader='pep',
-                           writer='pep_html')}
-        """Publisher-specific settings.  Key '' is for the front-end script
-        itself.  ``self.publishers[''].components`` must contain a superset of
-        all components used by individual publishers."""
-
+    def __init__(self) -> None:
+        self.publishers = self.publishers.copy()
         self.setup_publishers()
         # default html writer (may change to html5 some time):
         self.publishers['html'] = self.publishers['html4']
 
-    def setup_publishers(self):
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', category=DeprecationWarning)
+            self.settings_spec = frontend.Values()
+            self.initial_settings = frontend.Values()
+        self.directories = []
+
+    def setup_publishers(self) -> None:
         """
         Manage configurations for individual publishers.
 
@@ -179,7 +209,7 @@ class Builder:
                 publisher.setting_defaults = option_parser.get_default_values()
                 frontend.make_paths_absolute(
                     publisher.setting_defaults.__dict__,
-                    option_parser.relative_path_settings)
+                    list(option_parser.relative_path_settings))
                 publisher.config_settings = (
                     option_parser.get_standard_config_settings())
             self.settings_spec = self.publishers[''].option_parser.parse_args(
@@ -195,7 +225,11 @@ class Builder:
             self.initial_settings.writer = (self.initial_settings.html_writer
                                             or 'html')
 
-    def get_settings(self, publisher_name, directory=None):
+    def get_settings(
+        self,
+        publisher_name: Literal['', 'html', 'html5', 'html4', 'PEPs'],
+        directory: str | os.PathLike[str] | None = None,
+    ) -> Values:
         """
         Return a settings object, from multiple sources.
 
@@ -216,7 +250,8 @@ class Builder:
             local_config = publisher.option_parser.get_config_file_settings(
                 os.path.join(directory, 'docutils.conf'))
             frontend.make_paths_absolute(
-                local_config, publisher.option_parser.relative_path_settings,
+                local_config,
+                list(publisher.option_parser.relative_path_settings),
                 directory)
             settings.update(local_config, publisher.option_parser)
         settings.update(self.settings_spec.__dict__, publisher.option_parser)
@@ -225,7 +260,11 @@ class Builder:
         settings.prune = list(set(settings.prune))
         return settings
 
-    def run(self, directory=None, recurse=True):
+    def run(
+        self,
+        directory: str | os.PathLike[str] | None = None,
+        recurse: bool = True,
+    ) -> None:
         recurse = recurse and self.initial_settings.recurse
         if directory:
             self.directories = [directory]
@@ -234,17 +273,22 @@ class Builder:
         else:
             self.directories = [os.getcwd()]
         for directory in self.directories:
-            directory = os.path.abspath(directory)
-            for dirpath, dirnames, filenames in os.walk(directory):
+            dir_abs = Path(directory).resolve()
+            for dirpath, dirnames, filenames in os.walk(dir_abs):
                 # `os.walk()` by default recurses down the tree,
                 # we modify `dirnames` in-place to control the behaviour.
                 if recurse:
                     dirnames.sort()
                 else:
                     del dirnames[:]
-                self.visit(dirpath, dirnames, filenames)
+                self.visit(Path(dirpath), dirnames, filenames)
 
-    def visit(self, dirpath, dirnames, filenames):
+    def visit(
+        self,
+        dirpath: Path,
+        dirnames: list[str],
+        filenames: list[str],
+    ) -> None:
         settings = self.get_settings('', dirpath)
         errout = docutils.io.ErrorOutput(encoding=settings.error_encoding)
         if match_patterns(dirpath, settings.prune):
@@ -261,10 +305,9 @@ class Builder:
             if match_patterns(name, settings.ignore):
                 continue
             if match_patterns(name, settings.sources):
-                self.process_txt(dirpath, name)
+                self.process_rst_source_file(dirpath, name)
 
-    def process_txt(self, directory, name):
-        # TODO change name to `process_rst_source_file()`?
+    def process_rst_source_file(self, directory: Path, name: str) -> None:
         if name.startswith('pep-'):
             publisher = 'PEPs'
         else:
@@ -272,7 +315,7 @@ class Builder:
         settings = self.get_settings(publisher, directory)
         errout = docutils.io.ErrorOutput(encoding=settings.error_encoding)
         pub_struct = self.publishers[publisher]
-        settings._source = os.path.normpath(os.path.join(directory, name))
+        settings._source = str(directory / name)
         settings._destination = os.path.splitext(settings._source)[0] + '.html'
         if not self.initial_settings.silent:
             errout.write('    ::: Processing: %s\n' % name)
@@ -289,7 +332,7 @@ class Builder:
                 errout.write(f'        {type(err).__name__}: {err}\n')
 
 
-def match_patterns(name, patterns):
+def match_patterns(name: str | os.PathLike[str], patterns: str) -> bool:
     """Return True, if `name` matches any item of the sequence `patterns`.
 
     Matching is done with `fnmatch.fnmatch`. It resembles shell-style
@@ -300,6 +343,7 @@ def match_patterns(name, patterns):
     PROVISIONAL.
     TODO: use `pathlib.PurePath.match()` once this supports "**".
     """
+    name = os.fspath(name)
     for pattern in patterns:
         if fnmatch(name, pattern):
             return True

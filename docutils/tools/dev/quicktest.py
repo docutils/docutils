@@ -26,18 +26,35 @@ document.  Possible output forms output include:
    (cf. :PEP:`540`, :PEP:`538`, :PEP:`597`, and :PEP:`686`).
 """
 
+from __future__ import annotations
+
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
 except Exception:
     pass
 
-import sys
 import getopt
+import sys
+from typing import TYPE_CHECKING
+
 import docutils
 from docutils import frontend
 from docutils.utils import new_document
 from docutils.parsers.rst import Parser
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from typing import TextIO, TypedDict
+
+    from docutils import nodes
+
+    class _OptArgs(TypedDict):
+        debug: bool
+        attributes: bool
+        styledxml: str
+
+    _FormatFunc = Callable[[str, nodes.document, _OptArgs], str]
 
 
 usage_header = """\
@@ -72,7 +89,7 @@ options = [('pretty', 'p',
 the data structure: (long option, short option, description)."""
 
 
-def usage():
+def usage() -> None:
     print(usage_header)
     for longopt, shortopt, description in options:
         if longopt[-1:] == '=':
@@ -90,15 +107,21 @@ def usage():
         print(description)
 
 
-def _pretty(input, document, optargs):
+def _pretty(
+    input: str, document: nodes.document, optargs: _OptArgs,
+) -> str:
     return document.pformat()
 
 
-def _rawxml(input, document, optargs):
+def _rawxml(
+    input: str, document: nodes.document, optargs: _OptArgs,
+) -> str:
     return document.asdom().toxml()
 
 
-def _styledxml(input, document, optargs):
+def _styledxml(
+    input: str, document: nodes.document, optargs: _OptArgs,
+) -> str:
     docnode = document.asdom().childNodes[0]
     return '\n'.join(('<?xml version="1.0" encoding="ISO-8859-1"?>',
                       '<?xml-stylesheet type="text/xsl" href="%s"?>'
@@ -106,11 +129,15 @@ def _styledxml(input, document, optargs):
                       docnode.toxml()))
 
 
-def _prettyxml(input, document, optargs):
+def _prettyxml(
+    input: str, document: nodes.document, optargs: _OptArgs,
+) -> str:
     return document.asdom().toprettyxml('    ', '\n')
 
 
-def _test(input, document, optargs):
+def _test(
+    input: str, document: nodes.document, optargs: _OptArgs,
+) -> str:
     tq = '"""'
     output = document.pformat()         # same as _pretty()
     return """\
@@ -125,7 +152,7 @@ def _test(input, document, optargs):
 """ % (tq, escape(input.rstrip()), tq, tq, escape(output.rstrip()), tq)
 
 
-def escape(text):
+def escape(text: str) -> str:
     """
     Return `text` in triple-double-quoted Python string form.
     """
@@ -135,21 +162,27 @@ def escape(text):
     return text
 
 
-_outputFormatters = {
+_output_formatters: dict[str, _FormatFunc] = {
     'rawxml': _rawxml,
     'styledxml': _styledxml,
     'xml': _prettyxml,
     'pretty': _pretty,
-    'test': _test}
+    'test': _test,
+}
 
 
-def format(outputFormat, input, document, optargs):
-    formatter = _outputFormatters[outputFormat]
+def format(
+    output_format: str,
+    input: str,
+    document: nodes.document,
+    optargs: _OptArgs,
+) -> str:
+    formatter = _output_formatters[output_format]
     return formatter(input, document, optargs)
 
 
-def posixGetArgs(argv):
-    outputFormat = 'pretty'
+def posix_get_args(argv: list[str]) -> tuple[TextIO, TextIO, str, _OptArgs]:
+    output_format = 'pretty'
     # convert fancy_getopt style option list to getopt.getopt() arguments
     shortopts = ''.join(option[1] + ':' * (option[0][-1:] == '=')
                         for option in options if option[1])
@@ -159,7 +192,7 @@ def posixGetArgs(argv):
     except getopt.GetoptError:
         usage()
         sys.exit(2)
-    optargs = {'debug': 0, 'attributes': 0}
+    optargs = {'debug': False, 'attributes': False}
     for o, a in opts:
         if o in ['-h', '--help']:
             usage()
@@ -171,46 +204,48 @@ def posixGetArgs(argv):
                               and ' [%s]'%docutils.__version_details__ or ''))
             sys.exit()
         elif o in ['-r', '--rawxml']:
-            outputFormat = 'rawxml'
+            output_format = 'rawxml'
         elif o in ['-s', '--styledxml']:
-            outputFormat = 'styledxml'
+            output_format = 'styledxml'
             optargs['styledxml'] = a
         elif o in ['-x', '--xml']:
-            outputFormat = 'xml'
+            output_format = 'xml'
         elif o in ['-p', '--pretty']:
-            outputFormat = 'pretty'
+            output_format = 'pretty'
         elif o in ['-t', '--test']:
-            outputFormat = 'test'
+            output_format = 'test'
         elif o in ['--attributes', '-A']:
-            optargs['attributes'] = 1
+            optargs['attributes'] = True
         elif o in ['-d', '--debug']:
-            optargs['debug'] = 1
+            optargs['debug'] = True
         else:
             raise getopt.GetoptError("getopt should have saved us!")
     if len(args) > 2:
         print('Maximum 2 arguments allowed.')
         usage()
         sys.exit(1)
-    inputFile = sys.stdin
-    outputFile = sys.stdout
+    input_file = sys.stdin
+    output_file = sys.stdout
     if args:
-        inputFile = open(args.pop(0))
+        input_file = open(args.pop(0))
     if args:
-        outputFile = open(args.pop(0), 'w')
-    return inputFile, outputFile, outputFormat, optargs
+        output_file = open(args.pop(0), 'w')
+    return input_file, output_file, output_format, optargs
 
 
-def main():
+def main() -> None:
     # process cmdline arguments:
-    inputFile, outputFile, outputFormat, optargs = posixGetArgs(sys.argv[1:])
+    (
+        input_file, output_file, output_format, optargs,
+    ) = posix_get_args(sys.argv[1:])
     settings = frontend.get_default_settings(Parser)
     settings.debug = optargs['debug']
     parser = Parser()
-    input = inputFile.read()
-    document = new_document(inputFile.name, settings)
+    input = input_file.read()
+    document = new_document(input_file.name, settings)
     parser.parse(input, document)
-    output = format(outputFormat, input, document, optargs)
-    outputFile.write(output)
+    output = format(output_format, input, document, optargs)
+    output_file.write(output)
     if optargs['attributes']:
         import pprint
         pprint.pprint(document.__dict__)

@@ -22,6 +22,8 @@ Build-HTML Options
                         "--quiet".
 """
 
+from __future__ import annotations
+
 import shutil
 import subprocess
 import sys
@@ -69,7 +71,7 @@ class BuildHtmlTests(unittest.TestCase):
         "_tmp_test_tree/dir2/sub/two.txt",
     )
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.root = Path(tempfile.mkdtemp()).resolve()
 
         for file in self.tree:
@@ -77,15 +79,15 @@ class BuildHtmlTests(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text('dummy', encoding='utf-8')
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         shutil.rmtree(self.root)
 
-    def test_1(self):
+    def test_1(self) -> None:
         opts = ["--dry-run", str(self.root)]
         _dirs, files = process_and_return_filelist(opts)
         self.assertEqual(files.count("one.txt"), 4)
 
-    def test_local(self):
+    def test_local(self) -> None:
         opts = ["--dry-run", "--local", str(self.root)]
         dirs, files = process_and_return_filelist(opts)
         self.assertEqual(len(dirs), 1)

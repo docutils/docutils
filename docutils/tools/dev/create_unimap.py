@@ -9,19 +9,20 @@
 # Get unicode.xml from
 # <https://www.w3.org/2003/entities/xml/unicode.xml>.
 
-from xml.dom import minidom
-import sys
+from __future__ import annotations
+
 import pprint
+import sys
+from xml.dom import minidom
 
-
-text_map = {}
-math_map = {}
+text_map: dict[str, str] = {}
+math_map: dict[str, str] = {}
 
 
 class Visitor:
     """Node visitor for contents of unicode.xml."""
 
-    def visit_character(self, node):
+    def visit_character(self, node: minidom.Element) -> None:
         for n in node.childNodes:
             if n.nodeName == 'latex':
                 code = node.attributes['dec'].value
@@ -40,7 +41,10 @@ class Visitor:
                     text_map[chr(int(code))] = '{%s}' % latex_code
 
 
-def call_visitor(node, visitor=Visitor()):
+def call_visitor(
+    node: minidom.Document | minidom.Element | minidom.Text,
+    visitor: Visitor = Visitor(),
+) -> None:
     if isinstance(node, minidom.Text):
         name = 'Text'
     else:
@@ -56,7 +60,7 @@ def call_visitor(node, visitor=Visitor()):
 document = minidom.parse(sys.stdin)
 call_visitor(document)
 
-unicode_map = math_map
+unicode_map: dict[str, str] = math_map
 unicode_map.update(text_map)
 # Now unicode_map contains the text entries plus dollar-enclosed math
 # entries for those chars for which no text entry exists.
