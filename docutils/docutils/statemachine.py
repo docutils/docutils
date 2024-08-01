@@ -620,7 +620,6 @@ class State:
         Initialize this `State` before running the state machine; called from
         `self.state_machine.run()`.
         """
-        pass
 
     def unlink(self) -> None:
         """Remove circular references to objects no longer required."""
@@ -1042,12 +1041,10 @@ class _SearchOverride:
 
 class SearchStateMachine(_SearchOverride, StateMachine):
     """`StateMachine` which uses `re.search()` instead of `re.match()`."""
-    pass
 
 
 class SearchStateMachineWS(_SearchOverride, StateMachineWS):
     """`StateMachineWS` which uses `re.search()` instead of `re.match()`."""
-    pass
 
 
 class ViewList:

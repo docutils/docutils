@@ -1320,7 +1320,6 @@ class Container:
 
     def process(self) -> None:
         "Process contents"
-        pass
 
     def gethtml(self):
         "Get the resulting HTML"
@@ -2132,7 +2131,7 @@ class FormulaCommand(FormulaBit):
         bit = self.parsewithcommand(command, pos)
         if bit:
             return bit
-        if command.startswith('\\up') or command.startswith('\\Up'):
+        if command.startswith(('\\up', '\\Up')):
             upgreek = self.parseupgreek(command, pos)
             if upgreek:
                 return upgreek

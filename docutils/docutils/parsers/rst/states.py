@@ -1409,8 +1409,7 @@ class Body(RSTState):
         if result:
             next_enumerator, auto_enumerator = result
             try:
-                if (next_line.startswith(next_enumerator)
-                    or next_line.startswith(auto_enumerator)):
+                if next_line.startswith((next_enumerator, auto_enumerator)):
                     return 1
             except TypeError:
                 pass

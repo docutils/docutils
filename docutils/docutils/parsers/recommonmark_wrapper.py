@@ -163,7 +163,6 @@ class Parser(CommonMarkParser):
 
         cf. https://github.com/readthedocs/recommonmark/issues/177
         """
-        pass
 
     # Overwrite parent method with version that
     # doesn't pass deprecated `rawsource` argument to nodes.Text:

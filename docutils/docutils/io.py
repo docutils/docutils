@@ -686,7 +686,6 @@ class NullOutput(Output):
 
     def write(self, data: str | bytes) -> None:
         """Do nothing, return None."""
-        pass
 
 
 class DocTreeInput(Input):
