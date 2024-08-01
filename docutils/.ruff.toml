@@ -9,6 +9,7 @@ select = [
     "EXE",  # flake8-executable
     "F",    # pyflakes
     "FA",   # flake8-future-annotations
+    "ICN",  # flake8-import-conventions
     "W",    # pycodestyle
 ]
 ignore = [
