@@ -16,6 +16,7 @@ select = [
     "LOG",  # flake8-logging
     "PGH",  # pygrep-hooks
     "PIE",  # flake8-pie
+    "PT",   # flake8-pytest
     "W",    # pycodestyle
 ]
 ignore = [
@@ -25,6 +26,10 @@ ignore = [
     # "If operators with different priorities are used, consider adding
     # whitespace around the operators with the lowest priority(ies).
     # Use your own judgment; …"
+
+    "PT009",  # Use a regular assert instead of unittest-style
+    "PT027",  # Use pytest.raises instead of unittest-style
+    # We still use unittest.
 ]
 
 [lint.per-file-ignores]
