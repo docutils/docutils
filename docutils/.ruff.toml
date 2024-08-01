@@ -7,6 +7,7 @@ preview = true
 select = [
     "E",    # pycodestyle
     "EXE",  # flake8-executable
+    "DTZ",  # flake8-datetimez
     "F",    # pyflakes
     "FA",   # flake8-future-annotations
     "G",    # flake8-logging-format
