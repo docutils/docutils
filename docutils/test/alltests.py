@@ -12,7 +12,7 @@ __doc__ = """\
 All modules named 'test_*.py' in the current directory, and recursively in
 subdirectories (packages) called 'test_*', are loaded and test suites within
 are run.
-"""
+"""  # NoQA: A001
 
 import atexit
 import platform

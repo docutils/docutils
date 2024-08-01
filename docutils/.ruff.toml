@@ -5,6 +5,7 @@ output-format = "full"
 [lint]
 preview = true
 select = [
+    "A",    # flake8-builtins
     "C4",   # flake8-comprehensions
     "E",    # pycodestyle
     "EXE",  # flake8-executable
@@ -77,6 +78,8 @@ ignore = [
 
 # module with 3rd-party origin
 "docutils/utils/math/math2html.py" = [
+    "A001",  # 'type' is used very frequently
+    "A002",  # 'type' is used very frequently
     "E241",
     "E501",
     "E731",
@@ -168,4 +171,10 @@ ignore = [
 # ignore long line in string templates
 "tools/dev/generate_punctuation_chars.py" = [
     "E501",
+]
+
+[lint.flake8-builtins]
+builtins-ignorelist = [
+    "format",
+    "id",
 ]

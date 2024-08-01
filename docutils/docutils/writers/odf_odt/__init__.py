@@ -291,13 +291,13 @@ def escape_cdata(text):
     text = text.replace("&", "&amp;")
     text = text.replace("<", "&lt;")
     text = text.replace(">", "&gt;")
-    ascii = ''
+    ascii_ = ''
     for char in text:
         if ord(char) >= ord("\x7f"):
-            ascii += "&#x%X;" % (ord(char), )
+            ascii_ += "&#x%X;" % (ord(char), )
         else:
-            ascii += char
-    return ascii
+            ascii_ += char
+    return ascii_
 
 
 #
@@ -633,14 +633,14 @@ class Writer(writers.Writer):
         return updated, stylesheet_root, modified_nodes
 
     def write_zip_str(
-        self, zfile, name, bytes, compress_type=zipfile.ZIP_DEFLATED,
+        self, zfile, name, bytes_, compress_type=zipfile.ZIP_DEFLATED,
     ) -> None:
         localtime = time.localtime(time.time())
         zinfo = zipfile.ZipInfo(name, localtime)
         # Add some standard UNIX file access permissions (-rw-r--r--).
         zinfo.external_attr = (0x81a4 & 0xFFFF) << 16
         zinfo.compress_type = compress_type
-        zfile.writestr(zinfo, bytes)
+        zfile.writestr(zinfo, bytes_)
 
     def store_embedded_files(self, zfile) -> None:
         embedded_files = self.visitor.get_embedded_file_list()
@@ -964,10 +964,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 if family == 'table':
                     properties = stylenode.find(
                         '{%s}table-properties' % (CNSD['style'], ))
-                    property = properties.get(
+                    property_ = properties.get(
                         '{%s}%s' % (CNSD['fo'], 'background-color', ))
-                    if property is not None and property != 'none':
-                        tablestyle.backgroundcolor = property
+                    if property_ is not None and property_ != 'none':
+                        tablestyle.backgroundcolor = property_
                 elif family == 'table-cell':
                     properties = stylenode.find(
                         '{%s}table-cell-properties' % (CNSD['style'], ))

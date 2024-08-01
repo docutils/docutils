@@ -1357,16 +1357,16 @@ class Element(Node):
     ) -> str:
         # Return a str reporting a missing child or child of wrong category.
         try:
-            type = category.__name__
+            type_ = category.__name__
         except AttributeError:
-            type = '> or <'.join(c.__name__ for c in category)
+            type_ = '> or <'.join(c.__name__ for c in category)
         msg = f'Element {self.starttag()} invalid:\n'
         if child is None:
-            return f'{msg}  Missing child of type <{type}>.'
+            return f'{msg}  Missing child of type <{type_}>.'
         if isinstance(child, Text):
-            return (f'{msg}  Expecting child of type <{type}>, '
+            return (f'{msg}  Expecting child of type <{type_}>, '
                     f'not text data "{child.astext()}".')
-        return (f'{msg}  Expecting child of type <{type}>, '
+        return (f'{msg}  Expecting child of type <{type_}>, '
                 f'not {child.starttag()}.')
 
     def check_position(self) -> None:
@@ -2172,7 +2172,7 @@ class version(Bibliographic, TextElement): pass
 class revision(Bibliographic, TextElement): pass
 class status(Bibliographic, TextElement): pass
 class date(Bibliographic, TextElement): pass
-class copyright(Bibliographic, TextElement): pass
+class copyright(Bibliographic, TextElement): pass  # NoQA: A001
 
 
 class authors(Bibliographic, Element):

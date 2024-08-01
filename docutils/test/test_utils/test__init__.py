@@ -184,16 +184,16 @@ class ExtensionOptionTests(unittest.TestCase):
                   'empty': (lambda x: x)}
 
     def test_assemble_option_dict(self):
-        input = utils.extract_name_value('a=1 bbb=2.0 cdef=hol%s' % chr(224))
+        input_ = utils.extract_name_value('a=1 bbb=2.0 cdef=hol%s' % chr(224))
         self.assertEqual(
-              utils.assemble_option_dict(input, self.optionspec),
+              utils.assemble_option_dict(input_, self.optionspec),
               {'a': 1, 'bbb': 2.0, 'cdef': ('hol%s' % chr(224))})
-        input = utils.extract_name_value('a=1 b=2.0 c=hol%s' % chr(224))
+        input_ = utils.extract_name_value('a=1 b=2.0 c=hol%s' % chr(224))
         with self.assertRaises(KeyError):
-            utils.assemble_option_dict(input, self.optionspec)
-        input = utils.extract_name_value('a=1 bbb=two cdef=hol%s' % chr(224))
+            utils.assemble_option_dict(input_, self.optionspec)
+        input_ = utils.extract_name_value('a=1 bbb=two cdef=hol%s' % chr(224))
         with self.assertRaises(ValueError):
-            utils.assemble_option_dict(input, self.optionspec)
+            utils.assemble_option_dict(input_, self.optionspec)
 
     def test_extract_extension_options(self):
         field_list = nodes.field_list()

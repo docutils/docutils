@@ -1084,8 +1084,8 @@ class MiscFunctionTests(unittest.TestCase):
     def test_make_id(self):
         failures = []
         tests = self.ids + self.ids_unicode_all
-        for input, expect in tests:
-            output = nodes.make_id(input)
+        for input_, expect in tests:
+            output = nodes.make_id(input_)
             if expect != output:
                 failures.append("'%s' != '%s'" % (expect, output))
         if failures:

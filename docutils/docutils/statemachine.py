@@ -477,8 +477,8 @@ class StateMachine:
 
     def error(self) -> None:
         """Report error details."""
-        type, value, module, line, function = _exception_data()
-        print('%s: %s' % (type, value), file=sys.stderr)
+        type_name, value, module, line, function = _exception_data()
+        print('%s: %s' % (type_name, value), file=sys.stderr)
         print('input line %s' % (self.abs_line_number()), file=sys.stderr)
         print('module %s, line %s, function %s' % (module, line, function),
               file=sys.stderr)
@@ -1525,9 +1525,9 @@ def _exception_data():
     - the line number of the offending code;
     - the function name of the offending code.
     """
-    type, value, traceback = sys.exc_info()
+    typ, value, traceback = sys.exc_info()
     while traceback.tb_next:
         traceback = traceback.tb_next
     code = traceback.tb_frame.f_code
-    return (type.__name__, value, code.co_filename, traceback.tb_lineno,
+    return (typ.__name__, value, code.co_filename, traceback.tb_lineno,
             code.co_name)

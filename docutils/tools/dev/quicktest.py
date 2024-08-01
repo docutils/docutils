@@ -108,19 +108,19 @@ def usage() -> None:
 
 
 def _pretty(
-    input: str, document: nodes.document, optargs: _OptArgs,
+    input_: str, document: nodes.document, optargs: _OptArgs,
 ) -> str:
     return document.pformat()
 
 
 def _rawxml(
-    input: str, document: nodes.document, optargs: _OptArgs,
+    input_: str, document: nodes.document, optargs: _OptArgs,
 ) -> str:
     return document.asdom().toxml()
 
 
 def _styledxml(
-    input: str, document: nodes.document, optargs: _OptArgs,
+    input_: str, document: nodes.document, optargs: _OptArgs,
 ) -> str:
     docnode = document.asdom().childNodes[0]
     return '\n'.join(('<?xml version="1.0" encoding="ISO-8859-1"?>',
@@ -130,13 +130,13 @@ def _styledxml(
 
 
 def _prettyxml(
-    input: str, document: nodes.document, optargs: _OptArgs,
+    input_: str, document: nodes.document, optargs: _OptArgs,
 ) -> str:
     return document.asdom().toprettyxml('    ', '\n')
 
 
 def _test(
-    input: str, document: nodes.document, optargs: _OptArgs,
+    input_: str, document: nodes.document, optargs: _OptArgs,
 ) -> str:
     tq = '"""'
     output = document.pformat()         # same as _pretty()
@@ -149,7 +149,7 @@ def _test(
 %s
 %s],
 ]
-""" % (tq, escape(input.rstrip()), tq, tq, escape(output.rstrip()), tq)
+""" % (tq, escape(input_.rstrip()), tq, tq, escape(output.rstrip()), tq)
 
 
 def escape(text: str) -> str:
@@ -173,12 +173,12 @@ _output_formatters: dict[str, _FormatFunc] = {
 
 def format(
     output_format: str,
-    input: str,
+    input_: str,
     document: nodes.document,
     optargs: _OptArgs,
 ) -> str:
     formatter = _output_formatters[output_format]
-    return formatter(input, document, optargs)
+    return formatter(input_, document, optargs)
 
 
 def posix_get_args(argv: list[str]) -> tuple[TextIO, TextIO, str, _OptArgs]:
@@ -241,10 +241,10 @@ def main() -> None:
     settings = frontend.get_default_settings(Parser)
     settings.debug = optargs['debug']
     parser = Parser()
-    input = input_file.read()
+    input_ = input_file.read()
     document = new_document(input_file.name, settings)
-    parser.parse(input, document)
-    output = format(output_format, input, document, optargs)
+    parser.parse(input_, document)
+    output = format(output_format, input_, document, optargs)
     output_file.write(output)
     if optargs['attributes']:
         import pprint

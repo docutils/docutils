@@ -699,18 +699,18 @@ class ContainerExtractor:
 
     def extract(self, container):
         "Extract a group of selected containers from a container."
-        list = []
+        lst = []
         locate = lambda c: c.__class__.__name__ in self.allowed
         recursive = lambda c: c.__class__.__name__ in self.extracted
-        process = lambda c: self.process(c, list)
+        process = lambda c: self.process(c, lst)
         container.recursivesearch(locate, recursive, process)
-        return list
+        return lst
 
-    def process(self, container, list) -> None:
+    def process(self, container, lst) -> None:
         "Add allowed containers."
         name = container.__class__.__name__
         if name in self.allowed:
-            list.append(container)
+            lst.append(container)
         else:
             Trace.error('Unknown container class ' + name)
 
@@ -944,10 +944,10 @@ class TaggedOutput(ContentsOutput):
         "Get opening line."
         if not self.checktag(container):
             return ''
-        open = '<' + self.tag + '>'
+        open_tag = '<' + self.tag + '>'
         if self.breaklines:
-            return open + '\n'
-        return open
+            return open_tag + '\n'
+        return open_tag
 
     def close(self, container):
         "Get closing line."
@@ -1355,16 +1355,16 @@ class Container:
 
     def searchall(self, type):
         "Search for all embedded containers of a given type"
-        list = []
-        self.searchprocess(type, lambda container: list.append(container))
-        return list
+        lst = []
+        self.searchprocess(type, lambda container: lst.append(container))
+        return lst
 
     def searchremove(self, type):
         "Search for all containers of a type and remove them"
-        list = self.searchall(type)
-        for container in list:
+        lst = self.searchall(type)
+        for container in lst:
             container.parent.contents.remove(container)
-        return list
+        return lst
 
     def searchprocess(self, type, process) -> None:
         "Search for elements of a given type and process them"

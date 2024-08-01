@@ -247,7 +247,7 @@ class Publisher:
         already set), run `self.reader` and then `self.writer`.  Return
         `self.writer`'s output.
         """
-        exit = None
+        exit_ = None
         try:
             if self.settings is None:
                 self.process_command_line(
@@ -261,7 +261,7 @@ class Publisher:
             output = self.writer.write(self.document, self.destination)
             self.writer.assemble_parts()
         except SystemExit as error:
-            exit = True
+            exit_ = True
             exit_status = error.code
         except Exception as error:
             if not self.settings:       # exception too early to report nicely
@@ -270,14 +270,14 @@ class Publisher:
                 self.debugging_dumps()
                 raise
             self.report_Exception(error)
-            exit = True
+            exit_ = True
             exit_status = 1
         self.debugging_dumps()
         if (enable_exit_status and self.document
             and (self.document.reporter.max_level
                  >= self.settings.exit_status_level)):
             sys.exit(self.document.reporter.max_level + 10)
-        elif exit:
+        elif exit_:
             sys.exit(exit_status)
         return output
 

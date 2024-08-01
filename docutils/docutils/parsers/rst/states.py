@@ -434,7 +434,7 @@ class RSTState(StateWS):
                                      line=lineno)
 
 
-def build_regexp(definition, compile=True):
+def build_regexp(definition, compile_patterns=True):
     """
     Build, compile and return a regular expression based on `definition`.
 
@@ -451,7 +451,7 @@ def build_regexp(definition, compile=True):
             part_strings.append(part)
     or_group = '|'.join(part_strings)
     regexp = '%(prefix)s(?P<%(name)s>%(or_group)s)%(suffix)s' % locals()
-    if compile:
+    if compile_patterns:
         return re.compile(regexp)
     else:
         return regexp

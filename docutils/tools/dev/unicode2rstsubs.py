@@ -134,18 +134,18 @@ class CharacterEntitySetExtractor:
         self.charid = attributes['id']
 
     def entity_start(self, name, attributes) -> None:
-        set = self.entity_set_name(attributes['set'])
-        if not set:
+        set_ = self.entity_set_name(attributes['set'])
+        if not set_:
             return
-        if set not in self.sets:
-            print('bad set: %r' % set)
+        if set_ not in self.sets:
+            print('bad set: %r' % set_)
             return
         entity = attributes['id']
-        assert (entity not in self.sets[set]
-                or self.sets[set][entity] == self.charid
+        assert (entity not in self.sets[set_]
+                or self.sets[set_][entity] == self.charid
                 ), ('sets[%r][%r] == %r (!= %r)'
-                    % (set, entity, self.sets[set][entity], self.charid))
-        self.sets[set][entity] = self.charid
+                    % (set_, entity, self.sets[set_][entity], self.charid))
+        self.sets[set_][entity] = self.charid
 
     def description_data(self, data) -> None:
         self.descriptions.setdefault(self.charid, '')
@@ -179,28 +179,29 @@ class CharacterEntitySetExtractor:
         outfile = open(outname, 'w', encoding='ascii')
         print('writing file "%s"' % outname)
         outfile.write(self.header + '\n')
-        set = self.sets[set_name]
-        entities = sorted((e.lower(), e) for e in set.keys())
+        set_ = self.sets[set_name]
+        entities = sorted((e.lower(), e) for e in set_.keys())
         longest = 0
         for _, entity_name in entities:
             longest = max(longest, len(entity_name))
         has_wide = False
         for _, entity_name in entities:
             has_wide = self.write_entity(
-                set, set_name, entity_name, outfile, longest, wide) or has_wide
+                set_, set_name, entity_name, outfile, longest, wide,
+            ) or has_wide
         if has_wide and not wide:
             self.write_set(set_name, wide=True)
 
     def write_entity(
         self,
-        set: dict[str, str],
+        set_: dict[str, str],
         set_name: str,
         entity_name: str,
         outfile: TextIO,
         longest: int,
         wide: bool = False,
     ) -> bool:
-        charid = set[entity_name]
+        charid = set_[entity_name]
         if not wide:
             for code in charid[1:].split('-'):
                 if int(code, 16) > 0xFFFF:

@@ -115,41 +115,41 @@ class InputTests(unittest.TestCase):
         # default input encoding will change to UTF-8 in Docutils 0.22
         source = '\ufeffdata\n\ufeff blah\n'
         expected = 'data\n\ufeff blah\n'  # only leading ZWNBSP removed
-        input = du_io.StringInput(source=source.encode('utf-16-be'),
-                                  encoding=None)
-        self.assertEqual(expected, input.read())
-        input = du_io.StringInput(source=source.encode('utf-16-le'),
-                                  encoding=None)
-        self.assertEqual(expected, input.read())
-        input = du_io.StringInput(source=source.encode('utf-8'),
-                                  encoding=None)
-        self.assertEqual(expected, input.read())
+        input_ = du_io.StringInput(source=source.encode('utf-16-be'),
+                                   encoding=None)
+        self.assertEqual(expected, input_.read())
+        input_ = du_io.StringInput(source=source.encode('utf-16-le'),
+                                   encoding=None)
+        self.assertEqual(expected, input_.read())
+        input_ = du_io.StringInput(source=source.encode('utf-8'),
+                                   encoding=None)
+        self.assertEqual(expected, input_.read())
         # With `str` input all ZWNBSPs are still there.
-        input = du_io.StringInput(source=source)
-        self.assertEqual(source, input.read())
+        input_ = du_io.StringInput(source=source)
+        self.assertEqual(source, input_.read())
 
     def test_encoding_declaration(self):
-        input = du_io.StringInput(source=b"""\
+        input_ = du_io.StringInput(source=b"""\
 .. -*- coding: ascii -*-
 data
 blah
 """, encoding=None)
-        data = input.read()  # noqa: F841
-        self.assertEqual('ascii', input.successful_encoding)
-        input = du_io.StringInput(source=b"""\
+        data = input_.read()  # noqa: F841
+        self.assertEqual('ascii', input_.successful_encoding)
+        input_ = du_io.StringInput(source=b"""\
 #! python
 # -*- coding: ascii -*-
 print("hello world")
 """, encoding=None)
-        data = input.read()  # noqa: F841
-        self.assertEqual('ascii', input.successful_encoding)
-        input = du_io.StringInput(source=b"""\
+        data = input_.read()  # noqa: F841
+        self.assertEqual('ascii', input_.successful_encoding)
+        input_ = du_io.StringInput(source=b"""\
 #! python
 # extraneous comment; prevents coding slug from being read
 # -*- coding: ascii -*-
 print("hello world")
 """)
-        self.assertNotEqual(input.successful_encoding, 'ascii')
+        self.assertNotEqual(input_.successful_encoding, 'ascii')
 
     def test_decode_unicode(self):
         # With the special value "unicode" or "Unicode":
