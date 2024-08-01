@@ -113,14 +113,15 @@ class AnonymousHyperlinks(Transform):
     default_priority = 440
 
     def apply(self) -> None:
-        anonymous_refs = []
-        anonymous_targets = []
-        for node in self.document.findall(nodes.reference):
-            if node.get('anonymous'):
-                anonymous_refs.append(node)
-        for node in self.document.findall(nodes.target):
-            if node.get('anonymous'):
-                anonymous_targets.append(node)
+        anonymous_refs = [
+            node for node
+            in self.document.findall(nodes.reference)
+            if node.get('anonymous')]
+        anonymous_targets = [
+            node for node
+            in self.document.findall(nodes.target)
+            if node.get('anonymous')
+        ]
         if len(anonymous_refs) != len(anonymous_targets):
             msg = self.document.reporter.error(
                   'Anonymous hyperlink mismatch: %s references but %s '

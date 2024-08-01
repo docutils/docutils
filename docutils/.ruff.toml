@@ -18,6 +18,7 @@ select = [
     "INP",  # flake8-no-pep420
     "INT",  # flake8-gettext
     "LOG",  # flake8-logging
+    "PERF", # perflint
     "PGH",  # pygrep-hooks
     "PIE",  # flake8-pie
     "PT",   # flake8-pytest
@@ -36,6 +37,9 @@ ignore = [
     # "If operators with different priorities are used, consider adding
     # whitespace around the operators with the lowest priority(ies).
     # Use your own judgment; …"
+
+    "PERF203",  # ``try``-``except`` within a loop incurs performance overhead
+    # Needs more thought.
 
     "PT009",  # Use a regular assert instead of unittest-style
     "PT027",  # Use pytest.raises instead of unittest-style

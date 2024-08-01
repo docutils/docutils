@@ -725,10 +725,11 @@ def normalize_language_tag(tag):
     subtags = list(tag.split('_'))
     base_tag = (subtags.pop(0),)
     # find all combinations of subtags
-    taglist = []
-    for n in range(len(subtags), 0, -1):
-        for tags in itertools.combinations(subtags, n):
-            taglist.append('-'.join(base_tag+tags))
+    taglist = [
+        '-'.join(base_tag + tags)
+        for n in range(len(subtags), 0, -1)
+        for tags in itertools.combinations(subtags, n)
+    ]
     taglist += base_tag
     return taglist
 

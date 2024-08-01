@@ -776,10 +776,10 @@ class Element(Node):
                    [child.astext() for child in self.children])
 
     def non_default_attributes(self) -> dict[str, Any]:
-        atts = {}
-        for key, value in self.attributes.items():
-            if self.is_not_default(key):
-                atts[key] = value
+        atts = {
+            key: value for key, value in self.attributes.items()
+            if self.is_not_default(key)
+        }
         return atts
 
     def attlist(self) -> list[tuple[str, Any]]:

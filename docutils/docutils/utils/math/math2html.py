@@ -991,10 +991,8 @@ class FilteredOutput(ContentsOutput):
 
     def gethtml(self, container):
         "Return the HTML code"
-        result = []
         html = ContentsOutput.gethtml(self, container)
-        for line in html:
-            result.append(self.filter(line))
+        result = [self.filter(line) for line in html]
         return result
 
     def filter(self, line):

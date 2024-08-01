@@ -418,9 +418,10 @@ class DocInfo(Transform):
         nodelist = []
         if len(docinfo) != 0:
             nodelist.append(docinfo)
-        for name in ('dedication', 'abstract'):
-            if topics[name]:
-                nodelist.append(topics[name])
+        if topics['dedication']:
+            nodelist.append(topics['dedication'])
+        if topics['abstract']:
+            nodelist.append(topics['abstract'])
         return nodelist
 
     def check_empty_biblio_field(self, field, name) -> bool:

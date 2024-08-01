@@ -201,7 +201,7 @@ class Builder:
         """
         with warnings.catch_warnings():
             warnings.filterwarnings('ignore', category=DeprecationWarning)
-            for name, publisher in self.publishers.items():
+            for publisher in self.publishers.values():
                 option_parser = OptionParser(
                     components=publisher.components, read_config_files=True,
                     usage=usage, description=description)
