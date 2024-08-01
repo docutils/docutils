@@ -179,15 +179,15 @@ class Builder:
 
     def __init__(self) -> None:
         self.publishers = self.publishers.copy()
-        self.setup_publishers()
-        # default html writer (may change to html5 some time):
-        self.publishers['html'] = self.publishers['html4']
-
         with warnings.catch_warnings():
             warnings.filterwarnings('ignore', category=DeprecationWarning)
             self.settings_spec = frontend.Values()
             self.initial_settings = frontend.Values()
         self.directories = []
+
+        self.setup_publishers()
+        # default html writer (may change to html5 some time):
+        self.publishers['html'] = self.publishers['html4']
 
     def setup_publishers(self) -> None:
         """
