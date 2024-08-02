@@ -47,10 +47,7 @@ import re
 
 import docutils
 from docutils import frontend, nodes, writers, languages
-try:
-    import roman
-except ImportError:
-    from docutils.utils import roman
+from docutils.utils._roman_numerals import RomanNumeral
 
 FIELD_LIST_INDENT = 7
 DEFINITION_LIST_INDENT = 7
@@ -408,10 +405,11 @@ class Translator(nodes.NodeVisitor):
                 if self._style in ('loweralpha', 'upperalpha'):
                     return "%c." % self._cnt
                 if self._style.endswith('roman'):
-                    res = roman.toRoman(self._cnt) + '.'
+                    res = RomanNumeral(self._cnt)
                     if self._style.startswith('upper'):
-                        return res.upper()
-                    return res.lower()
+                        return res.to_uppercase() + '.'
+                    else:
+                        return res.to_lowercase() + '.'
                 # else 'arabic', ...
                 return "%d." % self._cnt
 

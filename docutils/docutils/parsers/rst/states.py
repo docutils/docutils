@@ -114,8 +114,12 @@ from docutils.nodes import unescape, whitespace_normalize_name
 import docutils.parsers.rst
 from docutils.parsers.rst import directives, languages, tableparser, roles
 from docutils.utils import escape2null, column_width
-from docutils.utils import punctuation_chars, roman, urischemes
+from docutils.utils import punctuation_chars, urischemes
 from docutils.utils import split_escaped_whitespace
+from docutils.utils._roman_numerals import (
+    InvalidRomanNumeralError,
+    RomanNumeral,
+)
 
 
 class MarkupError(DataError): pass
@@ -1067,10 +1071,6 @@ def _upperalpha_to_int(s, _zero=(ord('A')-1)):
     return ord(s) - _zero
 
 
-def _lowerroman_to_int(s):
-    return roman.fromRoman(s.upper())
-
-
 class Body(RSTState):
 
     """
@@ -1098,8 +1098,8 @@ class Body(RSTState):
     enum.converters = {'arabic': int,
                        'loweralpha': _loweralpha_to_int,
                        'upperalpha': _upperalpha_to_int,
-                       'lowerroman': _lowerroman_to_int,
-                       'upperroman': roman.fromRoman}
+                       'lowerroman': RomanNumeral.from_string,
+                       'upperroman': RomanNumeral.from_string}
 
     enum.sequenceregexps = {}
     for sequence in enum.sequences:
@@ -1382,8 +1382,8 @@ class Body(RSTState):
             ordinal = 1
         else:
             try:
-                ordinal = self.enum.converters[sequence](text)
-            except roman.InvalidRomanNumeralError:
+                ordinal = int(self.enum.converters[sequence](text))
+            except InvalidRomanNumeralError:
                 ordinal = None
         return format, sequence, text, ordinal
 
@@ -1433,8 +1433,8 @@ class Body(RSTState):
                 enumerator = chr(ordinal + ord('a') - 1)
             elif sequence.endswith('roman'):
                 try:
-                    enumerator = roman.toRoman(ordinal)
-                except roman.RomanError:
+                    enumerator = RomanNumeral(ordinal).to_uppercase()
+                except TypeError:
                     return None
             else:                       # shouldn't happen
                 raise ParserError('unknown enumerator sequence: "%s"'

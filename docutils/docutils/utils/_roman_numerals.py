@@ -1,5 +1,5 @@
 # $Id$
-# Author:  Adam Turner.
+# Author: Adam Turner.
 # Copyright: This module is placed in the public domain
 #            or under the `Zero Clause BSD licence`_,
 #            whichever is more permissive.

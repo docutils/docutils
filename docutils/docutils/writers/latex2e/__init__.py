@@ -17,13 +17,10 @@ import re
 import string
 from urllib.request import url2pathname
 import warnings
-try:
-    import roman
-except ImportError:
-    import docutils.utils.roman as roman
 
 from docutils import frontend, nodes, languages, writers, utils
 from docutils.transforms import writer_aux
+from docutils.utils._roman_numerals import RomanNumeral
 from docutils.utils.math import pick_math_environment, unichar2tex
 
 LATEX_WRITER_DIR = Path(__file__).parent
@@ -2196,7 +2193,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         suffix = node.get('suffix', '.')
 
         enum_level = len(self._enumeration_counters)+1
-        counter_name = 'enum' + roman.toRoman(enum_level).lower()
+        counter_name = 'enum' + RomanNumeral(enum_level).to_lowercase()
         label = r'%s\%s{%s}%s' % (prefix, enumtype, counter_name, suffix)
         self._enumeration_counters.append(label)
 
@@ -3139,13 +3136,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 # section level not supported by LaTeX
                 if self.settings.legacy_class_functions:
                     self.fallbacks['title'] = PreambleCmds.title_legacy
-                    section_name += '[section%s]' % roman.toRoman(level)
+                    section_name += '[section%s]' % RomanNumeral(level)
                 else:
                     if not self.fallback_stylesheet:
                         self.fallbacks['title'] = PreambleCmds.title
                         self.fallbacks['DUclass'] = PreambleCmds.duclass
                     self.out.append('\\begin{DUclass}{section%s}\n'
-                                    % roman.toRoman(level))
+                                    % RomanNumeral(level))
 
             # System messages heading in red:
             if 'system-messages' in node.parent['classes']:
