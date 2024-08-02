@@ -134,8 +134,9 @@ Docutils-general:
 
 reStructuredText_:
   * `An Introduction to reStructuredText <ref/rst/introduction.html>`__
-    (includes the `Goals <ref/rst/introduction.html#goals>`__ and
-    `History <ref/rst/introduction.html#history>`__ of reStructuredText)
+    (includes the `Goals <ref/rst/introduction.html#goals>`__
+    of reStructuredText)
+  * `History of reStructuredText  <ref/rst/history.html>`__
   * `reStructuredText Markup Specification <ref/rst/restructuredtext.html>`__
   * `reStructuredText Directives <ref/rst/directives.html>`__
   * `reStructuredText Interpreted Text Roles <ref/rst/roles.html>`__

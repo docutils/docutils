@@ -52,15 +52,16 @@ __ docs/user/rst/cheatsheet.txt
 Reference Documentation
 =======================
 
-- `An Introduction to reStructuredText`__ (includes the Goals__ and
-  History__ of reStructuredText)
+- `An Introduction to reStructuredText`__
+  (includes the Goals__ of reStructuredText)
+- `History of reStructuredText`__
 - `reStructuredText Markup Specification`__
 - `reStructuredText Directives`__
 - `reStructuredText Interpreted Text Roles`__
 
 __ docs/ref/rst/introduction.html
 __ docs/ref/rst/introduction.html#goals
-__ docs/ref/rst/introduction.html#history
+__ docs/ref/rst/history.html
 __ docs/ref/rst/restructuredtext.html
 __ docs/ref/rst/directives.html
 __ docs/ref/rst/roles.html
