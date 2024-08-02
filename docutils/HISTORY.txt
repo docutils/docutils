@@ -128,6 +128,10 @@ Release 0.22b.dev (unpublished)
   - Removed `Reporter.set_conditions()`.
     Set attributes via configuration settings or directly.
 
+* docutils/utils/_roman_numerals.py
+
+  - Added new implementation.
+
 * docutils/utils/error_reporting.py
 
   - Removed. Obsolete in Python 3.
