@@ -55,14 +55,6 @@ intended purpose of the reStructuredText markup is twofold:
 - the conversion of such documents into useful structured data
   formats.
 
-The secondary goal of reStructuredText is to be accepted by the Python
-community (by way of being blessed by PythonLabs and the BDFL [#]_) as
-a standard for Python inline documentation (possibly one of several
-standards, to account for taste).
-
-.. [#] Python's creator and "Benevolent Dictator For Life",
-   Guido van Rossum.
-
 To clarify the primary goal, here are specific design goals, in order,
 beginning with the most important:
 
