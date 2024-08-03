@@ -10,10 +10,23 @@ This package contains modules for language-dependent features of
 reStructuredText.
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
+from typing import TYPE_CHECKING, overload
 
 from docutils.languages import LanguageImporter
+
+if TYPE_CHECKING:
+    import types
+    from typing import NoReturn, Protocol
+
+    class RSTLanguageModule(Protocol):
+        __name__: str
+
+        directives: dict[str, str]
+        roles: dict[str, str]
 
 
 class RstLanguageImporter(LanguageImporter):
@@ -30,11 +43,23 @@ class RstLanguageImporter(LanguageImporter):
     warn_msg = 'rST localisation for language "%s" not found.'
     fallback = None
 
-    def check_content(self, module):
+    @overload
+    def check_content(self, module: RSTLanguageModule) -> None:
+        ...
+
+    @overload
+    def check_content(self, module: types.ModuleType) -> NoReturn:
+        ...
+
+    def check_content(
+        self, module: RSTLanguageModule | types.ModuleType
+    ) -> None:
         """Check if we got an rST language module."""
-        if not (isinstance(module.directives, dict)
-                and isinstance(module.roles, dict)):
+        if not (
+            isinstance(module.directives, dict)
+            and isinstance(module.roles, dict)
+        ):
             raise ImportError
 
 
-get_language = RstLanguageImporter()
+get_language: LanguageImporter[RSTLanguageModule] = RstLanguageImporter()

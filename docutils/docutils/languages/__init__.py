@@ -9,11 +9,29 @@
 This package contains modules for language-dependent features of Docutils.
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
 from importlib import import_module
+from typing import TYPE_CHECKING, overload
 
 from docutils.utils import normalize_language_tag
+
+if TYPE_CHECKING:
+    import types
+    from typing import NoReturn, Protocol, TypeVar
+
+    from docutils.utils import Reporter
+
+    class LanguageModule(Protocol):
+        __name__: str
+
+        labels: dict[str, str]
+        bibliographic_fields: dict[str, str]
+        author_separators: list[str]
+
+    LanguageModuleT = TypeVar('LanguageModuleT')
 
 
 class LanguageImporter:
@@ -32,14 +50,16 @@ class LanguageImporter:
     # TODO: use a dummy module returning empty strings?, configurable?
 
     def __init__(self) -> None:
-        self.cache = {}
+        self.cache: dict[str, LanguageModuleT] = {}
 
-    def import_from_packages(self, name, reporter=None):
+    def import_from_packages(
+        self, name: str, reporter: Reporter = None
+    ) -> LanguageModuleT:
         """Try loading module `name` from `self.packages`."""
         module = None
         for package in self.packages:
             try:
-                module = import_module(package+name)
+                module = import_module(package + name)
                 self.check_content(module)
             except (ImportError, AttributeError):
                 if reporter and module:
@@ -51,14 +71,26 @@ class LanguageImporter:
             break
         return module
 
-    def check_content(self, module):
+    @overload
+    def check_content(self, module: LanguageModule) -> None:
+        ...
+
+    @overload
+    def check_content(self, module: types.ModuleType) -> NoReturn:
+        ...
+
+    def check_content(self, module: LanguageModule | types.ModuleType) -> None:
         """Check if we got a Docutils language module."""
-        if not (isinstance(module.labels, dict)
-                and isinstance(module.bibliographic_fields, dict)
-                and isinstance(module.author_separators, list)):
+        if not (
+            isinstance(module.labels, dict)
+            and isinstance(module.bibliographic_fields, dict)
+            and isinstance(module.author_separators, list)
+        ):
             raise ImportError
 
-    def __call__(self, language_code, reporter=None):
+    def __call__(
+        self, language_code: str, reporter: Reporter = None
+    ) -> LanguageModuleT:
         try:
             return self.cache[language_code]
         except KeyError:
@@ -74,10 +106,12 @@ class LanguageImporter:
             if self.fallback:
                 module = self.import_from_packages(self.fallback)
         if reporter and (language_code != 'en'):
-            reporter.info('Using %s for language "%s".'
-                          % (module, language_code))
+            reporter.info(f'Using {module} for language "{language_code}".')
         self.cache[language_code] = module
         return module
 
+    def __class_getitem__(cls, name):
+        return cls
 
-get_language = LanguageImporter()
+
+get_language: LanguageImporter[LanguageModule] = LanguageImporter()
