@@ -98,5 +98,30 @@ for L in "en" "de" ; do
   done
 done
 
+# reference macros
+EXT=-urue.man
+for EXP_F in $EXP_DIR/*$EXT ; do
+  BASE=`basename $EXP_F`
+  F_BASE=${BASE%$EXT}
+  OPT="--use-reference-macros"
+  $CMD $OPT $IN_DIR/$F_BASE.txt $OUT_DIR/$BASE
+  if [ $? -eq 0 ] ; then
+    diff -s -u $EXP_DIR/$BASE $OUT_DIR/$BASE
+    if [ $? -ne 0 ] ; then
+      inc_ERROR_CNT
+    fi
+    for ENC in $ENCS ; do
+      BASE=${BASE%.man}
+      if [ -e $EXP_DIR/$BASE.$ENC ] ; then
+        mandoc -T$ENC $OUT_DIR/$BASE.man > $OUT_DIR/$BASE.$ENC
+        diff -s -u $EXP_DIR/$BASE.$ENC $OUT_DIR/$BASE.$ENC
+        if [ $? -ne 0 ] ; then
+          inc_ERROR_CNT
+        fi
+      fi
+    done
+  fi
+done
+
 report_ERROR_CNT
 

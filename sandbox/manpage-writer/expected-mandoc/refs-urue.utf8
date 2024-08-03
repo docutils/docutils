@@ -1,0 +1,100 @@
+()                                                                          ()
+
+NNaammee
+        - from quickref.html
+
+EExxpplliicciitt MMaarrkkuupp
+   FFoooottnnootteess
+       Footnote references, like [5].  Note that footnotes may get rearranged,
+       e.g., to the bottom of the "page".
+
+       [5]  A numerical footnote. Note there's no colon after the ]].
+
+
+                                           ----
+
+
+
+
+            Autonumbered footnotes are possible, like using [1] and [2].
+
+       [1]  This is the first one.
+
+       [2]  This is the second one.
+
+            They may be assigned 'autonumber labels' - for instance, [4] and
+            [3].
+
+       [3]  a.k.a.  <third>
+
+
+       [4]  a.k.a.  <fourth>
+
+
+
+                                           ----
+
+
+
+
+            Auto-symbol footnotes are also possible, like this: [*] and [†].
+
+       [*]  This is the first one.
+
+       [†]  This is the second one.
+
+   CCiittaattiioonnss
+       Citation references, like [CIT2002].  Note that citations may get
+       rearranged, e.g., to the bottom of the "page".
+
+       [CIT2002]
+            A citation (as often used in journals).
+
+            Citation labels contain alphanumerics, underlines, hyphens and
+            fullstops.  Case is not significant.
+
+            Given a citation like [this], one can also refer to it like <this>
+            .
+
+       [this]
+            here.
+
+   EExxtteerrnnaall HHyyppeerrlliinnkk TTaarrggeettss
+       External hyperlinks, like Python <https://www.python.org/> .
+
+       embedded External hyperlinks, like Python <https://www.python.org/> .
+
+   IInntteerrnnaall HHyyppeerrlliinnkk TTaarrggeettss
+       Internal cross-references, like <example> .
+
+       This is an example cross-reference target.
+
+   IInnddiirreecctt HHyyppeerrlliinnkk TTaarrggeettss
+       Python <https://www.python.org/>
+        is my favourite programming language <https://www.python.org/> .
+
+TTiittlleess aarree ttaarrggeettss,, ttoooo
+       Implicit references, like targets, too <Titles> .
+
+aanndd
+       See the Python <https://www.python.org/>
+        home page for info.
+
+       Write to me <mailto:jdoe@example.com>
+        with your questions.
+
+   UURRIIss wwiitthh kknnoowwnn sscchheemmeess
+       <tel:+48-816-555-1212>
+
+       <urn:isbn:0-486-27557-4>
+
+       <news:comp.infosystems.www.servers.unix>
+
+       <https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top>
+
+
+   SSttaannddaalloonnee eemmaaiill aaddddrreesssseess
+       like <someone@somewhere.com>
+
+
+                                                                            ()
