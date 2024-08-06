@@ -461,8 +461,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         # Use ElementTree to add node attributes.
         # ET also removes comments and preamble code.
         #
-        # Provisional:
-        # interface and behaviour may change without notice.
+        # Internal: interface and behaviour may change without notice.
 
         # SVG namespace
         svg_ns = {'': 'http://www.w3.org/2000/svg',
@@ -471,15 +470,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         ET.register_namespace('', svg_ns[''])
         ET.register_namespace('xlink', svg_ns['xlink'])
         try:
-            svg = ET.fromstring(imagedata.decode('utf-8'))
+            svg = ET.fromstring(imagedata)
         except ET.ParseError as err:
             self.messages.append(self.document.reporter.error(
                 f'Cannot parse SVG image "{node["uri"]}":\n  {err}',
                 base_node=node))
-            # We initially open the file in binary mode,
-            # meaning universal newlines are not applied.
-            # Manually convert here before decoding.
-            return imagedata.replace(b'\r\n', b'\n').decode('utf-8')
+            return imagedata
         # apply image node attributes:
         if size_declaration:  # append to style, replacing width & height
             declarations = [d.strip() for d in svg.get('style', '').split(';')]
@@ -1169,8 +1165,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         elif loading == 'embed':
             try:
                 imagepath = self.uri2imagepath(uri)
-                imagedata = Path(imagepath).read_bytes()
-            except (ValueError, OSError) as err:
+                if mimetype == 'image/svg+xml':
+                    imagedata = Path(imagepath).read_text()
+                else:
+                    imagedata = Path(imagepath).read_bytes()
+            except (ValueError, OSError, UnicodeError) as err:
                 self.messages.append(self.document.reporter.error(
                     f'Cannot embed image "{uri}":\n  {err}', base_node=node))
                 # TODO: get external files with urllib.request (cf. odtwriter)?
