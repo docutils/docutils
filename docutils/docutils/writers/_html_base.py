@@ -1166,7 +1166,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             try:
                 imagepath = self.uri2imagepath(uri)
                 if mimetype == 'image/svg+xml':
-                    imagedata = Path(imagepath).read_text()
+                    imagedata = Path(imagepath).read_text(encoding='utf-8')
                 else:
                     imagedata = Path(imagepath).read_bytes()
             except (ValueError, OSError, UnicodeError) as err:
