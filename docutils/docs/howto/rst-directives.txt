@@ -169,8 +169,8 @@ package (in the ``__init__.py`` module):
 - ``path``: Returns the path argument unwrapped (with newlines
   removed).  Raises ``ValueError`` if no argument is found.
 
-- ``uri``: Returns the URI argument with whitespace removed.  Raises
-  ``ValueError`` if no argument is found.
+- ``uri``: Returns the value (URI-reference) with whitespace removed.
+  Raises ``ValueError`` if no argument is found.
 
 - ``nonnegative_int``: Checks for a nonnegative integer argument,
   and raises ``ValueError`` if not.

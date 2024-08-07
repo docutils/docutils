@@ -381,9 +381,10 @@ to double up. [#caveat]_
 
      r"""This is a raw docstring.  Backslashes (\) are not touched."""
 
-.. [#uri-context] In contexts where Docutils expects a URI (the link
-   block of `external hyperlink targets`_ or the argument of an `"image"`_
-   or `"figure"`_ directive), whitespace is ignored by default
+.. [#uri-context] In contexts where Docutils expects a `URI-reference`_
+   (the link block of `external hyperlink targets`_ or the argument of an
+   `"image"`_
+   or `"figure"`_ directive), whitespace is ignored by default.
 
 .. [#literal-context]
    In literal context (`literal blocks`_ and `inline literals`_,
@@ -1950,9 +1951,8 @@ indirect.
        * second item, with hyperlink target.
 
 
-2. _`External hyperlink targets` have an absolute or relative URI or
-   email address in their link blocks.  For example, take the
-   following input::
+2. _`External hyperlink targets` have a URI-reference_ or email address
+   in their link blocks.  For example, take the following input::
 
        See the Python_ home page for info.
 
@@ -2897,9 +2897,9 @@ are three references to titles describing a tag::
     `HTML Element: <c>\ `_.
 
 The reference text may also be omitted, in which case the URI will be
-duplicated for use as the reference text.  This is useful for relative
-URIs where the address or file name is also the desired reference
-text::
+duplicated for use as the reference text.  This is useful for
+URI-references_ where the address or file name is also the desired
+reference text::
 
     See `<a_named_relative_link>`_ or
     `<an_anonymous_relative_link>`__ for details.
@@ -3050,7 +3050,7 @@ Two forms of standalone hyperlinks are recognized:
 
    With queries, fragments, and %-escape sequences, URIs can become quite
    complicated.  A reStructuredText parser must be able to recognize any
-   URI, as defined in RFC2396_ and RFC2732_.
+   URI, as defined in RFC3936.
 
 2. Standalone email addresses, which are treated as if they were
    URIs with a "mailto:" scheme.  Example::
@@ -3065,7 +3065,7 @@ characters (see `Escaping Mechanism`_ above).
 
 .. [#URI] Uniform Resource Identifier.  URIs are a general form of
    URLs (Uniform Resource Locators).  For the syntax of URIs see
-   RFC2396_ and RFC2732_.
+   RFC3986_.
 
 
 Units
@@ -3276,9 +3276,10 @@ Markup errors are handled according to the specification in
     http://www.iana.org/assignments/uri-schemes
 .. _Retired Index of WWW Addressing Schemes:
     https://www.w3.org/Addressing/schemes.html
-.. _RFC822: https://www.rfc-editor.org/rfc/rfc822.txt
-.. _RFC2396: https://www.rfc-editor.org/rfc/rfc2396.txt
-.. _RFC2732: https://www.rfc-editor.org/rfc/rfc2732.txt
+.. _RFC822: https://www.rfc-editor.org/rfc/rfc822
+.. _RFC3986: https://www.rfc-editor.org/rfc/rfc3986
+.. _URI-references:
+.. _URI-reference: https://www.rfc-editor.org/rfc/rfc3986.html#section-4.1
 .. _World Wide Web Consortium: https://www.w3.org/
 .. _Zope: http://www.zope.com/
 

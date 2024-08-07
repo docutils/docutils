@@ -93,7 +93,7 @@ Length units
 LaTeX supports all `length units`_ defined for Docutils plus the
 following less common units:
 
-.. class:: narrow 
+.. class:: narrow
 
 :dd: didôt (1 dd = 1238/1157 pt)
 :cc: cîcero (1 cc = 12 dd)
@@ -1749,7 +1749,7 @@ The titles of admonitions_, sidebar_, and `topic element`_ use
 the ``\DUtitle`` command which can be re-defined in the corresponding
 DUCLASS environment.
 
-* The re-definition is local to the environment, so you don't need to 
+* The re-definition is local to the environment, so you don't need to
   save/restore the original function.
 
 * In the nested function redefinition, the argument placeholder requires
@@ -1799,7 +1799,7 @@ Example:
 
 Note:
   8-bit LaTeX comes with two options for UTF-8 support,
-  
+
   .. class:: field-indent-4em
 
   :utf8:  by the standard `inputenc`_ package with only limited coverage
@@ -1987,11 +1987,11 @@ For details see grfguide.pdf_.
 
 The Rubber_ wrapper can be used for automatic image conversion.
 
-Docutils expects an URI as pointer to the image file. The latex writer
-transforms this URI to a local path. By default, LaTeX does not accept
-spaces and more than one dot in the filename. If using "traditional"
-filenames is not an option, adding grffile_ to the `style sheets`_
-can help.
+Docutils expects a URI-reference_ as pointer to the image ressource.
+LaTeX requires it to refer to a local file.
+By default, LaTeX does not accept spaces and more than one dot in the
+filename. If using "traditional" filenames is not an option, loading the
+grffile_ package may help.
 
 __ ../ref/rst/directives.html#images
 .. _grfguide.pdf:

@@ -4603,7 +4603,7 @@ pointing to the same element.
 
 Attribute type: `CDATA`_.  Default value: none.
 
-The ``refuri`` attribute contains an external reference to a URI/URL.
+The ``refuri`` attribute contains an external reference to a URI.
 It is used by the `\<target>`_, `\<reference>`_,
 `\<footnote_reference>`_, and `\<citation_reference>`_ elements
 (via the `%reference.atts`_ parameter entity).
@@ -4645,7 +4645,7 @@ a uniform scaling factor (integer percentage value).
 
 Attribute type: `CDATA`_.  Default value: none.
 
-The ``source`` attribute is used to store the path or URL to the
+The ``source`` attribute is used to store the path or URI of the
 source text that was used to produce the document tree.
 
 It is one of the `common attributes`_, declared for all Docutils
@@ -4725,8 +4725,12 @@ The ``type`` attribute is used in the `\<system_message>`_ element.
 
 Attribute type: `CDATA`_.  Default value: none.
 
-The ``uri`` attribute is used in the `\<image>`_ and `\<figure>`_ elements
-to refer to the image via its Universal Resource Indicator.
+The ``uri`` attribute is used in the `\<image>`_ and `\<figure>`_
+elements to refer to the image via a `URI Reference`_ (URI or
+`relative reference`_).
+
+.. _URI Reference: https://www.rfc-editor.org/rfc/rfc3986.html#section-4.1
+.. _relative reference: https://www.rfc-editor.org/rfc/rfc3986.html#section-4.2
 
 
 ``valign``
@@ -4976,7 +4980,7 @@ indirectly employed in the attribute lists of the `\<citation_reference>`_,
 ---------------
 
 The ``%refuri.att`` parameter entity contains the refuri_ attribute,
-an external reference to a URI/URL.
+an external reference to a URI.
 
 Entity definition::
 
@@ -5232,13 +5236,6 @@ models of the following elements: `\<abbreviation>`_,
 Bibliography
 ------------
 
-.. [tm9901]     .. _XML Exchange Table Model DTD:
-                .. _Exchange Table Model:
-
-                `XML Exchange Table Model DTD`,
-                OASIS Technical Memorandum 9901:1999,
-                http://www.oasis-open.org/html/tm9901.html.
-
 .. [DocBook5.1] `DocBook 5.1: The Definitive Guide`,
                 Norman Walsh,
                 https://tdg.docbook.org/tdg/5.1/.
@@ -5249,6 +5246,13 @@ Bibliography
                 https://html.spec.whatwg.org.
 
 .. [xml1.0]    `Extensible Markup Language (XML) 1.0`,
+
+.. [tm9901]     .. _XML Exchange Table Model DTD:
+                .. _Exchange Table Model:
+
+                `XML Exchange Table Model DTD`,
+                OASIS Technical Memorandum 9901:1999,
+                http://www.oasis-open.org/html/tm9901.html.
                 W3C Recommendation,
                 https://www.w3.org/TR/xml/.
 

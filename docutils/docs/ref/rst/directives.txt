@@ -216,7 +216,7 @@ An "image" is a simple picture::
 
     .. image:: picture.png
 
-The URI for the image source file is specified in the directive
+An URI-reference_ to the image source file is specified in the directive
 argument.  As with hyperlink targets, the image URI may begin on the
 same line as the explicit markup start and target name, or it may
 begin in an indented text block immediately following, with no
@@ -296,7 +296,7 @@ as well as
 
 ``target`` : URI_ or `reference name`_
     Nest the image in a hyperlink reference element (make it "clickable").
-    The option argument may be a URI_ or a `reference name`_
+    The option argument may be a URI-reference_ or a `reference name`_
     with underscore suffix (e.g. ```a name`_``).
 
 ``width`` : length_ or percentage_ of the current line width
@@ -1007,7 +1007,7 @@ Recognizes the common options class_ and name_ as well as
     .. _`url`:
 
 ``url`` : URI_
-    An Internet URI reference to a CSV data file.
+    A URI-reference to a CSV data file.
 
 ``width`` : length_ or percentage_ of the current line width
     Sets the width of the table to the specified length or percentage
@@ -1706,7 +1706,7 @@ The "raw" directive recognizes the common option class_ and
     The local filesystem path of a raw data file to be included.
 
 ``url`` : URI_
-    An Internet URI reference to a raw data file to be included.
+    A URI-reference to a raw data file to be included.
 
 
 .. _class directive:
@@ -2165,63 +2165,49 @@ options:
 Common Option Value Types
 -------------------------
 
-*"keyword"*
-  recognized keywords.
+.. class:: run-in narrow
+
+:"keyword": recognized keywords
+
   Used without quotes in the reStructuredText source.
 
-  .. _character:
+:_`character`: single character
 
-*character*
-  single character.
   May be specified as literal character or as Unicode `character code`_
   (cf. the unicode_ directive).
 
-  .. _encoding:
+:_`encoding`: text encoding name
 
-*encoding*
-  text encoding name.
   Docutils looks it up in the list of registered codecs_
   (see also `Standard Encodings`_).
 
-  .. _flag:
+:_`flag`: no value
 
-*flag*
-  no value.
+:_`integer`: integer number
 
-  .. _integer:
-
-*integer*
   A _`list of integers` may be comma- or whitespace-separated.
 
-  .. _length:
+:_`length`: number followed by one of the supported `length units`_
 
-*length*
-  number followed by one of the supported `length units`_.
+:_`path`: local filesystem path
 
-  .. _path:
+  Newlines are removed.
 
-*path*
-  local filesystem path. Newlines are removed.
   The `root_prefix`_ configuration setting can be used to tell Docutils
   to interpret absolute paths (starting with "/") relative to a "project
   directory".
 
-  .. _text:
+:_`text`: free text
 
-*text*
-  free text (with possible restrictions in parentheses).
+  Possible restrictions are given in parentheses.
 
-  .. _URI:
+:_`URI`: _`URI-reference` (URI or `relative reference`_, cf. :RFC:`3986`)
 
-*URI*
-  `Uniform Resource Identifier`__.
-  Whitespace is removed, cf. `external hyperlink targets`_ in the
-  reStructuredText specification..
-
-  __ https://en.wikipedia.org/wiki/Uniform_Resource_Identifier
-
+  Whitespace is removed (cf. `external hyperlink targets`_ in the
+  reStructuredText specification).
 
 .. _codecs: https://docs.python.org/3/library/codecs.html
+.. _relative reference: https://www.rfc-editor.org/rfc/rfc3986.html#section-4.2
 .. _Standard Encodings:
     https://docs.python.org/3/library/codecs.html#standard-encodings
 
