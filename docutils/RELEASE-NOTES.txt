@@ -235,6 +235,8 @@ New objects
 Removed objects
   `docutils.core.Publisher.setup_option_parser()`
      internal, obsolete,
+  `docutils.frontend.OptionParser.set_defaults_from_dict()`
+     obsolete,
   `docutils.nodes.Element.set_class()`
      obsolete, append to Element['classes'] directly,
   `docutils.parsers.rst.directives.tables.CSVTable.decode_from_csv()`
