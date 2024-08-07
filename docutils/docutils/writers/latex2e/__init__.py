@@ -12,11 +12,11 @@ __docformat__ = 'reStructuredText'
 #
 # convention deactivate code by two # i.e. ##.
 
-from pathlib import Path
 import re
 import string
-from urllib.request import url2pathname
+import urllib.parse
 import warnings
+from pathlib import Path
 
 from docutils import frontend, nodes, languages, writers, utils
 from docutils.transforms import writer_aux
@@ -2400,8 +2400,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_image(self, node) -> None:
         self.requirements['graphicx'] = self.graphicx_package
         attrs = node.attributes
-        # Convert image URI to a local file path
-        imagepath = url2pathname(attrs['uri']).replace('\\', '/')
+        # image URI may use %-encoding
+        imagepath = urllib.parse.unquote(attrs['uri'])
         # alignment defaults:
         if 'align' not in attrs:
             # Set default align of image in a figure to 'center'

@@ -626,7 +626,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         uri_parts = urllib.parse.urlparse(uri)
         if uri_parts.scheme not in ('', 'file'):
             raise ValueError('Can only read local images.')
-        imagepath = urllib.request.url2pathname(uri_parts.path)
+        imagepath = urllib.parse.unquote(uri_parts.path)
         if imagepath.startswith('/'):  # cf. config.html#root-prefix
             root_prefix = Path(self.settings.root_prefix)
             imagepath = (root_prefix/imagepath[1:]).as_posix()
