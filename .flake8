@@ -74,9 +74,6 @@ per-file-ignores =
   # test output contains trailing whitespace, long lines, operator at end
   docutils/test/test_writers/test_manpage.py:E128,W291,E501,W504
 
-  # ignore long line in string templates
-  docutils/tools/dev/generate_punctuation_chars.py:E501
-
 exclude =
   .venv
   .tox

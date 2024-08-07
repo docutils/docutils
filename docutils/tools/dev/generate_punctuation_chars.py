@@ -85,7 +85,7 @@ module_template = r'''# :Id: $Id$
    .. _inline markup recognition rules:
       https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html
       #inline-markup-recognition-rules
-"""
+"""  # noqa: E501
 
 %(openers)s
 %(closers)s
@@ -153,11 +153,10 @@ unicode_punctuation_categories = {
 #
 # ::
 
-def unicode_charlists(
-    categories: Iterable[str],
-    cp_min: int = 0,
-    cp_max: int = sys.maxunicode,
-) -> dict[str, list[str]]:
+def unicode_charlists(categories: Iterable[str],
+                      cp_min: int = 0,
+                      cp_max: int = sys.maxunicode,
+                      ) -> dict[str, list[str]]:
     """Return dictionary of Unicode character lists.
 
     For each of the `catagories`, an item contains a list with all Unicode
@@ -257,12 +256,8 @@ def character_category_patterns() -> tuple[str, str, str, str]:
     # non-matching, after markup
     closing_delimiters = [r'\\.,;!?']
 
-    return (
-        ''.join(openers),
-        ''.join(closers),
-        ''.join(delimiters),
-        ''.join(closing_delimiters),
-    )
+    return tuple(''.join(chs)
+                 for chs in (openers, closers, delimiters, closing_delimiters))
 
 
 def mark_intervals(s: str) -> str:
