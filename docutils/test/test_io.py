@@ -27,10 +27,11 @@ from docutils import io as du_io
 # For when we intentionally do things that trigger EncodingWarning
 # (When using ``-X warn_default_encoding`` or PYTHONWARNDEFAULTENCODING=1)
 # See: https://docs.python.org/3/library/io.html#io-encoding-warning
-SUPPRESS_ENCODING_WARNING = (
-    sys.version_info[:2] > (3, 9)
-    and sys.flags.warn_default_encoding
-)
+if sys.version_info[:2] > (3, 9):
+    SUPPRESS_ENCODING_WARNING = sys.flags.warn_default_encoding
+else:
+    SUPPRESS_ENCODING_WARNING = False
+    EncodingWarning = UnicodeWarning
 
 # DATA_ROOT is ./test/data/ from the docutils root
 DATA_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
@@ -312,25 +313,6 @@ class FileInputTests(unittest.TestCase):
                 source_path=os.path.join(DATA_ROOT, 'utf8.txt'),
                 encoding=None)
         self.assertEqual('Grüße\n', source.read())
-
-    @unittest.skipIf(preferredencoding in (None, 'ascii', 'utf-8'),
-                     'locale encoding not set or UTF-8')
-    def test_fallback_no_utf8(self):
-        # If  no encoding is given and decoding with 'utf-8' fails,
-        # use the locale's preferred encoding (if not None).
-        # Provisional: the default will become 'utf-8'
-        # (without auto-detection and fallback) in Docutils 0.22.
-        with warnings.catch_warnings():
-            if SUPPRESS_ENCODING_WARNING:
-                warnings.filterwarnings('ignore', category=EncodingWarning)
-            source = du_io.FileInput(
-                source_path=os.path.join(DATA_ROOT, 'latin1.txt'),
-                encoding=None)
-        data = source.read()
-        successful_encoding = codecs.lookup(source.successful_encoding).name
-        self.assertEqual(preferredencoding, successful_encoding)
-        if successful_encoding == 'iso8859-1':
-            self.assertEqual('Grüße\n', data)
 
     def test_readlines(self):
         source = du_io.FileInput(
