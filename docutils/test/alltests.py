@@ -39,7 +39,7 @@ if TYPE_CHECKING:
         type[BaseException],
         BaseException,
         types.TracebackType,
-    ]
+        ]
 
 STDOUT = sys.__stdout__
 
@@ -48,9 +48,9 @@ class Tee:
     """Write to a file and stdout simultaneously."""
 
     def __init__(self, filename: str) -> None:
-        self.file: TextIO | None = open(
-            filename, 'w', encoding='utf-8', errors='backslashreplace',
-        )
+        self.file: TextIO | None = open(filename, mode='w',
+                                        encoding='utf-8',
+                                        errors='backslashreplace')
         self.encoding: str = 'utf-8'
         atexit.register(self.close)
 
@@ -82,9 +82,11 @@ import unittest  # NoQA: E402
 
 class NumbersTestResult(unittest.TextTestResult):
     """Result class that counts subTests."""
-    def addSubTest(
-        self, test: TestCase, subtest: TestCase, error: ErrorTriple | None,
-    ) -> None:
+    def addSubTest(self,
+                   test: TestCase,
+                   subtest: TestCase,
+                   error: ErrorTriple | None,
+                   ) -> None:
         super().addSubTest(test, subtest, error)
         self.testsRun += 1
         if self.dots:

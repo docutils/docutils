@@ -36,11 +36,11 @@ try:
     # Return locale encoding also in UTF-8 mode
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        _locale_encoding: str | None = (
-            locale.getlocale()[1] or locale.getdefaultlocale()[1]
-        ).lower()
+        _locale_encoding: str | None = (locale.getlocale()[1]
+                                        or locale.getdefaultlocale()[1]
+                                        ).lower()
 except:  # NoQA: E722
-    # any other problems determining the locale -> use None
+    # Any problem determining the locale: use None
     _locale_encoding = None
 try:
     codecs.lookup(_locale_encoding)

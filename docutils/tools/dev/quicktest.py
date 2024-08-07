@@ -107,21 +107,16 @@ def usage() -> None:
         print(description)
 
 
-def _pretty(
-    input_: str, document: nodes.document, optargs: _OptArgs,
-) -> str:
+def _pretty(input_: str, document: nodes.document, optargs: _OptArgs) -> str:
     return document.pformat()
 
 
-def _rawxml(
-    input_: str, document: nodes.document, optargs: _OptArgs,
-) -> str:
+def _rawxml(input_: str, document: nodes.document, optargs: _OptArgs) -> str:
     return document.asdom().toxml()
 
 
-def _styledxml(
-    input_: str, document: nodes.document, optargs: _OptArgs,
-) -> str:
+def _styledxml(input_: str, document: nodes.document, optargs: _OptArgs
+               ) -> str:
     docnode = document.asdom().childNodes[0]
     return '\n'.join(('<?xml version="1.0" encoding="ISO-8859-1"?>',
                       '<?xml-stylesheet type="text/xsl" href="%s"?>'
@@ -129,15 +124,12 @@ def _styledxml(
                       docnode.toxml()))
 
 
-def _prettyxml(
-    input_: str, document: nodes.document, optargs: _OptArgs,
-) -> str:
+def _prettyxml(input_: str, document: nodes.document, optargs: _OptArgs
+               ) -> str:
     return document.asdom().toprettyxml('    ', '\n')
 
 
-def _test(
-    input_: str, document: nodes.document, optargs: _OptArgs,
-) -> str:
+def _test(input_: str, document: nodes.document, optargs: _OptArgs) -> str:
     tq = '"""'
     output = document.pformat()         # same as _pretty()
     return """\
@@ -168,15 +160,14 @@ _output_formatters: dict[str, _FormatFunc] = {
     'xml': _prettyxml,
     'pretty': _pretty,
     'test': _test,
-}
+    }
 
 
-def format(
-    output_format: str,
-    input_: str,
-    document: nodes.document,
-    optargs: _OptArgs,
-) -> str:
+def format(output_format: str,
+           input_: str,
+           document: nodes.document,
+           optargs: _OptArgs,
+           ) -> str:
     formatter = _output_formatters[output_format]
     return formatter(input_, document, optargs)
 

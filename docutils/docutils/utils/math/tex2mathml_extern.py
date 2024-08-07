@@ -103,14 +103,13 @@ def latexml(math_code, as_block=False):
              '--',
              ]
     math_code = document_template % wrap_math_code(math_code, as_block)
+    error_tags = ('Error:', 'Warning:', 'Fatal:')
 
     result1 = subprocess.run(args1, input=math_code,
                              capture_output=True, text=True)
     if result1.stderr:
-        result1.stderr = '\n'.join(
-            line for line in result1.stderr.splitlines()
-            if line.startswith(('Error:', 'Warning:', 'Fatal:'))
-        )
+        result1.stderr = '\n'.join(line for line in result1.stderr.splitlines()
+                                   if line.startswith(error_tags))
     _check_result(result1)
 
     args2 = ['latexmlpost',
@@ -142,10 +141,8 @@ def latexml(math_code, as_block=False):
         _msg_source = result2.stdout  # latexmlpost reports errors in output
     else:
         _msg_source = result2.stderr  # just in case
-    result2.stderr = '\n'.join(
-        line for line in _msg_source.splitlines()
-        if line.startswith(('Error:', 'Warning:', 'Fatal:'))
-    )
+    result2.stderr = '\n'.join(line for line in _msg_source.splitlines()
+                               if line.startswith(error_tags))
     _check_result(result2)
     return result2.stdout
 

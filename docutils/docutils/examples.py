@@ -25,14 +25,13 @@ if TYPE_CHECKING:
     from docutils.core import Publisher
 
 
-def html_parts(
-    input_string: str | bytes,
-    source_path: str | os.PathLike[str] | None = None,
-    destination_path: str | os.PathLike[str] | None = None,
-    input_encoding: Literal['unicode'] | str = 'unicode',
-    doctitle: bool = True,
-    initial_header_level: int = 1,
-) -> dict[str, str]:
+def html_parts(input_string: str | bytes,
+               source_path: str | os.PathLike[str] | None = None,
+               destination_path: str | os.PathLike[str] | None = None,
+               input_encoding: Literal['unicode'] | str = 'unicode',
+               doctitle: bool = True,
+               initial_header_level: int = 1,
+               ) -> dict[str, str]:
     """
     Given an input string, returns a dictionary of HTML document parts.
 
@@ -66,15 +65,14 @@ def html_parts(
     return parts
 
 
-def html_body(
-    input_string: str | bytes,
-    source_path: str | os.PathLike[str] | None = None,
-    destination_path: str | os.PathLike[str] | None = None,
-    input_encoding: Literal['unicode'] | str = 'unicode',
-    output_encoding: Literal['unicode'] | str = 'unicode',
-    doctitle: bool = True,
-    initial_header_level: int = 1,
-) -> str | bytes:
+def html_body(input_string: str | bytes,
+              source_path: str | os.PathLike[str] | None = None,
+              destination_path: str | os.PathLike[str] | None = None,
+              input_encoding: Literal['unicode'] | str = 'unicode',
+              output_encoding: Literal['unicode'] | str = 'unicode',
+              doctitle: bool = True,
+              initial_header_level: int = 1,
+              ) -> str | bytes:
     """
     Given an input string, returns an HTML fragment as a string.
 
@@ -96,12 +94,11 @@ def html_body(
     return fragment
 
 
-def internals(
-    source: str,
-    source_path: str | os.PathLike[str] | None = None,
-    input_encoding: Literal['unicode'] | str = 'unicode',
-    settings_overrides: dict[str, Any] | None = None,
-) -> tuple[nodes.document, Publisher]:
+def internals(source: str,
+              source_path: str | os.PathLike[str] | None = None,
+              input_encoding: Literal['unicode'] | str = 'unicode',
+              settings_overrides: dict[str, Any] | None = None,
+              ) -> tuple[nodes.document, Publisher]:
     """
     Return the document tree and publisher, for exploring Docutils internals.
 

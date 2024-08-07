@@ -197,7 +197,9 @@ class Table:
 
 class Translator(nodes.NodeVisitor):
     """
-    Generate unix-like manual pages using the man macro package
+    Docutils to man page translator.
+
+    Generate unix-like manual pages using the "man macro package"
     from a Docutils document tree.
     """
 

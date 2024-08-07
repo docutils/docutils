@@ -62,25 +62,25 @@ if TYPE_CHECKING:
     from docutils.nodes import Element
     from docutils.transforms import Transform
 
+    _Components = Literal['reader', 'parser', 'writer', 'input', 'output']
     _OptionTuple = tuple[str, list[str], dict[str, Any]]
+    _ReleaseLevels = Literal['alpha', 'beta', 'candidate', 'final']
     _SettingsSpecTuple = Union[
-        tuple[
-            Union[str, None], Union[str, None], Sequence[_OptionTuple],
-        ],
-        tuple[
-            Union[str, None], Union[str, None], Sequence[_OptionTuple],
-            Union[str, None], Union[str, None], Sequence[_OptionTuple],
-        ],
-        tuple[
-            Union[str, None], Union[str, None], Sequence[_OptionTuple],
-            Union[str, None], Union[str, None], Sequence[_OptionTuple],
-            Union[str, None], Union[str, None], Sequence[_OptionTuple],
-        ],
-    ]
+        tuple[str|None, str|None, Sequence[_OptionTuple]],
+        tuple[str|None, str|None, Sequence[_OptionTuple],
+              str|None, str|None, Sequence[_OptionTuple]],
+        tuple[str|None, str|None, Sequence[_OptionTuple],
+              str|None, str|None, Sequence[_OptionTuple],
+              str|None, str|None, Sequence[_OptionTuple]],
+        ]
 
     class _UnknownReferenceResolver(Protocol):
-        def __call__(self, node: Element, /) -> bool: ...  # NoQA: E704
+        """See `TransformSpec.unknown_reference_resolvers`."""
+
         priority: int
+
+        def __call__(self, node: Element, /) -> bool:
+            ...
 
 __docformat__ = 'reStructuredText'
 
@@ -109,15 +109,15 @@ class VersionInfo(namedtuple('VersionInfo',
     major: int
     minor: int
     micro: int
-    releaselevel: Literal['alpha', 'beta', 'candidate', 'final']
+    releaselevel: _ReleaseLevels
     serial: int
     release: bool
 
-    def __new__(
-        cls, major: int = 0, minor: int = 0, micro: int = 0,
-        releaselevel: Literal['alpha', 'beta', 'candidate', 'final'] = 'final',
-        serial: int = 0, release: bool = True,
-    ) -> VersionInfo:
+    def __new__(cls,
+                major: int = 0, minor: int = 0, micro: int = 0,
+                releaselevel: _ReleaseLevels = 'final',
+                serial: int = 0, release: bool = True,
+                ) -> VersionInfo:
         releaselevels = ('alpha', 'beta', 'candidate', 'final')
         if releaselevel not in releaselevels:
             raise ValueError('releaselevel must be one of %r.'
@@ -298,7 +298,7 @@ class TransformSpec:
     the 'refname' attribute and mark the node as resolved::
 
         del node['refname']
-        node.resolved = 1
+        node.resolved = True
 
     Each function must have a "priority" attribute which will affect the order
     the unknown_reference_resolvers are run::
@@ -307,7 +307,7 @@ class TransformSpec:
 
     This hook is provided for 3rd party extensions.
     Example use case: the `MoinMoin - ReStructured Text Parser`
-    in ``sandbox/mmgilbe/rst.py``.
+    https://github.com/moinwiki/moin
     """
 
 
@@ -315,11 +315,9 @@ class Component(SettingsSpec, TransformSpec):
 
     """Base class for Docutils components."""
 
-    component_type: ClassVar[
-        Literal['reader', 'parser', 'writer', 'input', 'output'] | None
-    ] = None
-    """Name of the component type ('reader', 'parser', 'writer').  Override in
-    subclasses."""
+    component_type: ClassVar[_Components | None] = None
+    """Name of the component type ('reader', 'parser', 'writer').
+    Override in subclasses."""
 
     supported: ClassVar[tuple[str, ...]] = ()
     """Name and aliases for this component.  Override in subclasses."""

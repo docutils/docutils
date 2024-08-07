@@ -194,11 +194,10 @@ class Publisher:
         if self.destination is None:
             self.set_destination(destination_path=destination_path)
 
-    def set_source(
-        self,
-        source: str | None = None,
-        source_path: str | os.PathLike[str] | None = None,
-    ) -> None:
+    def set_source(self,
+                   source: str | None = None,
+                   source_path: str | os.PathLike[str] | None = None,
+                   ) -> None:
         if source_path is None:
             source_path = self.settings._source
         else:
@@ -209,11 +208,10 @@ class Publisher:
             encoding=self.settings.input_encoding,
             error_handler=self.settings.input_encoding_error_handler)
 
-    def set_destination(
-        self,
-        destination: str | None = None,
-        destination_path: str | os.PathLike[str] | None = None,
-    ) -> None:
+    def set_destination(self,
+                        destination: str | None = None,
+                        destination_path: str | os.PathLike[str] | None = None,
+                        ) -> None:
         if destination_path is None:
             if (self.settings.output and self.settings._destination
                 and self.settings.output != self.settings._destination):

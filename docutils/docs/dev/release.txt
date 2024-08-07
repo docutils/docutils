@@ -61,7 +61,7 @@ Steps to take and watch
 
   ``export PYTHONWARNINGS=default`` prints DeprecationWarnings in python3.
 
-* Generate wheel and source-distribution::
+* Generate wheel and source-distribution, e.g.::
 
     python3 -m pip install build
     python3 -m build .
@@ -121,7 +121,8 @@ Steps to take and watch
              -m "tagging release #.#"
 
 * Update your source directory.
-* Rebuild wheel and source-distribution ::
+
+* Rebuild wheel and source-distribution, e.g::
 
     python3 -m build
 
