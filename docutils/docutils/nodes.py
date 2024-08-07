@@ -1567,10 +1567,10 @@ class TextElement(Element):
     ) -> None:
         if text:
             textnode = Text(text)
-            super().__init__(rawsource, textnode, *children,
+            Element.__init__(self, rawsource, textnode, *children,
                              **attributes)
         else:
-            super().__init__(rawsource, *children, **attributes)
+            Element.__init__(self, rawsource, *children, **attributes)
 
 
 class FixedTextElement(TextElement):
