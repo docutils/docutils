@@ -1,3 +1,15 @@
+# Set up options
+# http://www.catb.org/~esr/reposurgeon/repository-editing.html#control-options
+
+set echo
+# We expect version 4.38
+version 4.38
+# Canonicalise comments/messages by normalising line endings to LF,
+# stripping leading & trailing whitespace, and appending a new line.
+set canonicalize
+# Enable fancy progress messages even when not on a tty.
+set progress
+
 # Set up logging
 logfile conversion.prest.log
 
@@ -9,8 +21,8 @@ prefer git
 
 # Create macros
 define releasetag {
-tag create {0} @min(=C&/\nSubversion-Revision-ID: {1}\n/)
-<{0}> setfield comment "Docutils {0}"
+tag create "v{0}" {1}
+<v{0}> setfield comment "prest {0}"
 }
 
 # Delete unneeded branches
@@ -18,10 +30,10 @@ branch delete refs/heads/plugins
 branch delete refs/heads/subdocs
 branch delete refs/heads/lossless-rst-writer
 branch delete refs/heads/nesting
-branch delete heads/rel-0.15
+branch delete refs/heads/rel-0.15
 
 # Drop the "Remove 'prest'" commit
-/Remove 'prest'/ delete
+<9003> delete commit --quiet
 
 # Delete everything else
 expunge --notagify --not /^prest\/.*$/
@@ -29,40 +41,61 @@ expunge --notagify --not /^prest\/.*$/
 # Move up a directory
 path rename "prest/(.*)" "\1" --force
 
+# Remove now-empty merges
+=Z & <5623> unmerge
+=Z & <4667> unmerge
+=Z & <3892-2> unmerge
+
+# Remove now-empty commits
+=Z setfield comment "\n"
+=Z squash --empty-only --delete
+
 # Create new tags
-do releasetag 0.3.10 4327
-do releasetag 0.3.11 4580
+# Release archives found at https://metacpan.org/author/NODINE/releases
+do releasetag 0.3.10 <4327>
+do releasetag 0.3.11 <4583>
 # 0.3.12 -- never released
-do releasetag 0.3.13 4635
-do releasetag 0.3.14 4648
-do releasetag 0.3.15 4663
-do releasetag 0.3.16 4666
+do releasetag 0.3.13 <4635>
+do releasetag 0.3.14 <4648>
+do releasetag 0.3.15 <4663>
+do releasetag 0.3.16 <4666>
 # 0.3.17 -- never released
-do releasetag 0.3.18 4736
-do releasetag 0.3.19 4799
-do releasetag 0.3.20 4876
-do releasetag 0.3.21 4889
-do releasetag 0.3.22 4910
-do releasetag 0.3.23 4932
-do releasetag 0.3.24 4934
-do releasetag 0.3.25 4949
-do releasetag 0.3.26 5058
-do releasetag 0.3.27 5062
-do releasetag 0.3.28 5063
-do releasetag 0.3.29 5066
-do releasetag 0.3.30 5071
-do releasetag 0.3.31 5299
-do releasetag 0.3.32 5363
-do releasetag 0.3.33 5378
-do releasetag 0.3.34 5438
-do releasetag 0.3.35 5446
-do releasetag 0.3.36 5453
-do releasetag 0.3.37 5486
-do releasetag 0.3.38 5781
-do releasetag 0.3.39 5799
-do releasetag 0.3.40 5810
-do releasetag 0.3.41 6251
-do releasetag 0.3.42 6291
-do releasetag 0.3.43 6302
-do releasetag 0.3.44 6440
-do releasetag 0.3.45 6498
+do releasetag 0.3.18 <4736>
+do releasetag 0.3.19 <4799>
+do releasetag 0.3.20 <4876>
+do releasetag 0.3.21 <4889>
+do releasetag 0.3.22 <4910>
+do releasetag 0.3.23 <4932>
+do releasetag 0.3.24 <4934>
+do releasetag 0.3.25 <4949>
+do releasetag 0.3.26 <5058>
+do releasetag 0.3.27 <5062>
+do releasetag 0.3.28 <5063>
+do releasetag 0.3.29 <5066>
+do releasetag 0.3.30 <5071>
+do releasetag 0.3.31 <5299>
+do releasetag 0.3.32 <5363>
+do releasetag 0.3.33 <5378>
+do releasetag 0.3.34 <5438>
+do releasetag 0.3.35 <5446>
+do releasetag 0.3.36 <5453>
+do releasetag 0.3.37 <5486>
+do releasetag 0.3.38 <5781>
+do releasetag 0.3.39 <5799>
+do releasetag 0.3.40 <5810>
+do releasetag 0.3.41 <6251>
+do releasetag 0.3.42 <6291>
+do releasetag 0.3.43 <6302>
+do releasetag 0.3.44 <6440>
+do releasetag 0.3.45 <6498>
+
+# Delete auto-generated lightweight tags
+branch delete :refs/tags/prest-:
+
+# Export to converted-prest.fi
+write >converted-prest.fi
+
+# Timing statistics
+timing
+
+exit

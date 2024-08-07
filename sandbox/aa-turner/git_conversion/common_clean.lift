@@ -1,50 +1,73 @@
 # common_clean.lift
 
-# These reposurgeon scripts are common to all repositories.
-# They are run in order:
+# This is the one of the common reposurgeon lift script
+# files, creating the common history that the four
+# repo-specific scripts use as their inputs. This file is
+# called as part of the common-git target, and should not
+# be loaded directly. It has no inputs.
+# These files require reposurgeon 4.38.
+
+# These 'common' scripts are run in order:
 # 1. common_load.lift
-# 2. common_merge.sh
-# 3. common_clean.lift
+# 2. common_cvs_docstring.lift
+# 3. common_cvs_structuredtext.lift
+# 4. common_combine.sh
+# 5. common_clean.lift
 
 # Set up options
+# http://www.catb.org/~esr/reposurgeon/repository-editing.html#control-options
+
+set echo
+# We expect version 4.38
+version 4.38
+# Canonicalise comments/messages by normalising line endings to LF,
+# stripping leading & trailing whitespace, and appending a new line.
 set canonicalize
+# Enable fancy progress messages even when not on a tty.
 set progress
-prefer git
 
-read --format=git tmp_combined/
-prefer git
+read <tmp_combined.fi
+read <docutils_late.fi
 
-read --format=git docutils_tmp_late/
-prefer git
+# After reading the input streams,
+# if something goes wrong we'd prefer not to abort.
+set relax
 
-# Unite the combined histories with Late
-# this makes the tip of tmp_combined the root commit for docutils_late
+# Unite the combined histories with docutils-late
+# this makes the tip of tmp_combined ("~merge histories~")
+# the root commit for docutils_late ("Initial revision")
 choose tmp_combined
-@max(=C) & /~merge histories~/ graft docutils_tmp_late
+@max(=C) & /~merge histories~/c graft docutils_late
 rename docutils
-renumber
 
 # Delete surgery branches
-branch delete heads/docutils
-branch delete heads/docstring
-branch delete heads/structuredtext
-branch rename /heads\/(.*)-docutils_tmp_late/ "heads/\1"
+branch delete refs/heads/docutils
+branch delete refs/heads/docstring
+branch delete refs/heads/structuredtext
+branch rename /heads\/(.*)-docutils_late/ "heads/\1"
+branch rename /tags\/(.*)-docutils_late/ "tags/\1"
 
 # Update metadata of merge commit
-# <2002-04-20T03:00:05Z#1> Initial revision (first commit of docutils_late)
+# <2002-04-20T03:01:52Z> Initial revision (first commit of docutils_late)
 # the parent of this commit is the merge commit, we can't rely on commit
 # message matching as we blank out the commit message and the date is
 # indeterminate
-@max(@par(<2002-04-20T03:00:05Z#1>)) assign --singleton merge_commit
-merge_commit setfield comment "Combine into Docutils\n\n***Commit added during git conversion***.\n\nMerged projects:\n\n- docutils (SVN)\n- docstring (CVS)\n- structuredtext (CVS)\n"
+#@max(@par(<2002-04-20T03:01:52Z>)) assign --singleton merge_commit
+=C & /~merge histories~/c assign --singleton merge_commit
+merge_commit setfield comment "Combine into Docutils\n\n***Commit created during git conversion***\n\nMerged projects:\n\n- docutils (SVN)\n- docstring (CVS)\n- structuredtext (CVS)\n"
 merge_commit attribution =A set "David Goodger" "goodger@python.org" "Sat Apr 20 02:00:00 2002 +0000"
 merge_commit attribution =C set "David Goodger" "goodger@python.org" "Sat Apr 20 02:00:00 2002 +0000"
 
-# Remove merge files
-define delete_merge {
-<2002-04-20T03:00:05Z#1> add D {0}
-}
-
+# Allow file moves from dps/ and restructuredtext/ to be recognised
+# This is quite involved. First we remove existing file operations
+# after the merge. Then we remove the reset (deleteall) marker in
+# the first commit, and finally manually add delete file operations
+# to each dps/ and restructuredtext/ file. We can't use expunge,
+# as that simply removes modifiacations rather than adding deletes.
+<2002-04-20T03:01:52Z#1> assign --singleton du_first_commit
+@suc(du_first_commit) expunge "(dps|restructuredtext)/.*")
+du_first_commit remove 1
+define delete_merge <2002-04-20T03:01:52Z#1> add D "{0}"
 do delete_merge dps/COPYING.txt
 do delete_merge dps/HISTORY.txt
 do delete_merge dps/MANIFEST.in
@@ -164,6 +187,11 @@ do delete_merge restructuredtext/tools/test.txt
 
 # Ensure every commit message ends with a single new line
 =C append "\n" --rstrip
-=C append "\n"
+
+# Export to common.fi
+write >common.fi
+
+# Timing statistics
+timing
 
 exit

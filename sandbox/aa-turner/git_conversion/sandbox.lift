@@ -1,3 +1,15 @@
+# Set up options
+# http://www.catb.org/~esr/reposurgeon/repository-editing.html#control-options
+
+set echo
+# We expect version 4.38
+version 4.38
+# Canonicalise comments/messages by normalising line endings to LF,
+# stripping leading & trailing whitespace, and appending a new line.
+set canonicalize
+# Enable fancy progress messages even when not on a tty.
+set progress
+
 # Set up logging
 logfile conversion.sandbox.log
 
@@ -12,10 +24,31 @@ branch delete refs/heads/plugins
 branch delete refs/heads/subdocs
 branch delete refs/heads/lossless-rst-writer
 branch delete refs/heads/nesting
-branch delete heads/rel-0.15
+branch delete refs/heads/rel-0.15
 
 # Delete everything else
 expunge --notagify --not /^sandbox\/.*$/
 
 # Move up a directory
 path rename "sandbox/(.*)" "\1" --force
+
+# Remove now-empty merges
+=Z & <5623> unmerge
+=Z & <5618> unmerge
+=Z & <5015-2> unmerge
+=Z & <4667> unmerge
+=Z & <4156> unmerge
+=Z & <3581> unmerge
+=Z & <3129> unmerge
+
+# Remove now-empty commits (except "Combine into Docutils")
+=Z & ~<2002-04-20T02:00:00Z> setfield comment "\n"
+=Z & ~<2002-04-20T02:00:00Z> squash --empty-only --delete
+
+# Export to converted-docutils.fi
+write >converted-sandbox.fi
+
+# Timing statistics
+timing
+
+exit

@@ -1,3 +1,15 @@
+# Set up options
+# http://www.catb.org/~esr/reposurgeon/repository-editing.html#control-options
+
+set echo
+# We expect version 4.38
+version 4.38
+# Canonicalise comments/messages by normalising line endings to LF,
+# stripping leading & trailing whitespace, and appending a new line.
+set canonicalize
+# Enable fancy progress messages even when not on a tty.
+set progress
+
 # Set up logging
 logfile conversion.docutils.log
 
@@ -9,60 +21,93 @@ prefer git
 
 # Create macros
 define releasetag {
-tag create {0} @min(/\nSubversion-Revision-ID: {1}\n/)
-<{0}> setfield comment "Docutils {0}"
+tag create "v{0}" {1}
+<v{0}> setfield comment "Docutils {0}"
 }
 
-# Move infrastructure, enhancement-proposals, web
+# Move infrastructure and enhancement-proposals
 path rename "sandbox/infrastructure/(.*)" "docutils/infrastructure/\1" --force
-path rename "sandbox/enhancement-proposals/(.*)" "docutils/docs/enhancement-proposals/\1" --force
-path rename "^web(.*)" "docutils/docs/web\1" --force
+path rename "sandbox/davidg/infrastructure/(.*)" "docutils/infrastructure/\1" --force
+path rename "sandbox/enhancement-proposals/(.*)" "docutils/docs/dev/enhancement-proposals/\1" --force
 
-# Delete everything else
-expunge --notagify /^sandbox\/.*$/
-expunge --notagify /^prest\/.*$/
-expunge --notagify /^.pre-commit-config.yaml\/.*$/
-expunge --notagify /^.flake8\/.*$/
+# Delete everything else in the root
+expunge --notagify /^(prest|sandbox|web|web_docstring|web_structuredtext)\/.*$/
+expunge --notagify /^tox.ini$/
+expunge --notagify /^\.(flake8|gitattributes|gitignore|pre-commit-config.yaml)$/
 
 # Move up a directory
-path rename "docutils/(.*)" "\1" --force
+path rename "^docutils/(.*)" "\1" --force
+
+# Remove now-empty commits
+=Z setfield comment "\n"
+=Z squash --empty-only --delete
 
 # Create new tags
-do releasetag 0.1.0 30
-do releasetag 0.2.0 433
-do releasetag 0.3.0 1504
-do releasetag 0.3.1 1641
-# 0.3.2 -- never released
-do releasetag 0.3.3 2067
+# Commits matches with contents of archives from
+# https://sourceforge.net/projects/docutils/files
+# and https://pypi.org/project/docutils/#history
+# 0.3.1, 0.3.2, and 0.3.3 had no archive made,
+# but we tag them here as there are over 1,000
+# commits between 0.3.0 and 0.3.5.
+# 0.3.4, 0.3.6, and 0.3.8 were never released
+# because of failures in the release process.
+# Likewise, 0.13.0 was not actually released.
+do releasetag 0.1.0 <30>
+do releasetag 0.2.0 <433>
+do releasetag 0.3.0 <1504>
+do releasetag 0.3.1 <1641>
+do releasetag 0.3.2 <1944>
+do releasetag 0.3.3 <2067>
 # 0.3.4 -- never released
-do releasetag 0.3.5 2512
+do releasetag 0.3.5 <2512>
 # 0.3.6 -- never released
-do releasetag 0.3.7 2900
+do releasetag 0.3.7 <2900>
 # 0.3.8 -- never released
-do releasetag 0.3.9 3376
-do releasetag 0.4.0 4262
-do releasetag 0.5.0 5578
-do releasetag 0.6.0 6167
-do releasetag 0.7.0 6360
-do releasetag 0.8.0 7087
-do releasetag 0.8.1 7107
-do releasetag 0.9.0 7410
-do releasetag 0.9.1 7452
-do releasetag 0.10.0 7563
-do releasetag 0.11.0 7696
-do releasetag 0.12.0 7760
+do releasetag 0.3.9 <3376>
+do releasetag 0.4.0 <4262>
+do releasetag 0.5.0 <5578>
+do releasetag 0.6.0 <6167>
+do releasetag 0.7.0 <6360>
+do releasetag 0.8.0 <7087>
+do releasetag 0.8.1 <7107>
+do releasetag 0.9.0 <7410>
+do releasetag 0.9.1 <7452>
+do releasetag 0.10.0 <7563>
+do releasetag 0.11.0 <7696>
+do releasetag 0.12.0 <7760>
 # 0.13.0 -- never released
-do releasetag 0.13.1 7985
-do releasetag 0.14.0 8148
-do releasetag 0.15.0 8272
-do releasetag 0.15.1 8298
-do releasetag 0.15.2 8304
-do releasetag 0.16.0 8453
-do releasetag 0.17.0 8653
-do releasetag 0.17.1 8705
-do releasetag 0.18.0 8865
-do releasetag 0.18.1 8900
-do releasetag 0.19.0 9103
+do releasetag 0.13.1 <7985>
+# do releasetag 0.14.0rc1 <8087>
+# do releasetag 0.14.0rc2 <8135>
+do releasetag 0.14.0 <8148>
+do releasetag 0.15.0 <8272>
+do releasetag 0.15.1 <8298>
+do releasetag 0.15.2 <8304>
+# do releasetag 0.16.0rc1 <8442>
+do releasetag 0.16.0 <8453>
+# do releasetag 0.17.0b1 <8615>
+do releasetag 0.17.0 <8653>
+do releasetag 0.17.1 <8705>
+# do releasetag 0.18.0b1 <8845>
+do releasetag 0.18.0 <8865>
+# do releasetag 0.18.1b1 <8893>
+do releasetag 0.18.1 <8900>
+# do releasetag 0.19.0b1 <9085>
+do releasetag 0.19.0 <9103>
+# do releasetag 0.20.0rc1 <9372>
+do releasetag 0.20.0 <9374>
+do releasetag 0.20.1 <9388>
+# do releasetag 0.21.0rc1 <9601>
+do releasetag 0.21.0 <9621>
+do releasetag 0.21.1 <9632>
+do releasetag 0.21.2 <9649>
 
-# Remove rel-0.15 branch (must be done after reposurgeon)
-branch delete heads/rel-0.15
+branch delete :refs/tags/docutils-:
+
+# Export to converted-docutils.fi
+write >converted-docutils.fi
+
+# Timing statistics
+timing
+
+exit

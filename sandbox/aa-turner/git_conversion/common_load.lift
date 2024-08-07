@@ -1,66 +1,424 @@
 # common_load.lift
+# Estimated time: 90s
 
-# These reposurgeon scripts are common to all repositories.
-# They are run in order:
+# This is the one of the common reposurgeon lift script
+# files, creating the common history that the four
+# repo-specific scripts use as their inputs. This file is
+# called as part of the common-git target, and should not
+# be loaded directly. It has one input (docutils.map).
+# These files require reposurgeon 4.38.
+
+# These 'common' scripts are run in order:
 # 1. common_load.lift
-# 2. common_merge.sh
-# 3. common_clean.lift
+# 2. common_cvs_docstring.lift
+# 3. common_cvs_structuredtext.lift
+# 4. common_combine.sh
+# 5. common_clean.lift
 
 # Set up options
+# http://www.catb.org/~esr/reposurgeon/repository-editing.html#control-options
+
+set echo
+# We expect version 4.38
+version 4.38
+# Canonicalise comments/messages by normalising line endings to LF,
+# stripping leading & trailing whitespace, and appending a new line.
 set canonicalize
+# Enable fancy progress messages even when not on a tty.
 set progress
-prefer git
 
 # Read subversion repo
-read --no-automatic-ignores --user-ignores <docutils.svn
+# http://www.catb.org/~esr/reposurgeon/repository-editing.html#_reading_subversion_repositories
+# Do not modify .gitignore files in the source tree
+# Preserve the history up to deletion when a branch or tag was deleted
+# in SVN (under refs/deleted/)
+# Estimated time: 30s
+read --preserve --no-automatic-ignores --user-ignores <docutils.svn
+
+# Load the Subversion-to-Git author IDs map
+# Subversion just uses a username, Git demands a name and email address
+# MUST BE AFTER 'read' otherwise reposurgeon panics (SIGSEV).
 authors read <docutils.map
-prefer git
+
+# Write 'virgin' conversion with no changes
+#write --format=git virgin_docutils/
+
+# After reading the author map and the SVN dump,
+# if something goes wrong we'd prefer not to abort.
+set relax
 
 # Update commit messages
+# Attempt to massage comments into a git-friendly form
+# with a blank separator line after a summary line.
 gitify
+# Replace \r\n (Windows-style) line endings with \n
 =C filter dedos
 
-# Add backreference to SVN IDs
-=C append "\n\nSubversion-Revision-ID: %LEGACY%" --legacy --rstrip
+# Add backreference to SVN IDs as a git trailer
+# `--rstrip` right-strips the comment *before* appending the text
+=C append "\n\nSubversion-Revision: r%LEGACY%\n" --legacy --rstrip
 
 # Delete branch-creation commits in Subversion, which are prefixed with
 # "emptycommit".
 tag delete /emptycommit/
 
-# Delete invalid tags and branches
-tag delete deleted/r3814/docutils-0.3.9-root
-tag delete rel-0.15-root 
-branch delete /tags\/.*/
+# Delete '-tipdelete' tags, these all have branches for the tip
+tag delete /tipdelete$/
+
+# Delete invalid tags and branches with no actual changes
+# (refs/tags/ is needed for lightweight tags)
+# 'initial' (r63): manufactured by cvs2svn
+tag delete initial
+# 'start' (r1558): combination of r2, r1550, and r1555
 branch delete refs/tags/start
+# 'merged_to_nesting' (r2576): just deletes sandbox/ and web/
 branch delete refs/tags/merged_to_nesting
+# 'address-rendering' (r4314): re-applies reverted r4311 in new branch
 branch delete refs/heads/address-rendering
+# 'index-bug': fixed in https://sourceforge.net/p/docutils/bugs/448/
 branch delete refs/heads/index-bug
+# 'root' tags for branch points
+tag delete deleted/r3130/multiple-ids-root
+tag delete deleted/r4668/directives-root
+tag delete rel-0.15-root
+# Uninteresting working branch (merged in r3770)
+branch delete refs/deleted/r3771/heads/todo2
+# Integrated into 'deleted/r3771/todo2'
+branch delete refs/deleted/r3773/heads/todo
+# Only delete ops
+branch delete refs/deleted/r3540-1/heads/ax
+branch delete refs/deleted/r3540-3/heads/tibs
+# Duplicates of r22, r23, and full history of PEP 287.
+branch delete refs/deleted/r3540-2/heads/goodger
+# Duplicate of r1555
+branch delete refs/deleted/r3540-4/heads/vendor
+# Integrated into 'deleted/r5620/abolish-userstring-haskey'
+branch delete refs/deleted/r5611/heads/abolish-userstring
+# Only backports from master, no 0.4.X release was ever made
+branch delete refs/deleted/r8125/heads/docutils-0.4
+# Invalid release tags pointing to the branching point
+tag delete deleted/r3383/docutils-
+tag delete deleted/r3814/docutils-0.3.9
+tag delete deleted/r4267/docutils-0.4
+reset delete refs/deleted/r3383/tags/docutils-
+reset delete refs/deleted/r3814/tags/docutils-0.3.9
+reset delete refs/deleted/r4267/tags/docutils-0.4
+
+# Remove useless commits: web/docutils
+# Indentical content was added to web/docutils.txt and web/index.txt
+# in r2 and r4, three minutes apart. 30 seconds later, docutils.txt
+# was deleted in r6 (and that path never modified again)
+<2>,<6> squash --quiet --delete
+
+# Merge split "initial revision" commits (r18 into r17)
+<17> setfield comment "\n"
+<17> squash
+<18> filter regex /r18/r17\nSubversion-Revision: r18/c
 
 # Remove "This commit was manufactured by cvs2svn ..." commits
-<1813> squash --quiet --delete
+# r1813: "This commit was manufactured by cvs2svn to create branch 'nesting'."
+# only contains commit with file deletions
+<1813> delete commit
+# Squash r2531 into r2532 ("Synced nesting with recent HEAD changes")
 <2531> setfield comment "\n"
 <2531> squash
+# Squash r2573 into r2577 ("Merge *all* HEAD revisions into nesting")
 <2573> setfield comment "\n"
 <2573> squash
+# Add squashed subversion ID's (/c restricts to commit message only)
+<2532> filter regex /r2532/r2531\nSubversion-Revision: r2532/c
+<2577> filter regex /r2577/r2573\nSubversion-Revision: r2577/c
 
-# Merge split "initial revision" commits
-<18> setfield comment "Subversion-Revision-ID: 18"
-<18> squash --pushback
-renumber
+# Remove test commits (r7802, r7803)
+<7802>,<7803> delete commit --quiet
+
+# r3521 should be a child of r3513 (svn mistake)
+# r3513 deletes sandbox/ and web/ and moves docutils/ to root,
+# 3515-1 moves root back to docutils/
+<3513>,<3521> reparent --rebase
+<3513> delete commit --quiet
+<3515-1> delete commit --quiet
+
+# Merge setup.py/flit commits to show moves
+<9448>,<9450>,<9449> reorder
+<9450> setfield comment "\n"
+<9450> squash --pushback
+<9448> filter regex /r9448/r9448\nSubversion-Revision: r9450/c
+
+# The 'better-emacs' branch has no parent. r3848 is the immediate
+# chronological predecessor. Also move the files to the correct
+# location to make merging easier, and delete the now-drop-only
+# commit (r3850).
+@dsc(<3850>) path rename "^emacs/(.*)" "docutils/tools/editors/emacs/\1" --force
+<3848>,<3851> reparent --rebase
+<3850> delete commit --quiet
+
+# Drop 'empty' branch creation commits.
+# These commits delete all root content and make "docutils/"
+# the new root, but have no actual changes.
+define drop_branch_commit {
+@dsc({0}) path rename "^(.*)" "docutils/\1" --force
+{0} setfield comment "\n"
+{0} squash --delete --quiet
+}
+
+# r3162: root of deleted/r3171-1/reporter-categories
+do drop_branch_commit <3162>
+# r4011: root of deleted/r4158/s5
+do drop_branch_commit <4011>
+# r4952: root of plugins
+do drop_branch_commit <4952>
+# r5000: root of deleted/r5015-1/include-after-until
+do drop_branch_commit <5000>
+# r5043: root of deleted/r5624/adjacent-citations
+do drop_branch_commit <5043>
+# r5514: root of lossless-rst-writer
+do drop_branch_commit <5514>
+# r5609: root of deleted/r5620/abolish-userstring-haskey
+do drop_branch_commit <5609>
+
+# Fix file paths in the subdocs branch
+# We remove all file delete operations, and rename all remaining
+# paths to restore the docutils/ directory
+# subdocs
+<5265> remove deletes
+@dsc(<5265>) path rename "^(.*)" "docutils/\1" --force
+
+# Create merge commits for branches
+# r3129 merges deleted/r3130/multiple-ids
+<3129>,<3128> merge
+branch delete refs/deleted/r3130/heads/multiple-ids
+# r3171-2 merges deleted/r3171-1/reporter-categories
+<3171-2>,<3163> merge
+branch delete refs/deleted/r3171-1/heads/reporter-categories
+# r3581 merges deleted/r3584_blais/interrupt_render
+<3581>,<3580> merge
+branch delete refs/deleted/r3584/heads/blais_interrupt_render
+# r3860 merges deleted/r3862/better-emacs
+<3860>,<3859> merge
+branch delete refs/deleted/r3862/heads/better-emacs
+# 3892-2 merges deleted/r3892-1/transforms
+<3892-2>,<3891> merge
+branch delete refs/deleted/r3892-1/heads/transforms
+# r4156 merges deleted/r4158/s5
+<4156>,<4155> merge
+branch delete refs/deleted/r4158/heads/s5
+# r4667 merges deleted/r4668/directives
+<4667>,<4665> merge
+branch delete refs/deleted/r4668/heads/directives
+# r5015-2 merges deleted/r5015-1/include-after-until
+<5015-2>,<5014> merge
+branch delete refs/deleted/r5015-1/heads/include-after-until
+# r5618 merges deleted/r5620/abolish-userstring-haskey
+<5618>,<5616> merge
+branch delete refs/deleted/r5620/heads/abolish-userstring-haskey
+# r5623 merges deleted/r5624/adjacent-citations
+<5623>,<5622> merge
+branch delete refs/deleted/r5624/heads/adjacent-citations
+
+# Drop 'Spelling fixes' commits in release branches
+<8093-2> squash --quiet --delete --tagback
+<8093-3> squash --quiet --delete --tagback
+<8093-4> squash --quiet --delete --tagback
+<8093-5> squash --quiet --delete --tagback
+<8093-6> squash --quiet --delete --tagback
+<8093-7> squash --quiet --delete --tagback
+
+# Drop r4331 (no changes other than SVN metadata)
+<4331> squash --quiet --delete --tagback
+
+define fix_du_tag_dir {
+{0} remove deletes
+{0} path rename "^(.*)" "docutils/\1" --force
+}
+
+# tag: docutils-0.3.9
+do fix_du_tag_dir <3815>
+# tag: docutils-0.3.7
+do fix_du_tag_dir <3816>
+# tag: docutils-0.4
+do fix_du_tag_dir <4268>
+# tag: docutils-0.5
+do fix_du_tag_dir <5579>
+# tag: docutils-0.6
+do fix_du_tag_dir <6168>
+# tag: docutils-0.7
+do fix_du_tag_dir <6358>
+# tag: docutils-0.8
+do fix_du_tag_dir <7088>
+# tag: docutils-0.8.1
+do fix_du_tag_dir <7108>
+# tag: docutils-0.9
+do fix_du_tag_dir <7412>
+# tag: docutils-0.9.1
+do fix_du_tag_dir <7453>
+# tag: docutils-0.10
+do fix_du_tag_dir <7565>
+# tag: docutils-0.11
+do fix_du_tag_dir <7695>
+# tag: docutils-0.12
+do fix_du_tag_dir <7759>
+# tag: docutils-0.13.1
+do fix_du_tag_dir <7988>
+# tag: docutils-0.14.0a
+do fix_du_tag_dir <8078>
+# tag: docutils-0.14a0
+do fix_du_tag_dir <8082>
+# tag: docutils-0.14rc1
+do fix_du_tag_dir <8088>
+# tag: docutils-0.14rc2
+do fix_du_tag_dir <8137>
+# tag: docutils-0.14
+do fix_du_tag_dir <8150>
+# tag: docutils-0.15
+do fix_du_tag_dir <8268>
+# tag: docutils-0.16
+do fix_du_tag_dir <8454>
+# tag: docutils-0.17
+do fix_du_tag_dir <8655>
+# tag: docutils-0.17.1
+do fix_du_tag_dir <8708>
+# tag: docutils-0.18
+do fix_du_tag_dir <8866>
+# tag: docutils-0.18.1
+do fix_du_tag_dir <8901>
+# tag: docutils-0.19
+do fix_du_tag_dir <9104>
+# tag: docutils-0.20
+do fix_du_tag_dir <9375>
+# tag: docutils-0.20.1
+do fix_du_tag_dir <9389>
+# tag: docutils-0.21
+do fix_du_tag_dir <9622>
+# tag: docutils-0.21.1
+do fix_du_tag_dir <9634>
+# tag: docutils-0.21.2
+do fix_du_tag_dir <9650>
+
+define fix_prest_tag_dir {
+{0} remove deletes
+{0} path rename "^(.*)" "prest/\1" --force
+}
+
+# tag: prest-0.3.10
+do fix_prest_tag_dir <4328>
+# tag: prest-0.3.11
+do fix_prest_tag_dir <4584>
+
+# Fix commit attributions
+# This adds a git 'author', the committer stays the same.
+# Sorted by revision number, but grouped by author.
+# This is a best-effort attempt based on going through
+# https://sourceforge.net/p/docutils/patches/
+# and the commit history.
+
+<7679> attribution append "Takayuki SHIMIZUKAWA" shimizukawa@gmail.com
+<7681> attribution append "Takayuki SHIMIZUKAWA" shimizukawa@gmail.com
+
+<7689> attribution append "Benoît Allard" benoit@aeteurope.nl
+<8243> attribution append "Benoît Allard" benoit@aeteurope.nl
+
+<7784> attribution append "Brecht Machiels" brecht@mos6581.org
+<7785> attribution append "Brecht Machiels" brecht@mos6581.org
+<7960> attribution append "Brecht Machiels" brecht@mos6581.org
+<8183> attribution append "Brecht Machiels" brecht@mos6581.org
+<8184> attribution append "Brecht Machiels" brecht@mos6581.org
+
+<7952> attribution append "Takeshi KOMIYA" i.tkomiya@gmail.com
+<8039> attribution append "Takeshi KOMIYA" i.tkomiya@gmail.com
+<8219> attribution append "Takeshi KOMIYA" i.tkomiya@gmail.com
+<8246> attribution append "Takeshi KOMIYA" i.tkomiya@gmail.com
+<8501> attribution append "Takeshi KOMIYA" i.tkomiya@gmail.com
+<8251> attribution append "Takeshi KOMIYA" i.tkomiya@gmail.com
+<8522> attribution append "Takeshi KOMIYA" i.tkomiya@gmail.com
+
+<7953> attribution append "Dmitry Shachnev" mitya57@gmail.com
+<8282> attribution append "Dmitry Shachnev" mitya57@gmail.com
+<8662> attribution append "Dmitry Shachnev" mitya57@gmail.com
+<9365> attribution append "Dmitry Shachnev" mitya57@gmail.com
+<9430> attribution append "Dmitry Shachnev" mitya57@gmail.com
+
+<7967> attribution append "Shahin Azad" me@5hah.in
+<8600> attribution append "Shahin Azad" me@5hah.in
+
+<8228> attribution append "Hugo van Kemenade" hugovk@users.noreply.github.com
+<8241> attribution append "Hugo van Kemenade" hugovk@users.noreply.github.com
+<9198> attribution append "Hugo van Kemenade" hugovk@users.noreply.github.com
+
+/Signed-off-by: Stephen Finucane <stephen@that.guru>/c attribution append "Stephen Finucane" stephen@that.guru
+<8333> attribution append "Stephen Finucane" stephen@that.guru
+<8364> attribution append "Stephen Finucane" stephen@that.guru
+<8366> attribution append "Stephen Finucane" stephen@that.guru
+<8368> attribution append "Stephen Finucane" stephen@that.guru
+<8371> attribution append "Stephen Finucane" stephen@that.guru
+<8374> attribution append "Stephen Finucane" stephen@that.guru
+<8375> attribution append "Stephen Finucane" stephen@that.guru
+
+<8497> attribution append "Michał Górny" mgorny@gentoo.org
+
+<8569> attribution append "John T. Wodder II" git@varonathe.org
+<8570> attribution append "John T. Wodder II" git@varonathe.org
+<8571> attribution append "John T. Wodder II" git@varonathe.org
+<8577> attribution append "John T. Wodder II" git@varonathe.org
+<8626> attribution append "John T. Wodder II" git@varonathe.org
+<8769> attribution append "John T. Wodder II" git@varonathe.org
+
+<8604> attribution append "Casper Meijn" casper@meijn.net
+
+<8823> attribution append "Clément Pit-Claudel" clement.pitclaudel@live.com
+<8827> attribution append "Clément Pit-Claudel" clement.pitclaudel@live.com
+<9176> attribution append "Clément Pit-Claudel" clement.pitclaudel@live.com
+<9176> filter regex /ClÃ©ment/Clément/c
+
+<8934> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8935> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8950> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8954> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8955> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8956> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8959> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8960> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8968> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8969> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8970> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8971> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8972> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8973> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8976> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8980> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8984> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8985> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<8987> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<9013> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<9072> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<9270> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+<9448> attribution append "Adam Turner" 9087854+aa-turner@users.noreply.github.com
+
+<9126> attribution append "Matthias C. M. Troffaes" matthias.troffaes@gmail.com
+
+<9216> attribution append "Ximin Luo" infinity0@pwned.gg
+
+<9475> attribution append "Hood Chatham" roberthoodchatham@gmail.com
+
+<9479> attribution append "Chris Sewell" chrisj_sewell@hotmail.com
 
 # Ensure every commit message ends with a single new line
 =C append "\n" --rstrip
-=C append "\n"
 
-# Export entire stream to git
+# Export entire stream to git-fast-import
 write >docutils_tmp.fi
 
 # Export to early (pre-CVS merge)
+# Up to and including r16
 # <2002-04-18T02:50:09Z#1> more editing progress (last commit of docutils-early)
-=C & 1..<2002-04-18T02:50:09Z#1> write >docutils_early.fi
+=C & 1..<16> write >docutils_early.fi
 
 #Export to late (post-CVS merge)
-=C & 1..<2002-04-18T02:50:09Z#1> delete
+# r17 and later (identical to @suc(<16>), all commits after r16)
+=C & 1..<16> delete commit --quiet
 write >docutils_late.fi
+
+# Timing statistics
+timing
 
 exit

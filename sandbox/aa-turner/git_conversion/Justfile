@@ -1,0 +1,260 @@
+# Justfile for docutils conversion using reposurgeon
+#
+# Steps to using this:
+# 0. Install just version 1.27 or later.
+#    See https://github.com/casey/just#installation::
+#    
+#        $ curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to ~/bin
+#        $ export PATH="$HOME/bin:$PATH"
+#        $ $ just --version
+#        just 1.34.0
+#
+# 1. Install reposurgeon 4.38 with ``just reposurgeon-install``
+# 2. Make sure reposurgeon and repotool are on your $PATH.
+# 3. Run 'just' to build a converted repository.
+
+set windows-shell := ["pwsh", "-NoLogo", "-NoProfileLoadTime", "-Command"]
+reposurgeon-version := "4.38"
+# https://github.com/casey/just/issues/11#issuecomment-1546877905
+reposurgeon_dir := replace("reposurgeon-VERSION", "VERSION", reposurgeon-version)
+
+# Convert Docutils to git (main entry point)
+[group('convert')]
+convert: docutils-git prest-git sandbox-git web-git
+  echo "Conversion finished. Cheerio!"
+
+# Get and install reposurgeon
+# ===========================
+
+# Install reposurgeon's dependencies using apt-get
+[group('reposurgeon')]
+reposurgeon-dependencies:
+  sudo apt install -y \
+    make rsync bzip2 \
+    golang \
+    cvs cvs-fast-export mercurial subversion \
+    asciidoctor shellcheck
+
+# Clone the reposurgeon repository
+[group('reposurgeon')]
+reposurgeon-clone:
+  git clone --config advice.detachedHead=false --depth=1 --branch {{ reposurgeon-version }} https://gitlab.com/esr/reposurgeon.git
+
+# Download the reposurgeon archive (requires bzip2 installed)
+[group('reposurgeon')]
+reposurgeon-download:
+  bzip2 --version 2>/dev/null || echo bzip2 not found!
+  curl \
+    --fail \
+    --globoff \
+    --location \
+    --proto-default https \
+    --remote-name \
+    --remote-time \
+    --retry 10 \
+    --retry-max-time 10 \
+    "https://gitlab.com/esr/reposurgeon/-/archive/{{reposurgeon-version}}/reposurgeon-{{reposurgeon-version}}.tar.bz2"
+  tar --extract --bzip2 --file "reposurgeon-{{reposurgeon-version}}.tar.bz2"
+
+# Install reposurgeon
+[group('reposurgeon')]
+reposurgeon-install: reposurgeon-dependencies
+  make -C {{reposurgeon_dir}} all
+  sudo make -C {{reposurgeon_dir}} install
+  make -C {{reposurgeon_dir}} test
+
+# Get local copies of the SVN and CVS sources
+# ===========================================
+
+# Update sourceforge mirrors (done automatically during conversion)
+[group('tools')]
+update-mirrors: _docutils-mirror _docstring-mirror _structuredtext-mirror _archives
+
+# short version: rsync -ahPvi svn.code.sf.net::p/docutils/code/* docutils-mirror
+
+_docutils-mirror:
+  # Estimated time: 60s
+  rsync \
+    --archive --human-readable --partial --progress --verbose --itemize-changes \
+    "svn.code.sf.net::p/docutils/code/*" \
+    docutils-mirror
+
+_docstring-mirror:
+  # Estimated time: 5s
+  rsync \
+    --archive --human-readable --partial --progress --verbose --itemize-changes \
+    "a.cvs.sourceforge.net::cvsroot/docstring/" \
+    docstring-mirror
+
+_structuredtext-mirror:
+  # Estimated time: 5s
+  rsync \
+    --archive --human-readable --partial --progress --verbose --itemize-changes \
+    "a.cvs.sourceforge.net::cvsroot/structuredtext/" \
+    structuredtext-mirror
+
+_archives:
+  # Get pre-CVS release archives for incorporation into history
+  [ -f dps-0.1.tar.gz ] || wget --no-verbose https://master.dl.sourceforge.net/project/docstring/dps/0.1/dps-0.1.tar.gz
+  [ -f dps.0.2.tar.gz ] || wget --no-verbose https://master.dl.sourceforge.net/project/docstring/dps/0.2/dps.0.2.tar.gz
+  [ -f dps.0.3.tar.gz ] || wget --no-verbose https://master.dl.sourceforge.net/project/docstring/dps/0.3/dps.0.3.tar.gz
+  [ -f rst-0.1.tar.gz ] || wget --no-verbose https://master.dl.sourceforge.net/project/structuredtext/restructuredtext/0.1/rst-0.1.tar.gz
+  [ -f rst.0.2.tar.gz ] || wget --no-verbose https://master.dl.sourceforge.net/project/structuredtext/restructuredtext/0.2/rst.0.2.tar.gz
+  [ -f rst.0.3.tar.gz ] || wget --no-verbose https://master.dl.sourceforge.net/project/structuredtext/restructuredtext/0.3/rst.0.3.tar.gz
+  # no need for 0.4 archives, as CVS history begins at 0.3
+  # wget --no-verbose https://master.dl.sourceforge.net/project/docstring/dps/0.4/dps-0.4.tar.gz
+  # wget --no-verbose https://master.dl.sourceforge.net/project/structuredtext/restructuredtext/0.4/restructuredtext-0.4.tar.gz
+
+  # due to inscrutable tar errors, we repack every archive
+  mkdir -p tmp_repack
+  cd tmp_repack && tar -xzf ../dps-0.1.tar.gz --one-top-level=dps-0.1 --strip-components=0
+  cd tmp_repack && tar -xzf ../dps.0.2.tar.gz --one-top-level=dps-0.2 --strip-components=1
+  cd tmp_repack && tar -xzf ../dps.0.3.tar.gz --one-top-level=dps-0.3 --strip-components=1
+  cd tmp_repack && tar -xzf ../rst-0.1.tar.gz --one-top-level=rst-0.1 --strip-components=0
+  cd tmp_repack && tar -xzf ../rst.0.2.tar.gz --one-top-level=rst-0.2 --strip-components=1
+  cd tmp_repack && tar -xzf ../rst.0.3.tar.gz --one-top-level=rst-0.3 --strip-components=1
+
+  cd tmp_repack && tar -cf docstring-0.1.tar dps-0.1
+  cd tmp_repack && tar -cf docstring-0.2.tar dps-0.2
+  cd tmp_repack && tar -cf docstring-0.3.tar dps-0.3
+  cd tmp_repack && tar -cf structuredtext-0.1.tar rst-0.1
+  cd tmp_repack && tar -cf structuredtext-0.2.tar rst-0.2
+  cd tmp_repack && tar -cf structuredtext-0.3.tar rst-0.3
+  mv tmp_repack/*.tar ./
+  rm -rf tmp_repack
+
+# Dump streams for reposurgeon
+# ============================
+
+# Dump reposurgeon streams (done automatically during conversion)
+[group('tools')]
+dump-streams: _dump-docutils-svn _dump-docstring-fi _dump-structuredtext-fi
+
+_dump-docutils-svn: _docutils-mirror
+  # Estimated time: 10 mins
+  repotool export -d docutils-mirror > docutils.svn
+
+_dump-docstring-fi: _docstring-mirror
+  # Estimated time: 10s
+  repotool export -d docstring-mirror > docstring.fi
+
+_dump-structuredtext-fi: _structuredtext-mirror
+  # Estimated time: 10s
+  repotool export -d structuredtext-mirror > structuredtext.fi
+
+# Create the git repositories
+# ===========================
+
+_common-git: _archives
+  # 'Caching' of sorts; don't rebuild if a file exists.
+  # To force a regeneration, run `just dump-streams`
+  [ -f docutils.svn ] || just _dump-docutils-svn
+  [ -f docstring.fi ] || just _dump-docstring-fi
+  [ -f structuredtext.fi ] || just _dump-structuredtext-fi
+  # Estimated time: script common.lift: 
+  # Estimated time: write >common.fi:   60s
+  # Estimated time: rebuild common-git: 
+  [ -f docutils_late.fi ] || reposurgeon 'script common_load.lift'
+  [ -f cvs_docstring.fi ] || reposurgeon 'script common_cvs_docstring.lift'
+  [ -f cvs_structuredtext.fi ] || reposurgeon 'script common_cvs_structuredtext.lift'
+  [ -d docutils_tmp_early ] || reposurgeon 'read <docutils_early.fi' 'prefer git' 'write docutils_tmp_early/'
+  [ -d docutils_tmp_late ] || reposurgeon 'read <docutils_late.fi' 'prefer git' 'write docutils_tmp_late/'
+  [ -d cvs_tmp_docstring ] || reposurgeon 'read <cvs_docstring.fi' 'prefer git' 'write cvs_tmp_docstring/'
+  [ -d cvs_tmp_structuredtext ] || reposurgeon 'read <cvs_structuredtext.fi' 'prefer git' 'write cvs_tmp_structuredtext/'
+  [ -d tmp_combined ] || ./common_combine.sh
+  [ -f tmp_combined.fi ] || repotool export -d tmp_combined > tmp_combined.fi
+  [ -f common.fi ] || reposurgeon 'script common_clean.lift' 'prefer git' 'rebuild common-git'
+  # just _common-combine
+
+[group('convert')]
+docutils-git: _common-git
+  reposurgeon 'script docutils.lift' 'rebuild docutils-git'
+  cd docutils-git && just ../ _post-convert
+  # Remove rel-0.15 branch. Must be done after retagging,
+  # otherwise the tip commit is lost, but for some reason
+  # the tags don't survive if reposurgeon does it.
+  cd docutils-git && git branch --delete --force rel-0.15
+
+[group('convert')]
+prest-git: _common-git
+  reposurgeon 'script prest.lift' 'rebuild prest-git'
+  cd prest-git && just ../ _post-convert
+
+[group('convert')]
+sandbox-git: _common-git
+  reposurgeon 'script sandbox.lift' 'rebuild sandbox-git'
+  cd sandbox-git && just ../ _post-convert
+
+[group('convert')]
+web-git: _common-git
+  reposurgeon 'script web.lift' 'rebuild web-git'
+  cd web-git && just ../ _post-convert
+
+[no-cd]
+_post-convert:
+  # Reinitialise repository. We do this for sanity, as git might expect
+  # things that reposurgeon doesn't provide.
+  git init
+
+  # Run a garbage-collect on the generated git repository.  Import doesn't.
+  # This repack call is the active part of gc --aggressive.  This call is
+  # tuned for very large repositories.
+  git -c pack.threads=1 repack -AdF --window=1250 --depth=250
+
+  # Clean repo
+  git prune
+  git rm -rf .
+  git clean -fxd
+  git reset HEAD --hard
+
+  # Check integrity
+  git fsck --full --strict --unreachable --dangling --lost-found
+
+  # Enable commit graph
+  git config core.commitGraph true
+  git config fetch.writeCommitGraph true
+  git commit-graph write --append --reachable --changed-paths
+  git commit-graph verify
+
+  # End by re-reinitialising repository. Why not!
+  git init
+
+# Comparison commands
+# ===================
+
+# Make a local checkout of the source mirror for inspection
+_docutils-svn-export:
+  svn export --ignore-keywords https://svn.code.sf.net/p/docutils/code/trunk docutils-svn-export
+
+# Compare the histories of the unconverted and converted repositories at HEAD.
+[group('tools')]
+compare: _docutils-svn-export docutils-git 
+  repotool compare docutils-svn-export docutils-git
+
+# Bundle the conversion files
+# ===========================
+
+SOURCES := "Makefile Justfile docutils.map common_load.lift common_cvs_docstring.lift common_cvs_structuredtext.lift common_combine.sh common_clean.lift docutils.lift prest.lift sandbox.lift web.lift post-convert.sh"
+# Bundle the conversion files
+[group('tools')]
+dist:
+  tar --dereference --transform 's:^:docutils-conversion/:' -czvf docutils-conversion.tar.gz $(SOURCES)
+
+# Publish the git repositories
+# ============================
+
+# Publish the git repositories
+[group('tools')]
+push-remote:
+  # Docutils
+  cd docutils-git; git remote add origin https://github.com/docutils-conversion/docutils.git
+  cd docutils-git; git push -u origin --tags
+  # Prest
+  cd prest-git; git remote add origin https://github.com/docutils-conversion/prest.git
+  cd prest-git; git push -u origin --tags
+  # Sandbox
+  cd sandbox-git; git remote add origin https://github.com/docutils-conversion/sandbox.git
+  cd sandbox-git; git push -u origin --tags
+  # Web
+  cd web-git; git remote add origin https://github.com/docutils-conversion/web.git
+  cd web-git; git push -u origin --tags

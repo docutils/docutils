@@ -1,0 +1,149 @@
+# common_cvs_structuredtext.lift
+
+# This is the one of the common reposurgeon lift script
+# files, creating the common history that the four
+# repo-specific scripts use as their inputs. This file is
+# called as part of the common-git target, and should not
+# be loaded directly. It has one input (docutils.map).
+# These files require reposurgeon 4.38.
+
+# These 'common' scripts are run in order:
+# 1. common_load.lift
+# 2. common_cvs_docstring.lift
+# 3. common_cvs_structuredtext.lift
+# 4. common_combine.sh
+# 5. common_clean.lift
+
+# Set up options
+# http://www.catb.org/~esr/reposurgeon/repository-editing.html#control-options
+
+set echo
+# We expect version 4.38
+version 4.38
+# Canonicalise comments/messages by normalising line endings to LF,
+# stripping leading & trailing whitespace, and appending a new line.
+set canonicalize
+# Enable fancy progress messages even when not on a tty.
+set progress
+
+# Read CVS structuredtext repository
+# http://www.catb.org/~esr/reposurgeon/repository-editing.html#CVS
+# Do not modify .gitignore files in the source tree
+# Estimated time: 5s
+read --preserve --no-automatic-ignores --user-ignores <structuredtext.fi
+
+# Load the CVS-to-Git author IDs map
+# CSV just uses a username, Git demands a name and email address
+# MUST BE AFTER 'read' otherwise reposurgeon panics (SIGSEV).
+# Authors here are goodger, gtk, and richard.
+authors read <docutils.map
+
+# Write 'virgin' conversion with no changes
+#write --format=git virgin_structuredtext/
+
+# After reading the author map and the CVS dump,
+# if something goes wrong we'd prefer not to abort.
+set relax
+
+# Update commit messages
+# Attempt to massage comments into a git-friendly form
+# with a blank separator line after a summary line.
+gitify
+# Replace \r\n (Windows-style) line endings with \n
+=C filter dedos
+
+# Remove uneeded "import-1.1.1" branch
+reset delete refs/heads/rel-0-3
+reset delete refs/tags/RELEASE
+branch delete refs/heads/import-1.1.1
+<2001-07-21T22:14:24Z#1> setfield comment "First Imported"
+<2001-07-21T22:14:24Z#2> delete commit --quiet
+
+# Remove uneeded "import-1.1.1" branch
+branch delete refs/heads/import-1.1.1
+branch delete refs/heads/rel-0-3
+branch delete refs/tags/RELEASE
+
+# Create merge commit from "merged from branch Rrefactor-test"
+# to tip of "heads/Rrefactor-test", and make Rrefactor-test
+# start from "initial checkin"
+<2001-07-22T22:45:33Z>,<2001-07-25T08:09:21Z> reparent --rebase
+<2001-09-01T16:29:12Z>,<2001-09-01T15:19:21Z> merge
+branch delete refs/heads/Rrefactor-test
+
+# Make moves more obvious in the Rrefactor-test branch
+# RTSTestSupport & ParserTestCase (<2001-09-01T15:10:16Z>, <2001-09-01T15:18:51Z>)
+# UnitTestFolder & TestFramework (<2001-09-01T15:10:50Z>, <2001-09-01T15:18:18Z>)
+# alltests/test_all (<2001-09-01T15:13:10Z>, <2001-09-01T15:19:21Z>)
+<2001-09-01T15:10:16Z>,<2001-09-01T15:18:51Z>,<2001-09-01T15:10:50Z>,<2001-09-01T15:18:18Z>,<2001-09-01T15:13:10Z>,<2001-09-01T15:19:21Z>,<2001-09-01T15:14:51Z> reorder
+<2001-09-01T15:10:16Z> squash
+<2001-09-01T15:10:50Z> squash
+<2001-09-01T15:13:10Z> squash
+
+# Merge "path change" and "initial checkin"
+<2001-07-22T22:27:43Z> squash
+<2001-07-22T22:45:33Z> setfield comment "initial checkin"
+
+# Remove empty commits
+=Z setfield comment "\n"
+=Z squash --empty-only --delete
+
+# Combine "*** empty log message ***" commits with neighbours
+# where appropriate
+# languages/__init__.py into "Added parser language module support"
+<2001-09-10T04:46:13Z>,<2001-09-10T04:42:28Z>,<2001-09-10T04:44:21Z> reorder
+<2001-09-10T04:46:13Z> setfield comment "\n"
+<2001-09-10T04:46:13Z> squash
+<2002-01-08T02:42:28Z> setfield comment "\n"
+<2002-01-08T02:42:28Z> squash --pushback
+<2002-02-20T04:29:13Z> setfield comment "\n"
+<2002-02-20T04:29:13Z> squash --pushback
+
+# Drop empty commit just before project retirement
+<2002-04-20T16:23:41Z> delete commit --quiet
+
+# Give "*** empty log message ***" actual messages
+# Chosen to be in the style of the existing repo/commit messages
+<2001-09-04T04:11:01Z> setfield comment "Added test_TableParser"
+<2001-10-26T04:33:17Z> setfield comment "updated"
+<2001-10-30T05:05:00Z> setfield comment "Added test_transitions"
+<2001-11-06T23:11:52Z> setfield comment "Added test_substitutions"
+<2002-02-07T01:53:41Z> setfield comment "updated"
+<2002-03-07T03:45:42Z> setfield comment "Added test_citations"
+<2002-03-16T05:39:36Z> setfield comment "updated"
+<2002-03-28T04:28:10Z> setfield comment "updated"
+
+# Incorporate pre-CSV release archives into the history
+# Only use 0.1-0.3, as 0.4 is already in the CVS history
+# Force fake committer details (always "Fred J. Foonly <foonly@foo.com")
+set testmode  # 'set fakeuser' in 5.0+
+incorporate --firewall structuredtext-0.1.tar structuredtext-0.2.tar structuredtext-0.3.tar
+clear testmode
+/Fred J. Foonly <foonly@foo.com>/ path rename "^(.*)" "restructuredtext/\1" --force
+# This isn't exactly accurate as 0.2 and 0.3 use "rst.0.x". It'll do.
+/Fred J. Foonly <foonly@foo.com>/ filter regex /structuredtext-/rst-/c
+/Fred J. Foonly <foonly@foo.com>/ append ".gz\n\n***Commit created during git conversion***" --rstrip
+# "First Imported" and the 0.3 archive have identical timestamps.
+# Make the 0.3 archive the parent of "First Imported",
+# and delete the firewall commit.
+<2001-07-21T22:14:24Z#1>,<2001-07-21T22:14:24Z#2> reparent
+/Firewall commit/c delete commit
+# Remove traces of the fake committer
+/Fred J. Foonly <foonly@foo.com>/ attribution =C set "David Goodger" goodger@python.org
+
+# Remove autogenerated .gitignore
+expunge .gitignore
+
+# Prepare for merge; rename master branch
+branch rename heads/master heads/master-structuredtext
+
+# Prepare for merge; Rename web directory
+path rename "web/(.*)" "web_structuredtext/\1" --force
+
+# Export to git
+write >cvs_structuredtext.fi
+
+# Timing statistics
+timing
+
+exit
