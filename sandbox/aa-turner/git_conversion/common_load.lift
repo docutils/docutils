@@ -129,6 +129,9 @@ reset delete refs/deleted/r4267/tags/docutils-0.4
 <2532> filter regex /r2532/r2531\nSubversion-Revision: r2532/c
 <2577> filter regex /r2577/r2573\nSubversion-Revision: r2577/c
 
+# Remove mistake in an overzealous find-and-replace
+<5174> remove docutils/docs/dev/rst/alternatives.txt
+
 # Remove test commits (r7802, r7803)
 <7802>,<7803> delete commit --quiet
 
@@ -311,6 +314,8 @@ do fix_prest_tag_dir <4584>
 # This is a best-effort attempt based on going through
 # https://sourceforge.net/p/docutils/patches/
 # and the commit history.
+
+<5837> attribution append "Jeffrey Jacobs" darklord@timehorse.com
 
 <7679> attribution append "Takayuki SHIMIZUKAWA" shimizukawa@gmail.com
 <7681> attribution append "Takayuki SHIMIZUKAWA" shimizukawa@gmail.com

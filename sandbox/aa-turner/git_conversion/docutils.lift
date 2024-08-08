@@ -29,6 +29,7 @@ tag create "v{0}" {1}
 path rename "sandbox/infrastructure/(.*)" "docutils/infrastructure/\1" --force
 path rename "sandbox/davidg/infrastructure/(.*)" "docutils/infrastructure/\1" --force
 path rename "sandbox/enhancement-proposals/(.*)" "docutils/docs/dev/enhancement-proposals/\1" --force
+path rename "sandbox/(?:f|felix)wiemann/release.sh" "docutils/infrastructure/release.sh" --force
 
 # Delete everything else in the root
 expunge --notagify /^(prest|sandbox|web|web_docstring|web_structuredtext)\/.*$/
