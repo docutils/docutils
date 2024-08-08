@@ -499,7 +499,7 @@ def make_paths_absolute(pathdict: dict[str, list[_FsPath] | _FsPath],
         if key in pathdict:
             value = pathdict[key]
             if isinstance(value, (list, tuple)):
-                value = (str((base_path/path).resolve()) for path in value)
+                value = [str((base_path/path).resolve()) for path in value]
             elif value:
                 value = str((base_path/value).resolve())
             pathdict[key] = value
