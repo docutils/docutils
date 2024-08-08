@@ -78,7 +78,7 @@ Specific Admonitions
                    `\<error>`_, `\<hint>`_, `\<important>`_,
                    `\<note>`_, `\<tip>`_, `\<warning>`_
 :Directive Arguments: none
-:Directive Options: class_, name_
+:Directive Options: `class <class option_>`_, name_
 :Directive Content: Interpreted as body elements.
 
 Specific admonitions are rendered with a title matching the admonition type.
@@ -119,7 +119,7 @@ Generic Admonition
 :Directive Type: "admonition"
 :Doctree Elements: `\<admonition>`_, `\<title>`_
 :Directive Arguments: one, required (admonition title)
-:Directive Options: class_, name_
+:Directive Options: `class <class option_>`_, name_
 :Directive Content: Interpreted as body elements.
 
 This is a generic, titled admonition.  The title may be anything the
@@ -142,7 +142,8 @@ becomes the following document tree (pseudo-XML)::
             <paragraph>
                 You can make up your own admonition too.
 
-The class_ option overrides the generated `classes attribute`_ value.
+The `class <class option_>`_ option overrides the generated
+`classes attribute`_ value.
 
 
 --------
@@ -248,8 +249,8 @@ definition`_, e.g. ::
 
 .. _image options:
 
-The "image" directive recognizes the common options class_ and name_
-as well as
+The "image" directive recognizes the common options `class <class option_>`_
+and name_ as well as
 
 ``align`` : "top", "middle", "bottom", "left", "center", or "right"
     The alignment of the image, equivalent to the HTML ``<img>`` tag's
@@ -424,7 +425,7 @@ Topic
 :Directive Type: "topic"
 :Doctree Element: `\<topic>`_
 :Directive Arguments: one, required (topic title)
-:Directive Options: class_, name_
+:Directive Options: `class <class option_>`_, name_
 :Directive Content: Interpreted as the topic body.
 
 A topic is like a block quote with a title, or a self-contained
@@ -479,7 +480,7 @@ interpreted as body elements.  For example::
 
 .. _sidebar options:
 
-Recognizes the common option class_ and
+Recognizes the common options `class <class option_>`_ and name_ as well as
 
 ``subtitle`` : text_
     The sidebar's subtitle.
@@ -500,7 +501,7 @@ Line Block
 :Directive Type: "line-block"
 :Doctree Element: `\<line_block>`_
 :Directive Arguments: none
-:Directive Options: class_, name_
+:Directive Options: `class <class option_>`_, name_
 :Directive Content: Becomes the body of the line block.
 
 The "line-block" directive constructs an element where line breaks and
@@ -535,7 +536,7 @@ Parsed Literal Block
 :Directive Type: "parsed-literal"
 :Doctree Element: `\<literal_block>`_
 :Directive Arguments: none
-:Directive Options: class_, name_
+:Directive Options: `class <class option_>`_, name_
 :Directive Content: Becomes the body of the literal block.
 
 Unlike an ordinary literal block, the "parsed-literal" directive
@@ -592,17 +593,17 @@ For example, the content of the following directive ::
 is parsed and marked up as Python source code.
 
 The parsing can be turned off with the syntax_highlight_ configuration
-setting and command line option or by specifying the language as class_
-option instead of directive argument. This also avoids warnings
-when Pygments_ is not installed or the language is not in the
-`supported languages and markup formats`_.
+setting and command line option or by specifying the language as
+`class <class option_>`_ option instead of directive argument.
+This also avoids warnings when Pygments_ is not installed or the language
+is not in the `supported languages and markup formats`_.
 
 For code in external files, use the "include_" directive with the
 ``code`` option. For inline code, use the `"code" role`_.
 
 .. _code options:
 
-Recognizes the common options class_ and name_ as well as
+Recognizes the common options `class <class option_>`_ and name_ as well as
 
 ``number-lines`` : integer_ (start line number, optional)
     Precede every line with a line number.
@@ -621,7 +622,7 @@ Math
 :Directive Type: "math"
 :Doctree Element: `\<math_block>`_
 :Directive Arguments: none
-:Directive Options: class_, name_
+:Directive Options: `class <class option_>`_, name_
 :Directive Content: Becomes the body of the math block.
                     (Content blocks separated by a blank line are put in
                     adjacent math blocks.)
@@ -655,7 +656,7 @@ Rubric
 :Directive Type: "rubric"
 :Doctree Element: `\<rubric>`_
 :Directive Arguments: one, required (rubric text)
-:Directive Options: class_, name_
+:Directive Options: `class <class option_>`_, name_
 :Directive Content: none
 
 ..
@@ -751,7 +752,7 @@ Compound Paragraph
 :Directive Type: "compound"
 :Doctree Element: `\<compound>`_
 :Directive Arguments: none
-:Directive Options: class_, name_
+:Directive Options: `class <class option_>`_, name_
 :Directive Content: Interpreted as body elements.
 
 The "compound" directive is used to create a compound paragraph, which
@@ -864,7 +865,7 @@ or specify options, e.g.::
 
 .. _table options:
 
-Recognizes the common options class_ and name_ as well as
+Recognizes the common options `class <class option_>`_ and name_ as well as
 
 ``align`` : "left", "center", or "right"
     The horizontal alignment of the table (new in Docutils 0.13).
@@ -947,7 +948,7 @@ Example::
 
 .. _csv-table options:
 
-Recognizes the common options class_ and name_ as well as
+Recognizes the common options `class <class option_>`_ and name_ as well as
 
 ``align`` : "left", "center", or "right"
     The horizontal alignment of the table. (New in Docutils 0.13)
@@ -1078,7 +1079,7 @@ Example::
 
 .. _list-table options:
 
-Recognizes the common options class_ and name_ as well as
+Recognizes the common options `class <class option_>`_ and name_ as well as
 
 ``align`` : "left", "center", or "right"
     The horizontal alignment of the table.
@@ -1163,7 +1164,8 @@ on the same line as the directive marker::
 
 .. _contents options:
 
-The "contents" directive recognizes the common option class_ as well as
+The "contents" directive recognizes the common option
+`class <class option_>`_ as well as
 
 ``backlinks`` : "entry" or "top" or "none"
     Generate links from section headers back to the table of contents
@@ -1296,7 +1298,7 @@ Target Footnotes
 :Directive Type: "target-notes"
 :Doctree Elements: `\<pending>`_, `\<footnote>`_, `\<footnote_reference>`_
 :Directive Arguments: none
-:Directive Options: class_, name_
+:Directive Options: `class <class option_>`_, name_
 :Directive Content: none
 
 The "target-notes" directive creates a footnote for each external
@@ -1618,7 +1620,7 @@ The "include" directive recognizes the following options:
     where a negative value prevents expansion of hard tabs.
     Defaults to the tab_width_ configuration setting.
 
-With ``code`` or ``literal`` the common options class_ and name_
+With ``code`` or ``literal`` the common options `class <class option_>`_ and name_
 are recognized as well.
 
 Combining ``start-line``/``end-line`` and ``start-after``/``end-before``
@@ -1696,7 +1698,8 @@ Inline equivalents of the "raw" directive can be defined via
 
 .. _raw options:
 
-The "raw" directive recognizes the common option class_ and
+The "raw" directive recognizes the common option `class <class option_>`_
+as well as
 
 ``encoding`` : encoding_
     The text encoding of the external raw data (with ``file`` or ``url``).
@@ -1729,6 +1732,9 @@ or on the first immediately following [#]_ non-comment element [#]_.
 The directive argument consists of one or more space-separated class
 names. The names are transformed to conform to the regular expression
 ``[a-z](-?[a-z0-9]+)*`` (see `Identifier Normalization`_ below).
+
+.. tip:: For reStructuredText directives, it is recommended to use the
+   `class option`_ option instead of wrapping them in a "class" directive.
 
 Examples::
 
@@ -2139,26 +2145,36 @@ options:
 
 ``class`` : text_ (space separated list of `class names`_)
     Set a `classes attribute`_ value on the doctree element generated by
-    the directive. See also the `class directive`_.
+    the directive. For example, ::
 
-    .. _name:
+      .. image:: bild.png
+         :alt:   example picture
+         :class: large-pics
+
+    is the recommended syntax alternative to a preceding
+    `class directive`_ ::
+
+      .. class:: large-pics
+      .. image:: bild.png
+         :alt:   example picture
+
+    .. _`name`:
 
 ``name`` : text_
-    Add `text` to the `names attribute`_ of the doctree element generated
+    Add *text* to the `names attribute`_ of the doctree element generated
     by the directive. This allows `hyperlink references`_ to the element
-    using `text` as `reference name`_.
-
-    Specifying the `name` option of a directive, e.g., ::
+    using `text` as `reference name`_. For example, ::
 
       .. image:: bild.png
+         :alt:   example picture
          :name: my picture
 
-    is a concise syntax alternative to preceding it with a `hyperlink
-    target`_ ::
+    is the recommended syntax alternative to a preceding
+    `hyperlink target`_ ::
 
       .. _my picture:
-
       .. image:: bild.png
+         :alt:   example picture
 
 
 -------------------------
