@@ -55,7 +55,14 @@ class Html4WriterPublishPartsTestCase(unittest.TestCase):
                             **settings_overrides,
                         }
                     )
-                    self.assertEqual(case_expected, self.format_output(parts))
+                    # if the formatted output is a just single fragment,
+                    # compare the text directly for a nicer diff on failure
+                    formatted = self.format_output(parts)
+                    if len(formatted) == 1 and 'fragment' in formatted:
+                        fragment = formatted['fragment']
+                        self.assertEqual(case_expected, fragment)
+                    else:
+                        self.assertEqual(case_expected, formatted)
 
     standard_content_type_template = ('<meta http-equiv="Content-Type"'
                                       ' content="text/html; charset=%s" />\n')
@@ -108,51 +115,51 @@ totest['title_promotion'] = ({'stylesheet_path': '',
 ["""\
 Simple String
 """,
-{'fragment': '<p>Simple String</p>\n',
-}],
+'<p>Simple String</p>\n',
+],
 ["""\
 Simple String with *markup*
 """,
-{'fragment': '<p>Simple String with <em>markup</em></p>\n',
-}],
+'<p>Simple String with <em>markup</em></p>\n',
+],
 ["""\
 Simple String with an even simpler ``inline literal``
 """,
-{'fragment': '<p>Simple String with an even simpler <tt class="docutils literal">inline literal</tt></p>\n',
-}],
+'<p>Simple String with an even simpler <tt class="docutils literal">inline literal</tt></p>\n',
+],
 ["""\
 Simple ``inline\xA0literal`` with NBSP
 """,
-{'fragment': '<p>Simple <tt class="docutils literal">inline&nbsp;literal</tt> with NBSP</p>\n',
-}],
+'<p>Simple <tt class="docutils literal">inline&nbsp;literal</tt> with NBSP</p>\n',
+],
 ["""\
 A simple `anonymous reference`__
 
 __ http://www.test.com/test_url
 """,
-{'fragment': '<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\n',
-}],
+'<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\n',
+],
 ["""\
 One paragraph.
 
 Two paragraphs.
 """,
-{'fragment': """\
+"""\
 <p>One paragraph.</p>
 <p>Two paragraphs.</p>
 """,
-}],
+],
 ["""\
 A simple `named reference`_ with stuff in between the
 reference and the target.
 
 .. _`named reference`: http://www.test.com/test_url
 """,
-{'fragment': """\
+"""\
 <p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
 reference and the target.</p>
 """,
-}],
+],
 ["""\
 +++++
 Title
@@ -251,36 +258,36 @@ totest['no_title_promotion'] = ({'doctitle_xform': False,
 ["""\
 Simple String
 """,
-{'fragment': '<p>Simple String</p>\n',
-}],
+'<p>Simple String</p>\n',
+],
 ["""\
 Simple String with *markup*
 """,
-{'fragment': '<p>Simple String with <em>markup</em></p>\n',
-}],
+'<p>Simple String with <em>markup</em></p>\n',
+],
 ["""\
 Simple String with an even simpler ``inline literal``
 """,
-{'fragment': '<p>Simple String with an even simpler <tt class="docutils literal">inline literal</tt></p>\n',
-}],
+'<p>Simple String with an even simpler <tt class="docutils literal">inline literal</tt></p>\n',
+],
 ["""\
 A simple `anonymous reference`__
 
 __ http://www.test.com/test_url
 """,
-{'fragment': '<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\n',
-}],
+'<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\n',
+],
 ["""\
 A simple `named reference`_ with stuff in between the
 reference and the target.
 
 .. _`named reference`: http://www.test.com/test_url
 """,
-{'fragment': """\
+"""\
 <p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
 reference and the target.</p>
 """,
-}],
+],
 ["""\
 +++++
 Title
@@ -301,7 +308,7 @@ Another Section
 
 And even more stuff
 """,
-{'fragment': """\
+"""\
 <div class="section" id="title">
 <h1>Title</h1>
 <div class="section" id="not-a-subtitle">
@@ -318,18 +325,18 @@ And even more stuff
 </div>
 </div>
 """,
-}],
+],
 ["""\
 * bullet
 * list
 """,
-{'fragment': """\
+"""\
 <ul class="simple">
 <li>bullet</li>
 <li>list</li>
 </ul>
 """,
-}],
+],
 ["""\
 .. table::
    :align: right
@@ -340,7 +347,7 @@ And even more stuff
    |  3  |  4  |
    +-----+-----+
 """,
-{'fragment': """\
+"""\
 <table border="1" class="docutils align-right">
 <colgroup>
 <col width="50%" />
@@ -356,7 +363,7 @@ And even more stuff
 </tbody>
 </table>
 """,
-}],
+],
 ["""\
 Not a docinfo.
 
@@ -367,7 +374,7 @@ Not a docinfo.
 :simple:
 :field: list
 """,
-{'fragment': """\
+"""\
 <p>Not a docinfo.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -385,14 +392,14 @@ Not a docinfo.
 </tbody>
 </table>
 """,
-}],
+],
 ["""\
 Not a docinfo.
 
 :This is: a
 :simple field list with loooong field: names
 """,
-{'fragment': """\
+"""\
 <p>Not a docinfo.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -406,7 +413,7 @@ Not a docinfo.
 </tbody>
 </table>
 """,
- }],
+],
 ])
 
 totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX,
@@ -417,9 +424,9 @@ totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX,
 .. image:: /data/blue%20square.png
    :scale: 100%
 """,
-{'fragment': '<img alt="/data/blue%20square.png"'
-             f' src="/data/blue%20square.png" {SCALING_OUTPUT}/>\n',
-}],
+'<img alt="/data/blue%20square.png"'
+f' src="/data/blue%20square.png" {SCALING_OUTPUT}/>\n',
+],
 ])
 
 

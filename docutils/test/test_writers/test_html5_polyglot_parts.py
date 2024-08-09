@@ -89,7 +89,14 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
                             **settings_overrides,
                         }
                     )
-                    self.assertEqual(case_expected, self.format_output(parts))
+                    # if the formatted output is a just single fragment,
+                    # compare the text directly for a nicer diff on failure
+                    formatted = self.format_output(parts)
+                    if len(formatted) == 1 and 'fragment' in formatted:
+                        fragment = formatted['fragment']
+                        self.assertEqual(case_expected, fragment)
+                    else:
+                        self.assertEqual(case_expected, formatted)
 
     standard_content_type_template = '<meta charset="%s" />\n'
     standard_generator_template = (
@@ -141,50 +148,50 @@ totest['standard'] = ({'stylesheet_path': '',
 ["""\
 Simple String
 """,
-{'fragment': '<p>Simple String</p>\n',
-}],
+'<p>Simple String</p>\n',
+],
 ["""\
 Simple String with *markup*
 """,
-{'fragment': '<p>Simple String with <em>markup</em></p>\n',
-}],
+'<p>Simple String with <em>markup</em></p>\n',
+],
 ["""\
 Simple String with an even simpler ``inline literal``
 """,
-{'fragment': '<p>Simple String with an even simpler <span class="docutils literal">inline literal</span></p>\n',
-}],
+'<p>Simple String with an even simpler <span class="docutils literal">inline literal</span></p>\n',
+],
 ["""\
 A simple `anonymous reference`__
 
 __ http://www.test.com/test_url
 """,
-{'fragment': '<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\n',
-}],
+'<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\n',
+],
 ["""\
 One paragraph.
 
 Two paragraphs.
 """,
-{'fragment': """\
+"""\
 <p>One paragraph.</p>
 <p>Two paragraphs.</p>
 """,
-}],
+],
 ["""\
 A simple `named reference`_ with stuff in between the
 reference and the target.
 
 .. _`named reference`: http://www.test.com/test_url
 """,
-{'fragment': """\
+"""\
 <p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
 reference and the target.</p>
 """,
-}],
+],
 ["""\
 .. [CIT2022] A citation.
 """,
-{'fragment': """\
+"""\
 <div role="list" class="citation-list">
 <div class="citation" id="cit2022" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>CIT2022<span class="fn-bracket">]</span></span>
@@ -192,7 +199,7 @@ reference and the target.</p>
 </div>
 </div>
 """,
-}],
+],
 ["""\
 +++++
 Title
@@ -287,36 +294,36 @@ totest['no_title_promotion'] = ({'doctitle_xform': False,
 ["""\
 Simple String
 """,
-{'fragment': '<p>Simple String</p>\n',
-}],
+'<p>Simple String</p>\n',
+],
 ["""\
 Simple String with *markup*
 """,
-{'fragment': '<p>Simple String with <em>markup</em></p>\n',
-}],
+'<p>Simple String with <em>markup</em></p>\n',
+],
 ["""\
 Simple String with an even simpler ``inline literal``
 """,
-{'fragment': '<p>Simple String with an even simpler <span class="docutils literal">inline literal</span></p>\n',
-}],
+'<p>Simple String with an even simpler <span class="docutils literal">inline literal</span></p>\n',
+],
 ["""\
 A simple `anonymous reference`__
 
 __ http://www.test.com/test_url
 """,
-{'fragment': '<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\n',
-}],
+'<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\n',
+],
 ["""\
 A simple `named reference`_ with stuff in between the
 reference and the target.
 
 .. _`named reference`: http://www.test.com/test_url
 """,
-{'fragment': """\
+"""\
 <p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
 reference and the target.</p>
 """,
-}],
+],
 ["""\
 +++++
 Title
@@ -337,7 +344,7 @@ Another Section
 
 And even more stuff
 """,
-{'fragment': """\
+"""\
 <section id="title">
 <h2>Title<a class="self-link" title="link to this section" href="#title"></a></h2>
 <section id="not-a-subtitle">
@@ -354,18 +361,18 @@ And even more stuff
 </section>
 </section>
 """,
-}],
+],
 ["""\
 * bullet
 * list
 """,
-{'fragment': """\
+"""\
 <ul class="simple">
 <li><p>bullet</p></li>
 <li><p>list</p></li>
 </ul>
 """,
-}],
+],
 ["""\
 .. table::
    :align: right
@@ -376,7 +383,7 @@ And even more stuff
    |  3  |  4  |
    +-----+-----+
 """,
-{'fragment': """\
+"""\
 <table class="align-right">
 <tbody>
 <tr><td><p>1</p></td>
@@ -388,7 +395,7 @@ And even more stuff
 </tbody>
 </table>
 """,
-}],
+],
 ["""\
 Not a docinfo.
 
@@ -399,7 +406,7 @@ Not a docinfo.
 :simple:
 :field: list
 """,
-{'fragment': """\
+"""\
 <p>Not a docinfo.</p>
 <dl class="field-list simple">
 <dt>This<span class="colon">:</span></dt>
@@ -414,14 +421,14 @@ Not a docinfo.
 </dd>
 </dl>
 """,
-}],
+],
 ["""\
 Not a docinfo.
 
 :This is: a
 :simple field list with loooong field: names
 """,
-{'fragment': """\
+"""\
 <p>Not a docinfo.</p>
 <dl class="field-list simple">
 <dt>This is<span class="colon">:</span></dt>
@@ -432,7 +439,7 @@ Not a docinfo.
 </dd>
 </dl>
 """,
-}],
+],
 ["""\
 Not a docinfo.
 
@@ -441,7 +448,7 @@ Not a docinfo.
 :This: is a
 :simple: field list with custom indent.
 """,
-{'fragment': """\
+"""\
 <p>Not a docinfo.</p>
 <dl class="field-list simple" style="--field-indent: 200px;">
 <dt>This<span class="colon">:</span></dt>
@@ -452,7 +459,7 @@ Not a docinfo.
 </dd>
 </dl>
 """,
-}],
+],
 ["""\
 Not a docinfo.
 
@@ -462,7 +469,7 @@ Not a docinfo.
 :simple: field list without custom indent,
          because the unit "uf" is invalid.
 """,
-{'fragment': """\
+"""\
 <p>Not a docinfo.</p>
 <dl class="field-indent-200uf field-list simple">
 <dt>This<span class="colon">:</span></dt>
@@ -474,7 +481,7 @@ because the unit &quot;uf&quot; is invalid.</p>
 </dd>
 </dl>
 """,
-}],
+],
 ["""\
 .. figure:: dummy.png
 
@@ -484,7 +491,7 @@ because the unit &quot;uf&quot; is invalid.</p>
 
    The legend's second paragraph.
 """,
-{'fragment': """\
+"""\
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 <figcaption>
@@ -496,13 +503,13 @@ because the unit &quot;uf&quot; is invalid.</p>
 </figcaption>
 </figure>
 """,
-}],
+],
 ["""\
 .. figure:: dummy.png
 
    The figure's caption, no legend.
 """,
-{'fragment': """\
+"""\
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 <figcaption>
@@ -510,7 +517,7 @@ because the unit &quot;uf&quot; is invalid.</p>
 </figcaption>
 </figure>
 """,
-}],
+],
 ["""\
 .. figure:: dummy.png
 
@@ -518,7 +525,7 @@ because the unit &quot;uf&quot; is invalid.</p>
 
    A legend without caption.
 """,
-{'fragment': """\
+"""\
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 <figcaption>
@@ -528,24 +535,24 @@ because the unit &quot;uf&quot; is invalid.</p>
 </figcaption>
 </figure>
 """,
-}],
+],
 ["""\
 .. figure:: dummy.png
 
 No caption nor legend.
 """,
-{'fragment': """\
+"""\
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 </figure>
 <p>No caption nor legend.</p>
 """,
-}],
+],
 [f"""\
 .. include:: {DATA_ROOT}/multiple-term-definition.xml
    :parser: xml
 """,
-{'fragment': """\
+"""\
 <dl>
 <dt>New in Docutils 0.22</dt>
 <dd><p>A definition list item may contain several
@@ -562,7 +569,7 @@ reStructuredText syntax.</p>
 </dd>
 </dl>
 """,
-}],
+],
 ])
 
 
@@ -581,7 +588,7 @@ Lazy loading by default, overridden by :loading: option
 .. figure:: dummy.png
    :loading: embed
 """,
-{'fragment': """\
+"""\
 <p>Lazy loading by default, overridden by :loading: option
 (&quot;cannot embed&quot; warning ignored).</p>
 <img alt="dummy.png" loading="lazy" src="dummy.png" />
@@ -593,7 +600,7 @@ Lazy loading by default, overridden by :loading: option
 <img alt="dummy.png" src="dummy.png" />
 </figure>
 """,
-}],
+],
 ])
 
 
@@ -608,18 +615,18 @@ totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX,
    :scale: 100%
 .. figure:: /data/blue%20square.png
 """,
-{'fragment': '<img alt="/data/blue%20square.png" src="data:image/png;base64,'
-             'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQ'
-             'EAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAA'
-             'SUVORK5CYII="'
-             f' {SCALING_OUTPUT}/>\n{NO_PIL_SYSTEM_MESSAGE}'
-             '<figure>\n'
-             '<img alt="/data/blue%20square.png" src="data:image/png;base64,'
-             'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQ'
-             'EAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAA'
-             'SUVORK5CYII=" />\n'
-             '</figure>\n',
-}],
+'<img alt="/data/blue%20square.png" src="data:image/png;base64,'
+'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQ'
+'EAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAA'
+'SUVORK5CYII="'
+f' {SCALING_OUTPUT}/>\n{NO_PIL_SYSTEM_MESSAGE}'
+'<figure>\n'
+'<img alt="/data/blue%20square.png" src="data:image/png;base64,'
+'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQ'
+'EAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAA'
+'SUVORK5CYII=" />\n'
+'</figure>\n',
+],
 ])
 
 
@@ -637,7 +644,7 @@ The latter are referenced a second time [#f2]_ [twice]_.
 .. [once] citation referenced once
 .. [twice] citation referenced twice
 """,
-{'fragment': """\
+"""\
 <p>Two footnotes <a class="brackets" href="#f1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> <a class="brackets" href="#f2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> and two citations <a class="citation-reference" href="#once" id="citation-reference-1" role="doc-biblioref">[once]</a> <a class="citation-reference" href="#twice" id="citation-reference-2" role="doc-biblioref">[twice]</a>.</p>
 <p>The latter are referenced a second time <a class="brackets" href="#f2" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> <a class="citation-reference" href="#twice" id="citation-reference-3" role="doc-biblioref">[twice]</a>.</p>
 <aside class="footnote-list brackets">
@@ -661,7 +668,7 @@ The latter are referenced a second time [#f2]_ [twice]_.
 </div>
 </div>
 """,
-}],
+],
 ])
 
 
@@ -675,22 +682,22 @@ totest['syntax_highlight'] = ({'syntax_highlight': 'short',
     Hello World
     EOF
 """,
-{'fragment': """\
+"""\
 <pre class="code shell literal-block"><code>cat <span class="s">&lt;&lt;EOF
 Hello World
 EOF</span></code></pre>
 """,
-}],
+],
 ["""\
 .. role:: shell(code)
    :language: shell
 
 :shell:`cat <<EOF Hello World EOF`
 """,
-{'fragment': """\
+"""\
 <p><code class="shell">cat <span class="s">&lt;&lt;EOF Hello World EOF</span></code></p>
 """,
-}],
+],
 ])
 
 
@@ -703,7 +710,7 @@ totest['system_messages'] = ({'stylesheet_path': '',
 .. image:: https://dummy.png
    :loading: embed
 """,
-{'fragment': """\
+"""\
 <img alt="https://dummy.png" src="https://dummy.png" />
 <aside class="system-message">
 <p class="system-message-title">System Message: ERROR/3 \
@@ -712,12 +719,12 @@ totest['system_messages'] = ({'stylesheet_path': '',
   Can only read local images.</p>
 </aside>
 """,
-}],
+],
 [f"""\
 .. image:: {DATA_ROOT}/circle-broken.svg
    :loading: embed
 """,
-{'fragment': f"""\
+f"""\
 <svg xmlns="http://www.w3.org/2000/svg"
      viewBox="0 0 10 10">
   <circle cx="5" cy="5" r="4" fill="lightblue" x/>
@@ -729,16 +736,16 @@ totest['system_messages'] = ({'stylesheet_path': '',
   not well-formed (invalid token): line 3, column 48</p>
 </aside>
 """
-}],
+],
 [r"""Broken :math:`\sin \my`.
 """,
-{'fragment': """\
+"""\
 <p>Broken <span class="math problematic">\\sin \\my</span>.</p>
 <aside class="system-message">
 <p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
 <p>Unknown LaTeX command &quot;\\my&quot;.</p>
 </aside>
-"""}],
+"""],
 ])
 
 totest['system_messages-PIL'] = ({'stylesheet_path': '',
@@ -751,7 +758,7 @@ totest['system_messages-PIL'] = ({'stylesheet_path': '',
    :scale: 100%
    :loading: embed
 """,
-{'fragment': f"""\
+f"""\
 <img alt="dummy.png" src="dummy.png" />
 <aside class="system-message">
 <p class="system-message-title">System Message: WARNING/2 \
@@ -767,12 +774,12 @@ totest['system_messages-PIL'] = ({'stylesheet_path': '',
   [Errno 2] No such file or directory: 'dummy.png'</p>
 </aside>
 """,
-}],
+],
 ["""\
 .. image:: dummy.mp4
    :scale: 100%
 """,
-{'fragment': f"""\
+f"""\
 <video src="dummy.mp4" title="dummy.mp4">
 <a href="dummy.mp4">dummy.mp4</a>
 </video>
@@ -784,13 +791,13 @@ totest['system_messages-PIL'] = ({'stylesheet_path': '',
   PIL cannot read video images.</p>
 </aside>
 """,
-}],
+],
 ["""\
 .. image:: https://dummy.png
    :scale: 100%
    :loading: embed
 """,
-{'fragment': f"""\
+f"""\
 <img alt="https://dummy.png" src="https://dummy.png" />
 <aside class="system-message">
 <p class="system-message-title">System Message: WARNING/2 \
@@ -806,7 +813,7 @@ totest['system_messages-PIL'] = ({'stylesheet_path': '',
   Can only read local images.</p>
 </aside>
 """,
-}],
+],
 ])
 
 totest['no_system_messages'] = ({'stylesheet_path': '',
@@ -823,27 +830,27 @@ totest['no_system_messages'] = ({'stylesheet_path': '',
 .. image:: dummy.mp4
    :scale: 100%
 """,
-{'fragment': """\
+"""\
 <img alt="dummy.png" src="dummy.png" />
 <video src="dummy.mp4" title="dummy.mp4">
 <a href="dummy.mp4">dummy.mp4</a>
 </video>
 """,
-}],
+],
 [f"""\
 .. image:: {DATA_ROOT}/circle-broken.svg
    :loading: embed
 """,
-{'fragment': """\
+"""\
 <svg xmlns="http://www.w3.org/2000/svg"
      viewBox="0 0 10 10">
   <circle cx="5" cy="5" r="4" fill="lightblue" x/>
 </svg>
 
-"""}],
+"""],
 [r'Broken :math:`\sin \my`.',
-{'fragment': '<p>Broken <tt class="math">\\sin \\my</tt>.</p>\n'
-}],
+'<p>Broken <tt class="math">\\sin \\my</tt>.</p>\n'
+],
 ])
 
 
