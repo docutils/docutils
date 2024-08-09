@@ -19,9 +19,7 @@ if __name__ == '__main__':
     # so we import the local `docutils` package.
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-import docutils
 from docutils import nodes, utils
-import docutils.utils.math
 
 TEST_ROOT = Path(__file__).parents[1]  # ./test/ from the docutils root
 
@@ -239,29 +237,6 @@ class ExtensionOptionTests(unittest.TestCase):
 
 
 class HelperFunctionTests(unittest.TestCase):
-
-    # Test conversion from `version information tuple` to a PEP 440 compliant
-    # Docutils version identifier.
-    # See 'Version Numbering' in docs/dev/policies.txt.
-    def test_version_identifier(self):
-        release_0_14_final = docutils.VersionInfo(
-            major=0, minor=14, micro=0,
-            releaselevel='final', serial=0, release=True)
-        self.assertEqual(utils.version_identifier(release_0_14_final), '0.14')
-        dev_0_15_beta = docutils.VersionInfo(
-            major=0, minor=15, micro=0,
-            releaselevel='beta', serial=0, release=False)
-        self.assertEqual(utils.version_identifier(dev_0_15_beta), '0.15b.dev')
-        release_0_14_rc1 = docutils.VersionInfo(
-            major=0, minor=14, micro=0,
-            releaselevel='candidate', serial=1, release=True)
-        self.assertEqual(utils.version_identifier(release_0_14_rc1), '0.14rc1')
-
-    def test_implicit_version_identifier(self):
-        self.assertEqual(
-            utils.version_identifier(docutils.__version_info__),
-            utils.version_identifier())
-
     def test_normalize_language_tag(self):
         self.assertEqual(utils.normalize_language_tag('de'), ['de'])
         self.assertEqual(utils.normalize_language_tag('de-AT'),

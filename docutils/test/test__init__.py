@@ -8,6 +8,8 @@
 Test module for the docutils' __init__.py.
 """
 
+from __future__ import annotations
+
 from pathlib import Path
 import sys
 import unittest
@@ -20,6 +22,42 @@ if __name__ == '__main__':
 import docutils
 import docutils.utils
 from docutils import VersionInfo
+
+
+_RELEASE_LEVEL_ABBREVIATIONS: dict[str, str] = {
+    'alpha': 'a',
+    'beta': 'b',
+    'candidate': 'rc',
+    'final': '',
+}
+
+
+def version_identifier(version_info: VersionInfo) -> str:
+    """
+    Return a version identifier string built from `version_info`, a
+    `docutils.VersionInfo` namedtuple instance or compatible tuple. If
+    `version_info` is not provided, by default return a version identifier
+    string based on `docutils.__version_info__` (i.e. the current Docutils
+    version).
+    """
+    if version_info.micro:
+        micro = f'.{version_info.micro}'
+    else:
+        # 0 is omitted:
+        micro = ''
+    releaselevel = _RELEASE_LEVEL_ABBREVIATIONS[version_info.releaselevel]
+    if version_info.serial:
+        serial = version_info.serial
+    else:
+        # 0 is omitted:
+        serial = ''
+    if version_info.release:
+        dev = ''
+    else:
+        dev = '.dev'
+    version = (f'{version_info.major}.{version_info.minor}{micro}'
+               f'{releaselevel}{serial}{dev}')
+    return version
 
 
 class ApplicationErrorTests(unittest.TestCase):
@@ -73,7 +111,7 @@ class VersionInfoTests(unittest.TestCase):
     def test__version__(self):
         """Test that __version__ is equivalent to __version_info__."""
         self.assertEqual(
-            docutils.utils.version_identifier(docutils.__version_info__),
+            version_identifier(docutils.__version_info__),
             docutils.__version__, f'{docutils.__version_info__} differs')
 
     def test_version_info_comparing(self):
@@ -104,8 +142,7 @@ class VersionInfoTests(unittest.TestCase):
                         VersionInfo(0, 2, 0, 'final', 0, True),
                         ]
         # transform to version strings
-        versions = [docutils.utils.version_identifier(vinfo)
-                    for vinfo in versioninfos]
+        versions = [version_identifier(vinfo) for vinfo in versioninfos]
 
         # ensure version infos corresponding to the dev cycle are ascending
         self.assertEqual(versions, devcycle.split())

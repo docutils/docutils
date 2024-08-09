@@ -20,7 +20,7 @@ import warnings
 from pathlib import PurePath, Path
 from typing import TYPE_CHECKING
 
-from docutils import ApplicationError, DataError, __version_info__
+from docutils import ApplicationError, DataError
 from docutils import io, nodes
 # for backwards compatibility
 from docutils.nodes import unescape  # noqa: F401
@@ -31,7 +31,6 @@ if TYPE_CHECKING:
 
     from typing_extensions import TypeAlias
 
-    from docutils import VersionInfo
     from docutils.nodes import Element, Text
     from docutils.frontend import Values
 
@@ -874,46 +873,3 @@ class DependencyList:
         except AttributeError:
             output_file = None
         return '%s(%r, %s)' % (self.__class__.__name__, output_file, self.list)
-
-
-release_level_abbreviations: dict[str, str] = {
-    'alpha': 'a',
-    'beta': 'b',
-    'candidate': 'rc',
-    'final': '',
-}
-
-
-def version_identifier(version_info: VersionInfo | None = None) -> str:
-    """
-    Return a version identifier string built from `version_info`, a
-    `docutils.VersionInfo` namedtuple instance or compatible tuple. If
-    `version_info` is not provided, by default return a version identifier
-    string based on `docutils.__version_info__` (i.e. the current Docutils
-    version).
-    """
-    if version_info is None:
-        version_info = __version_info__
-    if version_info.micro:
-        micro = '.%s' % version_info.micro
-    else:
-        # 0 is omitted:
-        micro = ''
-    releaselevel = release_level_abbreviations[version_info.releaselevel]
-    if version_info.serial:
-        serial = version_info.serial
-    else:
-        # 0 is omitted:
-        serial = ''
-    if version_info.release:
-        dev = ''
-    else:
-        dev = '.dev'
-    version = '%s.%s%s%s%s%s' % (
-        version_info.major,
-        version_info.minor,
-        micro,
-        releaselevel,
-        serial,
-        dev)
-    return version
