@@ -6,26 +6,44 @@
 Miscellaneous utilities for the documentation utilities.
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
-import sys
+import itertools
 import os
 import os.path
-from pathlib import PurePath, Path
 import re
-import itertools
-import warnings
+import sys
 import unicodedata
+import warnings
+from pathlib import PurePath, Path
+from typing import TYPE_CHECKING
 
 from docutils import ApplicationError, DataError, __version_info__
 from docutils import io, nodes
 # for backwards compatibility
 from docutils.nodes import unescape  # noqa: F401
 
+if TYPE_CHECKING:
+    from collections.abc import Callable, Sequence, Iterable
+    from typing import Any, Final, Literal, TextIO
+
+    from typing_extensions import TypeAlias
+
+    from docutils import VersionInfo
+    from docutils.nodes import Element, Text
+    from docutils.frontend import Values
+
+    _StrPath: TypeAlias = str | os.PathLike[str]
+    _ObserverFunc: TypeAlias = Callable[[nodes.system_message], None]
+
 
 class SystemMessage(ApplicationError):
 
-    def __init__(self, system_message, level) -> None:
+    def __init__(
+        self, system_message: nodes.system_message, level: int,
+    ) -> None:
         Exception.__init__(self, system_message.astext())
         self.level = level
 
@@ -65,25 +83,36 @@ class Reporter:
        1995.
     """
 
-    levels = 'DEBUG INFO WARNING ERROR SEVERE'.split()
+    # Reporter.get_source_and_line is patched in by ``RSTState.runtime_init``
+    get_source_and_line: Callable[
+        [int | None], tuple[_StrPath | None, int | None]
+    ]
+
+    levels: Final[Sequence[str]] = (
+        'DEBUG',
+        'INFO',
+        'WARNING',
+        'ERROR',
+        'SEVERE',
+    )
     """List of names for system message levels, indexed by level."""
 
     # system message level constants:
-    (DEBUG_LEVEL,
-     INFO_LEVEL,
-     WARNING_LEVEL,
-     ERROR_LEVEL,
-     SEVERE_LEVEL) = range(5)
+    DEBUG_LEVEL: Final = 0
+    INFO_LEVEL: Final = 1
+    WARNING_LEVEL: Final = 2
+    ERROR_LEVEL: Final = 3
+    SEVERE_LEVEL: Final = 4
 
     def __init__(
         self,
-        source,
-        report_level,
-        halt_level,
-        stream=None,
-        debug=False,
-        encoding=None,
-        error_handler='backslashreplace',
+        source: _StrPath,
+        report_level: int,
+        halt_level: int,
+        stream: io.ErrorOutput | TextIO | str | Literal[False] | None = None,
+        debug: bool = False,
+        encoding: str | None = None,
+        error_handler: str = 'backslashreplace',
     ) -> None:
         """
         :Parameters:
@@ -121,34 +150,39 @@ class Reporter:
         if not isinstance(stream, io.ErrorOutput):
             stream = io.ErrorOutput(stream, encoding, error_handler)
 
-        self.stream = stream
+        self.stream: io.ErrorOutput = stream
         """Where warning output is sent."""
 
-        self.encoding = encoding or getattr(stream, 'encoding', 'ascii')
+        self.encoding: str = encoding or getattr(stream, 'encoding', 'ascii')
         """The output character encoding."""
 
-        self.observers = []
+        self.observers: list[_ObserverFunc] = []
         """List of bound methods or functions to call with each system_message
         created."""
 
-        self.max_level = -1
+        self.max_level: int = -1
         """The highest level system message generated so far."""
 
-    def attach_observer(self, observer) -> None:
+    def attach_observer(self, observer: _ObserverFunc) -> None:
         """
         The `observer` parameter is a function or bound method which takes one
         argument, a `nodes.system_message` instance.
         """
         self.observers.append(observer)
 
-    def detach_observer(self, observer) -> None:
+    def detach_observer(self, observer: _ObserverFunc) -> None:
         self.observers.remove(observer)
 
-    def notify_observers(self, message) -> None:
+    def notify_observers(self, message: nodes.system_message) -> None:
         for observer in self.observers:
             observer(message)
 
-    def system_message(self, level, message, *children, **kwargs):
+    def system_message(self,
+                       level: int,
+                       message: str,
+                       *children: Element | Text,
+                       **kwargs: Any
+                       ) -> nodes.system_message:
         """
         Return a system_message object.
 
@@ -195,7 +229,9 @@ class Reporter:
         self.max_level = max(level, self.max_level)
         return msg
 
-    def debug(self, *args, **kwargs):
+    def debug(
+        self, *args: Element | Text, **kwargs: Any
+    ) -> nodes.system_message:
         """
         Level-0, "DEBUG": an internal reporting issue. Typically, there is no
         effect on the processing. Level-0 system messages are handled
@@ -204,28 +240,36 @@ class Reporter:
         if self.debug_flag:
             return self.system_message(self.DEBUG_LEVEL, *args, **kwargs)
 
-    def info(self, *args, **kwargs):
+    def info(
+        self, *args: Element | Text, **kwargs: Any
+    ) -> nodes.system_message:
         """
         Level-1, "INFO": a minor issue that can be ignored. Typically there is
         no effect on processing, and level-1 system messages are not reported.
         """
         return self.system_message(self.INFO_LEVEL, *args, **kwargs)
 
-    def warning(self, *args, **kwargs):
+    def warning(
+        self, *args: Element | Text, **kwargs: Any
+    ) -> nodes.system_message:
         """
         Level-2, "WARNING": an issue that should be addressed. If ignored,
         there may be unpredictable problems with the output.
         """
         return self.system_message(self.WARNING_LEVEL, *args, **kwargs)
 
-    def error(self, *args, **kwargs):
+    def error(
+        self, *args: Element | Text, **kwargs: Any
+    ) -> nodes.system_message:
         """
         Level-3, "ERROR": an error that should be addressed. If ignored, the
         output will contain errors.
         """
         return self.system_message(self.ERROR_LEVEL, *args, **kwargs)
 
-    def severe(self, *args, **kwargs):
+    def severe(
+        self, *args: Element | Text, **kwargs: Any
+    ) -> nodes.system_message:
         """
         Level-4, "SEVERE": a severe error that must be addressed. If ignored,
         the output will contain severe errors. Typically level-4 system
@@ -234,13 +278,15 @@ class Reporter:
         return self.system_message(self.SEVERE_LEVEL, *args, **kwargs)
 
 
-class ExtensionOptionError(DataError): pass
-class BadOptionError(ExtensionOptionError): pass
-class BadOptionDataError(ExtensionOptionError): pass
-class DuplicateOptionError(ExtensionOptionError): pass
+class ExtensionOptionError(DataError): pass  # NoQA: E701
+class BadOptionError(ExtensionOptionError): pass  # NoQA: E701
+class BadOptionDataError(ExtensionOptionError): pass  # NoQA: E701
+class DuplicateOptionError(ExtensionOptionError): pass  # NoQA: E701
 
 
-def extract_extension_options(field_list, options_spec):
+def extract_extension_options(field_list: nodes.field_list,
+                              options_spec: dict[str, Callable[object], Any],
+                              ) -> dict[str, Any]:
     """
     Return a dictionary mapping extension option names to converted values.
 
@@ -265,7 +311,9 @@ def extract_extension_options(field_list, options_spec):
     return assemble_option_dict(option_list, options_spec)
 
 
-def extract_options(field_list):
+def extract_options(
+    field_list: nodes.field_list
+) -> list[tuple[str, str | None]]:
     """
     Return a list of option (name, value) pairs from field names & bodies.
 
@@ -300,7 +348,9 @@ def extract_options(field_list):
     return option_list
 
 
-def assemble_option_dict(option_list, options_spec):
+def assemble_option_dict(option_list: list[tuple[str, str | None]],
+                         options_spec: dict[str, Callable[object], Any],
+                         ) -> dict[str, Any]:
     """
     Return a mapping of option names to values.
 
@@ -336,7 +386,7 @@ def assemble_option_dict(option_list, options_spec):
 class NameValueError(DataError): pass
 
 
-def decode_path(path):
+def decode_path(path: str | None | bytes) -> str:
     """
     Ensure `path` is Unicode. Return `str` instance.
 
@@ -345,11 +395,11 @@ def decode_path(path):
     # TODO: is this still required with Python 3?
     if isinstance(path, str):
         return path
+    if path is None:
+        return ''
     try:
         path = path.decode(sys.getfilesystemencoding(), 'strict')
     except AttributeError:  # default value None has no decode method
-        if not path:
-            return ''
         raise ValueError('`path` value must be a String or ``None``, '
                          f'not {path!r}')
     except UnicodeDecodeError:
@@ -405,7 +455,7 @@ def extract_name_value(line):
     return attlist
 
 
-def new_reporter(source_path, settings):
+def new_reporter(source_path: _StrPath, settings: Values) -> Reporter:
     """
     Return a new Reporter object.
 
@@ -423,7 +473,9 @@ def new_reporter(source_path, settings):
     return reporter
 
 
-def new_document(source_path, settings=None):
+def new_document(source_path: _StrPath,
+                 settings: Values | None = None
+                 ) -> nodes.document:
     """
     Return a new empty document object.
 
@@ -460,7 +512,10 @@ def new_document(source_path, settings=None):
     return document
 
 
-def clean_rcs_keywords(paragraph, keyword_substitutions) -> None:
+def clean_rcs_keywords(
+    paragraph: nodes.paragraph,
+    keyword_substitutions: Sequence[tuple[re.Pattern[[str], str]]],
+) -> None:
     if len(paragraph) == 1 and isinstance(paragraph[0], nodes.Text):
         textnode = paragraph[0]
         for pattern, substitution in keyword_substitutions:
@@ -470,7 +525,7 @@ def clean_rcs_keywords(paragraph, keyword_substitutions) -> None:
                 return
 
 
-def relative_path(source, target):
+def relative_path(source: _StrPath | None, target: _StrPath) -> str:
     """
     Build and return a path to `target`, relative to `source` (both files).
 
@@ -525,7 +580,9 @@ def relative_path(source, target):
     return '/'.join(parts)
 
 
-def get_stylesheet_reference(settings, relative_to=None):
+def get_stylesheet_reference(settings: Values,
+                             relative_to: _StrPath | None = None
+                             ) -> str:
     """
     Retrieve a stylesheet reference from the settings object.
 
@@ -557,7 +614,7 @@ def get_stylesheet_reference(settings, relative_to=None):
 # * no re-writing of the path (and therefore no optional argument)
 #   (if required, use ``utils.relative_path(source, target)``
 #   in the calling script)
-def get_stylesheet_list(settings):
+def get_stylesheet_list(settings: Values) -> list[str]:
     """
     Retrieve list of stylesheet references from the settings object.
     """
@@ -574,7 +631,7 @@ def get_stylesheet_list(settings):
     return stylesheets
 
 
-def find_file_in_dirs(path, dirs):
+def find_file_in_dirs(path: _StrPath, dirs: Iterable[_StrPath]) -> str:
     """
     Search for `path` in the list of directories `dirs`.
 
@@ -590,7 +647,7 @@ def find_file_in_dirs(path, dirs):
     return path.as_posix()
 
 
-def get_trim_footnote_ref_space(settings):
+def get_trim_footnote_ref_space(settings: Values) -> bool:
     """
     Return whether or not to trim footnote space.
 
@@ -605,7 +662,7 @@ def get_trim_footnote_ref_space(settings):
         return settings.trim_footnote_reference_space
 
 
-def get_source_line(node):
+def get_source_line(node: Element) -> tuple[_StrPath | None, int | None]:
     """
     Return the "source" and "line" attributes from the `node` given or from
     its closest ancestor.
@@ -617,7 +674,7 @@ def get_source_line(node):
     return None, None
 
 
-def escape2null(text):
+def escape2null(text: str) -> str:
     """Return a string with escape-backslashes converted to nulls."""
     parts = []
     start = 0
@@ -633,7 +690,7 @@ def escape2null(text):
         start = found + 2               # skip character after escape
 
 
-def split_escaped_whitespace(text):
+def split_escaped_whitespace(text: str) -> list[str]:
     """
     Split `text` on escaped whitespace (null+space or null+newline).
     Return a list of strings.
@@ -644,11 +701,11 @@ def split_escaped_whitespace(text):
     return list(itertools.chain(*strings))
 
 
-def strip_combining_chars(text):
+def strip_combining_chars(text: str) -> str:
     return ''.join(c for c in text if not unicodedata.combining(c))
 
 
-def find_combining_chars(text):
+def find_combining_chars(text: str) -> list[int]:
     """Return indices of all combining chars in  Unicode string `text`.
 
     >>> from docutils.utils import find_combining_chars
@@ -659,7 +716,7 @@ def find_combining_chars(text):
     return [i for i, c in enumerate(text) if unicodedata.combining(c)]
 
 
-def column_indices(text):
+def column_indices(text: str) -> list[int]:
     """Indices of Unicode string `text` when skipping combining characters.
 
     >>> from docutils.utils import column_indices
@@ -686,7 +743,7 @@ east_asian_widths = {'W': 2,   # Wide
 column widths."""
 
 
-def column_width(text):
+def column_width(text: str) -> int:
     """Return the column width of text.
 
     Correct ``len(text)`` for wide East Asian and combining Unicode chars.
@@ -698,7 +755,7 @@ def column_width(text):
     return width
 
 
-def uniq(L):
+def uniq(L: list) -> list:
     r = []
     for item in L:
         if item not in r:
@@ -706,7 +763,7 @@ def uniq(L):
     return r
 
 
-def normalize_language_tag(tag):
+def normalize_language_tag(tag: str) -> list[str]:
     """Return a list of normalized combinations for a `BCP 47` language tag.
 
     Example:
@@ -734,7 +791,7 @@ def normalize_language_tag(tag):
     return taglist
 
 
-def xml_declaration(encoding=None) -> str:
+def xml_declaration(encoding: str | Literal['unicode'] | None = None) -> str:
     """Return an XML text declaration.
 
     Include an encoding declaration, if `encoding`
@@ -756,7 +813,10 @@ class DependencyList:
     to explicitly call the close() method.
     """
 
-    def __init__(self, output_file=None, dependencies=()) -> None:
+    def __init__(self,
+                 output_file: Literal['-'] | _StrPath | None = None,
+                 dependencies: Iterable[_StrPath] = ()
+                 ) -> None:
         """
         Initialize the dependency list, automatically setting the
         output file to `output_file` (see `set_output()`) and adding
@@ -765,12 +825,12 @@ class DependencyList:
         If output_file is None, no file output is done when calling add().
         """
         self.list = []
-        self.file = None
+        self.file: TextIO | None = None
         if output_file:
             self.set_output(output_file)
         self.add(*dependencies)
 
-    def set_output(self, output_file) -> None:
+    def set_output(self, output_file: Literal['-'] | _StrPath) -> None:
         """
         Set the output file and clear the list of already added
         dependencies.
@@ -780,13 +840,12 @@ class DependencyList:
 
         If output_file is '-', the output will be written to stdout.
         """
-        if output_file:
-            if output_file == '-':
-                self.file = sys.stdout
-            else:
-                self.file = open(output_file, 'w', encoding='utf-8')
+        if output_file == '-':
+            self.file = sys.stdout
+        elif output_file:
+            self.file = open(output_file, 'w', encoding='utf-8')
 
-    def add(self, *paths) -> None:
+    def add(self, *paths: _StrPath) -> None:
         """
         Append `path` to `self.list` unless it is already there.
 
@@ -817,14 +876,15 @@ class DependencyList:
         return '%s(%r, %s)' % (self.__class__.__name__, output_file, self.list)
 
 
-release_level_abbreviations = {
+release_level_abbreviations: dict[str, str] = {
     'alpha': 'a',
     'beta': 'b',
     'candidate': 'rc',
-    'final': ''}
+    'final': '',
+}
 
 
-def version_identifier(version_info=None):
+def version_identifier(version_info: VersionInfo | None = None) -> str:
     """
     Return a version identifier string built from `version_info`, a
     `docutils.VersionInfo` namedtuple instance or compatible tuple. If
