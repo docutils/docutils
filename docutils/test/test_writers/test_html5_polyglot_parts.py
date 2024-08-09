@@ -721,7 +721,7 @@ totest['system_messages'] = ({'stylesheet_path': '',
 """,
 ],
 [f"""\
-.. image:: {DATA_ROOT}/circle-broken.svg
+.. image:: file://{DATA_ROOT}/circle-broken.svg
    :loading: embed
 """,
 f"""\
@@ -732,7 +732,7 @@ f"""\
 
 <aside class="system-message">
 <p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
-<p>Cannot parse SVG image &quot;{DATA_ROOT}/circle-broken.svg&quot;:
+<p>Cannot parse SVG image &quot;file://{DATA_ROOT}/circle-broken.svg&quot;:
   not well-formed (invalid token): line 3, column 48</p>
 </aside>
 """
@@ -838,7 +838,7 @@ totest['no_system_messages'] = ({'stylesheet_path': '',
 """,
 ],
 [f"""\
-.. image:: {DATA_ROOT}/circle-broken.svg
+.. image:: file://{DATA_ROOT}/circle-broken.svg
    :loading: embed
 """,
 """\
