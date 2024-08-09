@@ -11,7 +11,7 @@ and an older list at https://www.w3.org/Addressing/schemes.html.
 
 # Many values are blank and should be filled in with useful descriptions.
 
-schemes = {
+schemes: dict[str, str] = {
       'about': 'provides information on Navigator',
       'acap': 'Application Configuration Access Protocol; RFC 2244',
       'addbook': "To add vCard entries to Communicator's Address Book",
