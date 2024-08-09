@@ -32,6 +32,7 @@ select = [
 ]
 ignore = [
     "E226",  # missing whitespace around arithmetic operator
+    "E227",  # "missing whitespace around bitwise or shift operator"
     "E228",  # missing whitespace around modulo operator
     # not generally frowned on by PEP 8:
     # "If operators with different priorities are used, consider adding

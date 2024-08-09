@@ -96,6 +96,6 @@ class Tip(BaseAdmonition):
     node_class = nodes.tip
 
 
-class Warning(BaseAdmonition):  # NoQA: A001 (overwrite builtin "Warning")
+class Warning(BaseAdmonition):  # NoQA: A001 (builtin name)
 
     node_class = nodes.warning
