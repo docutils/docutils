@@ -6,13 +6,37 @@
 This package contains Docutils Writer modules.
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
-from importlib import import_module
+import importlib
+from typing import TYPE_CHECKING, overload
 
 import docutils
 from docutils import languages, Component
 from docutils.transforms import universal
+
+if TYPE_CHECKING:
+    from typing import Any, Final, Literal
+
+    from docutils import nodes
+    from docutils.io import Output
+    from docutils.languages import LanguageModule
+    from docutils.transforms import Transform
+    from docutils.writers import (
+        docutils_xml,
+        html4css1,
+        html5_polyglot,
+        latex2e,
+        manpage,
+        null,
+        odf_odt,
+        pep_html,
+        pseudoxml,
+        s5_html,
+        xetex,
+    )
 
 
 class Writer(Component):
@@ -27,27 +51,27 @@ class Writer(Component):
     The `write()` method is the main entry point.
     """
 
-    component_type = 'writer'
-    config_section = 'writers'
+    component_type: Final = 'writer'
+    config_section: Final = 'writers'
 
-    def get_transforms(self):
+    def get_transforms(self) -> list[type[Transform]]:
         return super().get_transforms() + [universal.Messages,
                                            universal.FilterMessages,
                                            universal.StripClassesAndElements]
 
-    document = None
+    document: nodes.document | None = None
     """The document to write (Docutils doctree); set by `write()`."""
 
-    output = None
+    output: str | bytes | None = None
     """Final translated form of `document`
 
     (`str` for text, `bytes` for binary formats); set by `translate()`.
     """
 
-    language = None
+    language: LanguageModule | None = None
     """Language module for the document; set by `write()`."""
 
-    destination = None
+    destination: Output | None = None
     """`docutils.io` Output object; where to write the document.
 
     Set by `write()`.
@@ -55,14 +79,17 @@ class Writer(Component):
 
     def __init__(self) -> None:
 
-        self.parts = {}
+        self.parts: dict[str, Any] = {}
         """Mapping of document part names to fragments of `self.output`.
 
         See `Writer.assemble_parts()` below and
         <https://docutils.sourceforge.io/docs/api/publisher.html>.
         """
 
-    def write(self, document, destination):
+    def write(self,
+              document: nodes.document,
+              destination: Output
+              ) -> str | bytes | None:
         """
         Process a document into its final form.
 
@@ -80,7 +107,7 @@ class Writer(Component):
         self.translate()
         return self.destination.write(self.output)
 
-    def translate(self):
+    def translate(self) -> None:
         """
         Do final translation of `self.document` into `self.output`.  Called
         from `write`.  Override in subclasses.
@@ -116,44 +143,129 @@ class UnfilteredWriter(Writer):
     later date using a subclass of `readers.ReReader`.
     """
 
-    def get_transforms(self):
+    def get_transforms(self) -> list[type[Transform]]:
         # Do not add any transforms.  When the document is reused
         # later, the then-used writer will add the appropriate
         # transforms.
         return Component.get_transforms(self)
 
 
-_writer_aliases = {
-      'html': 'html4css1',  # may change to html5 some day
-      'html4': 'html4css1',
-      'xhtml10': 'html4css1',
-      'html5': 'html5_polyglot',
-      'xhtml': 'html5_polyglot',
-      's5': 's5_html',
-      'latex': 'latex2e',
-      'xelatex': 'xetex',
-      'luatex': 'xetex',
-      'lualatex': 'xetex',
-      'odf': 'odf_odt',
-      'odt': 'odf_odt',
-      'ooffice': 'odf_odt',
-      'openoffice': 'odf_odt',
-      'libreoffice': 'odf_odt',
-      'pprint': 'pseudoxml',
-      'pformat': 'pseudoxml',
-      'pdf': 'rlpdf',
-      'xml': 'docutils_xml'}
+@overload
+def get_writer_class(writer_name: Literal['null']) -> type[null.Writer]:
+    ...
 
 
-def get_writer_class(writer_name):
+@overload
+def get_writer_class(
+    writer_name: Literal['html', 'html4']
+) -> type[html4css1.Writer]:
+    ...
+
+
+@overload
+def get_writer_class(
+    writer_name: Literal['html5']
+) -> type[html5_polyglot.Writer]:
+    ...
+
+
+@overload
+def get_writer_class(
+    writer_name: Literal['pep_html']
+) -> type[pep_html.Writer]:
+    ...
+
+
+@overload
+def get_writer_class(writer_name: Literal['s5']) -> type[s5_html.Writer]:
+    ...
+
+
+@overload
+def get_writer_class(writer_name: Literal['latex']) -> type[latex2e.Writer]:
+    ...
+
+
+@overload
+def get_writer_class(
+    writer_name: Literal['xetex', 'xelatex', 'luatex', 'lualatex']
+) -> type[xetex.Writer]:
+    ...
+
+
+@overload
+def get_writer_class(
+    writer_name: Literal['odf', 'odt', 'openoffice', 'libreoffice']
+) -> type[odf_odt.Writer]:
+    ...
+
+
+@overload
+def get_writer_class(
+    writer_name: Literal['manpage']
+) -> type[manpage.Writer]:
+    ...
+
+
+@overload
+def get_writer_class(
+    writer_name: Literal['pseudoxml', 'pprint', 'pformat']
+) -> type[pseudoxml.Writer]:
+    ...
+
+
+@overload
+def get_writer_class(writer_name: Literal['xml']) -> type[docutils_xml.Writer]:
+    ...
+
+
+@overload
+def get_writer_class(writer_name: str) -> type[Writer]:
+    ...
+
+
+def get_writer_class(writer_name: str) -> type[Writer]:
     """Return the Writer class from the `writer_name` module."""
     name = writer_name.lower()
-    name = _writer_aliases.get(name, name)
+    if name == 'null':
+        from docutils.writers import null
+        return null.Writer
+    # The 'html' alias may change to html5 some day
+    if name in {'html', 'html4', 'html4css1', 'xhtml10'}:
+        from docutils.writers import html4css1
+        return html4css1.Writer
+    if name in {'html5', 'html5_polyglot', 'xhtml'}:
+        from docutils.writers import html5_polyglot
+        return html5_polyglot.Writer
+    if name == 'pep_html':
+        from docutils.writers import pep_html
+        return pep_html.Writer
+    if name in {'s5', 's5_html'}:
+        from docutils.writers import s5_html
+        return s5_html.Writer
+    if name in {'latex', 'latex2e'}:
+        from docutils.writers import latex2e
+        return latex2e.Writer
+    if name in {'xetex', 'xelatex', 'luatex', 'lualatex'}:
+        from docutils.writers import xetex
+        return xetex.Writer
+    if name in {'odf', 'odt', 'odf_odt', 'openoffice', 'libreoffice',
+                'ooffice'}:
+        from docutils.writers import odf_odt
+        return odf_odt.Writer
+    if name == 'manpage':
+        from docutils.writers import manpage
+        return manpage.Writer
+    if name in {'pseudoxml', 'pprint', 'pformat'}:
+        from docutils.writers import pseudoxml
+        return pseudoxml.Writer
+    if name in {'xml', 'docutils_xml'}:
+        from docutils.writers import docutils_xml
+        return docutils_xml.Writer
+
     try:
-        module = import_module('docutils.writers.'+name)
-    except ImportError:
-        try:
-            module = import_module(name)
-        except ImportError as err:
-            raise ImportError(f'Writer "{writer_name}" not found. {err}')
-    return module.Writer
+        module = importlib.import_module(name)
+    except ImportError as err:
+        raise ImportError(f'Writer "{writer_name}" not found. {err}')
+    else:
+        return module.Writer
