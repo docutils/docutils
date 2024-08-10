@@ -264,7 +264,7 @@ class StateMachine:
                 else:
                     transitions = None
                 state = self.get_state(next_state)
-        except:  # NoQA: E722
+        except:  # NoQA: E722 (catchall)
             if self.debug:
                 self.error()
             raise
@@ -673,7 +673,7 @@ class State:
         try:
             del self.transitions[name]
             self.transition_order.remove(name)
-        except:  # NoQA: E722
+        except:  # NoQA: E722 (catchall)
             raise UnknownTransitionError(name)
 
     def make_transition(self, name, next_state=None):

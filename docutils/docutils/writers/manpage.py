@@ -171,11 +171,10 @@ class Table:
             del cell_lines[-1]
 
     def as_list(self):
-        text = [
-            '.TS\n',
-            ' '.join(self._options) + ';\n',
-            '%s.\n' % '|'.join(self._coldefs),
-        ]
+        text = ['.TS\n',
+                ' '.join(self._options) + ';\n',
+                '%s.\n' % '|'.join(self._coldefs),
+                ]
         for row in self._rows:
             # row = array of cells. cell = array of lines.
             text.append('T{\n')

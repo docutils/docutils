@@ -51,14 +51,11 @@ class RstLanguageImporter(LanguageImporter):
     def check_content(self, module: types.ModuleType) -> NoReturn:
         ...
 
-    def check_content(
-        self, module: RSTLanguageModule | types.ModuleType
-    ) -> None:
+    def check_content(self, module: RSTLanguageModule | types.ModuleType
+                      ) -> None:
         """Check if we got an rST language module."""
-        if not (
-            isinstance(module.directives, dict)
-            and isinstance(module.roles, dict)
-        ):
+        if not (isinstance(module.directives, dict)
+                and isinstance(module.roles, dict)):
             raise ImportError
 
 

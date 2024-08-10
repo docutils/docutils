@@ -39,7 +39,7 @@ try:
         _locale_encoding: str | None = (locale.getlocale()[1]
                                         or locale.getdefaultlocale()[1]
                                         ).lower()
-except:  # NoQA: E722
+except:  # NoQA: E722 (catchall)
     # Any problem determining the locale: use None
     _locale_encoding = None
 try:

@@ -124,9 +124,8 @@ class ReReader(Reader):
 
 
 @overload
-def get_reader_class(
-    reader_name: Literal['standalone']
-) -> type[standalone.Reader]:
+def get_reader_class(reader_name: Literal['standalone']
+                     ) -> type[standalone.Reader]:
     ...
 
 

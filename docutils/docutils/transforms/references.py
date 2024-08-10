@@ -114,14 +114,11 @@ class AnonymousHyperlinks(Transform):
 
     def apply(self) -> None:
         anonymous_refs = [
-            node for node
-            in self.document.findall(nodes.reference)
+            node for node in self.document.findall(nodes.reference)
             if node.get('anonymous')]
         anonymous_targets = [
-            node for node
-            in self.document.findall(nodes.target)
-            if node.get('anonymous')
-        ]
+            node for node in self.document.findall(nodes.target)
+            if node.get('anonymous')]
         if len(anonymous_refs) != len(anonymous_targets):
             msg = self.document.reporter.error(
                   'Anonymous hyperlink mismatch: %s references but %s '

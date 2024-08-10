@@ -171,12 +171,11 @@ def pandoc(math_code, as_block=False):
     details = []
     if result.stderr:
         lines = result.stderr.splitlines()
-        details.extend((
-            nodes.paragraph('', lines[0]),
-            nodes.literal_block('', '\n'.join(lines[1:3])),
-            nodes.paragraph('', '\n'.join(lines[3:]),
-                            classes=['pre-wrap']),
-        ))
+        details += [nodes.paragraph('', lines[0]),
+                    nodes.literal_block('', '\n'.join(lines[1:3])),
+                    nodes.paragraph('', '\n'.join(lines[3:]),
+                                    classes=['pre-wrap']),
+                    ]
     _check_result(result, details=details)
     return result.stdout
 

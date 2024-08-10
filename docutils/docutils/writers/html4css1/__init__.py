@@ -932,10 +932,8 @@ class SimpleListChecker(writers._html_base.SimpleListChecker):
     """
 
     def visit_list_item(self, node):
-        children = [
-            child for child in node.children
-            if not isinstance(child, nodes.Invisible)
-        ]
+        children = [child for child in node.children
+                    if not isinstance(child, nodes.Invisible)]
         if (children and isinstance(children[0], nodes.paragraph)
             and (isinstance(children[-1], nodes.bullet_list)
                  or isinstance(children[-1], nodes.enumerated_list))):

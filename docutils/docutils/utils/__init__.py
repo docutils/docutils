@@ -682,11 +682,9 @@ def escape2null(text: str) -> str:
         if found == -1:
             parts.append(text[start:])
             return ''.join(parts)
-        parts.extend((
-            text[start:found],
-            '\x00' + text[found + 1:found + 2],
-        ))
-        start = found + 2               # skip character after escape
+        parts.extend((text[start:found],
+                      '\x00' + text[found + 1:found + 2]))
+        start = found + 2  # skip character after escape
 
 
 def split_escaped_whitespace(text: str) -> list[str]:
@@ -781,11 +779,10 @@ def normalize_language_tag(tag: str) -> list[str]:
     subtags = list(tag.split('_'))
     base_tag = (subtags.pop(0),)
     # find all combinations of subtags
-    taglist = [
-        '-'.join(base_tag + tags)
-        for n in range(len(subtags), 0, -1)
-        for tags in itertools.combinations(subtags, n)
-    ]
+    taglist = ['-'.join(base_tag + tags)
+               for n in range(len(subtags), 0, -1)
+               for tags in itertools.combinations(subtags, n)
+               ]
     taglist += base_tag
     return taglist
 

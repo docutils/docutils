@@ -31,7 +31,7 @@ if sys.version_info[:2] > (3, 9):
     SUPPRESS_ENCODING_WARNING = sys.flags.warn_default_encoding
 else:
     SUPPRESS_ENCODING_WARNING = False
-    EncodingWarning = UnicodeWarning  # NoQA: A001 (builtin name)
+    EncodingWarning = UnicodeWarning  # NoQA: A001 (builtin in Py > 0.9)
 
 # DATA_ROOT is ./test/data/ from the docutils root
 DATA_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')

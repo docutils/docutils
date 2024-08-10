@@ -52,9 +52,8 @@ class LanguageImporter:
     def __init__(self) -> None:
         self.cache: dict[str, LanguageModuleT] = {}
 
-    def import_from_packages(
-        self, name: str, reporter: Reporter = None
-    ) -> LanguageModuleT:
+    def import_from_packages(self, name: str, reporter: Reporter = None
+                             ) -> LanguageModuleT:
         """Try loading module `name` from `self.packages`."""
         module = None
         for package in self.packages:
@@ -88,9 +87,8 @@ class LanguageImporter:
         ):
             raise ImportError
 
-    def __call__(
-        self, language_code: str, reporter: Reporter = None
-    ) -> LanguageModuleT:
+    def __call__(self, language_code: str, reporter: Reporter = None
+                 ) -> LanguageModuleT:
         try:
             return self.cache[language_code]
         except KeyError:

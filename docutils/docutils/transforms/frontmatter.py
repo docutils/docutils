@@ -416,7 +416,7 @@ class DocInfo(Transform):
                     field['classes'].append(classvalue)
                 docinfo.append(field)
         nodelist = []
-        if len(docinfo) != 0:
+        if len(docinfo):
             nodelist.append(docinfo)
         if topics['dedication']:
             nodelist.append(topics['dedication'])

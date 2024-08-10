@@ -2889,10 +2889,8 @@ class Text(RSTState):
                     text = parts[0].rstrip()
                     textnode = nodes.Text(text)
                     node_list[-1] += textnode
-                    node_list += [
-                        nodes.classifier(unescape(part, True), part)
-                        for part in parts[1:]
-                    ]
+                    node_list += [nodes.classifier(unescape(part, True), part)
+                                  for part in parts[1:]]
             else:
                 node_list[-1] += node
         return node_list, messages
