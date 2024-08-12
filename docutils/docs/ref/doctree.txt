@@ -4726,11 +4726,13 @@ The ``type`` attribute is used in the `\<system_message>`_ element.
 Attribute type: `CDATA`_.  Default value: none.
 
 The ``uri`` attribute is used in the `\<image>`_ and `\<figure>`_
-elements to refer to the image via a `URI Reference`_ (URI or
-`relative reference`_).
+elements to refer to the image via a `URI Reference`_ [#]_. [rfc3986]_
 
-.. _URI Reference: https://www.rfc-editor.org/rfc/rfc3986.html#section-4.1
-.. _relative reference: https://www.rfc-editor.org/rfc/rfc3986.html#section-4.2
+.. [#] Examples are a full URI, an *absolute-path reference* (begins with
+   a single slash character) or a *relative-path reference* (does not
+   begin with a slash character).
+
+.. _URI reference: https://www.rfc-editor.org/rfc/rfc3986.html#section-4.1
 
 
 ``valign``
@@ -5245,7 +5247,10 @@ Bibliography
                 WHATWG (Apple, Google, Mozilla, Microsoft),
                 https://html.spec.whatwg.org.
 
-.. [xml1.0]    `Extensible Markup Language (XML) 1.0`,
+.. [rfc3986]    Berners-Lee, T., Fielding, R., and L. Masinter,
+                `Uniform Resource Identifier (URI): Generic Syntax`,
+                STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005,
+                https://www.rfc-editor.org/info/rfc3986.
 
 .. [tm9901]     .. _XML Exchange Table Model DTD:
                 .. _Exchange Table Model:
@@ -5255,6 +5260,8 @@ Bibliography
                 http://www.oasis-open.org/html/tm9901.html.
                 W3C Recommendation,
                 https://www.w3.org/TR/xml/.
+
+.. [xml1.0]    `Extensible Markup Language (XML) 1.0`,
 
 .. _DocBook: https://tdg.docbook.org/tdg/5.1/.
 .. _DocBook <caution>: https://tdg.docbook.org/tdg/5.1/caution.html

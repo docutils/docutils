@@ -217,7 +217,7 @@ An "image" is a simple picture::
 
     .. image:: picture.png
 
-An URI-reference_ to the image source file is specified in the directive
+A `URI reference`_ to the image source file is specified in the directive
 argument.  As with hyperlink targets, the image URI may begin on the
 same line as the explicit markup start and target name, or it may
 begin in an indented text block immediately following, with no
@@ -297,7 +297,7 @@ and name_ as well as
 
 ``target`` : URI_ or `reference name`_
     Nest the image in a hyperlink reference element (make it "clickable").
-    The option argument may be a URI-reference_ or a `reference name`_
+    The option argument may be a URI reference or a reference name
     with underscore suffix (e.g. ```a name`_``).
 
 ``width`` : length_ or percentage_ of the current line width
@@ -1008,7 +1008,7 @@ Recognizes the common options `class <class option_>`_ and name_ as well as
     .. _`url`:
 
 ``url`` : URI_
-    A URI-reference to a CSV data file.
+    A URI reference to a CSV data file.
 
 ``width`` : length_ or percentage_ of the current line width
     Sets the width of the table to the specified length or percentage
@@ -1709,7 +1709,7 @@ as well as
     The local filesystem path of a raw data file to be included.
 
 ``url`` : URI_
-    A URI-reference to a raw data file to be included.
+    A URI reference to a raw data file to be included.
 
 
 .. _class directive:
@@ -2208,17 +2208,18 @@ Common Option Value Types
 :_`path`: local filesystem path
 
   Newlines are removed.
-
   The `root_prefix`_ configuration setting can be used to tell Docutils
-  to interpret absolute paths (starting with "/") relative to a "project
+  to interpret root paths (starting with "/") relative to a "project
   directory".
 
 :_`text`: free text
 
   Possible restrictions are given in parentheses.
 
-:_`URI`: _`URI-reference` (URI or `relative reference`_, cf. :RFC:`3986`)
+:_`URI`: _`URI reference`
 
+  Full URI or `relative reference`_ (absolute or relative path reference),
+  cf. :RFC:`3986`.
   Whitespace is removed (cf. `external hyperlink targets`_ in the
   reStructuredText specification).
 
@@ -2278,6 +2279,7 @@ Common Option Value Types
 .. _loading attribute: ../doctree.html#loading
 .. _names attribute: ../doctree.html#names
 .. _title attribute: ../doctree.html#title-attribute
+.. _uri attribute: ../doctree.html#uri
 .. _width attribute: ../doctree.html#width
 .. _<admonition>: ../doctree.html#admonition
 .. _<attention>: ../doctree.html#attention
