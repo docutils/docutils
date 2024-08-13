@@ -14,10 +14,8 @@
 #
 # ATTENTION
 #
-# Any .html document with a corresponding .txt file is regenerated 
-# if the .txt has changed, but no new .html files will be generated.
-#
-# * Funny thing: sf hides README.txt files.
+# Any .html document with a corresponding .rst or .txt file is regenerated 
+# if the .rst/.txt has changed, but no new .html files will be generated.
 #
 # ATTENTION
 #
@@ -152,6 +150,7 @@ haschanges="`svn up docutils sandbox web | grep -v '^At revision '; true`"
 find $basedir -name aux -o -type d -print0 | xargs -0 chmod ug+rwxs 2> /dev/null || true
 
 # create the snapshots
+# TODO exclude .git ?
 exclude='--exclude=.svn'
 tar -cz $exclude -f $project-snapshot.tgz $project
 tar -cz $exclude -f $project-sandbox-snapshot.tgz sandbox
@@ -188,10 +187,11 @@ done
 cd $htdocsdest
 
 # 2. generate empty and old html files to force generation
-#    for any txt under docs ?
-find docs -type f -and -name \*.txt -print | ( \
+#    for any rst/txt under docs ?
+find docs -type f -and \( -name \*.rst -o -name \*.txt \) -print | ( \
 while read -r txtfile ; do
     dir=`dirname $txtfile`
+    base=`basename $txtfile .rst`
     base=`basename $txtfile .txt`
     htmlfile=$dir/$base.html
     if [ ! -e $htmlfile ] ; then
@@ -201,10 +201,12 @@ while read -r txtfile ; do
 done
 )
 
-#   for any README.txt under sandbox
-find sandbox -type f -and \( -name README.txt -o -name README \) -print | ( \
+#   for any README/.rst/.txt under sandbox
+find sandbox -type f -and \( -name README.rst \
+	-o -name README.txt -o -name README \) -print | ( \
 while read -r txtfile ; do
     dir=`dirname $txtfile`
+    base=`basename $txtfile .rst`
     base=`basename $txtfile .txt`
     htmlfile=$dir/$base.html
     if [ ! -e $htmlfile ] ; then
@@ -224,7 +226,7 @@ while read -r htmlfile ; do
     fi
 done < $htmlfilelist
 
-# 3. re/generate html from txt
+# 3. re/generate html from rst/txt
 cd $htdocsdest
 
 # TODO use buildhtml.py ?
@@ -236,9 +238,9 @@ for htmlfile in `find . -name '*.html'` ; do
     if [ "$base" == "standalone_rst_html4strict" ] ; then
         print_feedback "skipped: $dir $base"
     else
-        txtfile=$dir/$base.txt
+        txtfile=$dir/$base.rst
         if [ ! -e $txtfile  ] ; then
-            txtfile=$dir/$base.rst
+            txtfile=$dir/$base.txt
         fi
         if [ ! -e $txtfile  ] ; then
             txtfile=$dir/$base
@@ -300,6 +302,9 @@ if test -n "$haschanges"; then
                 if test "${i: -5}" == .html; then
                     # HTML files (including the home page) have highest priority.
                     priority=1.0
+                elif test "${i: -4}" == .rst; then
+                    # Text files have medium priority.
+                    priority=0.5
                 elif test "${i: -4}" == .txt; then
                     # Text files have medium priority.
                     priority=0.5
