@@ -21,6 +21,16 @@ are needed for the development of the Docutils project.
     If a file ``ON_SOURCEFORGE`` exists in current directory, the
     script assumes being executed on shell.sourceforge.
 
+:`<set_version.sh>`_: Script to change the version identifier in
+    documentation, tests, docutils/__init__, ...
+    extracted from ``release.sh``.
+
+
+Everything below this line needs rework
+---------------------------------------
+
+is not in use ... move to attic.
+
 :`<release.sh>`_: The script to make releases of Docutils.
     For usage details see `release.txt`_
 
@@ -30,16 +40,6 @@ are needed for the development of the Docutils project.
 
 :`<release-test.sh>`_: The script to run tests at release time, extracted
     from ``release.sh``.
-
-:`<set_version.sh>`_: Script to change the version identifier in
-    documentation, tests, docutils/__init__, ...
-    extracted from ``release.sh``.
-
-
-Everything below this line needs rework
----------------------------------------
-
-Overview:
 
 :`<uploaddocutils.sh>`_: Upload files to http://docutils.sf.net/tmp/
     using ``scp``, inserting the current date in the file name.
