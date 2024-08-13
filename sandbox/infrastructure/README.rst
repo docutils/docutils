@@ -43,14 +43,8 @@ is not in use ... move to attic.
       Allow release without testing, because tests must be done
       on more than one os.
 
-:`<release-test.sh>`_: The script to run tests at release time, extracted
-    from ``release.sh``.
-
 :`<uploaddocutils.sh>`_: Upload files to http://docutils.sf.net/tmp/
     using ``scp``, inserting the current date in the file name.
-
-:`<update-htmlfiles>`_: Used to initialise a docutils-update upload directory.
-    Generating html-files from txt-files first time.
 
 and are these used by anyone.
 
