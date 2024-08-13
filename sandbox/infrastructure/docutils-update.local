@@ -192,7 +192,7 @@ find docs -type f -and \( -name \*.rst -o -name \*.txt \) -print | ( \
 while read -r txtfile ; do
     dir=`dirname $txtfile`
     base=`basename $txtfile .rst`
-    base=`basename $txtfile .txt`
+    base=`basename $base .txt`
     htmlfile=$dir/$base.html
     if [ ! -e $htmlfile ] ; then
         print_feedback "touch $htmlfile"
@@ -207,7 +207,7 @@ find sandbox -type f -and \( -name README.rst \
 while read -r txtfile ; do
     dir=`dirname $txtfile`
     base=`basename $txtfile .rst`
-    base=`basename $txtfile .txt`
+    base=`basename $base .txt`
     htmlfile=$dir/$base.html
     if [ ! -e $htmlfile ] ; then
         print_feedback "touch $htmlfile"
