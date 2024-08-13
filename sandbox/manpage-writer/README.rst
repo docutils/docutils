@@ -9,7 +9,7 @@
 Additionally to standard testing, here we try to include tests that process
 the generated man pages and verify the output.
 
-Some of these tests either require roff and some groff to verify the produced layout.
+The tests either require man or roff/nroff/... to verify the produced layout.
 
 From the groff-manual at gnu.org
 --------------------------------
