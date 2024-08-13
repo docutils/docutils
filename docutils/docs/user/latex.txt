@@ -1998,6 +1998,7 @@ __ ../ref/rst/directives.html#images
    https://mirrors.ctan.org/macros/latex/required/graphics/grfguide.pdf
 .. _grffile: https://ctan.org/pkg/grffile
 .. _graphicx-option: config.html#graphicx-option
+.. _URI-reference: https://www.rfc-editor.org/rfc/rfc3986.html#section-4.1
 
 
 Why are my images too big?
