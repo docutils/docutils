@@ -3,9 +3,10 @@ TODOs
 
 :Date: $Date$
 
-* lines starting with a ``{not typeset}  abc``
+Issues
+------
 
-# #480 document information comment with docutils version
+* lines starting with a ``{not typeset}  abc``
 
 * #481 no uppercasing of titles (config option)
 
@@ -61,42 +62,42 @@ TODOs
    .\}
    .rr df
 
-see groff_man_style ::
+  see groff_man_style ::
 
-  .SH "See also"
-  .
-  .MR \%tbl 1 ,
-  .MR \%eqn 1 ,
-  and
-  .MR \%refer 1
-  are preprocessors used with man pages.
-  .
-  .MR man 1
-  describes the man page librarian on your system.
+   .SH "See also"
+   .
+   .MR \%tbl 1 ,
+   .MR \%eqn 1 ,
+   and
+   .MR \%refer 1
+   are preprocessors used with man pages.
+   .
+   .MR man 1
+   describes the man page librarian on your system.
 
-but the rST source would be more like this ::
+  but the rST source would be more like this ::
 
-  See also
-  ========
+   See also
+   ========
 
-  tbl(1), eqn(1), and refer(1) are preprocessors used with man pages.
-  man(1) describes the man page ...
+   tbl(1), eqn(1), and refer(1) are preprocessors used with man pages.
+   man(1) describes the man page ...
 
-so the MR things need to be found with regexp or marked with a role/directive ?
-or a reference type man:tbl(1) 
+  so the MR things need to be found with regexp or marked with a role/directive ?
+  or a reference type man:tbl(1) 
 
-The ``\%`` is :
+  Note:  The ``\%`` is :
 
-  a  word  may be broken at hyphens, at ``\%`` or ``\:`` escape sequences
+    a  word  may be broken at hyphens, at ``\%`` or ``\:`` escape sequences
 
-whatfore at the word start ?
+    whatfore at the word start ?
 
-Branden writes:
+    Branden writes:
 
-  You will not need to generate the arguments to the MR macro with a leading
-  \% escape sequence. ... see feature request #107
+     You will not need to generate the arguments to the MR macro with a leading
+     \% escape sequence. ... see feature request #107
 
-groff_man_style on 
+* groff_man_style on 
 
    Hyperlink macros
        Man  page  cross references like ls(1) are best presented with .MR.  Text may be
@@ -121,8 +122,10 @@ groff_man_style on
        each  dot  (or  series  thereof)  is recommended as a rule of thumb.  The former
        practice avoids forcing a trailing slash in a URI onto a separate  output  line,
        and  the  latter  helps the reader to avoid mistakenly interpreting a dot at the
-       end of a line as a period (or multiple dots as an ellipsis).  Thus,
+       end of a line as a period (or multiple dots as an ellipsis).  Thus, ::
+
               .UR http://\:example\:.com/\:fb8afcfbaebc74e\:.cc
+
        has several potential break points in the  URI  shown.   Consider  adding  break
        points  before  or after at signs in email addresses, and question marks, amper‐
        sands, and number signs in HTTP(S) URIs.  The formatter removes  \:  escape  se‐
@@ -183,15 +186,13 @@ Discussions
 * input/optionstoo.txt:23: (ERROR/3) Unexpected indentation.
   is what it is ... leave it so.
 
-  TODO the curly brace on start of line hides the line 
-
 * doublespace after end of sentence in manpages ? 
 
   see https://sourceforge.net/p/docutils/bugs/427/
 
   Chicago manual of style ... hard to automate.
 
-Check ``docs/user/manpage.txt``
+* Check ``docs/user/manpage.txt``
 
 * escape double quotes in macro arguments ?
 
