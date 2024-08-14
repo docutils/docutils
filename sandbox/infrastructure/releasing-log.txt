@@ -8,6 +8,71 @@ Releasing
 
 Notes on what happend while releasing.
 
+Release 0.22b0.dev0 (2024-08-14)
+================================
+
+To test installing sdist from testpyi: failed flit is required to be
+available on testpypi (IMHO).
+
+* Make a clean checkout of svn.code.sf.net/p/docutils/code/trunk/docutils
+
+* skip till
+
+  Run tests ::
+
+    export PYTHONWARNINGS=default
+    python3 test/alltests.py
+
+  and with tox.
+
+  ``export PYTHONWARNINGS=default`` prints DeprecationWarnings in python3.
+
+  No warnings or errors.
+
+* Generate wheel and source-distribution::
+
+    python3 -m pip install build
+    python3 -m build .
+
+  check file sizes: the 0.21.2 wheel was 574K the sdist 2,2M.
+  ... similar sizes.
+
+* Upload wheel and source to test.pypi.
+
+  Set repository and key in ~/.pypirc with a <server-name> and
+  password token::
+
+    python3 -m twine upload --repository <server-name> dist/*
+
+  Change directory outside of checkout and test in venv.
+  NOTE use --pre for prereleases::
+
+    python3 -m venv du3 ; cd du3
+    export PYTHONPATH= ; . bin/activate
+
+    pip install --index-url https://test.pypi.org/simple/ --pre --no-deps docutils
+
+    cp -Lr ../docutils-code/docutils/test .
+    python test/alltests.py
+
+  Ignore missing HISTORY.txt it is not in the wheel file.
+  if ok ::
+
+    deactivate ; cd .. ; rm -r du3
+
+  Test the sdist::
+
+    python3 -m venv du3s ; cd du3s
+    export PYTHONPATH= ; . bin/activate
+
+    pip install --index-url https://test.pypi.org/simple/ --no-binary docutils docutils
+
+  sdist installation fails with subprocess not finding flit_core .
+  test.pypi has flit 3.5.1 but installs 0.5 preinstalling flit_core did not work
+  either ... why.
+
+  Installing build into the venv did not help and flit neither. 
+
 Release 0.21.2 (2024-04-23)
 ===========================
 
