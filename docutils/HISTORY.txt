@@ -165,8 +165,8 @@ Release 0.22b.dev (unpublished)
     docutils version in header
   - Stop converting text to full capitals (bug #481).
   - Add module function insert_URI_breakpoints.
-  - Add command line option ``--use-reference-macros`` to enable usage of man
-    macros .UR/.UE.
+  - Add command line option ``--macro-references``/``--text-references``
+    to enable/disable usage of *man* macros .UR/.UE.
 
 * docutils/writers/null.py
 

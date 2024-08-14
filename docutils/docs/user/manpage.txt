@@ -107,6 +107,45 @@ The *man-db* project's own *man* page, which may be installed as
 *man*\(1) or *gman*\(1), explains the sectional organization of the
 manuals (in both senses).
 
+
+Configuration
+'''''''''''''
+
+Options can be specified as
+
+* command-line options, or
+
+* configuration settings.
+
+Run ``rst2man --help`` to get a list of available options;
+see `Docutils Configuration`_ for details.
+
+.. _Docutils Configuration: config.html
+
+Option ``text-references``, ``macro-references`` set the way
+URI-references are typeset in the generated man page.
+
+``text-references``: is the default (for now). A URI-reference would be
+    typeset::
+
+      see Linux Man Page Howto <https://tldp.org/HOWTO/Man-Page/>
+
+``macro-references``: This results in the usage of *man*-macros for
+    URI-references::
+
+      see
+      .UR https://tldp.org/HOWTO/Man-Page/
+      Linux Man Page Howto
+      .UE
+
+    The the actual typesetting is done by man/roff/mandoc.
+
+    In groff 1.23 the macros support OSC8 output, to notify terminals that
+    some text is a link, similar to html ``<a ref="abc.html">abc</a>``,
+    ``abc.html`` then wouldn't be visible to the user but the terminal
+    offers opening the standard browser to that URI ... assuming OSC8 is
+    supported.
+
 References
 ''''''''''
 

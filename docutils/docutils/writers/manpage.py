@@ -116,10 +116,15 @@ class Writer(writers.Writer):
     settings_spec = (
         'Manpage-Specific Options',
         None,
-        (('Use man macros .UR/.UE and .MT/.ME for references '
-          'or put references in plain text form.',
-          ['--use-reference-macros'],
-          {'default': False, 'action': 'store_true',
+        (('Use man macros .UR/.UE and .MT/.ME for references ',
+          ['--macro-references'],
+          {'dest': 'use_reference_macros',
+           'default': False, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Put references in plain text form.',
+          ['--text-references'],
+          {'dest': 'use_reference_macros',
+           'action': 'store_false',
            'validator': frontend.validate_boolean}),
          ),
         )
