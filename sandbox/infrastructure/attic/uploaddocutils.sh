@@ -6,6 +6,9 @@
 # Date: $Date$
 # Copyright: This script has been placed in the public domain.
 
+# This was used to share files in tmp directory on sourceforge.net
+# adding a timestamp to the filename.
+ 
 set -e
 
 date="`date --utc --iso-8601`"
