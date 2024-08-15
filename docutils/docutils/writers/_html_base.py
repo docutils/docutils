@@ -531,7 +531,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         # unify class arguments and move language specification
         for cls in node.get('classes', []) + atts.pop('class', '').split():
             if cls.startswith('language-'):
-                languages.append(cls[9:])
+                languages.append(cls.removeprefix('language-'))
             elif cls.strip() and cls not in classes:
                 classes.append(cls)
         if languages:
@@ -1022,7 +1022,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             if cls.startswith('field-indent-'):
                 try:
                     indent_length = length_or_percentage_or_unitless(
-                                                        cls[13:], 'px')
+                        cls.removeprefix('field-indent-'), 'px')
                 except ValueError:
                     break
                 atts['style'] = '--field-indent: %s;' % indent_length

@@ -122,7 +122,7 @@ class NumberLines:
         self.tokens = tokens
         self.startline = startline
         # pad linenumbers, e.g. endline == 100 -> fmt_str = '%3d '
-        self.fmt_str = '%%%dd ' % len(str(endline))
+        self.fmt_str = f'%{len(str(endline))}d '
 
     def __iter__(self):
         lineno = self.startline

@@ -818,7 +818,7 @@ class Element(Node):
         """
         for cls in self.get('classes', []):
             if cls.startswith('language-'):
-                return cls[9:]
+                return cls.removeprefix('language-')
         try:
             return self.parent.get_language(fallback)
         except AttributeError:

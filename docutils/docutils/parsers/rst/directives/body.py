@@ -71,8 +71,8 @@ class Sidebar(BasePseudoSection):
 
     required_arguments = 0
     optional_arguments = 1
-    option_spec = BasePseudoSection.option_spec.copy()
-    option_spec['subtitle'] = directives.unchanged_required
+    option_spec = BasePseudoSection.option_spec | {
+                      'subtitle': directives.unchanged_required}
 
     def run(self):
         if isinstance(self.state_machine.node, nodes.sidebar):
