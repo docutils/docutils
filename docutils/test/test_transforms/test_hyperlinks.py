@@ -436,7 +436,7 @@ See `Element \\<a>`_, `Element <b\\>`_, and `Element <c>\\ `_.
 
 .. _`Element <a>`:
 .. _`Element <b>`:
-.. _`Element <c>`: elements.txt
+.. _`Element <c>`: elements.rst
 """,
 """\
 <document source="test data">
@@ -444,18 +444,18 @@ See `Element \\<a>`_, `Element <b\\>`_, and `Element <c>\\ `_.
         Hyperlinks with angle-bracketed text need escaping.
     <paragraph>
         See \n\
-        <reference name="Element <a>" refuri="elements.txt">
+        <reference name="Element <a>" refuri="elements.rst">
             Element <a>
         , \n\
-        <reference name="Element <b>" refuri="elements.txt">
+        <reference name="Element <b>" refuri="elements.rst">
             Element <b>
         , and \n\
-        <reference name="Element <c>" refuri="elements.txt">
+        <reference name="Element <c>" refuri="elements.rst">
             Element <c>
         .
     <target refid="element-a">
     <target refid="element-b">
-    <target ids="element-c element-b element-a" names="element\\ <c> element\\ <b> element\\ <a>" refuri="elements.txt">
+    <target ids="element-c element-b element-a" names="element\\ <c> element\\ <b> element\\ <a>" refuri="elements.rst">
 """],
 ["""\
 .. _target:

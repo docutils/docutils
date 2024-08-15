@@ -36,9 +36,9 @@ def relpath(path):
 
 
 paths = {
-    'include': relpath(DATA_ROOT / 'include.txt'),  # included rst file
-    'raw': relpath(DATA_ROOT / 'raw.txt'),      # included raw "HTML file"
-    'stylesheet': relpath(DATA_ROOT / 'stylesheet.txt'),
+    'include': relpath(DATA_ROOT / 'include.rst'),  # included rst file
+    'raw': relpath(DATA_ROOT / 'raw.rst'),      # included raw "HTML file"
+    'stylesheet': relpath(DATA_ROOT / 'stylesheet.rst'),
     # the "image" and "figure" directives expect a URI and use it literally
     'scaled-image': '../docs/user/rst/images/biohazard.png',
     'figure-image': '../docs/user/rst/images/title.png',
@@ -54,10 +54,10 @@ class RecordDependenciesTests(unittest.TestCase):
     maxDiff = None
 
     def get_record(self, **kwargs):
-        recordfile = 'record.txt'
+        recordfile = 'record.rst'
         recorder = docutils.utils.DependencyList(recordfile)
         # (Re) create the record file by running a conversion:
-        kwargs.setdefault('source_path', str(DATA_ROOT/'dependencies.txt'))
+        kwargs.setdefault('source_path', str(DATA_ROOT/'dependencies.rst'))
         kwargs.setdefault('settings_overrides', {})
         kwargs['settings_overrides'].update(_disable_config=True,
                                             record_dependencies=recorder)
@@ -112,7 +112,7 @@ class RecordDependenciesTests(unittest.TestCase):
                          msg='output is:\n'+output)
 
     def test_csv_dependencies(self):
-        csvsource = str(DATA_ROOT / 'csv_dep.txt')
+        csvsource = str(DATA_ROOT / 'csv_dep.rst')
         record, output = self.get_record(source_path=csvsource)
         self.assertEqual([relpath(DATA_ROOT / 'csv_data.txt')], record,
                          msg='output is:\n'+output)
@@ -144,7 +144,7 @@ class RecordDependenciesTests(unittest.TestCase):
                         f'{stylesheet!r} should be in {record!r}')
 
     def tearDown(self) -> None:
-        os.unlink("record.txt")
+        os.unlink("record.rst")
 
 
 if __name__ == '__main__':

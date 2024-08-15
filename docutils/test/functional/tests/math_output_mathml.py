@@ -1,5 +1,5 @@
 # Source and destination file names
-test_source = "data/math.txt"
+test_source = "data/math.rst"
 test_destination = "math_output_mathml.html"
 
 # Keyword parameters passed to publish_file()

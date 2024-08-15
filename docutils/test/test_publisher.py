@@ -158,7 +158,7 @@ class ConvenienceFunctionTests(unittest.TestCase):
         # the "*_name" arguments will be removed
         with self.assertWarns(PendingDeprecationWarning):
             core.publish_cmdline(writer_name='null',
-                                 argv=[(DATA_ROOT/'include.txt').as_posix()],
+                                 argv=[(DATA_ROOT/'include.rst').as_posix()],
                                  settings_overrides={'traceback': True})
 
     def test_input_error_handling(self):
@@ -172,7 +172,7 @@ class ConvenienceFunctionTests(unittest.TestCase):
     def test_output_error_handling(self):
         # pass IOErrors to calling application if `traceback` is True
         with self.assertRaises(docutils.io.OutputError):
-            core.publish_cmdline(argv=[(DATA_ROOT/'include.txt').as_posix(),
+            core.publish_cmdline(argv=[(DATA_ROOT/'include.rst').as_posix(),
                                        'nonexisting/path'],
                                  settings_overrides={'traceback': True})
 

@@ -1,0 +1,289 @@
+.. include:: ../header.rst
+
+===================
+ Docutils_ Testing
+===================
+
+:Authors: Lea Wiemann <LeWiemann@gmail.com>;
+          David Goodger <goodger@python.org>;
+          Docutils developers <docutils-developers@lists.sourceforge.net>
+:Revision: $Revision$
+:Date: $Date$
+:Copyright: This document has been placed in the public domain.
+
+:Abstract: This document describes how to run the Docutils test suite,
+           how the tests are organized and how to add new tests or modify
+           existing tests.
+
+.. _Docutils: https://docutils.sourceforge.io/
+
+.. contents::
+
+When adding new functionality (or fixing bugs), be sure to add test
+cases to the test suite.  Practise test-first programming; it's fun,
+it's addictive, and it works!
+
+
+Running the Test Suite
+======================
+
+Before checking in any changes, run the entire Docutils test suite to
+be sure that you haven't broken anything.  From a shell do::
+
+    cd docutils/test
+    python -u alltests.py
+
+Before `checking in`__ changes to the Docutils core, run the tests on
+all `supported Python versions`_ (see below for details).
+In a pinch, the edge cases should cover most of it.
+
+.. note::
+   The ``alltests.py`` test runner is based on the standard library's unittest_
+   framework.
+   Since Docutils 0.19, running ``python -m unittest`` and the pytest_
+   framework no longer result in spurious failures (cf. `bug #270`_).
+   However, there are differences in the reported number of tests
+   (``alltests.py`` also counts sub-tests).
+   In future, running the test suite may require pytest_.
+
+__ policies.html#check-ins
+.. _unittest: https://docs.python.org/3/library/unittest.html
+.. _pytest: https://pypi.org/project/pytest
+.. _`bug #270`: https://sourceforge.net/p/docutils/bugs/270/
+
+
+.. _Python versions:
+
+Testing across multiple Python versions
+---------------------------------------
+
+A Docutils release has a commitment to support a minimum Python version
+and beyond (see dependencies__ in README.rst). Before a release is cut,
+tests must pass in all `supported versions`_. [#]_
+
+__ ../../README.html#dependencies
+
+You can use `tox`_ to test with all supported versions in one go.
+From the shell::
+
+    cd docutils
+    tox
+
+To test a specific version, use the ``pyNNN`` environment. For example::
+
+    tox -e py312
+
+`pyenv`_ can be installed and configured (see `installing pyenv`_) to
+get multiple Python versions::
+
+    # assuming your system runs Python 3.12
+    pyenv install 3.10
+    pyenv install 3.11
+    pyenv global system 3.10 3.11 3.12
+
+    # reset your shims
+    rm -rf ~/.pyenv/shims && pyenv rehash
+
+This will give you ``python3.10`` through ``python3.12``.
+Then run::
+
+    python3.10 -u alltests.py
+    [...]
+    python3.12 -u alltests.py
+
+.. note::
+   When using the `Python launcher for Windows`__, specify the Python version
+   as option, e.g., ``py -3.12 -u alltests.py`` for Python 3.12.
+
+   .. cf. https://sourceforge.net/p/docutils/bugs/434/
+   __ https://docs.python.org/3/using/windows.html#python-launcher-for-windows
+
+
+.. [#] Good resources covering the differences between Python versions
+   are the `What's New` documents (`What's New in Python 3.11`__ and
+   similar).
+
+   __ https://docs.python.org/3/whatsnew/3.11.html
+
+
+.. _supported versions:
+.. _supported Python versions: ../../README.html#requirements
+.. _pyenv: https://github.com/yyuu/pyenv
+.. _installing pyenv: https://github.com/yyuu/pyenv#installation
+.. _tox: https://pypi.org/project/tox/
+
+
+Unit Tests
+==========
+
+Unit tests test single functions or modules (i.e. whitebox testing).
+
+If you are implementing a new feature, be sure to write a test case
+covering its functionality.  It happens very frequently that your
+implementation (or even only a part of it) doesn't work with an older
+(or even newer) Python version, and the only reliable way to detect
+those cases is using tests.
+
+Often, it's easier to write the test first and then implement the
+functionality required to make the test pass.
+
+
+Writing New Tests
+-----------------
+
+When writing new tests, it very often helps to see how a similar test
+is implemented.  For example, the files in the
+``test_parsers/test_rst/`` directory all look very similar.  So when
+adding a test, you don't have to reinvent the wheel.
+
+If there is no similar test, you can write a new test from scratch
+using Python's ``unittest`` module.  For an example, please have a
+look at the following imaginary ``test_square.py``::
+
+    #! /usr/bin/env python3
+
+    # $Id$
+    # Author: Your Name <your_email_address@example.org>
+    # Copyright: This module has been placed in the public domain.
+
+    """
+    Test module for docutils.square.
+    """
+
+    import unittest
+    if __name__ == '__main__':
+        # prepend the "docutils root" to the Python library path
+        # so we import the local `docutils` package.
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+    import docutils.square
+
+
+    class SquareTest(unittest.TestCase):
+
+        def test_square(self):
+            self.assertEqual(docutils.square.square(0), 0)
+            self.assertEqual(docutils.square.square(5), 25)
+            self.assertEqual(docutils.square.square(7), 49)
+
+        def test_square_root(self):
+            self.assertEqual(docutils.square.sqrt(49), 7)
+            self.assertEqual(docutils.square.sqrt(0), 0)
+            self.assertRaises(docutils.square.SquareRootError,
+                              docutils.square.sqrt, 20)
+
+
+    if __name__ == '__main__':
+        unittest.main()
+
+For more details on how to write tests, please refer to the
+documentation of the ``unittest`` module.
+
+.. Note::
+
+   Unit tests and functional test should generally disable configuration
+   files, setting the `_disable_config`__ setting to True ::
+
+     settings_overrides['_disable_config'] = True
+
+   in order to be independent on the users local configuration.
+
+   __ ../user/config.html#disable-config
+
+.. _functional:
+
+Functional Tests
+================
+
+The directory ``test/functional/`` contains data for functional tests.
+
+Performing functional testing means testing the Docutils system as a
+whole (i.e. blackbox testing).
+
+
+Directory Structure
+-------------------
+
++ ``functional/`` The main data directory.
+
+  + ``input/`` The input files.
+
+    - ``some_test.rst``, for example.
+
+  + ``output/`` The actual output.
+
+    - ``some_test.html``, for example.
+
+  + ``expected/`` The expected output.
+
+    - ``some_test.html``, for example.
+
+  + ``tests/`` The config files for processing the input files.
+
+    - ``some_test.py``, for example.
+
+
+The Testing Process
+-------------------
+
+When running ``test_functional.py``, all config files in
+``functional/tests/`` are processed.  (Config files whose names begin
+with an underscore are ignored.)  The current working directory is
+always Docutils' main test directory (``test/``).
+
+For example, ``functional/tests/some_test.py`` could read like this::
+
+    # Source and destination file names.
+    test_source = "some_test.rst"
+    test_destination = "some_test.html"
+
+    # Keyword parameters passed to publish_file.
+    reader_name = "standalone"
+    parser_name = "rst"
+    writer_name = "html"
+    settings_overrides['output-encoding'] = 'utf-8'
+    # Relative to main ``test/`` directory.
+    settings_overrides['stylesheet_path'] = '../docutils/writers/html4css1/html4css1.css'
+
+The two variables ``test_source`` and ``test_destination`` contain the
+input file name (relative to ``functional/input/``) and the output
+file name (relative to ``functional/output/`` and
+``functional/expected/``).  Note that the file names can be chosen
+arbitrarily.  However, the file names in ``functional/output/`` *must*
+match the file names in ``functional/expected/``.
+
+``test_source`` and ``test_destination`` are removed from the
+namespace, as are all variables whose names begin with an underscore
+("_").  The remaining names are passed as keyword arguments to
+``docutils.core.publish_file``, so you can set reader, parser, writer
+and anything else you want to configure.  Note that
+``settings_overrides`` is already initialized as a dictionary *before*
+the execution of the config file.
+
+
+Creating New Tests
+------------------
+
+In order to create a new test, put the input test file into
+``functional/input/``.  Then create a config file in
+``functional/tests/`` which sets at least input and output file names,
+reader, parser and writer.
+
+Now run ``test_functional.py``.  The test will fail, of course,
+because you do not have an expected output yet.  However, an output
+file will have been generated in ``functional/output/``.  Check this
+output file for validity [#]_ and correctness.  Then copy the file to
+``functional/expected/``.
+
+If you rerun ``test_functional.py`` now, it should pass.
+
+If you run ``test_functional.py`` later and the actual output doesn't
+match the expected output anymore, the test will fail.
+
+If this is the case and you made an intentional change, check the
+actual output for validity and correctness, copy it to
+``functional/expected/`` (overwriting the old expected output), and
+commit the change.
+
+.. [#] `Docutils XML` can be validated with
+   ``xmllint --dtdvalid docs/ref/docutils.dtd --noout *.xml``.

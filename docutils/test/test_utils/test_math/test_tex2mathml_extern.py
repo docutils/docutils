@@ -98,9 +98,9 @@ class MathMLConverterTestCase(unittest.TestCase):
                 }
 
     def test_mathematics(self):
-        """Test converting "mathematics.txt" from the documentation."""
+        """Test converting "mathematics.rst" from the documentation."""
 
-        source_path = DOCS / 'ref' / 'rst' / 'mathematics.txt'
+        source_path = DOCS / 'ref' / 'rst' / 'mathematics.rst'
 
         for math_output in math_options:
             settings = {'math_output': math_output,
@@ -119,7 +119,7 @@ class MathMLConverterTestCase(unittest.TestCase):
     def test_math_experiments(self):
         """Convert experimental math sample."""
 
-        source_path = INPUT / 'data' / 'math_experiments.txt'
+        source_path = INPUT / 'data' / 'math_experiments.rst'
 
         for math_output in math_options:
             settings = {'math_output': math_output, **self.settings}

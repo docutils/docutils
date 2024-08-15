@@ -48,7 +48,7 @@ class ParserTestCase(unittest.TestCase):
 
 mydir = os.path.join(TEST_ROOT, 'test_parsers/test_rst/test_directives')
 utf_16_csv = os.path.join(mydir, 'utf-16.csv')
-empty_txt = os.path.join(mydir, 'empty.txt')
+empty_txt = os.path.join(mydir, 'empty.rst')
 
 try:
     chr(0x9999999999999)

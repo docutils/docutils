@@ -1,5 +1,5 @@
 # Source and destination file names
-test_source = "pep_html.txt"
+test_source = "pep_html.rst"
 test_destination = "pep_html.html"
 
 # Keyword parameters passed to publish_file()

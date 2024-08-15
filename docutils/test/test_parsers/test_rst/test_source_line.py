@@ -66,7 +66,7 @@ class TransformTestCase(unittest.TestCase):
 
 mydir = os.path.join(TEST_ROOT, 'test_parsers/test_rst')
 include14 = os.path.relpath(
-    os.path.join(mydir, 'includes/include14.txt'),
+    os.path.join(mydir, 'includes/include14.rst'),
     os.getcwd()).replace('\\', '/')
 totest = {}
 

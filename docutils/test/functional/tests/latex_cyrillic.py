@@ -1,5 +1,5 @@
 # Source and destination file names
-test_source = "cyrillic.txt"
+test_source = "cyrillic.rst"
 test_destination = "cyrillic.tex"
 
 # Keyword parameters passed to publish_file()

@@ -43,10 +43,10 @@ class ParserTestCase(unittest.TestCase):
 
 mydir = os.path.join(TEST_ROOT, 'test_parsers/test_rst/test_directives')
 raw1 = os.path.relpath(
-    os.path.join(mydir, 'raw1.txt'),
+    os.path.join(mydir, 'raw1.rst'),
     os.getcwd()).replace('\\', '/')
 utf_16_file = os.path.relpath(
-    os.path.join(TEST_ROOT, 'data/utf-16-le-sig.txt'),
+    os.path.join(TEST_ROOT, 'data/utf-16-le-sig.rst'),
     os.getcwd()).replace('\\', '/')
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xff "
                     "in position 0: ordinal not in range(128)")

@@ -33,14 +33,14 @@ def fixpath(path):
 
 class ConfigFileTests(unittest.TestCase):
 
-    config_files = {'old': fixpath('config_old.txt'),
-                    'one': fixpath('config_1.txt'),
-                    'two': fixpath('config_2.txt'),
-                    'list': fixpath('config_list.txt'),
-                    'list2': fixpath('config_list_2.txt'),
-                    'error': fixpath('config_encoding.txt'),
-                    'error2': fixpath('config_encoding_2.txt'),
-                    'syntax_error': fixpath('config_syntax_error.txt'),
+    config_files = {'old': fixpath('config_old.rst'),
+                    'one': fixpath('config_1.rst'),
+                    'two': fixpath('config_2.rst'),
+                    'list': fixpath('config_list.rst'),
+                    'list2': fixpath('config_list_2.rst'),
+                    'error': fixpath('config_encoding.rst'),
+                    'error2': fixpath('config_encoding_2.rst'),
+                    'syntax_error': fixpath('config_syntax_error.rst'),
                     }
 
     # expected settings after parsing the equally named config_file:
@@ -157,7 +157,7 @@ class ConfigFileTests(unittest.TestCase):
     def test_syntax_error(self):
         with self.assertRaisesRegex(
                  ValueError,
-                 'Error in config file ".*config_syntax_error.txt", '
+                 'Error in config file ".*config_syntax_error.rst", '
                  r'section "\[general\]"'):
             self.files_settings('syntax_error')
 
@@ -174,7 +174,7 @@ class ConfigFileTests(unittest.TestCase):
         self.option_parser = frontend.OptionParser(
             components=(html5_polyglot.Writer, rst.Parser),
             read_config_files=None)
-        # generator setting not changed by "config_2.txt":
+        # generator setting not changed by "config_2.rst":
         self.compare_output(self.files_settings('one', 'two'),
                             self.expected_settings('two (html5)'))
 

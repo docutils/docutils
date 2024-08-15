@@ -56,7 +56,7 @@ totest = {}
 totest['include-root'] = [
 # locate included files using "include-root" setting value
 ["""\
-.. include:: /include 11.txt
+.. include:: /include 11.rst
 """,
 """\
 <document source="test data">
@@ -65,7 +65,7 @@ totest['include-root'] = [
 """],
 # Do we want to support a leading backslash to signify a path root?
 # ["""\
-# .. include:: \include 11.txt
+# .. include:: \include 11.rst
 # """,
 # """\
 # <document source="test data">
@@ -73,7 +73,7 @@ totest['include-root'] = [
 #         some text
 # """],
 ["""\
-.. include:: /include 11.txt
+.. include:: /include 11.rst
    :parser: rst
 """,
 """\
@@ -82,27 +82,27 @@ totest['include-root'] = [
         some text
 """],
 ["""\
-.. include:: /include 11.txt
+.. include:: /include 11.rst
    :literal:
 """,
 f"""\
 <document source="test data">
-    <literal_block source="{REL_PREFIX}/include 11.txt" xml:space="preserve">
+    <literal_block source="{REL_PREFIX}/include 11.rst" xml:space="preserve">
         some text
 """],
 ["""\
-.. include:: /include 11.txt
+.. include:: /include 11.rst
    :code:
 """,
 f"""\
 <document source="test data">
-    <literal_block classes="code" source="{REL_PREFIX}/include 11.txt" xml:space="preserve">
+    <literal_block classes="code" source="{REL_PREFIX}/include 11.rst" xml:space="preserve">
         some text
 """],
 # search included CSV files using "include-root" setting value
 ["""\
 .. CSV-table::
-   :file: /include 11.txt
+   :file: /include 11.rst
 """,
 """\
 <document source="test data">
@@ -117,11 +117,11 @@ f"""\
 """],
 ["""\
 .. raw:: txt
-   :file: /include 11.txt
+   :file: /include 11.rst
 """,
 f"""\
 <document source="test data">
-    <raw format="txt" source="{REL_PREFIX}/include 11.txt" xml:space="preserve">
+    <raw format="txt" source="{REL_PREFIX}/include 11.rst" xml:space="preserve">
         some text
 """],
 ]

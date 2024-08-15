@@ -13,11 +13,11 @@ Instructions for adding a new test:
    test_odt_xxxx, where xxxx describes your new feature.  See
    test_odt_basic for an example.
 
-2. Add a new input reST (.txt) file in test/functional/input. This
+2. Add a new input reST (.rst) file in test/functional/input. This
    file should contain the smallest amount of reST that tests your
-   new feature.  Name this file odt_xxxx.txt.
+   new feature.  Name this file odt_xxxx.rst.
 
-3. Convert your input reST (.txt) file to an ODF (.odt) file using
+3. Convert your input reST (.rst) file to an ODF (.odt) file using
    rst2odt.py.  Place this ODF (.odt) file in
    test/functional/expected.  Name this file odt_xxxx.odt.
    You can also pass parameter save_output_name='filename' to method
@@ -127,22 +127,22 @@ class DocutilsOdtTestCase(unittest.TestCase):
     #
 
     def test_odt_basic(self):
-        self.process_test('odt_basic.txt', 'odt_basic.odt',
+        self.process_test('odt_basic.rst', 'odt_basic.odt',
                           save_output_name='odt_basic.odt')
 
     def test_odt_nested_class(self):
-        self.process_test('odt_nested_class.txt',
+        self.process_test('odt_nested_class.rst',
                           'odt_nested_class.odt',
                           save_output_name='odt_nested_class.odt')
-        self.process_test('odt_unnested_class.txt',
+        self.process_test('odt_unnested_class.rst',
                           'odt_unnested_class.odt',
                           save_output_name='odt_unnested_class.odt')
-        self.process_test('odt_no_class.txt',
+        self.process_test('odt_no_class.rst',
                           'odt_no_class.odt',
                           save_output_name='odt_no_class.odt')
 
     def test_odt_tables1(self):
-        self.process_test('odt_tables1.txt', 'odt_tables1.odt',
+        self.process_test('odt_tables1.rst', 'odt_tables1.odt',
                           save_output_name='odt_tables1.odt')
 
     def test_odt_custom_headfoot(self):
@@ -151,42 +151,42 @@ class DocutilsOdtTestCase(unittest.TestCase):
             'custom_footer': 'Title: %t%  Date: %d3%  Time: %t4%',
             'language_code': 'en-US',
             }
-        self.process_test('odt_custom_headfoot.txt', 'odt_custom_headfoot.odt',
+        self.process_test('odt_custom_headfoot.rst', 'odt_custom_headfoot.odt',
                           settings_overrides=settings_overrides,
                           save_output_name='odt_custom_headfoot.odt')
 
     def test_odt_header_footer(self):
-        self.process_test('odt_header_footer.txt', 'odt_header_footer.odt',
+        self.process_test('odt_header_footer.rst', 'odt_header_footer.odt',
                           save_output_name='odt_header_footer.odt')
 
     def test_odt_literal_block(self):
-        self.process_test('odt_literal_block.txt', 'odt_literal_block.odt')
+        self.process_test('odt_literal_block.rst', 'odt_literal_block.odt')
 
     def test_odt_contents(self):
-        self.process_test('odt_contents.txt', 'odt_contents.odt')
+        self.process_test('odt_contents.rst', 'odt_contents.odt')
 
     def test_odt_classifier(self):
-        self.process_test('odt_classifier.txt', 'odt_classifier.odt')
+        self.process_test('odt_classifier.rst', 'odt_classifier.odt')
 
     def test_odt_footnotes(self):
-        self.process_test('odt_footnotes.txt', 'odt_footnotes.odt',
+        self.process_test('odt_footnotes.rst', 'odt_footnotes.odt',
                           save_output_name='odt_footnotes.odt')
 
     def test_odt_raw(self):
-        self.process_test('odt_raw.txt', 'odt_raw.odt',
+        self.process_test('odt_raw.rst', 'odt_raw.odt',
                           save_output_name='odt_raw.odt')
 
     def test_odt_image(self):
-        self.process_test('odt_image.txt', 'odt_image.odt',
+        self.process_test('odt_image.rst', 'odt_image.odt',
                           save_output_name='odt_image.odt')
 
     # Template for new tests.
-    # Also add functional/input/odt_xxxx.txt and
+    # Also add functional/input/odt_xxxx.rst and
     #   functional/expected/odt_xxxx.odt
     # Replace all xxxx with name of your test.
     #
     # def test_odt_xxxx(self):
-    #     self.process_test('odt_xxxx.txt', 'odt_xxxx.odt')
+    #     self.process_test('odt_xxxx.rst', 'odt_xxxx.odt')
 
 # -----------------------------------------------------------------
 

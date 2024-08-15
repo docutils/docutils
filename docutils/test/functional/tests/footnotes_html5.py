@@ -1,5 +1,5 @@
 # Source and destination file names
-test_source = "footnotes.txt"
+test_source = "footnotes.rst"
 test_destination = "footnotes_html5.html"
 
 # Keyword parameters passed to publish_file()

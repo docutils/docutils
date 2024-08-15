@@ -61,14 +61,14 @@ def process_and_return_filelist(
 
 class BuildHtmlTests(unittest.TestCase):
     tree = (
-        "_tmp_test_tree/one.txt",
-        "_tmp_test_tree/two.txt",
-        "_tmp_test_tree/dir1/one.txt",
-        "_tmp_test_tree/dir1/two.txt",
-        "_tmp_test_tree/dir2/one.txt",
-        "_tmp_test_tree/dir2/two.txt",
-        "_tmp_test_tree/dir2/sub/one.txt",
-        "_tmp_test_tree/dir2/sub/two.txt",
+        "_tmp_test_tree/one.rst",
+        "_tmp_test_tree/two.rst",
+        "_tmp_test_tree/dir1/one.rst",
+        "_tmp_test_tree/dir1/two.rst",
+        "_tmp_test_tree/dir2/one.rst",
+        "_tmp_test_tree/dir2/two.rst",
+        "_tmp_test_tree/dir2/sub/one.rst",
+        "_tmp_test_tree/dir2/sub/two.rst",
     )
 
     def setUp(self) -> None:
@@ -85,7 +85,7 @@ class BuildHtmlTests(unittest.TestCase):
     def test_1(self) -> None:
         opts = ["--dry-run", str(self.root)]
         _dirs, files = process_and_return_filelist(opts)
-        self.assertEqual(files.count("one.txt"), 4)
+        self.assertEqual(files.count("one.rst"), 4)
 
     def test_local(self) -> None:
         opts = ["--dry-run", "--local", str(self.root)]

@@ -96,7 +96,7 @@ class FunctionalTests(unittest.TestCase):
         for entry in OUTPUT.rglob('*'):
             if entry.is_dir():
                 shutil.rmtree(entry)
-            elif entry.name != 'README.txt':
+            elif entry.name != 'README.rst':
                 entry.unlink()
 
     def test_functional(self):

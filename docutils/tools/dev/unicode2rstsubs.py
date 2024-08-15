@@ -11,7 +11,7 @@ This program extracts character entity and entity set information from a
 unicode.xml file and produces multiple reStructuredText files (in the current
 directory) containing substitutions.  Entity sets are from ISO 8879 & ISO
 9573-13 (combined), MathML, and HTML4.  One or two files are produced for each
-entity set; a second file with a "-wide.txt" suffix is produced if there are
+entity set; a second file with a "-wide.rst" suffix is produced if there are
 wide-Unicode characters in the set.
 
 The input file, unicode.xml, is maintained as part of the MathML 2
@@ -173,9 +173,9 @@ class CharacterEntitySetExtractor:
 
     def write_set(self, set_name: str, wide: bool = False) -> None:
         if wide:
-            outname = set_name + '-wide.txt'
+            outname = set_name + '-wide.rst'
         else:
-            outname = set_name + '.txt'
+            outname = set_name + '.rst'
         outfile = open(outname, 'w', encoding='ascii')
         print('writing file "%s"' % outname)
         outfile.write(self.header + '\n')

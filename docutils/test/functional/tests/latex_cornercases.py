@@ -1,5 +1,5 @@
 # Source and destination file names
-test_source = "latex_cornercases.txt"
+test_source = "latex_cornercases.rst"
 test_destination = "latex_cornercases.tex"
 
 # Keyword parameters passed to publish_file()

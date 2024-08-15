@@ -1,5 +1,5 @@
 # Source and destination file names
-test_source = "standalone_rst_latex.txt"
+test_source = "standalone_rst_latex.rst"
 test_destination = "latex_memoir.tex"
 
 # Keyword parameters passed to publish_file()

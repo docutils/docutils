@@ -336,15 +336,15 @@ class HelperFunctionTests(unittest.TestCase):
         result = utils.find_file_in_dirs('alltests.py', dirs)
         expected = os.path.join(TEST_ROOT, 'alltests.py').replace('\\', '/')
         self.assertEqual(expected, result)
-        result = utils.find_file_in_dirs('HISTORY.txt', dirs)
-        expected = (TEST_ROOT / '..' / 'HISTORY.txt').as_posix()
+        result = utils.find_file_in_dirs('HISTORY.rst', dirs)
+        expected = (TEST_ROOT / '..' / 'HISTORY.rst').as_posix()
         self.assertEqual(expected, result)
         # normalize for second check
         self.assertTrue(os.path.relpath(result, TEST_ROOT).startswith('..'),
-                        'HISTORY.txt not found in "..".')
+                        'HISTORY.rst not found in "..".')
         # Return `path` if the file exists in the cwd or if there is no match
-        self.assertEqual(utils.find_file_in_dirs('gibts/nicht.txt', dirs),
-                         'gibts/nicht.txt')
+        self.assertEqual(utils.find_file_in_dirs('gibts/nicht.rst', dirs),
+                         'gibts/nicht.rst')
 
     # samples for the (un)escaping tests:
     escaped = r'escapes: \*one, \\*two, \\\*three in\side no\ space' + '\\'

@@ -15,7 +15,7 @@ os.chdir(os.path.join(os.path.dirname(docutils.__file__), '..'))
 print('Profiling...')
 
 prof = hotshot.Profile('docutils.prof')
-prof.runcall(docutils.core.publish_file, source_path='HISTORY.txt',
+prof.runcall(docutils.core.publish_file, source_path='HISTORY.rst',
              destination_path='prof.HISTORY.html', writer='html')
 prof.close()
 

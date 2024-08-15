@@ -1,5 +1,5 @@
 # Source and destination file names
-test_source = "rst_html5_tuftig.txt"
+test_source = "rst_html5_tuftig.rst"
 test_destination = "rst_html5_tuftig.html"
 
 # Keyword parameters passed to publish_file()

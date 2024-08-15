@@ -1,5 +1,5 @@
 # Source and destination file names
-test_source = "dangerous.txt"
+test_source = "dangerous.rst"
 test_destination = "dangerous.html"
 
 # Keyword parameters passed to publish_file()

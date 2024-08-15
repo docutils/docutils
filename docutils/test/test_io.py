@@ -277,7 +277,7 @@ class FileInputTests(unittest.TestCase):
             if SUPPRESS_ENCODING_WARNING:
                 warnings.filterwarnings('ignore', category=EncodingWarning)
             source = du_io.FileInput(
-                source_path=os.path.join(DATA_ROOT, 'utf-8-sig.txt'),
+                source_path=os.path.join(DATA_ROOT, 'utf-8-sig.rst'),
                 encoding=None)
         self.assertTrue(source.read().startswith('Grüße'))
 
@@ -289,7 +289,7 @@ class FileInputTests(unittest.TestCase):
             if SUPPRESS_ENCODING_WARNING:
                 warnings.filterwarnings('ignore', category=EncodingWarning)
             source = du_io.FileInput(
-                source_path=os.path.join(DATA_ROOT, 'utf-16-le-sig.txt'),
+                source_path=os.path.join(DATA_ROOT, 'utf-16-le-sig.rst'),
                 encoding=None)
         self.assertTrue(source.read().startswith('Grüße'))
 
@@ -300,7 +300,7 @@ class FileInputTests(unittest.TestCase):
             if SUPPRESS_ENCODING_WARNING:
                 warnings.filterwarnings('ignore', category=EncodingWarning)
             source = du_io.FileInput(
-                source_path=os.path.join(DATA_ROOT, 'latin2.txt'),
+                source_path=os.path.join(DATA_ROOT, 'latin2.rst'),
                 encoding=None)
         self.assertTrue(source.read().endswith('škoda\n'))
 
@@ -310,13 +310,13 @@ class FileInputTests(unittest.TestCase):
             if SUPPRESS_ENCODING_WARNING:
                 warnings.filterwarnings('ignore', category=EncodingWarning)
             source = du_io.FileInput(
-                source_path=os.path.join(DATA_ROOT, 'utf8.txt'),
+                source_path=os.path.join(DATA_ROOT, 'utf8.rst'),
                 encoding=None)
         self.assertEqual('Grüße\n', source.read())
 
     def test_readlines(self):
         source = du_io.FileInput(
-            source_path=os.path.join(DATA_ROOT, 'include.txt'))
+            source_path=os.path.join(DATA_ROOT, 'include.rst'))
         data = source.readlines()
         self.assertEqual(['Some include text.\n'], data)
 

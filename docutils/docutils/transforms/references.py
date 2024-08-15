@@ -748,7 +748,7 @@ class Substitutions(Transform):
             for node in subdef_copy.children:
                 if isinstance(node, nodes.Referential):
                     # HACK: verify refname attribute exists.
-                    # Test with docs/dev/todo.txt, see. |donate|
+                    # Test with docs/dev/todo.rst, see. |donate|
                     if 'refname' in node:
                         self.document.note_refname(node)
 

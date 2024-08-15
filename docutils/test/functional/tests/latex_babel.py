@@ -1,5 +1,5 @@
 # Source and destination file names
-test_source = "latex_babel.txt"
+test_source = "latex_babel.rst"
 test_destination = "latex_babel.tex"
 
 # Keyword parameters passed to publish_file()

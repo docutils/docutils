@@ -1,5 +1,5 @@
 # Source and destination file names
-test_source = "latex_docinfo.txt"
+test_source = "latex_docinfo.rst"
 test_destination = "latex_docinfo.tex"
 
 # Keyword parameters passed to publish_file()

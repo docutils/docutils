@@ -18,7 +18,7 @@ input Docutils supports reStructuredText, an easy-to-read,
 what-you-see-is-what-you-get plaintext markup syntax."""  # wrap at col 60
 readme.content-type = "text/plain"
 urls.Homepage = "https://docutils.sourceforge.io"
-license.file = "COPYING.txt"
+license.file = "COPYING.rst"
 requires-python = ">=3.9"
 
 # Classifiers list: https://pypi.org/classifiers/
@@ -104,6 +104,7 @@ rst2xml = "docutils.core:rst2xml"
 
 # TODO: include generated HTML ?
 include = [
+    "*.rst",
     "*.txt",
     "tox.ini",
     "docutils/",
@@ -129,7 +130,7 @@ exclude = [
 [tool.codespell]
 skip = [
     "test",
-    "pep-*.txt",
+    "pep-*.rst",
     "iso*.txt",
 ]
 ignore-words-list = [

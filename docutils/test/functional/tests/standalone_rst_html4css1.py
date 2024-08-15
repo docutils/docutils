@@ -1,5 +1,5 @@
 # Source and destination file names
-test_source = "standalone_rst_html4css1.txt"
+test_source = "standalone_rst_html4css1.rst"
 test_destination = "standalone_rst_html4css1.html"
 
 # Keyword parameters passed to publish_file()

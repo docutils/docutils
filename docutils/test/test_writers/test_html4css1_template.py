@@ -30,7 +30,7 @@ class WriterPublishTestCase(unittest.TestCase):
     # maxDiff = None
     def test_publish(self):
         writer = 'html4'
-        template_path = TEST_ROOT / 'data/full-template.txt'
+        template_path = TEST_ROOT / 'data/full-template.rst'
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):

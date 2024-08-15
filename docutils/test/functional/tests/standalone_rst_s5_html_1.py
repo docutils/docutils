@@ -1,5 +1,5 @@
 # Source and destination file names:
-test_source = 'standalone_rst_s5_html.txt'
+test_source = 'standalone_rst_s5_html.rst'
 test_destination = 'standalone_rst_s5_html_1.html'
 
 # Keyword parameters passed to publish_file:

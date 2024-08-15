@@ -2320,7 +2320,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             href = self.document.nameids[node['refname']]
         # if not self.docutils_footnotes:
         #     # TODO: insert footnote content at (or near) this place
-        #     #       see also docs/dev/todo.txt
+        #     #       see also docs/dev/todo.rst
         #     try:
         #         referenced_node = self.document.ids[node['refid']]
         #     except (AttributeError, KeyError):
