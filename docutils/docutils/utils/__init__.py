@@ -31,7 +31,7 @@ if TYPE_CHECKING:
 
     from typing_extensions import TypeAlias
 
-    from docutils.nodes import Element, Text
+    from docutils.nodes import Node
     from docutils.frontend import Values
 
     _StrPath: TypeAlias = str | os.PathLike[str]
@@ -179,7 +179,7 @@ class Reporter:
     def system_message(self,
                        level: int,
                        message: str,
-                       *children: Element | Text,
+                       *children: Node,
                        **kwargs: Any
                        ) -> nodes.system_message:
         """
@@ -229,7 +229,7 @@ class Reporter:
         return msg
 
     def debug(
-        self, *args: Element | Text, **kwargs: Any
+        self, *args: Node, **kwargs: Any
     ) -> nodes.system_message:
         """
         Level-0, "DEBUG": an internal reporting issue. Typically, there is no
@@ -240,7 +240,7 @@ class Reporter:
             return self.system_message(self.DEBUG_LEVEL, *args, **kwargs)
 
     def info(
-        self, *args: Element | Text, **kwargs: Any
+        self, *args: Node, **kwargs: Any
     ) -> nodes.system_message:
         """
         Level-1, "INFO": a minor issue that can be ignored. Typically there is
@@ -249,7 +249,7 @@ class Reporter:
         return self.system_message(self.INFO_LEVEL, *args, **kwargs)
 
     def warning(
-        self, *args: Element | Text, **kwargs: Any
+        self, *args: Node, **kwargs: Any
     ) -> nodes.system_message:
         """
         Level-2, "WARNING": an issue that should be addressed. If ignored,
@@ -258,7 +258,7 @@ class Reporter:
         return self.system_message(self.WARNING_LEVEL, *args, **kwargs)
 
     def error(
-        self, *args: Element | Text, **kwargs: Any
+        self, *args: Node, **kwargs: Any
     ) -> nodes.system_message:
         """
         Level-3, "ERROR": an error that should be addressed. If ignored, the
@@ -267,7 +267,7 @@ class Reporter:
         return self.system_message(self.ERROR_LEVEL, *args, **kwargs)
 
     def severe(
-        self, *args: Element | Text, **kwargs: Any
+        self, *args: Node, **kwargs: Any
     ) -> nodes.system_message:
         """
         Level-4, "SEVERE": a severe error that must be addressed. If ignored,
@@ -661,7 +661,7 @@ def get_trim_footnote_ref_space(settings: Values) -> bool:
         return settings.trim_footnote_reference_space
 
 
-def get_source_line(node: Element) -> tuple[_StrPath | None, int | None]:
+def get_source_line(node: Node) -> tuple[_StrPath | None, int | None]:
     """
     Return the "source" and "line" attributes from the `node` given or from
     its closest ancestor.

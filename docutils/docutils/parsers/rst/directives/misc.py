@@ -24,7 +24,7 @@ from docutils.transforms import misc
 if TYPE_CHECKING:
     import os
 
-    from docutils.nodes import Element, Text
+    from docutils.nodes import Node
 
 
 def adapt_path(path, source='', root_prefix='/'):
@@ -74,7 +74,7 @@ class Include(Directive):
 
     standard_include_path = Path(states.__file__).parent / 'include'
 
-    def run(self) -> list[Element | Text]:
+    def run(self) -> list[Node]:
         """Include a file as part of the content of this reST file.
 
         Depending on the options, the file (or a clipping) is
@@ -275,7 +275,7 @@ class Include(Directive):
         source: str | os.PathLike[str],
         include_lines: list[str],
         clip_options: tuple[int | str, int | str, str, str],
-    ) -> list[Element | Text]:
+    ) -> list[Node]:
         """Return content from *source* after parsing with the given parser."""
         settings = self.state.document.settings
         include_log = self.state.document.include_log

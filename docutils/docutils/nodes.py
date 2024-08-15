@@ -57,7 +57,6 @@ if TYPE_CHECKING:
     _ContentModelTuple: TypeAlias = tuple[_ContentModelItem, ...]
 
     _UpdateFun: TypeAlias = Callable[[str, Any, bool], None]
-    _ElementT: TypeAlias = Element | Text  # TODO: use Node instead?
 
 
 # ==============================
@@ -67,11 +66,14 @@ if TYPE_CHECKING:
 class Node:
     """Abstract base class of nodes in a document tree."""
 
-    parent: Element = None
+    parent: Node = None
     """Back-reference to the Node immediately containing this Node."""
 
-    children: Sequence[_ElementT]  # defined in subclasses
-    """List of child nodes (Elements or Text)."""
+    children: Sequence[Node] = ()
+    """Sequence of child nodes.
+
+    Override in subclass instances that are not terminal nodes.
+    """
 
     source: str | os.PathLike[str] | None = None
     """Path or description of the input source which generated this Node."""
@@ -118,6 +120,14 @@ class Node:
         domroot = dom.Document()
         return self._dom_node(domroot)
 
+    def _dom_node(self, domroot: minidom.Document) -> minidom.Text:
+        # Stub. Override in subclasses.
+        return domroot.createElement(self.__class__.__name__)
+
+    def shortrepr(self) -> str:
+        # concise string representation for test and debugging purposes
+        return repr(self)
+
     def pformat(self, indent: str = '    ', level: int = 0) -> str:
         """
         Return an indented pseudo-XML representation, for test purposes.
@@ -138,7 +148,7 @@ class Node:
         """Return a string representation of this Node."""
         raise NotImplementedError
 
-    def setup_child(self, child: _ElementT) -> None:
+    def setup_child(self, child: Node) -> None:
         child.parent = self
         if self.document:
             child.document = self.document
@@ -377,6 +387,12 @@ class Node:
         except StopIteration:
             return None
 
+    def validate(self, recursive: bool = True) -> None:
+        """Raise ValidationError if this node is not valid.
+
+        Override in subclasses that define validity constraints.
+        """
+
 
 class Text(Node, str):  # NoQA: SLOT000 (Node doesn't define __slots__)
     """
@@ -449,14 +465,6 @@ class Text(Node, str):  # NoQA: SLOT000 (Node doesn't define __slots__)
 
     def lstrip(self, chars: str | None = None) -> Self:
         return self.__class__(str.lstrip(self, chars))
-
-    def validate(self, recursive: bool = True) -> None:
-        """Validate Docutils Document Tree element ("doctree")."""
-        # Text nodes have no attributes and no children.
-
-    def check_position(self) -> None:
-        """Hook for additional checks of the parent's content model."""
-        # no special placement requirements for Text nodes
 
 
 class Element(Node):
@@ -565,7 +573,7 @@ class Element(Node):
 
     def __init__(self,
                  rawsource: str = '',
-                 *children: _ElementT,
+                 *children: Node,
                  **attributes: Any,
                  ) -> None:
         self.rawsource = rawsource
@@ -578,7 +586,7 @@ class Element(Node):
         if isinstance(rawsource, Element):
             raise TypeError('First argument "rawsource" must be a string.')
 
-        self.children: list[_ElementT] = []
+        self.children: list[Node] = []
         """List of child nodes (elements and/or `Text`)."""
 
         self.extend(children)           # maintain parent info
@@ -619,15 +627,14 @@ class Element(Node):
                 data = data[:56] + ' ...'
                 break
         if self['names']:
-            return '<%s "%s": %s>' % (self.__class__.__name__,
+            return '<%s "%s": %s>' % (self.tagname,
                                       '; '.join(self['names']), data)
         else:
-            return '<%s: %s>' % (self.__class__.__name__, data)
+            return '<%s: %s>' % (self.tagname, data)
 
     def shortrepr(self) -> str:
         if self['names']:
-            return '<%s "%s"...>' % (self.__class__.__name__,
-                                     '; '.join(self['names']))
+            return '<%s "%s"...>' % (self.tagname, '; '.join(self['names']))
         else:
             return '<%s...>' % self.tagname
 
@@ -669,7 +676,7 @@ class Element(Node):
     def __len__(self) -> int:
         return len(self.children)
 
-    def __contains__(self, key: str | _ElementT) -> bool:
+    def __contains__(self, key: str | Node) -> bool:
         # Test for both, children and attributes with operator ``in``.
         if isinstance(key, str):
             return key in self.attributes
@@ -680,16 +687,16 @@ class Element(Node):
         ...
 
     @overload
-    def __getitem__(self, key: int) -> _ElementT:
+    def __getitem__(self, key: int) -> Node:
         ...
 
     @overload
-    def __getitem__(self, key: slice) -> list[_ElementT]:
+    def __getitem__(self, key: slice) -> list[Node]:
         ...
 
     def __getitem__(self,
                     key: str | int | slice,
-                    ) -> _ElementT | list[_ElementT] | Any:
+                    ) -> Node | list[Node] | Any:
         if isinstance(key, str):
             return self.attributes[key]
         elif isinstance(key, int):
@@ -706,11 +713,11 @@ class Element(Node):
         ...
 
     @overload
-    def __setitem__(self, key: int, item: _ElementT) -> None:
+    def __setitem__(self, key: int, item: Node) -> None:
         ...
 
     @overload
-    def __setitem__(self, key: slice, item: Iterable[_ElementT]) -> None:
+    def __setitem__(self, key: slice, item: Iterable[Node]) -> None:
         ...
 
     def __setitem__(self, key, item) -> None:
@@ -740,13 +747,13 @@ class Element(Node):
             raise TypeError('element index must be an integer, a simple '
                             'slice, or an attribute name string')
 
-    def __add__(self, other: list[_ElementT]) -> list[_ElementT]:
+    def __add__(self, other: list[Node]) -> list[Node]:
         return self.children + other
 
-    def __radd__(self, other: list[_ElementT]) -> list[_ElementT]:
+    def __radd__(self, other: list[Node]) -> list[Node]:
         return other + self.children
 
-    def __iadd__(self, other: _ElementT | Iterable[_ElementT]) -> Self:
+    def __iadd__(self, other: Node | Iterable[Node]) -> Self:
         """Append a node or a list of nodes to `self.children`."""
         if isinstance(other, Node):
             self.append(other)
@@ -812,17 +819,17 @@ class Element(Node):
         except AttributeError:
             return fallback
 
-    def append(self, item: _ElementT) -> None:
+    def append(self, item: Node) -> None:
         self.setup_child(item)
         self.children.append(item)
 
-    def extend(self, item: Iterable[_ElementT]) -> None:
+    def extend(self, item: Iterable[Node]) -> None:
         for node in item:
             self.append(node)
 
     def insert(self,
                index: SupportsIndex,
-               item: _ElementT | Iterable[_ElementT],
+               item: Node | Iterable[Node],
                ) -> None:
         if isinstance(item, Node):
             self.setup_child(item)
@@ -830,20 +837,20 @@ class Element(Node):
         elif item is not None:
             self[index:index] = item
 
-    def pop(self, i: int = -1) -> _ElementT:
+    def pop(self, i: int = -1) -> Node:
         return self.children.pop(i)
 
-    def remove(self, item: _ElementT) -> None:
+    def remove(self, item: Node) -> None:
         self.children.remove(item)
 
     def index(self,
-              item: _ElementT,
+              item: Node,
               start: int = 0,
               stop: int = sys.maxsize,
               ) -> int:
         return self.children.index(item, start, stop)
 
-    def previous_sibling(self) -> _ElementT | None:
+    def previous_sibling(self) -> Node | None:
         """Return preceding sibling node or ``None``."""
         try:
             i = self.parent.index(self)
@@ -1109,8 +1116,8 @@ class Element(Node):
         self.children = []
 
     def replace(self,
-                old: _ElementT,
-                new: _ElementT | Iterable[_ElementT],
+                old: Node,
+                new: Node | Iterable[Node],
                 ) -> None:
         """Replace one child `Node` with another child or children."""
         index = self.index(old)
@@ -1120,7 +1127,7 @@ class Element(Node):
         elif new is not None:
             self[index:index+1] = new
 
-    def replace_self(self, new: _ElementT | Sequence[_ElementT]) -> None:
+    def replace_self(self, new: Node | Sequence[Node]) -> None:
         """
         Replace `self` node with `new`, where `new` is a node or a
         list of nodes.
@@ -1279,8 +1286,8 @@ class Element(Node):
 
     def validate_content(self,
                          model: _ContentModelTuple | None = None,
-                         elements: Sequence[_ElementT] | None = None,
-                         ) -> list[_ElementT]:
+                         elements: Sequence[Node] | None = None,
+                         ) -> list[Node]:
         """Test compliance of `elements` with `model`.
 
         :model: content model description, default `self.content_model`,
@@ -1306,7 +1313,10 @@ class Element(Node):
                     continue  # try same child with next part of content model
             else:
                 # Check additional placement constraints (if applicable):
-                child.check_position()
+                try:
+                    child.check_position()
+                except AttributeError:
+                    pass
             # advance:
             if quantifier in ('.', '?'):  # go to next element
                 child = next(ichildren, None)
@@ -1314,13 +1324,16 @@ class Element(Node):
                 for child in ichildren:
                     if not isinstance(child, category):
                         break
-                    child.check_position()
+                    try:
+                        child.check_position()
+                    except AttributeError:
+                        pass
                 else:
                     child = None
         return [] if child is None else [child, *ichildren]
 
     def _report_child(self,
-                      child: _ElementT | None,
+                      child: Node | None,
                       category: Element | Iterable[Element],
                       ) -> str:
         # Return a str reporting a missing child or child of wrong category.
@@ -1527,7 +1540,7 @@ class TextElement(Element):
     def __init__(self,
                  rawsource: str = '',
                  text: str = '',
-                 *children: _ElementT,
+                 *children: Node,
                  **attributes: Any,
                  ) -> None:
         if text:
@@ -1546,7 +1559,7 @@ class FixedTextElement(TextElement):
     def __init__(self,
                  rawsource: str = '',
                  text: str = '',
-                 *children: _ElementT,
+                 *children: Node,
                  **attributes: Any,
                  ) -> None:
         super().__init__(rawsource, text, *children, **attributes)
@@ -1730,7 +1743,7 @@ class document(Root, Element):
     def __init__(self,
                  settings: Values,
                  reporter: Reporter,
-                 *args: _ElementT,
+                 *args: Node,
                  **kwargs: Any,
                  ) -> None:
         Element.__init__(self, *args, **kwargs)
@@ -2134,8 +2147,8 @@ class authors(Bibliographic, Element):
 
     def validate_content(self,
                          model: _ContentModelTuple | None = None,
-                         elements: Sequence[_ElementT] | None = None,
-                         ) -> list[_ElementT]:
+                         elements: Sequence[Node] | None = None,
+                         ) -> list[Node]:
         """Repeatedly test for children matching the content model.
 
         Provisional.
@@ -2474,7 +2487,7 @@ class system_message(Special, BackLinkable, PreBibliographic, Element):
 
     def __init__(self,
                  message: str | None = None,
-                 *children: _ElementT,
+                 *children: Node,
                  **attributes: Any,
                  ) -> None:
         rawsource = attributes.pop('rawsource', '')
@@ -2526,7 +2539,7 @@ class pending(Invisible, Element):
                  transform: Transform,
                  details: Mapping[str, Any] | None = None,
                  rawsource: str = '',
-                 *children: _ElementT,
+                 *children: Node,
                  **attributes: Any,
                  ) -> None:
         Element.__init__(self, rawsource, *children, **attributes)
@@ -2699,7 +2712,7 @@ class NodeVisitor:
     def __init__(self, document: document, /) -> None:
         self.document: document = document
 
-    def dispatch_visit(self, node: _ElementT) -> None:
+    def dispatch_visit(self, node: Node) -> None:
         """
         Call self."``visit_`` + node class name" with `node` as
         parameter.  If the ``visit_...`` method does not exist, call
@@ -2712,7 +2725,7 @@ class NodeVisitor:
             % (method.__name__, node_name))
         return method(node)
 
-    def dispatch_departure(self, node: _ElementT) -> None:
+    def dispatch_departure(self, node: Node) -> None:
         """
         Call self."``depart_`` + node class name" with `node` as
         parameter.  If the ``depart_...`` method does not exist, call
@@ -2725,7 +2738,7 @@ class NodeVisitor:
             % (method.__name__, node_name))
         return method(node)
 
-    def unknown_visit(self, node: _ElementT) -> None:
+    def unknown_visit(self, node: Node) -> None:
         """
         Called when entering unknown `Node` types.
 
@@ -2737,7 +2750,7 @@ class NodeVisitor:
                 '%s visiting unknown node type: %s'
                 % (self.__class__, node.__class__.__name__))
 
-    def unknown_departure(self, node: _ElementT) -> None:
+    def unknown_departure(self, node: Node) -> None:
         """
         Called before exiting unknown `Node` types.
 
@@ -2776,24 +2789,24 @@ class GenericNodeVisitor(NodeVisitor):
     be overridden for default behavior.
     """
 
-    def default_visit(self, node: _ElementT):
+    def default_visit(self, node: Node):
         """Override for generic, uniform traversals."""
         raise NotImplementedError
 
-    def default_departure(self, node: _ElementT):
+    def default_departure(self, node: Node):
         """Override for generic, uniform traversals."""
         raise NotImplementedError
 
 
-def _call_default_visit(self: GenericNodeVisitor, node: _ElementT) -> None:
+def _call_default_visit(self: GenericNodeVisitor, node: Node) -> None:
     self.default_visit(node)
 
 
-def _call_default_departure(self: GenericNodeVisitor, node: _ElementT) -> None:
+def _call_default_departure(self: GenericNodeVisitor, node: Node) -> None:
     self.default_departure(node)
 
 
-def _nop(self: SparseNodeVisitor, node: _ElementT) -> None:
+def _nop(self: SparseNodeVisitor, node: Node) -> None:
     pass
 
 
@@ -2816,20 +2829,20 @@ class TreeCopyVisitor(GenericNodeVisitor):
 
     def __init__(self, document: document) -> None:
         super().__init__(document)
-        self.parent_stack: list[list[_ElementT]] = []
-        self.parent: list[_ElementT] = []
+        self.parent_stack: list[list[Node]] = []
+        self.parent: list[Node] = []
 
-    def get_tree_copy(self) -> _ElementT:
+    def get_tree_copy(self) -> Node:
         return self.parent[0]
 
-    def default_visit(self, node: _ElementT) -> None:
+    def default_visit(self, node: Node) -> None:
         """Copy the current node, and make it the new acting parent."""
         newnode = node.copy()
         self.parent.append(newnode)
         self.parent_stack.append(self.parent)
         self.parent = newnode
 
-    def default_departure(self, node: _ElementT) -> None:
+    def default_departure(self, node: Node) -> None:
         """Restore the previous acting parent."""
         self.parent = self.parent_stack.pop()
 
