@@ -28,8 +28,10 @@ from docutils.nodes import unescape  # noqa: F401
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence, Iterable
     from typing import Any, Final, Literal, TextIO
-
-    from typing_extensions import TypeAlias
+    if sys.version_info[:2] >= (3, 12):
+        from typing import TypeAlias
+    else:
+        from typing_extensions import TypeAlias
 
     from docutils.nodes import Node
     from docutils.frontend import Values

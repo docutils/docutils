@@ -41,7 +41,12 @@ if TYPE_CHECKING:
                                  Mapping, Sequence)
     from types import ModuleType
     from typing import (Any, ClassVar, Final, Literal, Self,
-                        SupportsIndex, TypeAlias, TypeVar)
+                        SupportsIndex, TypeVar)
+    if sys.version_info[:2] >= (3, 12):
+        from typing import TypeAlias
+    else:
+        from typing_extensions import TypeAlias
+
     from xml.dom import minidom
 
     from docutils.frontend import Values
