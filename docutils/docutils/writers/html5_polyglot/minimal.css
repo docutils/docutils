@@ -235,10 +235,14 @@ table.align-left, table.align-center, table.align-right {
 div.line-block { display: block; }
 div.line-block div.line-block, pre { margin-left: 2em; }
 
-/* Code line numbers: dropped when copying text from the page */
+/* Code line numbers: align-right, don't copy with drag-and-drop */
 pre.code .ln { display: none; }
 pre.code code:before {
-  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  content: attr(data-lineno);
+  display: inline-block;
+  min-width: 1.8em;
+  text-align: right;
+  font-size: small;
   color: gray;
 }
 
