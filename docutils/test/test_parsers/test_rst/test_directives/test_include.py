@@ -1457,7 +1457,6 @@ f"""\
             {include15}
             > {include16}
             > {include15}
-            > test data
         <literal_block xml:space="preserve">
             .. include:: include15.rst
     <paragraph>

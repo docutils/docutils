@@ -35,6 +35,8 @@ docutils_conf = os.path.relpath(
 
 
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -77,7 +79,6 @@ Include Test
 ============
 
 .. include:: {docutils_conf}
-   :literal:
 
 A paragraph.
 """,
@@ -91,9 +92,29 @@ f"""\
                 "{docutils_conf}": line 5 exceeds the line-length-limit.
             <literal_block xml:space="preserve">
                 .. include:: {docutils_conf}
-                   :literal:
         <paragraph>
             A paragraph.
+"""],
+[f"""\
+Include Test 2
+
+.. include:: {docutils_conf}
+   :start-line: 3
+
+A paragraph.
+""",
+f"""\
+<document source="test data">
+    <paragraph>
+        Include Test 2
+    <system_message level="2" line="3" source="test data" type="WARNING">
+        <paragraph>
+            "{docutils_conf}": line 5 exceeds the line-length-limit.
+        <literal_block xml:space="preserve">
+            .. include:: {docutils_conf}
+               :start-line: 3
+    <paragraph>
+        A paragraph.
 """],
 ]
 
