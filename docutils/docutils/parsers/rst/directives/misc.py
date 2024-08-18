@@ -31,11 +31,8 @@ if TYPE_CHECKING:
 
     from docutils.nodes import Node
 
-    PathString: TypeAlias = str | os.PathLike[str]
-    """File system path."""
-
-    SourceString: TypeAlias = str | os.PathLike[str]
-    """Path to or informal description of a Docutils input source."""
+    StrPath: TypeAlias = str | os.PathLike[str]
+    """File system path. No bytes!"""
 
 
 def adapt_path(path: str, source='', root_prefix='/') -> str:
@@ -121,7 +118,7 @@ class Include(Directive):
         self.insert_into_input_lines(inputstring)
         return []
 
-    def read_file(self, path: PathString) -> str:
+    def read_file(self, path: StrPath) -> str:
         """Read text file at `path`. Clip and return content.
 
         Provisional.

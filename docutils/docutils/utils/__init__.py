@@ -36,15 +36,14 @@ if TYPE_CHECKING:
     from docutils.nodes import Node
     from docutils.frontend import Values
 
-    _StrPath: TypeAlias = str | os.PathLike[str]
+    StrPath: TypeAlias = str | os.PathLike[str]
     _ObserverFunc: TypeAlias = Callable[[nodes.system_message], None]
 
 
 class SystemMessage(ApplicationError):
 
-    def __init__(
-        self, system_message: nodes.system_message, level: int,
-    ) -> None:
+    def __init__(self, system_message: nodes.system_message, level: int,
+                 ) -> None:
         Exception.__init__(self, system_message.astext())
         self.level = level
 
@@ -85,17 +84,10 @@ class Reporter:
     """
 
     # Reporter.get_source_and_line is patched in by ``RSTState.runtime_init``
-    get_source_and_line: Callable[
-        [int | None], tuple[_StrPath | None, int | None]
-    ]
+    get_source_and_line: Callable[[int|None], tuple[StrPath|None, int|None]]
 
     levels: Final[Sequence[str]] = (
-        'DEBUG',
-        'INFO',
-        'WARNING',
-        'ERROR',
-        'SEVERE',
-    )
+        'DEBUG', 'INFO', 'WARNING', 'ERROR', 'SEVERE')
     """List of names for system message levels, indexed by level."""
 
     # system message level constants:
@@ -106,16 +98,17 @@ class Reporter:
     SEVERE_LEVEL: Final = 4
 
     def __init__(
-        self,
-        source: _StrPath,
-        report_level: int,
-        halt_level: int,
-        stream: io.ErrorOutput | TextIO | str | Literal[False] | None = None,
-        debug: bool = False,
-        encoding: str | None = None,
-        error_handler: str = 'backslashreplace',
-    ) -> None:
-        """
+            self,
+            source: StrPath,
+            report_level: int,
+            halt_level: int,
+            stream: io.ErrorOutput|TextIO|str|Literal[False]|None = None,
+            debug: bool = False,
+            encoding: str|None = None,
+            error_handler: str = 'backslashreplace',
+            ) -> None:
+        """Low level instantiating. See also `new_reporter().`.
+
         :Parameters:
             - `source`: The path to or description of the source data.
             - `report_level`: The level at or above which warning output will
@@ -230,51 +223,47 @@ class Reporter:
         self.max_level = max(level, self.max_level)
         return msg
 
-    def debug(
-        self, *args: Node, **kwargs: Any
-    ) -> nodes.system_message:
+    def debug(self, *args: Node, **kwargs: Any) -> nodes.system_message:
         """
-        Level-0, "DEBUG": an internal reporting issue. Typically, there is no
-        effect on the processing. Level-0 system messages are handled
-        separately from the others.
+        Level-0, "DEBUG": an internal reporting issue.
+
+        Typically, there is no effect on the processing. Level-0 system
+        messages are handled separately from the others.
         """
         if self.debug_flag:
             return self.system_message(self.DEBUG_LEVEL, *args, **kwargs)
 
-    def info(
-        self, *args: Node, **kwargs: Any
-    ) -> nodes.system_message:
+    def info(self, *args: Node, **kwargs: Any) -> nodes.system_message:
         """
-        Level-1, "INFO": a minor issue that can be ignored. Typically there is
-        no effect on processing, and level-1 system messages are not reported.
+        Level-1, "INFO": a minor issue that can be ignored.
+
+        Typically, there is no effect on processing and level-1 system
+        messages are not reported.
         """
         return self.system_message(self.INFO_LEVEL, *args, **kwargs)
 
-    def warning(
-        self, *args: Node, **kwargs: Any
-    ) -> nodes.system_message:
+    def warning(self, *args: Node, **kwargs: Any) -> nodes.system_message:
         """
-        Level-2, "WARNING": an issue that should be addressed. If ignored,
-        there may be unpredictable problems with the output.
+        Level-2, "WARNING": an issue that should be addressed.
+
+        If ignored, there may be unpredictable problems with the output.
         """
         return self.system_message(self.WARNING_LEVEL, *args, **kwargs)
 
-    def error(
-        self, *args: Node, **kwargs: Any
-    ) -> nodes.system_message:
+    def error(self, *args: Node, **kwargs: Any) -> nodes.system_message:
         """
-        Level-3, "ERROR": an error that should be addressed. If ignored, the
-        output will contain errors.
+        Level-3, "ERROR": an error that should be addressed.
+
+        If ignored, the output will contain errors.
         """
         return self.system_message(self.ERROR_LEVEL, *args, **kwargs)
 
-    def severe(
-        self, *args: Node, **kwargs: Any
-    ) -> nodes.system_message:
+    def severe(self, *args: Node, **kwargs: Any) -> nodes.system_message:
         """
-        Level-4, "SEVERE": a severe error that must be addressed. If ignored,
-        the output will contain severe errors. Typically level-4 system
-        messages are turned into exceptions which halt processing.
+        Level-4, "SEVERE": a severe error that must be addressed.
+
+        If ignored, the output will contain severe errors. Typically level-4
+        system messages are turned into exceptions which halt processing.
         """
         return self.system_message(self.SEVERE_LEVEL, *args, **kwargs)
 
@@ -312,9 +301,8 @@ def extract_extension_options(field_list: nodes.field_list,
     return assemble_option_dict(option_list, options_spec)
 
 
-def extract_options(
-    field_list: nodes.field_list
-) -> list[tuple[str, str | None]]:
+def extract_options(field_list: nodes.field_list
+                    ) -> list[tuple[str, str|None]]:
     """
     Return a list of option (name, value) pairs from field names & bodies.
 
@@ -349,7 +337,7 @@ def extract_options(
     return option_list
 
 
-def assemble_option_dict(option_list: list[tuple[str, str | None]],
+def assemble_option_dict(option_list: list[tuple[str, str|None]],
                          options_spec: dict[str, Callable[object], Any],
                          ) -> dict[str, Any]:
     """
@@ -387,11 +375,13 @@ def assemble_option_dict(option_list: list[tuple[str, str | None]],
 class NameValueError(DataError): pass
 
 
-def decode_path(path: str | None | bytes) -> str:
+def decode_path(path: str|bytes|None) -> str:
     """
     Ensure `path` is Unicode. Return `str` instance.
 
     Decode file/path string in a failsafe manner if not already done.
+
+    Deprecated.
     """
     # TODO: is this still required with Python 3?
     if isinstance(path, str):
@@ -400,7 +390,7 @@ def decode_path(path: str | None | bytes) -> str:
         return ''
     try:
         path = path.decode(sys.getfilesystemencoding(), 'strict')
-    except AttributeError:  # default value None has no decode method
+    except AttributeError:
         raise ValueError('`path` value must be a String or ``None``, '
                          f'not {path!r}')
     except UnicodeDecodeError:
@@ -456,7 +446,7 @@ def extract_name_value(line):
     return attlist
 
 
-def new_reporter(source_path: _StrPath, settings: Values) -> Reporter:
+def new_reporter(source_path: StrPath, settings: Values) -> Reporter:
     """
     Return a new Reporter object.
 
@@ -474,8 +464,7 @@ def new_reporter(source_path: _StrPath, settings: Values) -> Reporter:
     return reporter
 
 
-def new_document(source_path: _StrPath,
-                 settings: Values | None = None
+def new_document(source_path: StrPath, settings: Values|None = None
                  ) -> nodes.document:
     """
     Return a new empty document object.
@@ -514,9 +503,9 @@ def new_document(source_path: _StrPath,
 
 
 def clean_rcs_keywords(
-    paragraph: nodes.paragraph,
-    keyword_substitutions: Sequence[tuple[re.Pattern[[str], str]]],
-) -> None:
+        paragraph: nodes.paragraph,
+        keyword_substitutions: Sequence[tuple[re.Pattern[[str], str]]],
+        ) -> None:
     if len(paragraph) == 1 and isinstance(paragraph[0], nodes.Text):
         textnode = paragraph[0]
         for pattern, substitution in keyword_substitutions:
@@ -526,7 +515,7 @@ def clean_rcs_keywords(
                 return
 
 
-def relative_path(source: _StrPath | None, target: _StrPath) -> str:
+def relative_path(source: StrPath|None, target: StrPath) -> str:
     """
     Build and return a path to `target`, relative to `source` (both files).
 
@@ -582,7 +571,7 @@ def relative_path(source: _StrPath | None, target: _StrPath) -> str:
 
 
 def get_stylesheet_reference(settings: Values,
-                             relative_to: _StrPath | None = None
+                             relative_to: StrPath|None = None
                              ) -> str:
     """
     Retrieve a stylesheet reference from the settings object.
@@ -616,9 +605,7 @@ def get_stylesheet_reference(settings: Values,
 #   (if required, use ``utils.relative_path(source, target)``
 #   in the calling script)
 def get_stylesheet_list(settings: Values) -> list[str]:
-    """
-    Retrieve list of stylesheet references from the settings object.
-    """
+    """Retrieve list of stylesheet references from the settings object."""
     assert not (settings.stylesheet and settings.stylesheet_path), (
             'stylesheet and stylesheet_path are mutually exclusive.')
     stylesheets = settings.stylesheet_path or settings.stylesheet or []
@@ -632,7 +619,7 @@ def get_stylesheet_list(settings: Values) -> list[str]:
     return stylesheets
 
 
-def find_file_in_dirs(path: _StrPath, dirs: Iterable[_StrPath]) -> str:
+def find_file_in_dirs(path: StrPath, dirs: Iterable[StrPath]) -> str:
     """
     Search for `path` in the list of directories `dirs`.
 
@@ -663,7 +650,7 @@ def get_trim_footnote_ref_space(settings: Values) -> bool:
         return settings.trim_footnote_reference_space
 
 
-def get_source_line(node: Node) -> tuple[_StrPath | None, int | None]:
+def get_source_line(node: Node) -> tuple[StrPath|None, int|None]:
     """
     Return the "source" and "line" attributes from the `node` given or from
     its closest ancestor.
@@ -789,7 +776,7 @@ def normalize_language_tag(tag: str) -> list[str]:
     return taglist
 
 
-def xml_declaration(encoding: str | Literal['unicode'] | None = None) -> str:
+def xml_declaration(encoding: str|Literal['unicode']|None = None) -> str:
     """Return an XML text declaration.
 
     Include an encoding declaration, if `encoding`
@@ -812,8 +799,8 @@ class DependencyList:
     """
 
     def __init__(self,
-                 output_file: Literal['-'] | _StrPath | None = None,
-                 dependencies: Iterable[_StrPath] = ()
+                 output_file: Literal['-'] | StrPath | None = None,
+                 dependencies: Iterable[StrPath] = ()
                  ) -> None:
         """
         Initialize the dependency list, automatically setting the
@@ -822,28 +809,28 @@ class DependencyList:
 
         If output_file is None, no file output is done when calling add().
         """
-        self.list = []
-        self.file: TextIO | None = None
-        if output_file:
-            self.set_output(output_file)
+        self.set_output(output_file)
         self.add(*dependencies)
 
-    def set_output(self, output_file: Literal['-'] | _StrPath) -> None:
+    def set_output(self, output_file: Literal['-']|StrPath|None) -> None:
         """
         Set the output file and clear the list of already added
         dependencies.
 
-        `output_file` must be a string.  The specified file is
-        immediately overwritten.
+        The specified file is immediately overwritten.
 
-        If output_file is '-', the output will be written to stdout.
+        If `output_file` is '-', the output will be written to stdout.
+        The empty string or None stop output.
         """
         if output_file == '-':
             self.file = sys.stdout
         elif output_file:
             self.file = open(output_file, 'w', encoding='utf-8')
+        else:
+            self.file = None
+        self.list = []
 
-    def add(self, *paths: _StrPath) -> None:
+    def add(self, *paths: StrPath) -> None:
         """
         Append `path` to `self.list` unless it is already there.
 
