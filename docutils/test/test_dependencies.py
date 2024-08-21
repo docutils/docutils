@@ -23,6 +23,7 @@ import docutils.core
 import docutils.utils
 import docutils.io
 from docutils.parsers.rst.directives.images import PIL
+from docutils.writers import html4css1, html5_polyglot, latex2e, docutils_xml
 
 TEST_ROOT = Path(__file__).parent  # ./test/ from the docutils root
 DATA_ROOT = TEST_ROOT / 'data'
@@ -76,7 +77,7 @@ class RecordDependenciesTests(unittest.TestCase):
         if PIL and os.path.exists('../docs/user/rst/images/'):
             keys += ['figure-image']
         expected = [paths[key] for key in keys]
-        record, _output = self.get_record(writer='xml')
+        record, _output = self.get_record(writer=docutils_xml.Writer())
         # the order of the files is arbitrary
         self.assertEqual(sorted(expected), sorted(record))
 
@@ -89,7 +90,7 @@ class RecordDependenciesTests(unittest.TestCase):
         settings = {'stylesheet_path': None,
                     'stylesheet': None,
                     'report_level': 4}  # drop warning if PIL is missing
-        record, output = self.get_record(writer='html5',
+        record, output = self.get_record(writer=html5_polyglot.Writer(),
                                          settings_overrides=settings)
         # the order of the files is arbitrary
         self.assertEqual(sorted(expected), sorted(record),
@@ -105,7 +106,7 @@ class RecordDependenciesTests(unittest.TestCase):
             keys += ['figure-image']
         expected = [paths[key] for key in keys]
         record, output = self.get_record(
-                            writer='latex',
+                            writer=latex2e.Writer(),
                             settings_overrides=latex_settings_overwrites)
         # the order of the files is arbitrary
         self.assertEqual(sorted(expected), sorted(record),
@@ -123,22 +124,22 @@ class RecordDependenciesTests(unittest.TestCase):
                     'stylesheet': None}
         settings.update(latex_settings_overwrites)
         settings['embed_stylesheet'] = False
-        record, _output = self.get_record(writer='html',
+        record, _output = self.get_record(writer=html4css1.Writer(),
                                           settings_overrides=settings)
         self.assertTrue(stylesheet not in record,
                         f'{stylesheet!r} should not be in {record!r}')
-        record, _output = self.get_record(writer='latex',
+        record, _output = self.get_record(writer=latex2e.Writer(),
                                           settings_overrides=settings)
         self.assertTrue(stylesheet not in record,
                         f'{stylesheet!r} should not be in {record!r}')
 
         settings['embed_stylesheet'] = True
-        record, _output = self.get_record(writer='html',
+        record, _output = self.get_record(writer=html4css1.Writer(),
                                           settings_overrides=settings)
         self.assertTrue(stylesheet in record,
                         f'{stylesheet!r} should be in {record!r}')
         settings['embed_stylesheet'] = True
-        record, _output = self.get_record(writer='latex',
+        record, _output = self.get_record(writer=latex2e.Writer(),
                                           settings_overrides=settings)
         self.assertTrue(stylesheet in record,
                         f'{stylesheet!r} should be in {record!r}')

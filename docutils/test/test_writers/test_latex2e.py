@@ -19,6 +19,7 @@ if __name__ == '__main__':
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from docutils.core import publish_string
+from docutils.writers import latex2e
 
 # DATA_ROOT is ./test/data from the docutils root
 DATA_ROOT = Path(__file__).resolve().parents[1] / 'data'
@@ -35,7 +36,6 @@ else:
 class WriterPublishTestCase(unittest.TestCase):
 
     maxDiff = None
-    writer = 'latex'
     settings = {
         '_disable_config': True,
         'strict_visitor': True,
@@ -49,7 +49,7 @@ class WriterPublishTestCase(unittest.TestCase):
             for casenum, (rst_input, expected) in enumerate(cases):
                 with self.subTest(id=f'samples_default[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
-                                            writer=self.writer,
+                                            writer=latex2e.Writer(),
                                             settings_overrides=settings)
                     output = output.decode()
                     self.assertEqual(expected, output)

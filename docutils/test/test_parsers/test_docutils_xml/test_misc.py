@@ -26,8 +26,6 @@ if __name__ == '__main__':
 from docutils.core import publish_string
 from docutils.parsers import docutils_xml
 
-parser = docutils_xml.Parser()
-
 
 class XMLParserTests(unittest.TestCase):
     maxDiff = None
@@ -42,7 +40,8 @@ class XMLParserTests(unittest.TestCase):
             settings = self.mysettings | settings
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
-                    output = publish_string(case_input, parser=parser,
+                    output = publish_string(case_input,
+                                            parser=docutils_xml.Parser(),
                                             settings_overrides=settings)
                     self.assertEqual(case_expected, output)
 

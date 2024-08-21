@@ -18,17 +18,17 @@ if __name__ == '__main__':
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from docutils.core import publish_string
+from docutils.writers import null
 
 
 class WriterPublishTestCase(unittest.TestCase):
     def test_publish(self):
-        writer = 'null'
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     output = publish_string(
                         source=case_input,
-                        writer=writer,
+                        writer=null.Writer(),
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,

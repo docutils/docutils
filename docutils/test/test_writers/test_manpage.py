@@ -17,7 +17,7 @@ if __name__ == '__main__':
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from docutils.core import publish_string
-from docutils.writers.manpage import insert_URI_breakpoints
+from docutils.writers import manpage
 
 URI_tests = (
         ("///abc.de", r"///\:abc.de"),
@@ -35,7 +35,7 @@ class URIBreakpointsTestCase(unittest.TestCase):
 
     def test_insert(self):
         for t in URI_tests:
-            got = insert_URI_breakpoints(t[0])
+            got = manpage.insert_URI_breakpoints(t[0])
             self.assertEqual(t[1], got)
 
 
@@ -44,13 +44,12 @@ class WriterPublishTestCase(unittest.TestCase):
     maxDiff = None
 
     def test_publish(self):
-        writer = 'manpage'
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     output = publish_string(
                         source=case_input,
-                        writer=writer,
+                        writer=manpage.Writer(),
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
@@ -58,13 +57,12 @@ class WriterPublishTestCase(unittest.TestCase):
                     self.assertEqual(case_expected, output)
 
     def test_reference_macros(self):
-        writer = 'manpage'
         for name, cases in totest_refs.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest_refs[{name!r}][{casenum}]'):
                     output = publish_string(
                         source=case_input,
-                        writer=writer,
+                        writer=manpage.Writer(),
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
@@ -117,7 +115,7 @@ totest_refs['ext hyperlink'] = [
          document_start + indend_macros + """.TH "" "" "" ""
 .SH Name
  \\- \n\
-External hyperlinks, like 
+External hyperlinks, like \n\
 .UR https://www.python.org/
 Python
 .UE

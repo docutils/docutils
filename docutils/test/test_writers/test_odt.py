@@ -45,6 +45,7 @@ if __name__ == '__main__':
 
 import docutils
 import docutils.core
+from docutils.writers import odf_odt
 
 # FUNCTIONAL_ROOT is ./test/functional/ from the docutils root
 FUNCTIONAL_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', 'functional'))
@@ -75,11 +76,10 @@ class DocutilsOdtTestCase(unittest.TestCase):
             settings_overrides['language_code'] = 'en-US'
 
         result = docutils.core.publish_string(
-            source=source,
-            source_path=input_path,
-            reader='standalone',
-            writer='odf_odt',
-            settings_overrides=settings_overrides)
+                     source=source,
+                     source_path=input_path,
+                     writer=odf_odt.Writer(),
+                     settings_overrides=settings_overrides)
         # msg = 'file length not equal: expected length: %d  actual length: %d' % (
         #           len(expected), len(result), )
         # self.assertEqual(str(len(result)), str(len(expected)))

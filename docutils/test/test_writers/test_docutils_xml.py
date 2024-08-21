@@ -19,6 +19,7 @@ import unittest
 
 import docutils
 import docutils.core
+from docutils.writers import docutils_xml
 
 from io import StringIO
 
@@ -122,8 +123,7 @@ invalid_raw_xml = """\
 
 def publish_xml(settings, source):
     return docutils.core.publish_string(source=source,
-                                       reader='standalone',
-                                       writer='docutils_xml',
+                                       writer=docutils_xml.Writer(),
                                        settings_overrides=settings)
 
 

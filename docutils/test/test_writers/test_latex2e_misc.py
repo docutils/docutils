@@ -27,6 +27,7 @@ if __name__ == '__main__':
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from docutils import core
+from docutils.writers import latex2e
 
 # TEST_ROOT is ./test/ from the docutils root
 TEST_ROOT = Path(__file__).parents[1]
@@ -88,7 +89,7 @@ class PublishTestCase(unittest.TestCase):
         doctree = core.publish_doctree(sample_toc,
                                        settings_overrides=settings)
         result = core.publish_from_doctree(doctree,
-                                           writer='latex',
+                                           writer=latex2e.Writer(),
                                            settings_overrides=settings)
         self.assertNotIn(r'\item \hyperref[foo]{foo}', result)
         self.assertIn(r'\tableofcontents', result)
@@ -97,7 +98,7 @@ class PublishTestCase(unittest.TestCase):
         """Check for the presence of documented parts.
         """
         parts = core.publish_parts(sample_multiterm,
-                                   writer='latex',
+                                   writer=latex2e.Writer(),
                                    settings_overrides=self.settings)
         documented_parts = [
             'abstract',
@@ -135,11 +136,11 @@ class WarningsTestCase(unittest.TestCase):
                     }
         with self.assertWarnsRegex(FutureWarning,
                                    '"legacy_column_widths" will change'):
-            core.publish_string('warnings test', writer='latex',
+            core.publish_string('warnings test', writer=latex2e.Writer(),
                                 settings_overrides=settings)
         with self.assertWarnsRegex(FutureWarning,
                                    '"use_latex_citations" will change'):
-            core.publish_string('warnings test', writer='latex',
+            core.publish_string('warnings test', writer=latex2e.Writer(),
                                 settings_overrides=settings)
 
 

@@ -19,6 +19,7 @@ if __name__ == '__main__':
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from docutils import core
+from docutils.writers import html4css1
 
 # TEST_ROOT is ./test/ from the docutils root
 TEST_ROOT = Path(__file__).parents[1]
@@ -36,11 +37,11 @@ class EncodingTestCase(unittest.TestCase):
         # error handler.
         settings_overrides = {
             'output_encoding': 'latin1',
-            'stylesheet': '',
+            'stylesheet-path': '',
             '_disable_config': True,
             }
         result = bytes(core.publish_string(
-            'EUR = \u20ac', writer='html4css1',
+            'EUR = \u20ac', writer=html4css1.Writer(),
             settings_overrides=settings_overrides))
         # Encoding a euro sign with latin1 doesn't work, so the
         # xmlcharrefreplace handler is used.
@@ -49,10 +50,7 @@ class EncodingTestCase(unittest.TestCase):
 
 class MovingArgsTestCase(unittest.TestCase):
 
-    mys = {'stylesheet_path': '',
-           # 'embed_stylesheet': False,
-           '_disable_config': True,
-           }
+    mys = {'_disable_config': True}
 
     def test_definition_list_item_classes(self):
         # Do not drop class arguments for the definition list item.
@@ -66,7 +64,7 @@ first term:
 second term:
   second def
 """
-        result = core.publish_string(data, writer='html4css1',
+        result = core.publish_string(data, writer=html4css1.Writer(),
                                      settings_overrides=self.mys)
         self.assertIn(b'<dt class="for the second item">second term:</dt>',
                       result)
@@ -83,7 +81,7 @@ first term:
 second term:
   second def
 """
-        result = core.publish_string(data, writer='html4css1',
+        result = core.publish_string(data, writer=html4css1.Writer(),
                                      settings_overrides=self.mys)
         self.assertIn(b'<dt id="second-item">second term:</dt>',
                       result)
@@ -98,7 +96,7 @@ class SettingsTestCase(unittest.TestCase):
     def test_default_stylesheet(self):
         # default style sheet, embedded
         mys = {'_disable_config': True}
-        styles = core.publish_parts(self.data, writer='html4css1',
+        styles = core.publish_parts(self.data, writer=html4css1.Writer(),
                                     settings_overrides=mys)['stylesheet']
         self.assertIn('Default cascading style sheet '
                       'for the HTML output of Docutils.', styles)
@@ -107,7 +105,7 @@ class SettingsTestCase(unittest.TestCase):
         # default style sheet, linked
         mys = {'_disable_config': True,
                'embed_stylesheet': False}
-        styles = core.publish_parts(self.data, writer='html4css1',
+        styles = core.publish_parts(self.data, writer=html4css1.Writer(),
                                     settings_overrides=mys)['stylesheet']
         self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
 
@@ -116,7 +114,7 @@ class SettingsTestCase(unittest.TestCase):
         mys = {'_disable_config': True,
                'embed_stylesheet': False,
                'stylesheet_path': 'html4css1.css, math.css'}
-        styles = core.publish_parts(self.data, writer='html4css1',
+        styles = core.publish_parts(self.data, writer=html4css1.Writer(),
                                     settings_overrides=mys)['stylesheet']
         self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
         self.assertIn('docutils/writers/html5_polyglot/math.css', styles)
@@ -127,7 +125,7 @@ class SettingsTestCase(unittest.TestCase):
                'embed_stylesheet': False,
                'stylesheet_path': 'html4css1.css, '
                'data/ham.css'}
-        styles = core.publish_parts(self.data, writer='html4css1',
+        styles = core.publish_parts(self.data, writer=html4css1.Writer(),
                                     settings_overrides=mys)['stylesheet']
         self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
         self.assertIn('href="data/ham.css"', styles)
@@ -139,7 +137,7 @@ class SettingsTestCase(unittest.TestCase):
                    TEST_ROOT / '../docutils/writers/html4css1/',
                    DATA_ROOT),
                'stylesheet_path': 'html4css1.css, ham.css'}
-        styles = core.publish_parts(self.data, writer='html4css1',
+        styles = core.publish_parts(self.data, writer=html4css1.Writer(),
                                     settings_overrides=mys)['stylesheet']
         if (TEST_ROOT / '../docutils/writers/html4css1/').is_dir():
             self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
@@ -152,7 +150,7 @@ class SettingsTestCase(unittest.TestCase):
                    TEST_ROOT / '../docutils/writers/html4css1/',
                    DATA_ROOT),
                'stylesheet_path': 'ham.css'}
-        styles = core.publish_parts(self.data, writer='html4css1',
+        styles = core.publish_parts(self.data, writer=html4css1.Writer(),
                                     settings_overrides=mys)['stylesheet']
         self.assertIn('dl.docutils dd {\n  margin-bottom: 0.5em }', styles)
 
@@ -175,7 +173,7 @@ class MathTestCase(unittest.TestCase):
     def test_math_output_default(self):
         # HTML with math.css stylesheet (since 0.11)
         mys = {'_disable_config': True}
-        styles = core.publish_parts(self.data, writer='html4css1',
+        styles = core.publish_parts(self.data, writer=html4css1.Writer(),
                                     settings_overrides=mys)['stylesheet']
         self.assertIn('convert LaTeX equations to HTML output.', styles)
 
@@ -185,7 +183,7 @@ class MathTestCase(unittest.TestCase):
         mys = {'_disable_config': True,
                'report_level': 3,
                'math_output': 'MathJax'}
-        head = core.publish_parts(self.data, writer='html4css1',
+        head = core.publish_parts(self.data, writer=html4css1.Writer(),
                                   settings_overrides=mys)['head']
         self.assertIn(self.mathjax_script % self.default_mathjax_url, head)
 
@@ -194,14 +192,14 @@ class MathTestCase(unittest.TestCase):
         mys = {'_disable_config': True,
                'math_output':
                'mathjax %s' % self.custom_mathjax_url}
-        head = core.publish_parts(self.data, writer='html4css1',
+        head = core.publish_parts(self.data, writer=html4css1.Writer(),
                                   settings_overrides=mys)['head']
         self.assertIn(self.mathjax_script % self.custom_mathjax_url, head)
 
     def test_math_output_html(self):
         mys = {'_disable_config': True,
                'math_output': 'HTML'}
-        head = core.publish_parts(self.data, writer='html4css1',
+        head = core.publish_parts(self.data, writer=html4css1.Writer(),
                                   settings_overrides=mys)['head']
         # There should be no MathJax script when math_output is not MathJax
         self.assertNotIn('MathJax.js', head)
@@ -213,7 +211,7 @@ class MathTestCase(unittest.TestCase):
                    TEST_ROOT,
                    os.path.join(TEST_ROOT, 'functional/input/data')),
                'embed_stylesheet': False}
-        styles = core.publish_parts(self.data, writer='html4css1',
+        styles = core.publish_parts(self.data, writer=html4css1.Writer(),
                                     settings_overrides=mys)['stylesheet']
         self.assertEqual(f"""\
 <link rel="stylesheet" href="{html4css1_css}" type="text/css" />
@@ -223,7 +221,7 @@ class MathTestCase(unittest.TestCase):
 
     def test_math_output_mathjax_no_math(self):
         # There should be no math script when text does not contain math
-        head = core.publish_parts('No math.', writer='html4css1')['head']
+        head = core.publish_parts('No math.', writer=html4css1.Writer())['head']
         self.assertNotIn('MathJax', head)
 
 

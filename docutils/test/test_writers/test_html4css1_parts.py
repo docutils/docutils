@@ -24,7 +24,7 @@ if __name__ == '__main__':
 import docutils
 import docutils.core
 from docutils.parsers.rst.directives.images import PIL
-
+from docutils.writers import html4css1
 
 ROOT_PREFIX = (Path(__file__).parent.parent/'functional'/'input').as_posix()
 if PIL:
@@ -41,17 +41,16 @@ class Html4WriterPublishPartsTestCase(unittest.TestCase):
     maxDiff = None
 
     def test_publish(self):
-        writer = 'html4'
         for name, (settings_overrides, cases) in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     parts = docutils.core.publish_parts(
                         source=case_input,
-                        writer=writer,
+                        writer=html4css1.Writer(),
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
-                            'stylesheet': '',
+                            'stylesheet_path': '',
                             **settings_overrides,
                         }
                     )
@@ -110,8 +109,7 @@ class Html4WriterPublishPartsTestCase(unittest.TestCase):
 
 totest = {}
 
-totest['title_promotion'] = ({'stylesheet_path': '',
-                              'embed_stylesheet': False}, [
+totest['title_promotion'] = ({}, [
 ["""\
 Simple String
 """,
@@ -252,9 +250,7 @@ Some stuff
 }]
 ])
 
-totest['no_title_promotion'] = ({'doctitle_xform': False,
-                                 'stylesheet_path': '',
-                                 'embed_stylesheet': False}, [
+totest['no_title_promotion'] = ({'doctitle_xform': False}, [
 ["""\
 Simple String
 """,
@@ -416,9 +412,7 @@ Not a docinfo.
 ],
 ])
 
-totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX,
-                          'stylesheet_path': '',
-                          'embed_stylesheet': False}, [
+totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX}, [
 
 ["""\
 .. image:: /data/blue%20square.png

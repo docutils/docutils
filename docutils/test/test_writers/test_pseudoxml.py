@@ -18,20 +18,19 @@ if __name__ == '__main__':
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from docutils.core import publish_string
+from docutils.writers import pseudoxml
 
 
 class WriterPublishTestCase(unittest.TestCase):
     maxDiff = None
 
     def test_publish(self):
-        writer = 'pseudoxml'
-
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     output = publish_string(
                         source=case_input,
-                        writer=writer,
+                        writer=pseudoxml.Writer(),
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
@@ -43,7 +42,7 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'totest_detailed[{name!r}][{casenum}]'):
                     output = publish_string(
                         source=case_input,
-                        writer=writer,
+                        writer=pseudoxml.Writer(),
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,

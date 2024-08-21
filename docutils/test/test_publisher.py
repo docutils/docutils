@@ -18,8 +18,9 @@ if __name__ == '__main__':
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import docutils
-from docutils import core, nodes, parsers, readers, writers
 import docutils.parsers.null
+from docutils import core, nodes, parsers, readers, writers
+from docutils.writers import html4css1, odf_odt, pseudoxml
 
 # DATA_ROOT is ./test/data/ from the docutils root
 DATA_ROOT = Path(__file__).parent / 'data'
@@ -227,7 +228,7 @@ class ConvenienceFunctionTests(unittest.TestCase):
                                     'warning_stream': ''}
         with self.assertRaisesRegex(docutils.utils.SystemMessage,
                                     'The ODT writer returns `bytes` '):
-            core.publish_string('test', writer='odt',
+            core.publish_string('test', writer=odf_odt.Writer(),
                                 settings_overrides=settings)
 
     def test_publish_string_deprecation_warning(self):
@@ -253,7 +254,7 @@ class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
         # Produce the document tree.
         with self.assertWarns(PendingDeprecationWarning):
             doctree = core.publish_doctree(
-                source=test_document, reader='standalone',
+                source=test_document,
                 parser_name='restructuredtext', settings_spec=self,
                 settings_overrides={'expose_internals':
                                     ['refnames', 'do_not_expose'],
@@ -274,7 +275,7 @@ class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
         # Write out the document:
         output = core.publish_from_doctree(
             doctree,
-            writer='pseudoxml',
+            writer=pseudoxml.Writer(),
             settings_spec=self,
             settings_overrides={'expose_internals':
                                 ['refnames', 'do_not_expose'],
@@ -285,7 +286,7 @@ class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
         # Test publishing parts using document as the source.
         parts = core.publish_parts(
             reader='doctree', source_class=docutils.io.DocTreeInput,
-            source=doctree, source_path='test', writer='html',
+            source=doctree, source_path='test', writer=html4css1.Writer(),
             settings_spec=self)
         self.assertTrue(isinstance(parts, dict))
 
@@ -295,8 +296,6 @@ class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
         # Produce the document tree.
         doctree = core.publish_doctree(
             source=test_document,
-            reader='standalone',
-            parser='restructuredtext',
             settings_spec=self)
         self.assertTrue(isinstance(doctree, nodes.document))
 

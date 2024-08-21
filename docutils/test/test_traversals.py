@@ -68,8 +68,6 @@ class StopTraversalTests(unittest.TestCase, docutils.SettingsSpec):
         # Load some document tree in memory.
         doctree = core.publish_doctree(
             source=stop_traversal_input,
-            reader='standalone',
-            parser='restructuredtext',
             settings_spec=self)
         self.assertTrue(isinstance(doctree, nodes.document))
 

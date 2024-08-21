@@ -21,6 +21,7 @@ if __name__ == '__main__':
 
 import docutils
 from docutils.core import publish_string
+from docutils.writers import html4css1
 
 # TEST_ROOT is ./test/ from the docutils root
 TEST_ROOT = Path(__file__).parents[1]
@@ -29,14 +30,13 @@ TEST_ROOT = Path(__file__).parents[1]
 class WriterPublishTestCase(unittest.TestCase):
     # maxDiff = None
     def test_publish(self):
-        writer = 'html4'
         template_path = TEST_ROOT / 'data/full-template.txt'
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     output = publish_string(
                         source=case_input,
-                        writer=writer,
+                        writer=html4css1.Writer(),
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
