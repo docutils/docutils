@@ -571,12 +571,13 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         if 'scale' in node:
             if (PIL and ('width' not in node or 'height' not in node)
                 and self.settings.file_insertion_enabled):
-                imagepath = self.uri2imagepath(uri)
                 try:
+                    imagepath = self.uri2imagepath(uri)
                     with PIL.Image.open(imagepath) as img:
                         img_size = img.size
-                except (OSError, UnicodeEncodeError):
-                    pass  # TODO: warn/info?
+                except (ValueError, OSError, UnicodeEncodeError) as e:
+                    self.document.reporter.warning(
+                        f'Problem reading image file: {e}')
                 else:
                     self.settings.record_dependencies.add(
                         imagepath.replace('\\', '/'))
