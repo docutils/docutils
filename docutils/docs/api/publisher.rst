@@ -603,7 +603,7 @@ _`parser` : str | docutils.parsers.Parser
 
   Default: "restructuredtext".
 
-_`writer` : str | docutils.parsers.Writer
+_`writer` : str | docutils.writers.Writer
   `Writer component name`_ or instance. [#component-names]_
 
   Default: "pseudoxml".

@@ -36,7 +36,7 @@ class EncodingTestCase(unittest.TestCase):
         # error handler.
         settings_overrides = {
             'output_encoding': 'latin1',
-            'stylesheet': '',
+            'stylesheet_path': '',
             '_disable_config': True}
         result = core.publish_string(
             'EUR = \u20ac', writer='html5_polyglot',
@@ -49,7 +49,6 @@ class EncodingTestCase(unittest.TestCase):
 class MovingArgsTestCase(unittest.TestCase):
 
     mys = {'stylesheet_path': '',
-           # 'embed_stylesheet': False,
            '_disable_config': True,
            }
 
@@ -99,8 +98,8 @@ class SettingsTestCase(unittest.TestCase):
         mys = {'_disable_config': True}
         styles = core.publish_parts(self.data, writer='html5_polyglot',
                                     settings_overrides=mys)['stylesheet']
-        self.assertIn('Minimal style sheet '
-                      'for the HTML output of Docutils.', styles)
+        self.assertIn('Minimal style sheet for the HTML output of Docutils.',
+                      styles)
 
     def test_default_stylesheet_linked(self):
         # default style sheet, linked
@@ -141,7 +140,8 @@ class SettingsTestCase(unittest.TestCase):
         styles = core.publish_parts(self.data, writer='html5_polyglot',
                                     settings_overrides=mys)['stylesheet']
         if (TEST_ROOT / '../docutils/writers/html5_polyglot/').is_dir():
-            self.assertIn('docutils/writers/html5_polyglot/minimal.css', styles)
+            self.assertIn('docutils/writers/html5_polyglot/minimal.css',
+                          styles)
         self.assertIn(f'href="{ham_css}"', styles)
 
     def test_custom_stylesheet_dir_embedded(self):
