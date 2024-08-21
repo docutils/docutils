@@ -84,7 +84,7 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
-                            'stylesheet': '',
+                            'stylesheet_path': '',
                             'section_self_link': True,
                             **settings_overrides,
                         }
@@ -143,8 +143,7 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
 
 totest = {}
 
-totest['standard'] = ({'stylesheet_path': '',
-                       'embed_stylesheet': False}, [
+totest['standard'] = ({}, [
 ["""\
 Simple String
 """,
@@ -288,9 +287,19 @@ Some stuff
 }],
 ])
 
-totest['no_title_promotion'] = ({'doctitle_xform': False,
-                                 'stylesheet_path': '',
-                                 'embed_stylesheet': False}, [
+totest['standard'] = ({'output_encoding': 'unicode'}, [
+["""\
+Simple String
+""",
+{'fragment': '<p>Simple String</p>\n',
+ 'meta': """\
+<meta name="generator" content="Docutils 0.22b.dev: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+""",
+}],
+])
+
+totest['no_title_promotion'] = ({'doctitle_xform': False}, [
 ["""\
 Simple String
 """,
@@ -574,8 +583,6 @@ reStructuredText syntax.</p>
 
 
 totest['lazy_loading'] = ({'image_loading': 'lazy',
-                           'stylesheet_path': '',
-                           'embed_stylesheet': False,
                            'report_level': 4}, [
 ["""\
 Lazy loading by default, overridden by :loading: option
@@ -606,9 +613,7 @@ Lazy loading by default, overridden by :loading: option
 
 totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX,
                           'image_loading': 'embed',
-                          'stylesheet_path': '',
                           'warning_stream': '',
-                          'embed_stylesheet': False
                           }, [
 ["""\
 .. image:: /data/blue%20square.png
@@ -630,9 +635,7 @@ f' {SCALING_OUTPUT}/>\n{NO_PIL_SYSTEM_MESSAGE}'
 ])
 
 
-totest['no_backlinks'] = ({'footnote_backlinks': False,
-                           'stylesheet_path': '',
-                           'embed_stylesheet': False}, [
+totest['no_backlinks'] = ({'footnote_backlinks': False}, [
 
 ["""\
 Two footnotes [#f1]_ [#f2]_ and two citations [once]_ [twice]_.
@@ -673,7 +676,6 @@ The latter are referenced a second time [#f2]_ [twice]_.
 
 
 totest['syntax_highlight'] = ({'syntax_highlight': 'short',
-                               'stylesheet_path': '',
                                }, [
 ["""\
 .. code:: shell
@@ -701,9 +703,7 @@ EOF</span></code></pre>
 ])
 
 
-totest['system_messages'] = ({'stylesheet_path': '',
-                              'embed_stylesheet': False,
-                              'math_output': 'mathml',
+totest['system_messages'] = ({'math_output': 'mathml',
                               'warning_stream': '',
                               }, [
 ["""\
@@ -748,9 +748,7 @@ f"""\
 """],
 ])
 
-totest['system_messages-PIL'] = ({'stylesheet_path': '',
-                                  'embed_stylesheet': False,
-                                  'math_output': 'mathml',
+totest['system_messages-PIL'] = ({'math_output': 'mathml',
                                   'warning_stream': '',
                                   }, [
 ["""\
@@ -816,9 +814,7 @@ f"""\
 ],
 ])
 
-totest['no_system_messages'] = ({'stylesheet_path': '',
-                                 'embed_stylesheet': False,
-                                 'math_output': 'mathml',
+totest['no_system_messages'] = ({'math_output': 'mathml',
                                  'report_level': 4,
                                  'warning_stream': '',
                                  }, [

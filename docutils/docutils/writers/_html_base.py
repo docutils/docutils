@@ -963,8 +963,12 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.head.extend(self.math_header)
             else:
                 self.stylesheet.extend(self.math_header)
-        # skip content-type meta tag with interpolated charset value:
-        self.html_head.extend(self.head[1:])
+        if (self.settings.output_encoding  # may be None
+            and self.settings.output_encoding.lower() != 'unicode'):
+            # skip content-type meta tag with interpolated charset value:
+            self.html_head.extend(self.head[1:])
+        else:
+            self.html_head.extend(self.head)
         self.body_prefix.append(self.starttag(node, **self.documenttag_args))
         self.body_suffix.insert(0, f'</{self.documenttag_args["tagname"]}>\n')
         self.fragment.extend(self.body)  # self.fragment is the "naked" body
