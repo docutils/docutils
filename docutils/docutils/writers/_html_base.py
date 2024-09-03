@@ -609,18 +609,21 @@ class HTMLTranslator(nodes.NodeVisitor):
     def uri2imagepath(self, uri):
         """Get filesystem path corresponding to an URI.
 
-        The image directive expects an image URI. Some writers require the
+        The image directive expects an image URI__. Some writers require the
         corresponding image path to read the image size from the file or to
         embed the image in the output.
 
-        Absolute URIs consider the "root_prefix" setting.
+        URIs with absolute "path" part consider the ``root_prefix`` setting.
 
-        In order to work in the output document, relative image URIs relate
-        to the output directory. For access by the writer, the corresponding
-        image path must be relative to the current working directory.
+        In order to work in the output document, URI references with relative
+        path relate to the output directory.  For access by the writer, the
+        corresponding image path must be relative to the current working
+        directory.
 
         Provisional: the function's location, interface and behaviour
         may change without advance warning.
+
+        __ https://www.rfc-editor.org/rfc/rfc3986.html
         """
         destination = self.settings._destination or ''
         uri_parts = urllib.parse.urlparse(uri)
@@ -630,7 +633,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if imagepath.startswith('/'):  # cf. config.html#root-prefix
             root_prefix = Path(self.settings.root_prefix)
             imagepath = (root_prefix/imagepath[1:]).as_posix()
-        elif not os.path.isabs(imagepath):  # exclude absolute Windows paths
+        elif not os.path.isabs(imagepath):  # path may be absolute Windows path
             destdir = os.path.abspath(os.path.dirname(destination))
             imagepath = utils.relative_path(None,
                                             os.path.join(destdir, imagepath))
