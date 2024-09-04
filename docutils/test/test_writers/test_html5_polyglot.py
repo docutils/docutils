@@ -46,7 +46,7 @@ if PIL:
     if (tuple(int(i) for i in PIL.__version__.split('.')) >= (10, 3)):
         DUMMY_PNG_NOT_FOUND = ("[Errno 2] No such file or directory: '%s'"
                                % Path('dummy.png').resolve())
-    SCALING_OUTPUT = 'style="width: 32.0px; height: 32.0px;" '
+    SCALING_OUTPUT = 'style="width: 32px; height: 32px;" '
     NO_PIL_SYSTEM_MESSAGE = ''
 else:
     REQUIRES_PIL = '\n  Requires Python Imaging Library.'

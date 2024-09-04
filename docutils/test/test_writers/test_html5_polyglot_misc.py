@@ -18,8 +18,8 @@ if __name__ == '__main__':
     # so we import the local `docutils` package.
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from docutils import core
-from docutils.writers import html5_polyglot
+from docutils import core, frontend, nodes, utils
+from docutils.writers import html5_polyglot, _html_base
 
 # TEST_ROOT is ./test/ from the docutils root
 TEST_ROOT = Path(__file__).parents[1]
@@ -239,6 +239,22 @@ class MathTestCase(unittest.TestCase):
         # There should be no math script when text does not contain math
         head = core.publish_parts('No math.', writer=html5_polyglot.Writer())['head']
         self.assertNotIn('MathJax', head)
+
+
+class ImagesTestCase(unittest.TestCase):
+    """Test image handling routines."""
+
+    settings = frontend.get_default_settings(_html_base.Writer)
+    document = utils.new_document('test data', settings)
+    translator = _html_base.HTMLTranslator(document)
+
+    def test_image_size(self):
+        image = nodes.image(height='3', width='4em')
+        self.assertEqual(self.translator.image_size(image),
+                         'width: 4em; height: 3px;')
+        image = nodes.image(height='3', width='4em', scale=50)
+        self.assertEqual(self.translator.image_size(image),
+                         'width: 2em; height: 1.5px;')
 
 
 if __name__ == '__main__':
