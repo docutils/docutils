@@ -1831,6 +1831,9 @@ class SimpleListChecker(nodes.GenericNodeVisitor):
     def default_visit(self, node):
         raise nodes.NodeFound
 
+    def default_departure(self, node):
+        pass
+
     def visit_list_item(self, node):
         children = [child for child in node.children
                     if not isinstance(child, nodes.Invisible)]
