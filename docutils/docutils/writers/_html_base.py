@@ -28,7 +28,7 @@ import re
 import urllib.parse
 import urllib.request
 import warnings
-import xml.etree.ElementTree as ET  # TODO: lazy import in prepare_svg()?
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -474,39 +474,36 @@ class HTMLTranslator(nodes.NodeVisitor):
             return None
         return imgsize
 
-    def prepare_svg(self, node, imagedata, size_declaration):
-        # Edit `imagedata` for embedding as SVG image.
-        # Use ElementTree to add node attributes.
-        # ET also removes comments and preamble code.
+    def prepare_svg(self, code: str, node: nodes.Element, atts: dict) -> str:
+        # Parse SVG source `code` (ignoring comments and preamble code),
+        # add relevant attributes from `node` and `atts` to the root element.
         #
-        # Internal: interface and behaviour may change without notice.
-
-        # SVG namespace
+        # Internal auxiliary method called from `self.visit_image()`.
         svg_ns = {'': 'http://www.w3.org/2000/svg',
-                  'xlink': 'http://www.w3.org/1999/xlink'}
+                  'xlink': 'http://www.w3.org/1999/xlink'}  # SVG namespace
         # don't add SVG namespace to all elements
-        ET.register_namespace('', svg_ns[''])
-        ET.register_namespace('xlink', svg_ns['xlink'])
+        for key, value in svg_ns.items():
+            ET.register_namespace(key, value)
+        # Parse:
         try:
-            svg = ET.fromstring(imagedata)
+            svg = ET.fromstring(code)
         except ET.ParseError as err:
             self.messages.append(self.document.reporter.error(
                 f'Cannot parse SVG image "{node["uri"]}":\n  {err}',
                 base_node=node))
-            return imagedata
-        # apply image node attributes:
-        if size_declaration:  # append to style, replacing width & height
-            declarations = [d.strip() for d in svg.get('style', '').split(';')]
-            declarations = [d for d in declarations
-                            if d
-                            and not d.startswith('width')
-                            and not d.startswith('height')]
-            svg.set('style', '; '.join(declarations+[size_declaration]))
-        if node['classes'] or 'align' in node:
+            return code
+        # Apply image node attributes:
+        if 'style' in atts:
+            # update style declarations
+            style_att = f"{svg.get('style', '')}; {atts['style']}"
+            style_att = [d.partition(':') for d in style_att.split(';')
+                         if d.strip()]
+            style_att = dict((k.strip(), v.strip()) for k, p, v in style_att)
+            style_att = ' '.join(f'{k}: {v};' for k, v in style_att.items())
+            svg.set('style', style_att)
+        if 'classes' in atts or node['classes']:
             classes = svg.get('class', '').split()
-            classes += node.get('classes', [])
-            if 'align' in node:
-                classes.append(f'align-{node["align"]}')
+            classes += node['classes'] + atts.get('classes', [])
             svg.set('class', ' '.join(classes))
         if 'alt' in node and svg.find('title', svg_ns) is None:
             svg_title = ET.Element('title')
@@ -598,7 +595,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             infix = ' /'
         else:
             infix = ''
-        return ''.join(prefix) + '<%s%s>' % (' '.join(parts), infix) + suffix
+        return f"{''.join(prefix)}<{' '.join(parts)}{infix}>{suffix}"
 
     def emptytag(self, node, tagname, suffix='\n', **attributes):
         """Construct and return an XML-compatible empty tag."""
@@ -1173,14 +1170,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         mimetype = mimetypes.guess_type(uri)[0]
         element = ''  # the HTML element (including potential children)
         atts = {}  # attributes for the HTML tag
-        # alignment is handled by CSS rules
-        if 'align' in node:
-            atts['class'] = 'align-%s' % node['align']
-        # set size with "style" attribute (more universal, accepts dimensions)
         size_declaration = self.image_size(node)
         if size_declaration:
             atts['style'] = size_declaration
-
+        if 'align' in node:
+            atts['classes'] = [f"align-{node['align']}"]
         # ``:loading:`` option (embed, link, lazy), default from setting,
         # exception: only embed videos if told via directive option
         loading = 'link' if mimetype in self.videotypes else self.image_loading
@@ -1201,8 +1195,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             else:
                 self.settings.record_dependencies.add(imagepath)
                 if mimetype == 'image/svg+xml':
-                    element = self.prepare_svg(node, imagedata,
-                                               size_declaration)
+                    element = self.prepare_svg(imagedata, node, atts)
                 else:
                     data64 = base64.b64encode(imagedata).decode()
                     uri = f'data:{mimetype};base64,{data64}'

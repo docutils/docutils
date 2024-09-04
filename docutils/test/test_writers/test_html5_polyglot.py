@@ -2,9 +2,10 @@
 
 # $Id$
 # Author: reggie dugard <reggie@users.sourceforge.net>
+# Maintainer: docutils-develop@lists.sourceforge.net
 # Copyright: This module has been placed in the public domain.
 
-"""Test HTML5 writer output ("fragment" part).
+"""Test HTML5 writer output ("fragment"/"body" part).
 
 This is the document body (not HTML <body>).
 """
@@ -89,7 +90,7 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
                     self.assertEqual(case_expected, parts['body'])
 
 
-totest = {}
+totest = {}  # expected samples contain only the "body" part of the HMTL output
 
 totest['standard'] = ({}, [
 ["""\
@@ -147,6 +148,18 @@ reference and the target.</p>
 </div>
 """,
 ],
+[f"""\
+.. image:: {DATA_ROOT.as_uri()}/circle.svg
+   :loading: embed
+   :width: 50%
+   :height: 30
+   :align: left
+""",
+"""\
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" style="width: 50%; height: 30px;" class="align-left">
+  <circle cx="5" cy="5" r="4" fill="lightblue" />
+</svg>
+"""],
 ])
 
 
