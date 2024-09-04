@@ -261,8 +261,8 @@ def get_measure(argument, units):
         float(match.group(1))
     except (AttributeError, ValueError):
         raise ValueError(
-            'not a positive measure of one of the following units:\n%s'
-            % ' '.join('"%s"' % i for i in units))
+            'not a positive measure of one of the following units:\n"%s"'
+            % '" "'.join(units))
     return match.group(1) + match.group(2)
 
 

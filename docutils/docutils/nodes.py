@@ -3074,6 +3074,22 @@ def pseudo_quoteattr(value: str) -> str:
     return '"%s"' % value
 
 
+def parse_measure(measure: str) -> tuple[float, str]:
+    """Parse a measure__, return value + optional unit.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#measure
+
+    Provisional.
+    """
+    match = re.fullmatch('(-?[0-9.]+) *([a-zA-Zµ]*|%?)', measure)
+    try:
+        value = float(match.group(1))
+        unit = match.group(2)
+    except (AttributeError, ValueError):
+        raise ValueError(f'"{measure}" is no valid measure.')
+    return value, unit
+
+
 # Methods to validate `Element attribute`__ values.
 
 # Ensure the expected Python `data type`__, normalize, and check for
@@ -3139,24 +3155,25 @@ def validate_identifier_list(value: str | list[str]) -> list[str]:
     return value
 
 
-def validate_measure(value: str) -> str:
+def validate_measure(measure: str) -> str:
     """
-    Validate a length measure__ (number + recognized unit).
+    Validate a measure__ (number + optional unit).  Return normalized `str`.
 
-    __ https://docutils.sourceforge.io/docs/ref/doctree.html#measure
+    See `parse_measure()` for a function returning a "number + unit" tuple.
+
+    The unit may be any run of letters or a percent sign.
 
     Provisional.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#measure
     """
-    units = 'em|ex|px|in|cm|mm|pt|pc|%'
-    if not re.fullmatch(f'[-0-9.]+ *({units}?)', value):
-        raise ValueError(f'"{value}" is no valid measure. '
-                         f'Valid units: {units.replace("|", " ")}.')
-    return value.replace(' ', '').strip()
+    value, unit = parse_measure(measure)
+    return f'{value:g}{unit}'
 
 
 def validate_NMTOKEN(value: str) -> str:
     """
-    Validate a "name token": a `str` of letters, digits, and [-._].
+    Validate a "name token": a `str` of ASCII letters, digits, and [-._].
 
     Provisional.
     """

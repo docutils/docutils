@@ -63,6 +63,7 @@ Release 0.22b.dev (unpublished)
     convert string representations to correct data type,
     normalize values,
     raise ValueError for invalid attribute names or values.
+  - New function `parse_measure()`.
   - Removed `Element.set_class()`.
 
 * docutils/parsers/docutils_xml.py

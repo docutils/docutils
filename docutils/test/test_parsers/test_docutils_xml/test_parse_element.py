@@ -93,12 +93,10 @@ class ParseElementTestCase(unittest.TestCase):
         """
         xml = ('<image breadth="3 cm" height="3 inch"/>')
         node = docutils_xml.parse_element(xml)
-        self.assertEqual(xml, str(node))
+        self.assertEqual(xml.replace('3 inch', '3inch'), str(node))
         with self.assertRaisesRegex(ValueError,
                                     'Element <image breadth="3 cm".*invalid:\n'
-                                    '.*"breadth" not one of "ids",.*\n'
-                                    '.*"height" has invalid value "3 inch".\n'
-                                    '.*Valid units: em ex px in cm mm pt '
+                                    '.*"breadth" not one of "ids", '
                                     ):
             node.validate()
 

@@ -502,11 +502,10 @@ class ElementValidationTests(unittest.TestCase):
             node.validate()
 
     def test_validate_wrong_attribute_value(self):
-        node = nodes.image(uri='test.png', width='20 inch')  # invalid unit
+        node = nodes.image(uri='test.png', width='1in 3pt')
         with self.assertRaisesRegex(nodes.ValidationError,
                                     'Element <image.*> invalid:\n'
-                                    '.*"width" has invalid value "20 inch".\n'
-                                    '.*Valid units: em ex '):
+                                    '.*"width" has invalid value "1in 3pt".'):
             node.validate()
 
     def test_validate_spurious_element(self):
@@ -1114,6 +1113,24 @@ class MiscFunctionTests(unittest.TestCase):
         self.assertEqual(nodes.split_name_list(r'a\ n\ame two\\ n\\ames'),
                          ['a name', 'two\\', r'n\ames'])
 
+    def test_parse_measure(self):
+        # measure is number + optional unit (letter(s) or percentage)
+        self.assertEqual(nodes.parse_measure('8ex'), (8, 'ex'))
+        self.assertEqual(nodes.parse_measure('2.5'), (2.5, ''))
+        self.assertEqual(nodes.parse_measure('-2s'), (-2, 's'))
+        self.assertEqual(nodes.parse_measure('2 µF'), (2, 'µF'))
+        self.assertEqual(nodes.parse_measure('10 EUR'), (10, 'EUR'))
+        self.assertEqual(nodes.parse_measure('.5 %'), (.5, '%'))
+        # scientific notation not supported
+        with self.assertRaisesRegex(ValueError, '"3e-4 mm" is no valid '):
+            nodes.parse_measure('3e-4 mm')
+        # unit must follow the number
+        with self.assertRaisesRegex(ValueError, '"EUR 23" is no valid '):
+            nodes.parse_measure('EUR 23')
+        # only single percent sign allowed
+        with self.assertRaisesRegex(ValueError, '"2%%" is no valid measure'):
+            nodes.parse_measure('2%%')
+
 
 class AttributeTypeTests(unittest.TestCase):
     """Test validator functions for the supported `attribute data types`__
@@ -1154,17 +1171,19 @@ class AttributeTypeTests(unittest.TestCase):
             nodes.validate_identifier_list(s2)
 
     def test_validate_measure(self):
-        # number (may be decimal fraction) + optional CSS2 length unit
+        # number (may be decimal fraction) + optional unit
         self.assertEqual(nodes.validate_measure('8ex'), '8ex')
-        self.assertEqual(nodes.validate_measure('3.5 %'), '3.5%')
         self.assertEqual(nodes.validate_measure('2'), '2')
-        with self.assertRaisesRegex(ValueError, '"2km" is no valid measure. '
-                                    'Valid units: em ex '):
-            nodes.validate_measure('2km')
-        # negative numbers are currently not supported
-        # TODO: allow? the spec doesnot mention negative numbers.
-        # but a negative width or height of an image is odd.
-        # nodes.validate_measure('-2')
+        # internal whitespace is removed
+        self.assertEqual(nodes.validate_measure('3.5 %'), '3.5%')
+        # padding whitespace is not valid
+        with self.assertRaisesRegex(ValueError, '"8ex " is no valid measure'):
+            nodes.validate_measure('8ex ')
+        # Negative numbers:
+        # * ``doctree.txt`` does not mention negative numbers,
+        # * in rST, negative numbers are not valid.
+        # Provisional: currently valid but may become invalid!
+        # self.assertEqual(nodes.validate_measure('-2'), '-2')
 
     def test_validate_NMTOKEN(self):
         # str with ASCII-letters, digits, hyphen, underscore, and full-stop.
