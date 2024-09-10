@@ -14,8 +14,8 @@
 #
 # ATTENTION
 #
-# Any .html document with a corresponding .rst or .txt file is regenerated 
-# if the .rst/.txt has changed, but no new .html files will be generated.
+# Any .html document with a corresponding .rst file is regenerated 
+# if the .rst has changed, but no new .html files will be generated.
 #
 # ATTENTION
 #
@@ -23,6 +23,8 @@
 # special instructions. Used in docs/user to call rst2s5
 # add --smartquotes=true to convert smartquotes.
 # Maybe add special treatment and remove this general solution.
+#
+# * Funny thing: sf hides README.rst and .txt files.
 #
 # Options:
 #   -f    Do not give feedback.

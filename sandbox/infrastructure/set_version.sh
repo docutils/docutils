@@ -8,10 +8,10 @@
 # Date: $Date$
 # Copyright: This script has been placed in the public domain.
 
-# USAGE see: docutils/docs/dev/release.txt
+# USAGE see: docutils/docs/dev/release.rst
 
 # must be run from docutils trunk/docutils,
-# because HISTORY and RELEASE_NOTES.txt are modified.
+# because HISTORY and RELEASE_NOTES.rst are modified.
 
 set -e
 
@@ -42,7 +42,7 @@ function set_ver()
     echo Determining list of files to be changed...
     # BUG ls lists directories but does not descend
     # (try ls --recursive)
-    files="docutils/__init__.py setup.py README.txt `$svn ls test/functional/expected/ | sed 's|^|test/functional/expected/|'`"
+    files="docutils/__init__.py setup.py README.rst `$svn ls test/functional/expected/ | sed 's|^|test/functional/expected/|'`"
     echo "Now I'll change the version identifier to ${2} in the following files:"
     echo $files
     echo 'and update the version_info in docutils/__init__.py.'

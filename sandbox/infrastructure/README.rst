@@ -12,7 +12,7 @@
 The `infrastructure <.>`_ sandbox directory stores any scripts that
 are needed for the development of the Docutils project.
 
-:`<releasing-log.txt>`_: What happend at release time ... what to do next time
+:`<releasing-log.rst>`_: What happend at release time ... what to do next time
     better.
 
 :`<docutils-update.local>`_: The script to update the `web site`_
@@ -37,7 +37,7 @@ Everything below this line needs rework
 is not in use ... move to attic.
 
 :`<release.sh>`_: The script to make releases of Docutils.
-    For usage details see `release.txt`_
+    For usage details see `release.rst`_
 
     TODO : test. 
       Allow release without testing, because tests must be done
@@ -60,4 +60,4 @@ and are these used by anyone.
 .. _web site: http://docutils.sourceforge.net/docs/dev/website.html
 .. _Docutils Subversion repository:
    http://docutils.sourceforge.net/docs/dev/repository.html
-.. _release.txt: http://docutils.sourceforge.net/docs/dev/release.html
+.. _release.rst: http://docutils.sourceforge.net/docs/dev/release.html
