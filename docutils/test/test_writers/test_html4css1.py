@@ -517,8 +517,8 @@ totest['system_messages'] = ({'math_output': 'mathml',
 .. image:: {DATA_ROOT.as_uri()}/circle-broken.svg
    :loading: embed
 """,
-"""\
-<object data="file:///usr/local/src/docutils-git-svn/docutils/test/data/circle-broken.svg" type="image/svg+xml">file:///usr/local/src/docutils-git-svn/docutils/test/data/circle-broken.svg</object>
+f"""\
+<object data="{DATA_ROOT.as_uri()}/circle-broken.svg" type="image/svg+xml">{DATA_ROOT.as_uri()}/circle-broken.svg</object>
 """
 ],
 [r"""Broken :math:`\sin \my`.
@@ -583,8 +583,8 @@ totest['no_system_messages'] = ({'math_output': 'mathml',
 .. image:: {DATA_ROOT.as_uri()}/circle-broken.svg
    :loading: embed
 """,
-"""\
-<object data="file:///usr/local/src/docutils-git-svn/docutils/test/data/circle-broken.svg" type="image/svg+xml">file:///usr/local/src/docutils-git-svn/docutils/test/data/circle-broken.svg</object>
+f"""\
+<object data="{DATA_ROOT.as_uri()}/circle-broken.svg" type="image/svg+xml">{DATA_ROOT.as_uri()}/circle-broken.svg</object>
 """],
 [r'Broken :math:`\sin \my`.',
 '<p>Broken <tt class="math">\\sin \\my</tt>.</p>\n'
