@@ -14,16 +14,17 @@
 
 .. contents::
 
-This document contains links users of Docutils and reStructuredText
-may find useful.  Many of the projects
-listed here are hosted in the `Docutils Sandbox`_.  If you have
-something to publish, you can get write access, too!
+This document contains links that users of Docutils_ and reStructuredText_
+may find useful.
 
 The most current version of this link list can always be found at
 https://docutils.sourceforge.io/docs/user/links.html.
+If you find outdated or broken links or want to suggest additions,
+please `let us know`__ and we'll update the list here.
 
 .. _Docutils: https://docutils.sourceforge.io/
-.. _Docutils Sandbox: https://docutils.sourceforge.io/sandbox/README.html
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html
+__ mailing-lists.html#docutils-users
 
 
 Editors
@@ -45,7 +46,7 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
     plugin for Vim that emulates two-pane outliner with
     support for reStructuredText (since version 4.0b2).
 
-  - `Riv: Take notes in rst <https://github.com/Rykka/riv.vim>`__ Vim
+  - `Riv: Take notes in rST <https://github.com/Rykka/riv.vim>`__ Vim
     plugin to take notes in reStructured text.
 
 * `reStructuredText Language Support for Visual Studio Code`__
@@ -279,7 +280,7 @@ Convert other formats to reStructuredText:
 
   .. _DashTable: https://github.com/gustavklopp/DashTable
 
-* Sphinx_ includes a `LaTeX to Rst converter
+* Sphinx_ includes a `LaTeX to rST converter
   <https://svn.python.org/projects/doctools/converter/>`__ in its source code
   (trimmed to importing the old Python docs).
 
@@ -326,13 +327,13 @@ More extensions are in the `Docutils Sandbox`_.
 
   .. _rst2blogger: https://github.com/dhellmann/rst2blogger#readme
 
+.. _Docutils Sandbox: https://docutils.sourceforge.io/sandbox/README.html
+
 
 Related Applications
 --------------------
 
 Applications using docutils/reStructuredText and helper applications.
-
-* For Wikis, please see the `FAQ entry about Wikis`_.
 
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
@@ -362,6 +363,31 @@ Applications using docutils/reStructuredText and helper applications.
 .. _repository: ../dev/repository.html
 
 
+Wikis
+`````
+
+* Trac_ supports `using reStructuredText`__ as an alternative to wiki markup.
+  This includes support for TracLinks_ from within reStructuredText
+  via a custom rST reference-directive or, even easier, an interpreted
+  text role "trac".
+
+  __ http://trac.edgewall.com//wiki/WikiRestructuredText
+
+* MoinMoin_ includes a `ReStructuredText Parser
+  <http://moinmo.in/HelpOnParsers/ReStructuredText>`__.
+
+* Ian Bicking's experimental `wiki module`__ in the sandbox.
+
+  __ https://docutils.sourceforge.io/sandbox/ianb/wiki
+
+* Zope-based Zwiki_
+  (requires Zope2, which reached end of life on December 31, 2020).
+
+.. _TracLinks: http://trac.edgewall.com//wiki/TracLinks
+.. _MoinMoin: http://moinmo.in/
+.. _ZWiki: https://github.com/simonmichael/ZWiki
+
+
 Tools
 `````
 
@@ -370,7 +396,7 @@ Tools
 
   .. _rstcheck: https://pypi.python.org/pypi/rstcheck
 
-* restview_ is a viewer for ReStructuredText documents.
+* restview_ is a viewer for reStructuredText documents.
 
   Pass the name of a ReStructuredText document to restview, and it will
   launch a web server on localhost:random-port and open a web browser. It
@@ -402,7 +428,7 @@ Development
 
 .. _Sphinx extensions: https://www.sphinx-doc.org/en/master/usage/extensions/
 .. _Python documentation: https://docs.python.org/
-.. _Trac: https://trac.edgewall.org/
+.. _Trac: https://trac.edgewall.org
 .. _PyLit: https://codeberg.org/milde/pylit
 
 

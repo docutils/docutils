@@ -14,7 +14,7 @@ Differences to the `html4css1` Writer
 
 * Horizontal alignment of table heads with CSS.
 
-* Do not drop paragraph objects, use CSS rules to prevent unwanted vertical
+* Do not drop paragraph elements, use CSS rules to prevent unwanted vertical
   space.
 
 * Put subtitles in <p> elements.

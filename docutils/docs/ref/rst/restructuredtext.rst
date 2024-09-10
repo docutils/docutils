@@ -490,18 +490,22 @@ rearranging the document fragment into a complete document with a
 title and possibly other metadata elements (author, date, etc.; see
 `Bibliographic Fields`_).
 
-.. _document title:
+Document Title
+``````````````
 
-Specifically, there is no way to indicate a document title and subtitle
-explicitly in reStructuredText. [#]_  Instead, a lone top-level `section
-title`_ can be treated as the *document title*.  Similarly, a lone
-second-level section title immediately after the document title can
-become the *document subtitle*.  The rest of the sections are then lifted
-up a level or two.  See the `DocTitle transform`_ for details.
+Specifically, there is no special syntax to indicate a *document title*
+and *subtitle* in reStructuredText. [#]_
+Instead, a uniquely-adorned top-level `section title`_ can be treated as
+the document title.  Similarly, a uniquely-adorned second-level section
+title immediately after the document title can become the document
+subtitle.  The rest of the sections are then lifted up a level or two.
+See `A ReStructuredText Primer`__ for examples
+and the `DocTitle transform`_ for details.
 
 .. [#] The `"title"`_ directive sets the document's `metadata title`_
    that does not become part of the document body.
 
+__ ../../user/rst/quickstart.html#document-title-subtitle
 
 Sections
 --------
@@ -3112,8 +3116,7 @@ specific documentation in the `user doc`__ for details.
    https://www.w3.org/TR/css-values-3/#lengths
 .. _How to configure the size of a pixel:
    ../../user/latex.html#size-of-a-pixel
-__ ../../user/
-
+__ ../../index.html#introductory-tutorial-material-for-end-users
 
 Percentage Units
 ----------------

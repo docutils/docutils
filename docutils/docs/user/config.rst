@@ -171,9 +171,9 @@ with Docutils::
 Configuration File Sections & Entries
 -------------------------------------
 
-Below are the Docutils `runtime settings`_, listed by config file section.
-Sections correspond to Docutils components (module name
-or alias; section names are always in lowercase letters).
+Below are the Docutils runtime settings, listed by config file section.
+Sections correspond to Docutils components (module name or alias; always
+in lowercase letters).
 
 .. important:: Any setting may be specified in any section, but only
                settings from "`active sections`_" will be used.
@@ -1079,6 +1079,8 @@ See also `xml_declaration [html writers]`_.
 
 [html writers]
 --------------
+
+Common settings for the `Docutils HTML writers`_.
 
 .. _attribution [html writers]:
 
@@ -2537,6 +2539,8 @@ If the first line matches the second line is ignored.
 .. _literal blocks: ../ref/rst/restructuredtext.html#literal-blocks
 .. _option lists: ../ref/rst/restructuredtext.html#option-lists
 .. _tables: ../ref/rst/restructuredtext.html#tables
+
+.. _Docutils HTML writers: html.html
 
 .. _front end tools: tools.html
 .. _buildhtml.py: tools.html#buildhtml-py

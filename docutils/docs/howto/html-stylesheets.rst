@@ -61,7 +61,7 @@ __ http://www.htmlhelp.com/reference/css/
 __ https://developer.mozilla.org/en-US/docs/Web/CSS
 
 It is important that you do not edit a copy of ``html4css1.css``
-directly because ``html4css1.css`` is frequently updated with each new
+directly because ``html4css1.css`` may be updated with a new
 release of Docutils.
 
 Also make sure that you import ``html4css1.css`` (using "``@import

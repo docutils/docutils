@@ -6,6 +6,12 @@ Docutils HTML writers
 
 .. contents::
 
+This document describes the HTML writers provided by Docutils.
+
+The default `length unit`_ in HTML is "px" (pixels, 1 px = 1/96 in).
+
+.. _length unit: ../ref/rst/restructuredtext.html#length-units
+
 html
 ----
 
@@ -26,31 +32,75 @@ html5_ in Docutils 2.0.
   post-processing that may break otherwise.
 
 
+html5
+-----
+
+:aliases:   _`html5_polyglot`
+:front-end: rst2html5_
+:config:    `[html5 writer]`_
+
+The *html5* writer generates valid XML that conforms to the
+`HTML standard`_ (`polyglot HTML`_). [#safetext]_
+New features and elements are used if they are widely supported.
+See the `HTML5 test page`_ (and the sources `html5-features.rst`_ and
+`html5-text-level-tags.rst`_) for differences to the html4css1_ writer.
+
+There is no hard-coded formatting information in the HTML document.
+Correct rendering of elements not directly supported by HTML depends on a
+CSS_ style sheet. The provided style sheet minimal.css_ defines required
+styling rules; plain.css_ and responsive.css_ add optional rules for
+better legibility. Adaption of the layout is possible with `custom style
+sheets`_. [#safetext]_
+
+.. [#safetext] The validity of raw HTML and custom stylesheets must be
+   ensured by the author.
+
+.. _HTML5 test page: https://docutils.sourceforge.io/test/functional/
+    expected/standalone_rst_html5.html#differences-to-the-html4css1-writer
+.. _html5-features.rst: https://docutils.sourceforge.io/test/functional/
+    input/data/html5-features.rst
+.. _html5-text-level-tags.rst: https://docutils.sourceforge.io/test/functional/
+    input/data/html5-text-level-tags.rst
+.. _rst2html5: tools.html#rst2html5
+.. _[html5 writer]: config.html#html5-writer
+.. _minimal.css: ../../docutils/writers/html5_polyglot/minimal.css
+.. _plain.css: ../../docutils/writers/html5_polyglot/plain.css
+.. _responsive.css: ../../docutils/writers/html5_polyglot/responsive.css
+.. _custom style sheets: ../howto/html-stylesheets.html
+.. _viewable with any browser: http://www.anybrowser.org/campaign
+.. _Benefits of polyglot XHTML5: http://xmlplease.com/xhtml/xhtml5polyglot/
+
+
 html4css1
 ---------
 
-:aliases:    html4, html_
-:front-ends: rst2html4_, rst2html_
-:config:     `[html4css1 writer]`_
+:aliases:   html4, html_
+:front-end: rst2html4_
+:config:    `[html4css1 writer]`_
 
 The HTML Writer module, ``docutils/writers/html4css1.py``, was the first
 Docutils writer and up to release 0.13 the only official HTML writer.
 
-The output conforms to the `XHTML 1 Transitional`_ specification. It does
-not validate as `HTML 4.01 Transitional`_ due to the closing of empty tags
-required in XML but not allowed in HTML 4. However, the output follows the
+The output conforms to the `XHTML 1 Transitional`_ specification. It does
+not validate as `HTML 4.01 Transitional`_ due to the closing of empty tags
+required in XML but not allowed in HTML 4. However, the output follows the
 `HTML Compatibility Guidelines`_ for proper rendering on most HTML user
 agents.
 
 Correct rendering depends on a CSS_ style sheet. A reference style sheet,
 `html4css1.css`_, is provided and used by default.
 
-To support the `Internet Explorer` (with a market share of about 90% around
-2002, the time this writer was written), documents contain some hard-coded
-formatting hints and are tagged as "text/html" (instead of
-"application/xhtml+xml"). [#IE]_
+To support the `Internet Explorer` (with a market share of about 90%
+around 2002, the time this writer was written), documents contain some
+hard-coded formatting hints and are tagged as "text/html" (instead of
+"application/xhtml+xml"). Additional class values serve as surrogate for
+the "first"/"last" pseudo-classes introduced in CSS 2.1. [#IE]_
 
-.. [#IE] Conformance to `CSS 2.1`_ has been added in IE 8 (2009), support
+Tables are used for description lists, field lists, docinfo, footnotes,
+and option lists. Videos and SVG images are wrapped in <object> elements
+and cannot be embedded.
+
+.. [#IE] Conformance to `CSS 2.1`_ has been added in IE 8 (2009), support
    for XHTML in IE 9 (2011).
 
 .. _rst2html: tools.html#rst2html
@@ -62,7 +112,7 @@ pep_html
 ~~~~~~~~
 
 :front-end: ``docutils  --reader=pep --writer=pep_html``
-:config:    `[pep_html writer]`_
+:config:    `[pep_html writer]`_, `[html4css1 writer]`_
 
 This is a special writer for the generation of `Python Enhancement
 Proposals`_ (PEPs). It inherits from html4css1_ and adds some `PEP-specific
@@ -78,7 +128,7 @@ s5_html
 
 :alias:     s5
 :front-end: rst2s5_
-:config:    `[s5_html writer]`_
+:config:    `[s5_html writer]`_, `[html4css1 writer]`_
 
 The `s5` writer inherits from html4css1_. It produces XHTML for use with
 S5_, the “Simple Standards-based Slide Show System” by Eric Meyer.  See
@@ -91,68 +141,11 @@ S5_, the “Simple Standards-based Slide Show System” by Eric Meyer.  See
 .. _theme: tools.html#themes
 
 
-html5
------
+3rd-party HTML writers
+----------------------
 
-:aliases: _`html5_polyglot`
-:front-end: rst2html5_
-:config: `[html5 writer]`_
-
-The ``html5`` writer generates `polyglot HTML`_ output, valid
-XML [#safetext]_ that is compatible with `HTML5`_. New features and elements
-are used if they are widely supported.
-See the `HTML5 test page`_ (and the sources `html5-features.rst`_ and
-`html5-text-level-tags.rst`_) for further differences to the html4css1_
-writer.
-
-There is no hard-coded formatting information in the HTML document.
-Correct rendering of elements not directly supported by HTML depends on a
-CSS_ style sheet. The provided style sheet minimal.css_ defines required
-styling rules; plain.css_ and responsive.css_ add optional rules for
-better legibility. Adaption of the layout is possible with `custom style
-sheets`_. [#safetext]_
-
-New in Docutils 0.13
-
-.. [#safetext] The validity of raw HTML and custom stylesheets must be
-   ensured by the author.
-.. _HTML5 test page: https://docutils.sourceforge.io/test/functional/
-    expected/standalone_rst_html5.html#changes-to-the-html4css1-writer
-.. _html5-features.rst: https://docutils.sourceforge.io/test/functional/
-    input/data/html5-features.rst
-.. _html5-text-level-tags.rst: https://docutils.sourceforge.io/test/functional/
-    input/data/html5-text-level-tags.rst
-.. _rst2html5: tools.html#rst2html5
-.. _[html5 writer]: config.html#html5-writer
-.. _minimal.css: ../../docutils/writers/html5_polyglot/minimal.css
-.. _plain.css: ../../docutils/writers/html5_polyglot/plain.css
-.. _responsive.css: ../../docutils/writers/html5_polyglot/responsive.css
-.. _custom style sheets: ../howto/html-stylesheets.html
-.. _viewable with any browser: http://www.anybrowser.org/campaign
-.. _Benefits of polyglot XHTML5: http://xmlplease.com/xhtml/xhtml5polyglot/
-
-
-Overview
---------
-
-================ =========== ============== ================= ===========
-name             aliases     `front-end`_   HTML version      CSS version
-================ =========== ============== ================= ===========
-html4css1_       html4,      rst2html4,     `XHTML 1          `CSS 1`_
-                 html_       rst2html       Transitional`_
-
-pep_html_        ..          rstpep2html    `XHTML 1          `CSS 1`_
-                                            Transitional`_
-
-s5_html_         s5          rst2s5         `XHTML 1          `CSS 1`_
-                                            Transitional`_
-
-html5_polyglot_  html5       rst2html5      `HTML5`_          `CSS 3`_
-
-================ =========== ============== ================= ===========
-
-For additional alternatives, see the `Docutils link list`__ and the
-sandbox_.
+For additional HTML writers, see the `Docutils link list`__
+and the sandbox_.
 
 __ https://docutils.sourceforge.io/docs/user/links.html
    #website-generators-and-html-variants
@@ -162,15 +155,9 @@ __ https://docutils.sourceforge.io/docs/user/links.html
 References
 ----------
 
-_`HTML5`
-   `HTML5, A vocabulary and associated APIs for HTML and XHTML`,
-   W3C Recommendation, 28 October 2014.
-   https://www.w3.org/TR/2014/REC-html5-20141028/
-
-_`XHTML 1.1`
-   `XHTML™ 1.1 - Module-based XHTML - Second Edition`,
-   W3C Recommendation, 23 November 2010.
-   https://www.w3.org/TR/xhtml11/
+_`HTML Standard`
+   `HTML Living Standard`.
+   https://html.spec.whatwg.org/multipage/
 
 _`XHTML 1 Transitional`
    `Transitional version`_ of:
@@ -179,47 +166,43 @@ _`XHTML 1 Transitional`
    W3C Recommendation, 26 January 2000, revised 1 August 2002.
    https://www.w3.org/TR/xhtml1/
 
-_`XHTML Basic`
-   `XHTML™ Basic 1.1 - Second Edition`,
-   W3C Recommendation, 23 November 2010.
-   https://www.w3.org/TR/xhtml-basic/
-
-.. _transitional version:
-   https://www.w3.org/TR/xhtml1/#a_dtd_XHTML-1.0-Transitional
-
-_`HTML 4.01 Transitional`
+_`HTML 4.01 Transitional`
   Transitional version of:
   `HTML 4.01 Specification`, W3C Recommendation 24 December 1999.
   https://www.w3.org/TR/html4/
 
 .. _`CSS 1`:
 
-_`CSS Level 1`:
+_`CSS Level 1`:
   The features defined in the `CSS1 specification`_, but using the syntax
   and definitions in the `CSS 2.1`_ specification.
 
-_`CSS 2.1` `Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification`,
+_`CSS 2.1`
+  `Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification`,
   W3C Recommendation 07 June 2011.
   https://www.w3.org/TR/CSS21/
 
-_`CSS 3`:
-  CSS Level 3 builds on CSS Level 2 module by module, using the CSS2.1
+_`CSS 3`:
+  CSS Level 3 builds on CSS Level 2 module by module, using the CSS 2.1
   specification as its core.
 
-  Specifications: https://www.w3.org/Style/CSS/specs.en.html
-
-  Validator: http://jigsaw.w3.org/css-validator/
+  | Specifications: https://www.w3.org/Style/CSS/specs.en.html
+  | Validator: http://jigsaw.w3.org/css-validator/
 
 .. other references
    ----------------
 
 .. _HTML Compatibility Guidelines: https://www.w3.org/TR/xhtml1/#guidelines
-.. _CSS: https://www.w3.org/TR/CSS/
-.. _CSS1 specification: https://www.w3.org/TR/2008/REC-CSS1-20080411/
+.. _transitional version:
+    https://www.w3.org/TR/xhtml1/#a_dtd_XHTML-1.0-Transitional
+
 .. _polyglot HTML: https://www.w3.org/TR/html-polyglot/
 
    .. Beware. This specification is no longer in active maintenance and the
       HTML Working Group does not intend to maintain it further.
+
+.. _CSS: https://www.w3.org/TR/CSS/
+.. _CSS1 specification: https://www.w3.org/TR/2008/REC-CSS1-20080411/
 
 .. Appendix
 

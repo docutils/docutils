@@ -199,13 +199,9 @@ see `An Introduction to reStructuredText`_.
 What's the standard abbreviation for "reStructuredText"?
 --------------------------------------------------------
 
-"RST" and "ReST" (or "reST") are both acceptable.  Care should be
-taken with capitalization, to avoid confusion with "REST__", an
-acronym for "Representational State Transfer".
-
-The abbreviations "reSTX" and "rSTX"/"rstx" should **not** be used;
-they overemphasize reStructuredText's predecessor, Zope's
-StructuredText.
+"RST" (or "rST") and "ReST" (or "reST") are both acceptable.
+Care should be taken with capitalization, to avoid confusion with
+"REST__", an acronym for "Representational State Transfer".
 
 __ https://en.wikipedia.org/wiki/Representational_State_Transfer
 
@@ -213,12 +209,7 @@ __ https://en.wikipedia.org/wiki/Representational_State_Transfer
 What's the standard filename extension for a reStructuredText file?
 -------------------------------------------------------------------
 
-It's ".txt".  ReStructuredText source files are meant to be readable as
-plaintext, and most operating systems already associate ".txt" with text
-files.
-
-That said, we see an increasing number of projects settling on
-the extension ".rst".
+The most commonly used extensions are ".rst" and ".txt".
 
 Also see `What's the official MIME type for reStructuredText data?`_
 
@@ -245,55 +236,25 @@ becomes the document subtitle.  For example::
 
     Here's an ordinary paragraph.
 
-Counterexample::
+See also `A reStructuredText Primer`__
+and the `reStructuredText Markup Specification`__.
 
-    Here's an ordinary paragraph.
-
-    This is *not* a Document Title
-    ==============================
-
-    The "ordinary paragraph" above the section title
-    prevents it from becoming the document title.
-
-Another counterexample::
-
-    This is not the Document Title,  because...
-    ===========================================
-
-    Here's an ordinary paragraph.
-
-    ... the title adornment is not unique
-    =====================================
-
-    Another ordinary paragraph.
-
+__ docs/user/rst/quickstart.html#document-title-subtitle
+__ docs/ref/rst/restructuredtext.html#document-title
 
 How can I represent esoteric characters (e.g. character entities) in a document?
 --------------------------------------------------------------------------------
 
 For example, say you want an em-dash (XML character entity &mdash;,
-Unicode character U+2014) in your document: use a real em-dash.
-Insert literal characters (e.g. type a *real* em-dash) into your
-input file, using whatever encoding suits your application, and tell
-Docutils the input encoding.  Docutils uses Unicode internally, so the
-em-dash character is U+2014 internally.
+Unicode character U+2014) in your document.
 
-Emacs users should refer to the `Emacs Support for reStructuredText`__
-document.  Tips for other editors are welcome.
+ReStructuredText has no character entity subsystem. [#]_
+However, Docutils uses Unicode so you use a literal character
+(e.g. a "real" em-dash) for all charactes supported by the
+`input encoding`_ (by default "UTF-8").
 
-__ tools/editors/emacs/README.html
-
-ReStructuredText has no character entity subsystem; it doesn't know
-anything about XML character entities.
-To Docutils, "&mdash;" in input text is
-7 discrete characters; no interpretation happens.  When writing HTML,
-the "&" is converted to "&amp;", so in the raw output you'd see
-"&amp;mdash;".  There's no difference in interpretation for text
-inside or outside inline literals or literal blocks -- there's no
-character entity interpretation in either case.
-
-If you can't use a Unicode-compatible encoding and must rely on 7-bit
-ASCII, there is a workaround:
+If you are restricted to 7-bit ASCII or a legacy encoding,
+there is a workaround:
 `Standard Substitution Definition Sets`_ provide equivalents of
 XML & HTML character entity sets as substitution definitions. [#]_
 For example, the Japanese yen currency symbol can be used as follows::
@@ -302,9 +263,7 @@ For example, the Japanese yen currency symbol can be used as follows::
 
     |yen| 600 for a complete meal?  That's cheap!
 
-.. [#] Thanks to David Priest for the original idea.
-
-You can create custom `substitution definitions`_ in your document
+You can also create custom `substitution definitions`_ in your document
 using the "unicode_" directive, e.g.::
 
     .. |--| unicode:: U+2013   .. en dash
@@ -322,6 +281,15 @@ the em dash is necessary because you cannot write "``foo|---|bar``";
 thus you need to add spaces ("``foo |---| bar``") and advise the
 reStructuredText parser to trim the spaces.
 
+.. [#] reStructuredText doesn't know anything about XML character
+   entities. To Docutils, "&mdash;" in input text is 7 discrete
+   characters; no interpretation happens.  When writing HTML, the
+   "&" is converted to "``&amp;``", so in the raw output you'd see
+   "``&amp;mdash;``" and in the HTML browser "&mdash;".
+
+.. [#] Thanks to David Priest for the original idea.
+
+.. _input encoding: docs/user/config.html#input-encoding
 .. _Standard Substitution Definition Sets: docs/ref/rst/definitions.html
 .. _substitution definitions: docs/ref/rst/restructuredtext.html
                               #substitution-definitions
@@ -382,8 +350,7 @@ Are there any tools for HTML/XML-to-reStructuredText?  (Round-tripping)
 -----------------------------------------------------------------------
 
 People have tossed the idea around, and some implementations of
-reStructuredText-generating tools can be found in the `Docutils Link
-List`_.
+reStructuredText-generating tools can be found in the `Docutils Links`_.
 
 There's no reason why reStructuredText should not be round-trippable
 to/from XML; any technicalities which prevent round-tripping would be
@@ -399,42 +366,17 @@ particularly useful.  An 80/20 approach should work though: build a
 tool that does 80% of the work automatically, leaving the other 20%
 for manual tweaks.
 
-.. _Docutils Link List: docs/user/links.html
+.. _Docutils Link List:
+.. _Docutils Links: docs/user/links.html
 
 
 Are there any Wikis that use reStructuredText syntax?
 -----------------------------------------------------
 
-There are several, with various degrees of completeness.  With no
-implied endorsement or recommendation, and in no particular order:
+Yes, see `Wikis`__ in the `Docutils Links`_.
 
-* `Ian Bicking's experimental code
-  <https://docutils.sourceforge.io/sandbox/ianb/wiki/Wiki.py>`__
+__ docs/user/links.html#wikis
 
-* `MoinMoin <http://moinmoin.wikiwikiweb.de/>`__ has some support;
-  `here's a sample <http://moinmoin.wikiwikiweb.de/RestSample>`__
-
-* Zope-based `Zwiki <http://zwiki.org/>`__
-
-* Zope3-based Zwiki (in the Zope 3 source tree as
-  ``zope.products.zwiki``)
-
-* `StikiWiki <http://mithrandr.moria.org/code/stikiwiki/>`__
-
-* `Trac <http://trac.edgewall.com//>`__ `supports using
-  reStructuredText
-  <http://trac.edgewall.com//wiki/WikiRestructuredText>`__ as
-  an alternative to wiki markup. This includes support for `TracLinks
-  <http://trac.edgewall.com//wiki/TracLinks>`__ from within
-  RST text via a custom RST reference-directive or, even easier, an
-  interpreted text role 'trac'
-
-Please `let us know`_ of any other reStructuredText Wikis.
-
-.. dead link
-.. The example application for the `Web Framework Shootout
-.. <http://colorstudy.com/docs/shootout.html>`__ article is a Wiki using
-.. reStructuredText.
 
 
 Are there any Weblog (Blog) projects that use reStructuredText syntax?

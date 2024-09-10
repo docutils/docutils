@@ -329,10 +329,10 @@ The title of the whole document is distinct from section titles and
 may be formatted somewhat differently (e.g. the HTML writer by default
 shows it as a centered heading).
 
-To indicate the document title in reStructuredText, use a unique adornment
-style at the beginning of the document.  To indicate the document subtitle,
-use another unique adornment style immediately after the document title.  For
-example::
+To indicate the document title in reStructuredText, use a section title
+with unique adornment style at the beginning of the document.
+To indicate the document subtitle, use another unique adornment style
+immediately after the document title.  For example::
 
     ================
      Document Title
@@ -350,6 +350,28 @@ Note that "Document Title" and "Section Title" above both use equals
 signs, but are distict and unrelated styles.  The text of
 overline-and-underlined titles (but not underlined-only) may be inset
 for aesthetics.
+
+Counterexample::
+
+    Here's an ordinary paragraph.
+
+    This is *not* a Document Title
+    ==============================
+
+    The "ordinary paragraph" above the section title
+    prevents it from becoming the document title.
+
+Another counterexample::
+
+    This is not the Document Title,  because...
+    ===========================================
+
+    Here's an ordinary paragraph.
+
+    ... the title adornment is not unique
+    =====================================
+
+    Another ordinary paragraph.
 
 
 Images

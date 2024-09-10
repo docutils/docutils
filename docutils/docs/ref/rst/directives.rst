@@ -2203,14 +2203,19 @@ Common Option Value Types
 
   A _`list of integers` may be comma- or whitespace-separated.
 
-:_`length`: number followed by one of the supported `length units`_
+:_`length`: number, optionally followed by one of the
+  supported `length units`_
+
+  Handling of values without unit depends on the writer/output format.
+  See the writer specific documentation in the `user doc`__ for details.
+
+  __ ../../index.html#introductory-tutorial-material-for-end-users
 
 :_`path`: local filesystem path
 
   Newlines are removed.
   The `root_prefix`_ configuration setting can be used to tell Docutils
-  to interpret root paths (starting with "/") relative to a "project
-  directory".
+  to interpret paths starting with "/" relative to a "project directory".
 
 :_`text`: free text
 
@@ -2218,8 +2223,8 @@ Common Option Value Types
 
 :_`URI`: _`URI reference`
 
-  Full URI or `relative reference`_ (absolute or relative path reference),
-  cf. :RFC:`3986`.
+  Full URI or `relative reference`_
+  (absolute or relative path reference, cf. :RFC:`3986`).
   Whitespace is removed (cf. `external hyperlink targets`_ in the
   reStructuredText specification).
 

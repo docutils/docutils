@@ -100,6 +100,9 @@ following less common units:
 :sp: scaled point (1sp = 1/65536pt)
 :bp: "big" point (`DTP point`) (1 bp  = 1/72 in)
 
+The **default length unit** (added by the latex writer to length
+values without unit) is the `DTP point` "bp".
+
 .. attention:: Different definitions of the unit "pt"!
 
    * In Docutils (as well as CSS) the unit symbol "pt" denotes the
@@ -117,9 +120,6 @@ following less common units:
 
    In `raw LaTeX`_ and `custom style sheets`_, the `DTP point` must be
    specified as "bp", while "pt" is interpreted as `LaTeX point`.
-
-The default length unit (added by Docutils to length specifications
-without unit) is the "DTP point".
 
 .. _length units: ../ref/rst/restructuredtext.html#length-units
 

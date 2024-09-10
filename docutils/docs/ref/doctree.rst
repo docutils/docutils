@@ -4001,7 +4001,10 @@ _`%ids.type`
 
 _`%measure`
   | A number which may be immediately followed by a unit or percent sign.
-    Resolves to CDATA_.
+    ReStructuredText supports `CSS2 length units`_.
+    Handling of values without unit depends on the writer/output format
+    (see the writer specific documentation in the `user documentation`__
+    for details). Resolves to CDATA_.
   | Used in the `height`_ and `width`_ attributes.  Python data type: ``str``.
 
 _`%number`
@@ -4027,6 +4030,8 @@ _`%yesorno`
   | Used in the anonymous_, colsep_, ltrim_, rtrim_, rowsep_,
     and `stub`_ attributes.
     Python data type: ``int``.
+
+__ ../index.html#introductory-tutorial-material-for-end-users
 
 
 Names and identifiers
@@ -5312,6 +5317,7 @@ Bibliography
 .. _bibliographic fields:   rst/restructuredtext.html#bibliographic-fields
 .. _block quote:            rst/restructuredtext.html#block-quotes
 .. _bullet list:            rst/restructuredtext.html#bullet-lists
+.. _CSS2 length units:      rst/restructuredtext.html#length-units
 .. _citations:              rst/restructuredtext.html#citations
 .. _definition list:        rst/restructuredtext.html#definition-lists
 .. _directive:              rst/restructuredtext.html#directives
