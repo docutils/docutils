@@ -2435,7 +2435,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 'height=%s' % self.to_latex_length(attrs['height']))
         if 'scale' in attrs:
             include_graphics_options.append(
-                'scale=%f' % (attrs['scale'] / 100.0))
+                'scale=%g' % (attrs['scale'] / 100.0))
         if 'width' in attrs:
             include_graphics_options.append(
                 'width=%s' % self.to_latex_length(attrs['width']))

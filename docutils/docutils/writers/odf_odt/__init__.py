@@ -2236,13 +2236,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def get_image_scale(self, node):
         if 'scale' in node.attributes:
             scale = node.attributes['scale']
-            try:
-                scale = int(scale)
-            except ValueError:
-                self.document.reporter.warning(
-                    'Invalid scale for image: "%s"' % (
-                        node.attributes['scale'], ))
-            if scale < 1:       # or scale > 100:
+            if scale < 1:
                 self.document.reporter.warning(
                     'scale out of range (%s), using 1.' % (scale, ))
                 scale = 1
