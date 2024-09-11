@@ -413,16 +413,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         text = str(text)
         return text.translate(self.special_characters)
 
-    def image_size(self, node: nodes.image) -> str:
+    def image_size(self, node: nodes.image) -> dict[str, str]:
         """Determine the image size from node arguments or the image file.
 
         Auxiliary method called from `self.visit_image()`.
 
         Provisional.
         """
-        # TODO: Use "width" and "hight" for unitless integers?
-        #       [feature-requests:#102]
-
         # List with optional width and height measures ((value, unit)-tuples)
         measures: list[tuple[Real, str] | None] = [None, None]
         dimensions = ('width', 'height')
@@ -440,10 +437,22 @@ class HTMLTranslator(nodes.NodeVisitor):
         if factor != 1:
             measures = [(measure[0] * factor, measure[1])
                         for measure in measures if measure]
-        # format as CSS declarations and return
-        return ' '.join(f'{dimension}: {measure[0]:g}{measure[1] or "px"};'
-                        for dimension, measure in zip(dimensions, measures)
-                        if measure)
+        # format as <img> attributes,
+        # use "width" and "hight" for unitless values and "style" else,
+        # e.g., height': '32' 'style': 'width: 4 em;'}``:
+        size_atts = {}  # attributes "width", "height", or "style"
+        declarations = []  # declarations for the "style" attribute
+        for dimension, measure in zip(dimensions, measures):
+            if measure is None:
+                continue
+            value, unit = measure
+            if unit:
+                declarations.append(f'{dimension}: {value:g}{unit};')
+            else:
+                size_atts[dimension] = f'{round(value)}'
+        if declarations:
+            size_atts['style'] = ' '.join(declarations)
+        return size_atts
 
     def read_size_with_PIL(self, node) -> tuple[int, int] | None:
         # Try reading size from image file.
@@ -501,6 +510,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             style_att = dict((k.strip(), v.strip()) for k, p, v in style_att)
             style_att = ' '.join(f'{k}: {v};' for k, v in style_att.items())
             svg.set('style', style_att)
+        for dimension in ('width', 'height'):
+            if dimension in atts:
+                svg.set(dimension, atts[dimension])
         if 'classes' in atts or node['classes']:
             classes = svg.get('class', '').split()
             classes += node['classes'] + atts.get('classes', [])
@@ -1169,10 +1181,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         alt = node.get('alt', uri)
         mimetype = mimetypes.guess_type(uri)[0]
         element = ''  # the HTML element (including potential children)
-        atts = {}  # attributes for the HTML tag
-        size_declaration = self.image_size(node)
-        if size_declaration:
-            atts['style'] = size_declaration
+        # attributes for the HTML tag:
+        atts = self.image_size(node)
+        # alignment is handled by CSS rules
         if 'align' in node:
             atts['classes'] = [f"align-{node['align']}"]
         # ``:loading:`` option (embed, link, lazy), default from setting,

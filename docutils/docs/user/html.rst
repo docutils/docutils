@@ -52,6 +52,13 @@ styling rules; plain.css_ and responsive.css_ add optional rules for
 better legibility. Adaption of the layout is possible with `custom style
 sheets`_. [#safetext]_
 
+Image_ size values with unit are converted to "style" rules,
+values without unit are rounded to the nearest integer and
+written as "width" and "height" attributes instead.
+This allows the specification of the image's aspect ratio
+(to `prevent jank when loading images`__) without overwriting
+size declarations in a CSS stylesheet.
+
 .. [#safetext] The validity of raw HTML and custom stylesheets must be
    ensured by the author.
 
@@ -69,6 +76,9 @@ sheets`_. [#safetext]_
 .. _custom style sheets: ../howto/html-stylesheets.html
 .. _viewable with any browser: http://www.anybrowser.org/campaign
 .. _Benefits of polyglot XHTML5: http://xmlplease.com/xhtml/xhtml5polyglot/
+.. _image: ../ref/rst/directives.html#image
+__ https://developer.mozilla.org/en-US/docs/Learn/Performance/Multimedia
+   #rendering_strategy_preventing_jank_when_loading_images
 
 
 html4css1

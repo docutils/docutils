@@ -85,20 +85,6 @@ Writers
     __ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
        #the-blockquote-element
 
-  - Unitless image_ :width: and :hight: values and dimensions
-    read from the image due to a :scale: option will be written as
-    "width" and "hight" attributes instead of "style" rules to allow
-    specification of the aspect ratio to `prevent jank when loading
-    images`__ without overwriting an image size set in a CSS stylesheet
-    in Docutils 0.22 (cf.  `feature-requests:102`__).
-    The current behaviour is kept for dimensions with units, so
-    users may specify, e.g. ``:width: 50px`` instead of ``:width: 50``
-    to override CSS stylesheet rules.
-
-    __ https://developer.mozilla.org/en-US/docs/Learn/Performance/Multimedia
-       #rendering_strategy_preventing_jank_when_loading_images
-    __ https://sourceforge.net/p/docutils/feature-requests/102/
-
   - Change the default value of the initial_header_level_ setting to None
     (<h2> if there is a document title, else <h1>) in Docutils 1.0.
 
@@ -202,21 +188,29 @@ Configuration changes
     (See `command line interface`_ for the rationale.)
 
 Output changes
-  "manpage" writer:
-     Don't UPPERCASE section headings.
-
-  "null" writer:
-     output changed from None to the empty string.
-
-     `publish_string()` now returns a `bytes` or `str` instance
-     for all writers (as documented).
-
-  "latex" writer:
+  LaTeX:
      Don't wrap references with custom reference-label_ in a ``\hyperref``
      command. The "hyperref" package generates hyperlinks for labels by
      default, so there is no change in the PDF (except for "ref*").
 
      .. _reference-label: docs/user/config.html#reference-label
+
+  HTML5:
+     Unitless image_ size measures__ are written as <img> "width" and
+     "hight" values instead of "style" rules.  The current behaviour
+     is kept for values with units, so users may specify, e.g. ``:width:
+     50px`` instead of ``:width: 50`` to override CSS stylesheet rules.
+
+     __ docs/ref/doctree.html#measure
+
+  manpage:
+     Don't UPPERCASE section headings.
+
+  null:
+     The "null" writer output changed from None to the empty string.
+
+     `publish_string()` now returns a `bytes` or `str` instance
+     for all writers (as documented).
 
 New objects
   `parsers.docutils_xml`

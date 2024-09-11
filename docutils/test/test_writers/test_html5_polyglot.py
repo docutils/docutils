@@ -47,13 +47,15 @@ if PIL:
     if (tuple(int(i) for i in PIL.__version__.split('.')) >= (10, 3)):
         DUMMY_PNG_NOT_FOUND = ("[Errno 2] No such file or directory: '%s'"
                                % Path('dummy.png').resolve())
-    SCALING_OUTPUT = 'style="width: 32px; height: 32px;" '
+    HEIGHT_ATTR = 'height="32" '
+    WIDTH_ATTR = 'width="32" '
     NO_PIL_SYSTEM_MESSAGE = ''
 else:
     REQUIRES_PIL = '\n  Requires Python Imaging Library.'
     ONLY_LOCAL = 'Requires Python Imaging Library.'
     DUMMY_PNG_NOT_FOUND = 'Requires Python Imaging Library.'
-    SCALING_OUTPUT = ''
+    HEIGHT_ATTR = ''
+    WIDTH_ATTR = ''
     NO_PIL_SYSTEM_MESSAGE = (
         '<aside class="system-message">\n'
         '<p class="system-message-title">System Message:'
@@ -156,7 +158,7 @@ reference and the target.</p>
    :align: left
 """,
 """\
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" style="width: 50%; height: 30px;" class="align-left">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" style="width: 50%;" height="30" class="align-left">
   <circle cx="5" cy="5" r="4" fill="lightblue" />
 </svg>
 """],
@@ -451,11 +453,11 @@ totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX,
    :scale: 100%
 .. figure:: /data/blue%20square.png
 """,
-'<img alt="/data/blue%20square.png" src="data:image/png;base64,'
+f'<img alt="/data/blue%20square.png" {HEIGHT_ATTR}src="data:image/png;base64,'
 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQ'
 'EAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAA'
 'SUVORK5CYII="'
-f' {SCALING_OUTPUT}/>\n{NO_PIL_SYSTEM_MESSAGE}'
+f' {WIDTH_ATTR}/>\n{NO_PIL_SYSTEM_MESSAGE}'
 '<figure>\n'
 '<img alt="/data/blue%20square.png" src="data:image/png;base64,'
 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQ'

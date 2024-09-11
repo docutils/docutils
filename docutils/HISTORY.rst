@@ -145,6 +145,8 @@ Release 0.22b.dev (unpublished)
 * docutils/writers/_html_base.py
 
   - Make MathML the default math_output_.
+  - Revise image size handling methods,
+    use "width" and "height" attributes for unitless values.
 
 * docutils/writers/html4css1/__init__.py
 

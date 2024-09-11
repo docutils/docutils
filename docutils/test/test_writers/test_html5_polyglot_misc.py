@@ -243,38 +243,42 @@ class MathTestCase(unittest.TestCase):
 
 class ImagesTestCase(unittest.TestCase):
     """Test image handling routines."""
-
+    maxDiff = None
     settings = frontend.get_default_settings(_html_base.Writer)
     document = utils.new_document('test data', settings)
     translator = _html_base.HTMLTranslator(document)
     svg_sample = """\
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg"
-     style="background: blue; width: 5ex" viewBox="0 0 10 10">
+     style="background: blue; width: 5ex; height: 3ex" viewBox="0 0 10 10">
   <circle cx="5" cy="5" r="4" fill="lightblue" />
   <!-- comments are ignored -->
 </svg>
 """
     expected = """\
-<svg xmlns="http://www.w3.org/2000/svg" style="background: blue; width: 4em; height: 32px;" viewBox="0 0 10 10" class="test me">
+<svg xmlns="http://www.w3.org/2000/svg" style="background: blue; width: 4em; height: 3ex;" viewBox="0 0 10 10" height="32" class="test me">
   <title>blue circle</title><circle cx="5" cy="5" r="4" fill="lightblue" />
   \n\
 </svg>"""
 
     def test_image_size(self):
-        image = nodes.image(height='3', width='4em')
+        # HTML attributes "width" and "height" take only integer values:
+        # -> height value is passed as "height" attribute,
+        #    value with unit is passed via "style".
+        image = nodes.image(width='4em', height='3', scale=200)
         self.assertEqual(self.translator.image_size(image),
-                         'width: 4em; height: 3px;')
-        image = nodes.image(height='3', width='4em', scale=50)
+                         {'height': '6', 'style': 'width: 8em;'})
+        # "style" declaration also used for unitless non-interger value
+        image = nodes.image(width='4em', height='3', scale=50)
         self.assertEqual(self.translator.image_size(image),
-                         'width: 2em; height: 1.5px;')
+                         {'style': 'width: 2em;', 'height': '2'})
 
     def test_prepare_svg(self):
         # Internal method: the test is no guaranty for stability,
         # interface and behaviour may change without notice.
         image = nodes.image(height='32', width='4em', alt='blue circle',
                             align='left', classes=['test', 'me'])
-        atts = {'style': self.translator.image_size(image)}
+        atts = self.translator.image_size(image)
         rv = self.translator.prepare_svg(self.svg_sample, image, atts)
         self.assertEqual(rv, self.expected)
 
