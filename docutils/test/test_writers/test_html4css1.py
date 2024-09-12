@@ -39,9 +39,10 @@ ROOT_PREFIX = (TEST_ROOT / 'functional/input').as_posix()
 
 # Pillow/PIL is optional:
 if PIL:
-    SCALING_OUTPUT = 'style="width: 32px; height: 32px;" '
+    SCALING_OUTPUT = 'style="width: 32.0px; height: 32.0px;" '
 else:
     SCALING_OUTPUT = ''
+
 
 class Html5WriterPublishPartsTestCase(unittest.TestCase):
     """Test case for HTML5 writer via the publish_parts() interface."""
