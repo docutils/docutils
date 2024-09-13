@@ -282,7 +282,10 @@ class TransformSpec:
     default_transforms: ClassVar[tuple[()]] = ()
 
     unknown_reference_resolvers: Sequence[_UnknownReferenceResolver] = ()
-    """List of functions to try to resolve unknown references.
+    """List of hook functions which assist in resolving references.
+
+    Override in subclasses to implement component-specific resolving of
+    unknown references.
 
     Unknown references have a 'refname' attribute which doesn't correspond
     to any target in the document.  Called when the transforms in
@@ -291,7 +294,7 @@ class TransformSpec:
     The list should contain functions which will try to resolve unknown
     references, with the following signature::
 
-        def reference_resolver(node):
+        def reference_resolver(node: nodes.Element) -> bool:
             '''Returns boolean: true if resolved, false if not.'''
 
     If the function is able to resolve the reference, it should also remove
@@ -301,13 +304,20 @@ class TransformSpec:
         node.resolved = True
 
     Each function must have a "priority" attribute which will affect the order
-    the unknown_reference_resolvers are run::
+    the unknown_reference_resolvers are run
+    cf. ../docs/api/transforms.html#transform-priority-range-categories ::
 
-        reference_resolver.priority = 100
+        reference_resolver.priority = 500
 
-    This hook is provided for 3rd party extensions.
-    Example use case: the `MoinMoin - ReStructured Text Parser`
-    https://github.com/moinwiki/moin
+    Examples:
+      `writers.latex2e.Writer` defines a resolver to mark citation references
+      as resolved by BibTeX if the "use_bibtex" configuration setting is set.
+
+      The `MoinMoin ReStructured Text Parser`__ provides a resolver for
+      "WikiWiki links" (currently only in the outdated 1.9 version).
+
+      __ https://github.com/moinwiki/moin-1.9/blob/1.9.11/MoinMoin/parser/
+         text_rst.py
     """
 
 

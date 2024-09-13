@@ -253,6 +253,22 @@ class Writer(writers.Writer):
     def __init__(self) -> None:
         writers.Writer.__init__(self)
         self.translator_class = LaTeXTranslator
+        self.unknown_reference_resolvers = [self.bibtex_reference_resolver]
+        self.bibtex_reference_resolver.priority = 400
+
+    @staticmethod
+    def bibtex_reference_resolver(node: nodes.Element) -> bool:
+        """Mark citation references as resolved if BibTeX is used.
+
+        Cf. `TransformSpec.unknown_reference_resolvers`.
+        """
+        if (isinstance(node, nodes.citation_reference)
+            and node.document.settings.use_bibtex):
+            del node['refname']
+            node.resolved = True
+            return True
+        else:
+            return False
 
     def get_transforms(self):
         # Override parent method to add latex-specific transforms

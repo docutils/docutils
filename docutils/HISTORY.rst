@@ -158,6 +158,8 @@ Release 0.22b.dev (unpublished)
     (ignored since at least 2012).
   - Don't wrap references with custom reference-label_ in
     a ``\hyperref`` command.
+  - Provide an "unknown_references_resolver" (cf. `docutils/TransformSpec`)
+    for citation references resolved with BibTeX (cf. `use_bibtex`_ setting).
 
   .. _reference-label: docs/user/config.html#reference-label
 
@@ -3856,9 +3858,9 @@ Specific:
 * docutils/transforms/__init__.py:
 
   - Added ``Transformer`` class and completed transform reform.
-  - Added unknown_reference_resolvers list for each transformer. This list holds
-    the list of functions provided by each component of the transformer that
-    help resolve references.
+  - Added unknown_reference_resolvers list for each transformer.
+    This list holds the list of functions provided by each component
+    of the transformer that help resolve references.
 
 * docutils/transforms/frontmatter.py:
 

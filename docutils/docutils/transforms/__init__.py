@@ -144,7 +144,7 @@ class Transformer(TransformSpec):
 
     def populate_from_components(self, components) -> None:
         """
-        Store each component's default transforms and reference resolvers
+        Store each component's default transforms and reference resolvers.
 
         Transforms are stored with default priorities for later sorting.
         "Unknown reference resolvers" are sorted and stored.
@@ -161,7 +161,7 @@ class Transformer(TransformSpec):
             resolvers.extend(component.unknown_reference_resolvers)
         self.sorted = False  # sort transform list in self.apply_transforms()
 
-        # Sort and add helper functions to help resolve unknown references.
+        # Sort and add hook functions helping to resolve unknown references.
         def keyfun(f):
             return f.priority
         resolvers.sort(key=keyfun)
