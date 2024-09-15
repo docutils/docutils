@@ -218,6 +218,7 @@ And even more stuff
 ["""\
 .. table::
    :align: right
+   :width: 320
 
    +-----+-----+
    |  1  |  2  |
@@ -226,7 +227,7 @@ And even more stuff
    +-----+-----+
 """,
 """\
-<table class="align-right">
+<table class="align-right" style="width: 320px;">
 <tbody>
 <tr><td><p>1</p></td>
 <td><p>2</p></td>

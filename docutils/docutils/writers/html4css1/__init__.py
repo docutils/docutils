@@ -866,7 +866,10 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         if 'align' in node:
             classes.append('align-%s' % node['align'])
         if 'width' in node:
-            atts['style'] = 'width: %s' % node['width']
+            width = node['width']
+            if width[-1:] in '0123456789.':  # unitless value
+                width += 'px'  # add default length unit
+            atts['style'] = f'width: {width}'
         self.body.append(
             self.starttag(node, 'table', CLASS=' '.join(classes), **atts))
 

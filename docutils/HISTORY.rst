@@ -147,10 +147,12 @@ Release 0.22b.dev (unpublished)
   - Make MathML the default math_output_.
   - Revise image size handling methods,
     use "width" and "height" attributes for unitless values.
+  - Add "px" to unitless table "width" values.
 
 * docutils/writers/html4css1/__init__.py
 
   - Keep default math_output_ value "HTML math.css".
+  - Add "px" to unitless table "width" values.
 
 * docutils/writers/latex2e/__init__.py
 

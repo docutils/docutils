@@ -183,6 +183,7 @@ And even more stuff
 ["""\
 .. table::
    :align: right
+   :width: 320
 
    +-----+-----+
    |  1  |  2  |
@@ -191,7 +192,7 @@ And even more stuff
    +-----+-----+
 """,
 """\
-<table border="1" class="docutils align-right">
+<table border="1" class="docutils align-right" style="width: 320px">
 <colgroup>
 <col width="50%" />
 <col width="50%" />

@@ -200,7 +200,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     # use new HTML5 <figure> and <figcaption> elements
     def visit_figure(self, node) -> None:
         atts = {}
-        if node.get('width'):
+        if 'width' in node:
             atts['style'] = f"width: {node['width']}"
         if node.get('align'):
             atts['class'] = f"align-{node['align']}"

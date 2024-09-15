@@ -1693,7 +1693,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         if 'align' in node:
             atts['classes'].append('align-%s' % node['align'])
         if 'width' in node:
-            atts['style'] = 'width: %s;' % node['width']
+            width = node['width']
+            if width[-1:] in '0123456789.':  # unitless value
+                width += 'px'  # add default length unit
+            atts['style'] = f'width: {width};'
         tag = self.starttag(node, 'table', **atts)
         self.body.append(tag)
 
