@@ -37,6 +37,7 @@ from typing import TYPE_CHECKING, overload
 # import docutils.transforms # -> conditional import in document.__init__()
 
 if TYPE_CHECKING:
+    import numbers
     from collections.abc import (Callable, Iterable, Iterator,
                                  Mapping, Sequence)
     from types import ModuleType
@@ -3074,7 +3075,7 @@ def pseudo_quoteattr(value: str) -> str:
     return '"%s"' % value
 
 
-def parse_measure(measure: str) -> tuple[float, str]:
+def parse_measure(measure: str) -> tuple[numbers.Rational, str]:
     """Parse a measure__, return value + optional unit.
 
     __ https://docutils.sourceforge.io/docs/ref/doctree.html#measure
@@ -3083,7 +3084,10 @@ def parse_measure(measure: str) -> tuple[float, str]:
     """
     match = re.fullmatch('(-?[0-9.]+) *([a-zA-Zµ]*|%?)', measure)
     try:
-        value = float(match.group(1))
+        try:
+            value = int(match.group(1))
+        except ValueError:
+            value = float(match.group(1))
         unit = match.group(2)
     except (AttributeError, ValueError):
         raise ValueError(f'"{measure}" is no valid measure.')
@@ -3168,7 +3172,7 @@ def validate_measure(measure: str) -> str:
     __ https://docutils.sourceforge.io/docs/ref/doctree.html#measure
     """
     value, unit = parse_measure(measure)
-    return f'{value:g}{unit}'
+    return f'{value}{unit}'
 
 
 def validate_NMTOKEN(value: str) -> str:

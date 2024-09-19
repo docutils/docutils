@@ -305,11 +305,11 @@ Another block quote.
 
 Image with 20\% width:
 
-\includegraphics[width=0.200\linewidth]{../../../docs/user/rst/images/title.png}
+\includegraphics[width=0.2\linewidth]{../../../docs/user/rst/images/title.png}
 
 Image with 100\% width:
 
-\includegraphics[width=1.000\linewidth]{../../../docs/user/rst/images/title.png}
+\includegraphics[width=1\linewidth]{../../../docs/user/rst/images/title.png}
 
 
 \section{Tables%
@@ -548,7 +548,7 @@ EUR & b & c & d \\
 The \DUroletitlereference{width} option overrides \textquotedbl{}auto\textquotedbl{} \DUroletitlereference{widths} as standard LaTeX tables
 don't have a global width setting:
 
-\setlength{\DUtablewidth}{\dimexpr0.600\linewidth-5\arrayrulewidth\relax}%
+\setlength{\DUtablewidth}{\dimexpr0.6\linewidth-5\arrayrulewidth\relax}%
 \begin{longtable}{|p{\DUcolumnwidth{0.400}}|p{\DUcolumnwidth{0.200}}|p{\DUcolumnwidth{0.200}}|p{\DUcolumnwidth{0.200}}|}
 \caption{This table has \DUroletitlereference{widths} \textquotedbl{}auto\textquotedbl{} (ignored) and \DUroletitlereference{width} 60\%.}\\
 \hline

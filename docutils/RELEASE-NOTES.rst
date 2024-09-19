@@ -102,6 +102,11 @@ Writers
   - Remove ``use_verbatim_when_possible`` setting
     (use literal_block_env_: verbatim) in Docutils 2.0.
 
+  - The `default length unit`__ will change from "bp" (DTP point)
+    to "px" (pixel unit) in Docutils 1.0.
+
+    __ docs/user/latex.html#length-units
+
 Misc
 ----
 

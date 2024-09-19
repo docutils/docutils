@@ -2390,27 +2390,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.requirements['~header'] = ''.join(self.out)
         self.pop_output_collector()
 
-    def to_latex_length(self, length_str):
-        """Convert `length_str` with rst length to LaTeX length
+    def to_latex_length(self, length_str: str) -> str:
+        """Convert "measure" `length_str` to LaTeX length specification.
+
+        Note: the default length unit will change from "bp"
+        (Postscript point) to "px" in Docutils 1.0.
         """
-        match = re.match(r'(\d*\.?\d*)\s*(\S*)', length_str)
-        if not match:
-            return length_str
-        value, unit = match.groups()[:2]
-        # no unit or "DTP" points (called 'bp' in TeX):
-        if unit in ('', 'pt'):
-            length_str = '%sbp' % value
-        # percentage: relate to current line width
-        elif unit == '%':
-            length_str = '%.3f\\linewidth' % (float(value)/100.0)
-        elif self.is_xetex and unit == 'px':
-            # XeTeX does not know the length unit px.
-            # Use \pdfpxdimen, the macro to set the value of 1 px in pdftex.
-            # This way, configuring works the same for pdftex and xetex.
-            if not self.fallback_stylesheet:
-                self.fallbacks['_providelength'] = PreambleCmds.providelength
-            self.fallbacks['px'] = '\n\\DUprovidelength{\\pdfpxdimen}{1bp}\n'
-            length_str = r'%s\pdfpxdimen' % value
+        value, unit = nodes.parse_measure(length_str)
+        if unit in ('', 'pt'):  # no unit or "Postscript points"
+            return f'{value}bp'  # LaTeX uses symbol "bp"
+        if unit == '%':  # percentage: relate to current line width
+            return f'{value/100:g}\\linewidth'
         return length_str
 
     def visit_image(self, node) -> None:

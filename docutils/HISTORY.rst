@@ -156,8 +156,10 @@ Release 0.22b.dev (unpublished)
 
 * docutils/writers/latex2e/__init__.py
 
-  - Remove optional argument `pxunit` of `LaTeXTranslator.to_latex_length()`
-    (ignored since at least 2012).
+  - `LaTeXTranslator.to_latex_length()`:
+    remove optional argument `pxunit` (ignored since at least 2012),
+    drop trailing zeroes from length values,
+    move XeTeX-specific code to the "xetex" writer.
   - Don't wrap references with custom reference-label_ in
     a ``\hyperref`` command.
   - Provide an "unknown_references_resolver" (cf. `docutils/TransformSpec`)
@@ -179,7 +181,7 @@ Release 0.22b.dev (unpublished)
 
   - `null.Writer.translate()` sets `self.output` to the empty string.
 
-* tools/rst2odt_prepstyles.py
+* tools/rst2odt.py
 
   - Use `core.publish_file()` instead of `core.publish_file_to_binary()`.
 

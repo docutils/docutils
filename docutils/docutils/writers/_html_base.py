@@ -40,9 +40,8 @@ from docutils.transforms import writer_aux
 from docutils.utils.math import (latex2mathml, math2html, tex2mathml_extern,
                                  unichar2tex, wrap_math_code, MathError)
 
-
 if TYPE_CHECKING:
-    from numbers import Real
+    from docutils.transforms import Transform
 
 
 class Writer(writers.Writer):
@@ -157,7 +156,7 @@ class Writer(writers.Writer):
         'html_prolog', 'html_head', 'html_title', 'html_subtitle',
         'html_body')
 
-    def get_transforms(self):
+    def get_transforms(self) -> list[type[Transform]]:
         return super().get_transforms() + [writer_aux.Admonitions]
 
     def translate(self) -> None:
@@ -167,11 +166,10 @@ class Writer(writers.Writer):
             setattr(self, attr, getattr(visitor, attr))
         self.output = self.apply_template()
 
-    def apply_template(self):
+    def apply_template(self) -> str:
         template_path = Path(self.document.settings.template)
         template = template_path.read_text(encoding='utf-8')
-        subs = self.interpolation_dict()
-        return template % subs
+        return template % self.interpolation_dict()
 
     def interpolation_dict(self):
         subs = {}
@@ -416,36 +414,31 @@ class HTMLTranslator(nodes.NodeVisitor):
     def image_size(self, node: nodes.image) -> dict[str, str]:
         """Determine the image size from node arguments or the image file.
 
-        Auxiliary method called from `self.visit_image()`.
+        Return as dictionary of <img> attributes,
+        e.g., ``{height': '32', 'style': 'width: 4 em;'}``.
 
+        Auxiliary method called from `self.visit_image()`.
         Provisional.
         """
-        # List with optional width and height measures ((value, unit)-tuples)
-        measures: list[tuple[Real, str] | None] = [None, None]
         dimensions = ('width', 'height')
-        for i, dimension in enumerate(dimensions):
+        measures = {}  # (value, unit)-tuples) for width and height
+        for dimension in dimensions:
             if dimension in node:
-                measures[i] = nodes.parse_measure(node[dimension])
-        if None in measures and 'scale' in node:
+                measures[dimension] = nodes.parse_measure(node[dimension])
+        if 'scale' in node and len(measures) < 2:
             # supplement with (unitless) values read from image file
             imgsize = self.read_size_with_PIL(node)
             if imgsize:
-                measures = [measure or (imgvalue, '')
-                            for measure, imgvalue in zip(measures, imgsize)]
-        # scale values
-        factor = node.get('scale', 100) / 100  # scaling factor
-        if factor != 1:
-            measures = [(measure[0] * factor, measure[1])
-                        for measure in measures if measure]
-        # format as <img> attributes,
-        # use "width" and "hight" for unitless values and "style" else,
-        # e.g., height': '32' 'style': 'width: 4 em;'}``:
-        size_atts = {}  # attributes "width", "height", or "style"
+                for dimension, value in zip(dimensions, imgsize):
+                    if dimension not in measures:
+                        measures[dimension] = (value, '')
+        # Scale and format as <img> attributes,
+        # use "width" and "hight" for unitless values and "style" else:
+        scaling_factor = node.get('scale', 100) / 100
+        size_atts = {}
         declarations = []  # declarations for the "style" attribute
-        for dimension, measure in zip(dimensions, measures):
-            if measure is None:
-                continue
-            value, unit = measure
+        for dimension, (value, unit) in measures.items():
+            value *= scaling_factor
             if unit:
                 declarations.append(f'{dimension}: {value:g}{unit};')
             else:
