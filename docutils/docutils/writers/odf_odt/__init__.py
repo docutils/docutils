@@ -1556,10 +1556,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.pending_ids += node['ids']
 
     def default_visit(self, node) -> None:
-        self.document.reporter.warning('missing visit_%s' % (node.tagname, ))
+        self.document.reporter.warning(f'missing visit_{node.tagname}',
+                                       base_node=node)
 
     def default_departure(self, node) -> None:
-        self.document.reporter.warning('missing depart_%s' % (node.tagname, ))
+        self.document.reporter.warning(f'missing depart_{node.tagname}',
+                                       base_node=node)
 
     def visit_Text(self, node) -> None:
         # Skip nodes whose text has been processed in parent nodes.
@@ -2135,7 +2137,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                         source = os.path.join(dirname, source)
             if not self.check_file_exists(source):
                 self.document.reporter.warning(
-                    f'Cannot find image file "{source}".')
+                    f'Cannot find image file "{source}".', base_node=node)
                 return
         if source in self.image_dict:
             filename, destination = self.image_dict[source]
@@ -2151,7 +2153,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                         content = imgfile.read()
                 except urllib.error.URLError as err:
                     self.document.reporter.warning(
-                        f'Cannot open image URL "{source}". {err}')
+                        f'Cannot open image URL "{source}". {err}',
+                        base_node=node)
                     return
                 with tempfile.NamedTemporaryFile('wb',
                                                  delete=False) as imgfile2:
@@ -2204,9 +2207,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     size, unit = self.convert_to_cm(size)
             except ValueError as exp:
                 self.document.reporter.warning(
-                    'Invalid %s for image: "%s".  '
-                    'Error: "%s".' % (
-                        attr, node.attributes[attr], exp))
+                    f'Invalid {attr} for image: "{node.attributes[attr]}".  '
+                    f'Error: "{exp}".', base_node=node)
                 size, unit = 0.5, 'cm'  # fallback to avoid consequential error
         return size, unit
 
@@ -2241,7 +2243,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             scale = node.attributes['scale']
             if scale < 1:
                 self.document.reporter.warning(
-                    'scale out of range (%s), using 1.' % (scale, ))
+                    f'scale out of range ({scale}), using 1.', base_node=node)
                 scale = 1
             scale = scale * 0.01
         else:
@@ -2256,9 +2258,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         dpi = (96, 96)  # image resolution in pixel per inch
         if width is None or height is None:
             if PIL is None:
-                raise RuntimeError(
-                    'image size not fully specified and PIL not installed')
-            # TODO: catch error and warn (similar to unsupported units).
+                self.document.reporter.warning(
+                    'image size not fully specified and PIL not installed',
+                    base_node=node)
+                return '0.5cm', '0.5cm'  # prevent consequential error
             filename, destination = self.image_dict[source]
             with PIL.Image.open(filename, 'r') as img:
                 img_size = img.size
@@ -2888,7 +2891,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     })
             else:
                 self.document.reporter.warning(
-                    'References must have "refuri" or "refid" attribute.')
+                    'References must have "refuri" or "refid" attribute.',
+                    base_node=node)
         if (self.in_table_of_contents
             and len(node.children) >= 1
             and isinstance(node.children[0], docutils.nodes.generated)):
@@ -2967,17 +2971,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 # If we can't find the table style, issue warning
                 #   and use the default table style.
                 self.document.reporter.warning(
-                    'Can\'t find table style "%s".  Using default.' % (
-                        table_name, ))
+                    f'Can\'t find table style "{table_name}".  Using default.',
+                    base_node=node)
                 table_name = TABLENAMEDEFAULT
                 table_style = self.table_styles.get(table_name)
                 if table_style is None:
                     # If we can't find the default table style, issue a warning
                     #   and use a built-in default style.
                     self.document.reporter.warning(
-                        'Can\'t find default table style "%s".  '
-                        'Using built-in default.' % (
-                            table_name, ))
+                        f'Can\'t find default table style "{table_name}".  '
+                        'Using built-in default.', base_node=node)
                     table_style = BUILTIN_DEFAULT_TABLE_STYLE
         else:
             table_name = TABLENAMEDEFAULT
@@ -2986,9 +2989,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 # If we can't find the default table style, issue a warning
                 #   and use a built-in default style.
                 self.document.reporter.warning(
-                    'Can\'t find default table style "%s".  '
-                    'Using built-in default.' % (
-                        table_name, ))
+                    'Can\'t find default table style "{table_name}".  '
+                    'Using built-in default.', base_node=node)
                 table_style = BUILTIN_DEFAULT_TABLE_STYLE
         return table_style
 
@@ -3157,10 +3159,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             section_level = self.section_level
             if section_level > 7:
                 self.document.reporter.warning(
-                    'Heading/section levels greater than 7 not supported.')
-                self.document.reporter.warning(
+                    'Heading/section levels greater than 7 not supported.'
                     '    Reducing to heading level 7 for heading: "%s"' % (
-                        node.astext(), ))
+                        node.astext(), ), base_node=node)
                 section_level = 7
             el1 = self.append_child(
                 'text:h', attrib={
