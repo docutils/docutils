@@ -194,7 +194,7 @@ __ https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
 .. _HTML4:
 .. _html4 writer: ../../user/html.html#html4css1
 .. _HTML5:
-.. _html5 writer: ../../user/html.html#html5-polyglot
+.. _html5 writer: ../../user/html.html#html5
 .. _LaTeX: ../../user/latex.html#image-inclusion
 .. _ODT: ../../user/odt.html
 .. _manpage: ../../user/manpage.html
@@ -289,9 +289,9 @@ and name_ as well as
 ``scale`` : integer percentage (the "%" symbol is optional)
     The uniform scaling factor of the image.  The default is "100 %",
     i.e. no scaling.
-    Docutils tries to determine dimensions from the image file
-    if no ``height`` or ``width`` options are specified
-    (requires the `Python Imaging Library`_).
+    If the output format does not support a scaling attribute (e.g. HTML),
+    the Docutils writer tries to determine missing size specifications from
+    the  image file (requires the `Python Imaging Library`_).
 
     .. _target:
 
@@ -312,8 +312,8 @@ and name_ as well as
    The behaviour may change for the ODT and XML writers but
    images cannot be embedded in a LaTeX source.
 
-.. [#] SVG images are directly included, other images are base64_ encoded
-   and included as a `data URI`_.
+.. [#] The `HTML5 writer`_, embeds SVG images directly and other images
+   as base64_ encoded `data URI`_.
 
 .. _lazy loading attribute: https://html.spec.whatwg.org/multipage/
     urls-and-fetching.html#lazy-loading-attributes
@@ -1107,9 +1107,9 @@ Recognizes the common options `class <class option_>`_ and name_ as well as
     "auto" delegates the determination of column widths to the backend
     (LaTeX, the HTML browser, ...).
 
-  .. TODO
-     Add option ``missing-cells`` with keywords "strict", "fill", "span"?
-     (cf. [feature-requests:#103])
+.. TODO
+    Add option ``missing-cells`` with keywords "strict", "fill", "span"?
+    (cf. [feature-requests:#103])
 
 
 ----------------
@@ -2167,7 +2167,7 @@ options:
 
       .. image:: bild.png
          :alt:   example picture
-         :name: my picture
+         :name:  my picture
 
     is the recommended syntax alternative to a preceding
     `hyperlink target`_ ::
@@ -2204,7 +2204,7 @@ Common Option Value Types
   A _`list of integers` may be comma- or whitespace-separated.
 
 :_`length`: number, optionally followed by one of the
-  supported `length units`_
+  `supported length units`_
 
   Handling of values without unit depends on the writer/output format.
   See the writer specific documentation in the `user doc`__ for details.
@@ -2216,6 +2216,11 @@ Common Option Value Types
   Newlines are removed.
   The `root_prefix`_ configuration setting can be used to tell Docutils
   to interpret paths starting with "/" relative to a "project directory".
+
+:_`percentage`: number followed by the percent sign '%'
+
+  Percentage values are relative to other values, depending on the
+  context in which they occur.
 
 :_`text`: free text
 
@@ -2241,8 +2246,7 @@ Common Option Value Types
     restructuredtext.html#external-hyperlink-targets
 .. _hyperlink references: restructuredtext.html#hyperlink-references
 .. _hyperlink target: restructuredtext.html#hyperlink-targets
-.. _length units: restructuredtext.html#length-units
-.. _percentage: restructuredtext.html#percentage-units
+.. _supported length units: restructuredtext.html#length-units
 .. _reference name:
 .. _reference names: restructuredtext.html#reference-names
 .. _reStructuredText table: restructuredtext.html#tables

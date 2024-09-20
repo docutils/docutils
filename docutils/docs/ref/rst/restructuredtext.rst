@@ -3072,54 +3072,65 @@ characters (see `Escaping Mechanism`_ above).
    RFC3986_.
 
 
-Units
-=====
+Measures and Units
+==================
 
-All measures consist of a positive floating point number in standard
-(non-scientific) notation and a unit, possibly separated by one or
-more spaces.
+*Measures* consist of a positive floating point number in standard
+(non-scientific) notation and an optional unit, possibly separated
+by one or more spaces.
 
-Units are only supported where explicitly mentioned in the reference
-manuals.
+Measures are only supported where explicitly mentioned in the reference
+manuals (`directive option`_ values of type "length__" or "percentage__").
+In the `document tree`_, they are stored in attributes of type `measure`_.
+
+.. _directive option: `directive options`_
+__ directives.html#length
+__ directives.html#percentage
 
 
 Length Units
 ------------
 
-The following length units are supported by the reStructuredText
-parser:
+The reStructuredText parser supports the `length units in CSS2`_. [#]_
+Unit identifiers are case-sensitive (in contrast to CSS):
 
-* em (em unit, the element's font size)
-* ex (ex unit, x-height of the element’s font)
-* mm (millimeters; 1 mm = 1/1000 m)
-* cm (centimeters; 1 cm = 10 mm)
-* in (inches; 1 in = 2.54 cm = 96 px)
-* px (pixels, 1 px = 1/96 in) [#]_
-* pt (points; 1 pt = 1/72 in)
-* pc (picas; 1 pc = 1/6 in = 12 pt)
+.. class:: align-center
 
-This set corresponds to the `length units in CSS2`_ (a subset of `length
-units in CSS3`_).
+====  =======================  ================================
+em    the element's font size
+----  ---------------------------------------------------------
+ex    x-height of the element's font
+----  ---------------------------------------------------------
+cm    centimeters              1 cm = 10 mm
+mm    millimeters              1 mm = 1/1000 m
+in    inches                   1 in = 2.54 cm = 96 px
+pc    picas                    1 pc = 1/6 in = 12 pt
+pt    points                   1 pt = 1/72 in
+px    pixels                   1 px = 3/4 pt = 1/96 in [#]_
+====  =======================  ================================
 
-.. [#] In LaTeX, the default definition is 1 px = 1/72 in (cf. `How to
-   configure the size of a pixel`_ in the LaTeX writer documentation).
+The following are all valid length values:
+"1.5em", "20 mm", ".5 in", "42".
 
-The following are all valid length values: "1.5em", "20 mm", ".5in".
+It is up to the processing system to provide a fallback/workaround or
+raise an error if the output format does not support a unit or
+values without unit.  For the behaviour of the Docutils writers,
+see the `writer documentation`_.
 
-Length values without unit are completed with a writer-dependent
-default (e.g. "px" with HTML, "pt" with `latex2e`). See the writer
-specific documentation in the `user doc`__ for details.
+.. [#] a subset of `length units in CSS3`_
+.. [#] In LaTeX, the default definition is 1 px = 1 pt = 1/72 in
+   (cf. section `Length units <../../user/latex.html#length-units>`__
+   in the LaTeX writer documentation).
 
 .. _length units in CSS2:
    https://www.w3.org/TR/CSS2/syndata.html#length-units
 .. _length units in CSS3:
    https://www.w3.org/TR/css-values-3/#lengths
-.. _How to configure the size of a pixel:
-   ../../user/latex.html#size-of-a-pixel
-__ ../../index.html#introductory-tutorial-material-for-end-users
+.. _XSL units: https://www.w3.org/TR/xsl/#d0e5752
 
-Percentage Units
-----------------
+
+Percentage Unit
+---------------
 
 Percentage values have a percent sign ("%") as unit.  Percentage
 values are relative to other values, depending on the context in which
@@ -3142,6 +3153,8 @@ Markup errors are handled according to the specification in
    --------
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _Docutils: https://docutils.sourceforge.io/
+
+.. _writer documentation: ../../index.html#writer-specific
 
 .. _character_level_inline_markup:
     ../../user/config.html#character-level-inline-markup
@@ -3249,6 +3262,7 @@ Markup errors are handled according to the specification in
 .. _`<version>`: ../doctree.html#version
 .. _"classes" attribute:  ../doctree.html#classes
 .. _identifier key: ../doctree.html#identifiers
+.. _`measure`: ../doctree.html#measure
 .. _metadata title: ../doctree.html#title-attribute
 
 .. _Docutils Generic DTD: ../docutils.dtd
@@ -3257,6 +3271,7 @@ Markup errors are handled according to the specification in
     ../../howto/i18n.html#docutils-language-module
 
 .. _PEP 258: ../../peps/pep-0258.html
+.. _writer:
 .. _writers: ../../peps/pep-0258.html#writers
 
 .. _transforms: ../../api/transforms.html

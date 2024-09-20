@@ -86,42 +86,52 @@ definitions and their use in the document.
 .. _docutils.sty: https://ctan.org/pkg/docutils
 
 
+.. _length unit:
 
 Length units
 ------------
 
-LaTeX supports all `length units`_ defined for Docutils plus the
-following less common units:
+The LaTeX writer supports all `reStructuredText length units`_
+with the following peculiarities:
 
-.. class:: narrow
+* In LaTeX, the size of the *pixel unit* `can be configured
+  <size of a "px"_>`__. It defaults to **1 px = 1/72 in**
+  while the `CSS3 pixel unit`_ is defined as 1 px = 1/96 in.
 
-:dd: didôt (1 dd = 1238/1157 pt)
-:cc: cîcero (1 cc = 12 dd)
-:sp: scaled point (1sp = 1/65536pt)
-:bp: "big" point (`DTP point`) (1 bp  = 1/72 in)
+* LaTeX uses "pt" for the `American point`_ (*TeX point*), 1 pt = 1/72.25 in.
+  The `DTP point`_ (*Postscript point*) used in CSS is available in LaTeX
+  as *big point*, 1 bp = 1/72 in.
 
-The **default length unit** (added by the latex writer to length
-values without unit) is the `DTP point` "bp".
+  Lengths specified in the source with unit "pt" are written with unit
+  "bp" by the LaTeX writer.  In `raw LaTeX`_ and `custom style sheets`_,
+  the `DTP point` must be specified as "bp", while "pt" is interpreted as
+  `TeX point`.
 
-.. attention:: Different definitions of the unit "pt"!
+* The **default length unit** (added by the latex writer to length values
+  without unit) is the `DTP point` "**bp**".  It will change to "px" in
+  Docutils 1.0.
 
-   * In Docutils (as well as CSS) the unit symbol "pt" denotes the
-     `Postscript point` (`DTP point`).
+The TeX units:
 
-   * LaTeX uses "pt" for the typewriter's (or LaTeX) point,
-     which is unknown to Docutils and 0.3 % smaller.
+.. class:: align-center
 
-   * The `DTP point` is available in LaTeX as "bp" (big point):
+====  =========================  ===================
+ bp   "big" point (`DTP point`)  1 bp  = 1/72 in
+ cc   cîcero                     1 cc = 12 dd
+ dd   didôt                      1 dd = 1238/1157 pt
+ sp   scaled point               1sp = 1/65536pt
+====  =========================  ===================
 
-       1 pt = 1/72.25 in < 1 bp  = 1/72 in
+can be used in `raw LaTeX`_ and `custom style sheets`_ but not in
+reStructuredText.
 
-   Lengths specified in the document with unit "pt" will be given the
-   unit "bp" in the LaTeX source.
-
-   In `raw LaTeX`_ and `custom style sheets`_, the `DTP point` must be
-   specified as "bp", while "pt" is interpreted as `LaTeX point`.
-
-.. _length units: ../ref/rst/restructuredtext.html#length-units
+.. _CSS3 pixel unit: https://www.w3.org/TR/css-values-3/#px
+.. _reStructuredText length units:
+    ../ref/rst/restructuredtext.html#length-units
+.. _American point:
+    https://en.wikipedia.org/wiki/Point_(typography)#American_points
+.. _DTP point:
+    https://en.wikipedia.org/wiki/Point_(typography)#Desktop_publishing_point
 
 
 PDF generation
@@ -444,7 +454,7 @@ Environment:
   (Command ``\DUadmonition`` with legacy-class-functions_.)
 
 Default:
-  Typeset in a frame (90 % of text width).
+  Typeset in a frame (90 % of text width).
 
 The admonition title is typeset with the ``\DUtitle`` command (see `titles`_).
 
@@ -609,10 +619,10 @@ Length:
   ``\DUdocinfowidth``: the width for the `docinfo` table.
 
 Default:
-  90 % of text width: ``0.9\textwidth``
+  90 % of text width: ``0.9\textwidth``
 
 Example:
-  set to 70 % of text width::
+  set to 70 % of text width::
 
     \newlength{\DUdocinfowidth}
     \setlength{\DUdocinfowidth}{0.7\textwidth}
@@ -687,7 +697,7 @@ The chngcntr_ package helps to configure the numbering of figure and table
 caption numberings.
 
 Some document classes (e.g. KOMA-script_) provide additional configuration.
-Also see the related `LaTeX FAQ entry`__
+See also `The style of captions`_ in the LaTeX FAQ.
 
 Example
   ::
@@ -697,8 +707,7 @@ Example
 
 .. _caption: https://ctan.org/pkg/caption
 .. _chngcntr: https://ctan.org/pkg/chngcntr
-__ http://www.tex.ac.uk/cgi-bin/texfaq2html?label=running-nos
-
+.. _The style of captions: https://texfaq.org/FAQ-captsty
 
 figure placement
 ----------------
@@ -1203,7 +1212,6 @@ Example:
 
 __ ../ref/rst/restructuredtext.html#line-blocks
 
-
 line spacing
 ------------
 
@@ -1605,31 +1613,24 @@ Example:
 
 __ https://docutils.sourceforge.io/docutils/docs/ref/rst/directives.html#sidebar
 
-size of a pixel
----------------
+size of a "px"
+--------------
 
-The *physical size* of a pixel depends on the resolution of the output
-device and is usually specified in *dots per inch* (DPI).
-
-The *length unit* "px" is defined by the output format. For LaTeX, it is
-`defined in pdfTeX and LuaTeX`__ (the `xetex` writer emulates this
-definition).
+The `length unit`_ "px" is `defined in pdfTeX and LuaTeX`__, the "XeTeX"
+writer uses the ``\pdfpxdimen`` macro as workaround.
 
 Default:
-  72 DPI, i.e. 1 px = 1/72 in. [#]_
+  1 px = 1/72 in
 
 Example:
-  Set the value to match the CSS definition
+  Set the value to match the `CSS3 pixel unit`_ 1 px = 1/96 in
   with the `LaTeX code`_::
 
     \pdfpxdimen=1in
-    \divide\pdfpxdimen by 96 % 1/96 inch
-
-.. [#] The `CSS length unit ``px```_ defaults to 1/96 inch.
+    \divide\pdfpxdimen by 96
 
 __ https://tex.stackexchange.com/questions/41370/
    what-are-the-possible-dimensions-sizes-units-latex-understands
-.. _CSS length unit ``px``: https://www.w3.org/TR/css-values-3/#px
 .. _reference pixel: https://www.w3.org/TR/css-values-3/#reference-pixel
 
 table style
@@ -2004,23 +2005,15 @@ __ ../ref/rst/directives.html#images
 Why are my images too big?
 ``````````````````````````
 
-HTML-browsers use the actual screen resolution (usually around
-100 DPI).
-
-The CSS specification suggests:
-
-  It is recommended that the reference pixel be the visual angle of one
-  pixel on a device with a pixel density of 96 DPI and a distance from the
-  reader of an arm's length.
-
-  -- https://www.w3.org/TR/CSS2/syndata.html#length-units
+In LaTeX, the size of the *pixel unit* defaults to 1 px = 1/72 in
+while the `CSS3 pixel unit`_ is defined as 1 px = 1/96 in.
 
 This is why pixmap images without size specification or objects with a size
-specified in ``px`` tend to come too large in the PDF.
+specified in ``px`` tend to come out too large in the PDF.
 
 Solution:
-  Specify the image size in fixed units (``pt``, ``cm``, ``in``) or
-  configure the `size of a pixel`_ (length unit px).
+  Specify the image size in fixed `length units`_ (``pt``, ``cm``, ``in``, …)
+  or configure the `size of a "px"`_.
 
 
 Error ``illegal unit px``
@@ -2033,10 +2026,6 @@ The unit "px" was introduced by the `pdfTeX` converter on 2005-02-04.
 `pdfTeX` is used also for conversion into DVI format in all modern LaTeX
 distributions (since ca. 2006).
 
-If updating LaTeX is not an option, just remove the "px" from the length
-specification. HTML/CSS will default to "px" while the `latexe2` writer
-will add the fallback unit "bp".
-
 
 Error ``Symbol \textcurrency not provided`` ...
 ```````````````````````````````````````````````
@@ -2048,13 +2037,11 @@ an Euro sign at its place). You might see an error like::
     (textcomp)                font family ptm in TS1 encoding.
     (textcomp)                Default family used instead.
 
-(which in case of font family "ptm" is a false positive). Add either
+(which in case of font family "ptm" is a false positive).
 
-:warn: turn the error in a warning, use the default symbol (bitmap), or
-:force,almostfull: use the symbol provided by the font at the users
-                     risk,
-
-to the document options or use a different font package.
+Add either ``warn`` (turn the error in a warning, use the default (bitmap)
+symbol), or ``force,almostfull`` (use the symbol provided by the font at
+the users risk) to the document options or use a different font package.
 
 
 Warning: language … not supported

@@ -146,13 +146,26 @@ URI-references are typeset in the generated man page.
     offers opening the standard browser to that URI ... assuming OSC8 is
     supported.
 
-References
-==========
 
-Consult man pages from section 7: *man*, *man-pages*, *groff_man* and
-*groff_man_style*.
+Limitations
+===========
 
-.. [LMHT] `Linux Man Page Howto <https://tldp.org/HOWTO/Man-Page/>`__.
+The "manpage" writer does not support all `Docutils Document Tree`_ elements
+but a subset that is relevant for manual pages.
+
+The output is pure text, images are not included. Instead, the text
+description in their `"alt" attribute`_ is shown.
+
+.. TODO: a warning is given for image elements without `"alt" attribute`_.
+
+The "manpage" writer ignores element attributes specifying a measure_.
+
+.. _measure: ../ref/doctree.html#measure
+.. _"alt" attribute: ../ref/doctree.html#alt
+
+.. groff supports the CSS2 units except "ex", "mm", and "px"
+   https://www.gnu.org/software/groff/manual/groff.html#Measurements
+
 
 Conventions
 ===========
@@ -176,8 +189,9 @@ Conventions
   but this is not done on typesetting devices like printers.  Check your
   output with a PostScript or PDF viewer before printing it.
 
-* [LMHT]_ Filenames are always in italics, except in C language
-  preprocessor inclusions in the SYNOPSIS section.  Use::
+* Filenames are always in italics, except in C language
+  preprocessor inclusions in the SYNOPSIS section. [LMHT]_
+  Use::
 
     .I /usr/include/stdio.h
 
@@ -185,4 +199,14 @@ Conventions
 
     .B #include <stdio.h>
 
+
+References
+==========
+
+Consult man pages from section 7: *man*, *man-pages*, *groff_man* and
+*groff_man_style*.
+
+.. [LMHT] `Linux Man Page Howto <https://tldp.org/HOWTO/Man-Page/>`__.
+
 .. _Docutils: https://docutils.sourceforge.io/
+.. _Docutils Document Tree: ../ref/doctree.html

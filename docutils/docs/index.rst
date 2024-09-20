@@ -95,7 +95,7 @@ Docutils-general:
   * `Docutils Mailing Lists <user/mailing-lists.html>`__
   * `Docutils Link List <user/links.html>`__
 
-Writer-specific:
+_`Writer-specific`:
   * `Docutils HTML Writers <user/html.html>`__
   * `Easy Slide Shows With reStructuredText & S5 <user/slide-shows.html>`__
   * `Docutils LaTeX Writer <user/latex.html>`__
