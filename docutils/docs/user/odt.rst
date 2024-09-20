@@ -39,8 +39,8 @@ requires:
   highlighting of code in literal blocks.  See section `Syntax
   highlighting`_.
 
-- Optional -- `Python Imaging Library`_ (PIL) is required if on an
-  image or figure directive, you specify ``scale`` but not ``width``
+- Optional -- `Python Imaging Library`_ (PIL/Pillow_) is required if
+  you use the image or figure directive but don't specify ``width``
   and ``height``.  See section `Images and figures`_.
 
 
@@ -975,22 +975,20 @@ page.  See flags ``--endnotes-end-doc`` and
 Images and figures
 ------------------
 
-If on the image or the figure directive you provide the scale option
-but do not provide the width and height options, then ``odtwriter``
-will attempt to determine the size of the image using the `Python
-Imaging Library`_ (PIL).  If ``odtwriter`` cannot find and import
+The ODT Writer only supports fixed `length units`_ ("cm", "mm", "in",
+"pc", "pt", "px) for the size attributes "width", and "height".
+The fallback unit (used for attribute values without unit) is "px".
+
+If on the image or the figure directive you do not provide the width
+and height options, then ``odtwriter`` will attempt to determine the
+size of the image using the Python Imaging Library (PIL/Pillow_).
+If ``odtwriter`` cannot find and import the
 Python Imaging Library, it will raise an exception.  If this
 ocurrs, you can fix it by doing one of the following:
 
 - Install the Python Imaging Library or
 
-- Remove the ``scale`` option or
-
 - Add both the ``width`` and the ``height`` options.
-
-So, the rule is: if on any image or figure, you specify scale but
-not both width and height, you must install the `Python Imaging
-Library`_ library.
 
 For more information about PIL, see: `Python Imaging Library`_.
 
@@ -1188,6 +1186,8 @@ pick up the default paper size on platforms where the program
     tools.html#rst2odt
 .. _reStructuredText:
     ../ref/rst/restructuredtext.html
+.. _length units:
+    ../ref/rst/restructuredtext.html#length-units
 .. _`OpenDocument Text`:
     https://en.wikipedia.org/wiki/OpenDocument
 .. _LibreOffice:
@@ -1196,3 +1196,4 @@ pick up the default paper size on platforms where the program
     https://pygments.org/
 .. _`Python Imaging Library`:
     https://en.wikipedia.org/wiki/Python_Imaging_Library
+.. _`Pillow`: https://pypi.org/project/pillow/

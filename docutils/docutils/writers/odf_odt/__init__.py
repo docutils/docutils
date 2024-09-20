@@ -2207,6 +2207,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     'Invalid %s for image: "%s".  '
                     'Error: "%s".' % (
                         attr, node.attributes[attr], exp))
+                size, unit = 0.5, 'cm'  # fallback to avoid consequential error
         return size, unit
 
     def convert_to_cm(self, size):
@@ -2223,13 +2224,15 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         elif size.endswith('pt'):
             size = float(size[:-2]) * 0.035     # convert pt to cm
         elif size.endswith('pc'):
-            size = float(size[:-2]) * 2.371     # convert pc to cm
+            size = float(size[:-2]) * 0.423     # convert pc to cm
         elif size.endswith('mm'):
             size = float(size[:-2]) * 0.1       # convert mm to cm
         elif size.endswith('cm'):
             size = float(size[:-2])
+        elif size[-1:] in '0123456789.':        # no unit, use px
+            size = float(size) * 0.026          # convert px to cm
         else:
-            raise ValueError('unknown unit type')
+            raise ValueError('unit not supported with ODT')
         unit = 'cm'
         return size, unit
 
@@ -2250,8 +2253,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         scale = self.get_image_scale(node)
         width, width_unit = self.get_image_width_height(node, 'width')
         height, _ = self.get_image_width_height(node, 'height')
-        dpi = (72, 72)
-        if PIL is not None and source in self.image_dict:
+        dpi = (96, 96)  # image resolution in pixel per inch
+        if width is None or height is None:
+            if PIL is None:
+                raise RuntimeError(
+                    'image size not fully specified and PIL not installed')
+            # TODO: catch error and warn (similar to unsupported units).
             filename, destination = self.image_dict[source]
             with PIL.Image.open(filename, 'r') as img:
                 img_size = img.size
@@ -2261,26 +2268,19 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 iter(dpi)
             except TypeError:
                 dpi = (dpi, dpi)
-        else:
-            img_size = None
-        if width is None or height is None:
-            if img_size is None:
-                raise RuntimeError(
-                    'image size not fully specified and PIL not installed')
-            if width is None:
-                width = img_size[0]
-                width = float(width) * 0.026        # convert px to cm
+            # TODO: use dpi when converting px to cm
+        if width is None:
+            width = img_size[0] * 0.026             # convert px to cm
+        if height is None and width_unit != '%':
+            height = img_size[1] * 0.026            # convert px to cm
+        if width_unit == '%':
+            factor = width
+            line_width = self.get_page_width()
+            width = factor * line_width
             if height is None:
-                height = img_size[1]
-                height = float(height) * 0.026      # convert px to cm
-            if width_unit == '%':
-                factor = width
-                image_width = img_size[0]
-                image_width = float(image_width) * 0.026    # convert px to cm
-                image_height = img_size[1]
-                image_height = float(image_height) * 0.026  # convert px to cm
-                line_width = self.get_page_width()
-                width = factor * line_width
+                # scale proportionally
+                image_width = img_size[0] * 0.026   # convert px to cm
+                image_height = img_size[1] * 0.026  # convert px to cm
                 factor = (factor * line_width) / image_width
                 height = factor * image_height
         width *= scale

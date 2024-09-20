@@ -181,6 +181,13 @@ Release 0.22b.dev (unpublished)
 
   - `null.Writer.translate()` sets `self.output` to the empty string.
 
+* docutils/writers/odf_odt/__init__.py
+
+  - Use "px" as fallback unit for unitless image size attributes.
+  - Fix conversion factor of "pc" (pica) to "cm".
+  - Fix conversion of image width in "%" if the height is specified.
+  - Adjust fallback DPI value (currently not used) to match CSS units.
+
 * tools/rst2odt.py
 
   - Use `core.publish_file()` instead of `core.publish_file_to_binary()`.
