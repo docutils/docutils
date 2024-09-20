@@ -244,26 +244,24 @@ def percentage(argument: str) -> int:
     return nonnegative_int(argument)
 
 
-length_units = ['em', 'ex', 'px', 'in', 'cm', 'mm', 'pt', 'pc']
+length_units = ['em', 'ex', 'in', 'cm', 'mm', 'pt', 'pc', 'px']
 
 
 def get_measure(argument, units):
     """
-    Check for a positive argument of one of the units and return a
-    normalized string of the form "<value><unit>" (without space in
-    between).
-    (Directive option conversion function.)
+    Check for a positive argument of one of the `units`.
+
+    Return a normalized string of the form "<value><unit>"
+    (without space inbetween).
 
     To be called from directive option conversion functions.
     """
-    match = re.match(r'^([0-9.]+) *(%s)$' % '|'.join(units), argument)
-    try:
-        float(match.group(1))
-    except (AttributeError, ValueError):
+    value, unit = nodes.parse_measure(argument)
+    if value < 0 or unit not in units:
         raise ValueError(
-            'not a positive measure of one of the following units:\n"%s"'
-            % '" "'.join(units))
-    return match.group(1) + match.group(2)
+            'not a positive number or measure of one of the following units:\n'
+            + ', '.join(u for u in units if u))
+    return f'{value}{unit}'
 
 
 def length_or_unitless(argument: str) -> str:
@@ -289,12 +287,11 @@ def length_or_percentage_or_unitless(argument, default=''):
     """
     try:
         return get_measure(argument, length_units + ['%'])
-    except ValueError:
+    except ValueError as error:
         try:
             return get_measure(argument, ['']) + default
         except ValueError:
-            # raise ValueError with list of valid units:
-            return get_measure(argument, length_units + ['%'])
+            raise error
 
 
 def class_option(argument: str) -> list[str]:

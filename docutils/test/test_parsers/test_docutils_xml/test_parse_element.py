@@ -82,22 +82,25 @@ class ParseElementTestCase(unittest.TestCase):
 
     def test_element_with_attributes(self):
         xml = ('<image align="left" alt="a barking dog" height="3ex"'
-               ' loading="embed" scale="3" uri="dog.jpg" width="4cm"/>')
+               ' loading="embed" scale="3" uri="dog.jpg" width="4.50 cm"/>')
         node = docutils_xml.parse_element(xml)
-        self.assertEqual(xml, str(node))
+        # attribute values are normalized:
+        self.assertEqual(xml.replace('4.50 cm', '4.5cm'), str(node))
 
     def test_element_with_invalid_attributes(self):
         """Silently accept invalid attribute names and values.
 
         Validation reports problems.
         """
-        xml = ('<image breadth="3 cm" height="3 inch"/>')
+        xml = ('<image breadth="3 cm" height="three inch"/>')
         node = docutils_xml.parse_element(xml)
-        self.assertEqual(xml.replace('3 inch', '3inch'), str(node))
-        with self.assertRaisesRegex(ValueError,
-                                    'Element <image breadth="3 cm".*invalid:\n'
-                                    '.*"breadth" not one of "ids", '
-                                    ):
+        self.assertEqual(xml, str(node))
+        with self.assertRaisesRegex(
+            ValueError,
+            'Element <image .*> invalid:\n'
+            '  Attribute "breadth" not one of "ids", .*, "loading".\n'
+            '  Attribute "height" has invalid value "three inch".\n'
+            '  "three inch" is no valid measure.'):
             node.validate()
 
 
@@ -116,8 +119,8 @@ class XmlAttributesTestCase(unittest.TestCase):
                          'names': []}
 
     def test_alt(self):  # CDATA (str)
-        xml = ('<image alt="a barking dog" align="left" height="3ex"'
-               '       loading="embed" scale="3" uri="dog.jpg" width="4cm"/>')
+        xml = ('<image alt="a barking dog" align="left" height="3 ex"'
+               '       loading="embed" scale="3" uri="dog.jpg" width="4 cm"/>')
         expected = {'alt': 'a barking dog',
                     'align': 'left',
                     'height': '3ex',

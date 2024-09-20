@@ -1172,10 +1172,21 @@ class AttributeTypeTests(unittest.TestCase):
 
     def test_validate_measure(self):
         # number (may be decimal fraction) + optional unit
-        self.assertEqual(nodes.validate_measure('8ex'), '8ex')
-        self.assertEqual(nodes.validate_measure('2'), '2')
         # internal whitespace is removed
+        self.assertEqual(nodes.validate_measure('8 ex'), '8ex')
+        self.assertEqual(nodes.validate_measure('2'), '2')
+        # unit is "%" or a run of ASCII letters plus "µ"; case is preserved
         self.assertEqual(nodes.validate_measure('3.5 %'), '3.5%')
+        self.assertEqual(nodes.validate_measure('300 µm'), '300µm')
+        self.assertEqual(nodes.validate_measure('4 kHz'), '4kHz')
+        # other characters and whitespace are not allowed in a unit identifier
+        with self.assertRaisesRegex(ValueError, 'no valid measure'):
+            nodes.validate_measure('3 micro-farads')
+        with self.assertRaisesRegex(ValueError, 'no valid measure'):
+            nodes.validate_measure('3 micro farads')
+        # a number is required
+        with self.assertRaisesRegex(ValueError, '"ex" is no valid measure'):
+            nodes.validate_measure('ex')
         # padding whitespace is not valid
         with self.assertRaisesRegex(ValueError, '"8ex " is no valid measure'):
             nodes.validate_measure('8ex ')

@@ -23,6 +23,8 @@ from docutils.utils import new_document
 
 
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -170,14 +172,34 @@ totest['images'] = [
 <document source="test data">
     <image height="100em" uri="picture.png" width="200px">
 """],
+# as in CSS3, units are case-insensitive (new in Docutils 0.22)
 ["""\
 .. image:: picture.png
-   :width: 50%
-   :height: 10mm
+   :width:   50 mm
+   :height: 100 em
 """,
 """\
 <document source="test data">
-    <image height="10mm" uri="picture.png" width="50%">
+    <image height="100em" uri="picture.png" width="50mm">
+"""],
+# TODO: support CSS3 units (cf. [feature-requests:#57]
+["""\
+.. image:: picture.png
+   :width: 50%
+   :height: 10vh
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error in "image" directive:
+            invalid option value: (option: "height"; value: '10vh')
+            not a positive number or measure of one of the following units:
+            em, ex, in, cm, mm, pt, pc, px.
+        <literal_block xml:space="preserve">
+            .. image:: picture.png
+               :width: 50%
+               :height: 10vh
 """],
 ["""\
 .. image:: picture.png
@@ -190,8 +212,8 @@ totest['images'] = [
         <paragraph>
             Error in "image" directive:
             invalid option value: (option: "height"; value: \'40%\')
-            not a positive measure of one of the following units:
-            "em" "ex" "px" "in" "cm" "mm" "pt" "pc" "".
+            not a positive number or measure of one of the following units:
+            em, ex, in, cm, mm, pt, pc, px.
         <literal_block xml:space="preserve">
             .. image:: picture.png
                :width: 50%
@@ -207,8 +229,8 @@ totest['images'] = [
         <paragraph>
             Error in "image" directive:
             invalid option value: (option: "width"; value: \'20mc\')
-            not a positive measure of one of the following units:
-            "em" "ex" "px" "in" "cm" "mm" "pt" "pc" "%".
+            not a positive number or measure of one of the following units:
+            em, ex, in, cm, mm, pt, pc, px, %.
         <literal_block xml:space="preserve">
             .. image:: picture.png
                :width: 20mc
