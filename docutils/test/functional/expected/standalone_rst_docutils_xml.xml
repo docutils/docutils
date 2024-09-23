@@ -693,7 +693,7 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
             <footnote backrefs="footnote-reference-1 footnote-reference-5 footnote-reference-9" ids="footnote-1" names="1">
                 <label>1</label>
                 <paragraph>A footnote contains body elements, consistently indented by at
-                    least 3 spaces.</paragraph>
+                    least 1 space.</paragraph>
                 <paragraph>This is the footnote's second paragraph.</paragraph>
             </footnote>
             <footnote auto="1" backrefs="footnote-reference-3 footnote-reference-6" ids="label" names="label">
@@ -1387,7 +1387,7 @@ footnotes <footnote_reference ids="footnote-reference-9" refid="footnote-1">1</f
             <substitution_definition names="EXAMPLE"><image alt="EXAMPLE" uri="../../../docs/user/rst/images/biohazard.png"></image></substitution_definition>
             <paragraph>A Unicode example:</paragraph>
             <substitution_definition ltrim="1" names="heart" rtrim="1">♥</substitution_definition>
-            <paragraph>(Substitution definitions are not visible in the HTML source.)</paragraph>
+            <paragraph>(Substitution definitions are only visible in the rST source.)</paragraph>
         </section>
         <section ids="comments" names="comments">
             <title auto="1" refid="toc-entry-35"><generated classes="sectnum">2.16   </generated>Comments</title>
@@ -1399,7 +1399,7 @@ targets, directives, or substitution definitions.
 Double-dashes -- "--" -- must be escaped somehow in HTML output.
 
 Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
-            <paragraph>(View the HTML source to see the comment.)</paragraph>
+            <paragraph>(View the HTML/LaTeX/... source to see the comment.)</paragraph>
         </section>
         <section ids="raw-text" names="raw\ text">
             <title auto="1" refid="toc-entry-36"><generated classes="sectnum">2.17   </generated>Raw text</title>

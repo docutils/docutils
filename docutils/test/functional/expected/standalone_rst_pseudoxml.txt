@@ -1034,7 +1034,7 @@
                     1
                 <paragraph>
                     A footnote contains body elements, consistently indented by at
-                    least 3 spaces.
+                    least 1 space.
                 <paragraph>
                     This is the footnote's second paragraph.
             <footnote auto="1" backrefs="footnote-reference-3 footnote-reference-6" ids="label" names="label">
@@ -2035,7 +2035,7 @@
             <substitution_definition ltrim="1" names="heart" rtrim="1">
                 ♥
             <paragraph>
-                (Substitution definitions are not visible in the HTML source.)
+                (Substitution definitions are only visible in the rST source.)
         <section ids="comments" names="comments">
             <title auto="1" refid="toc-entry-35">
                 <generated classes="sectnum">
@@ -2052,7 +2052,7 @@
                 
                 Comments may contain non-ASCII characters: ä ö ü æ ø å
             <paragraph>
-                (View the HTML source to see the comment.)
+                (View the HTML/LaTeX/... source to see the comment.)
         <section ids="raw-text" names="raw\ text">
             <title auto="1" refid="toc-entry-36">
                 <generated classes="sectnum">

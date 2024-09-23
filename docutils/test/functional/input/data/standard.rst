@@ -364,9 +364,9 @@ Footnotes
 ---------
 
 .. [1] A footnote contains body elements, consistently indented by at
-   least 3 spaces.
+ least 1 space.
 
-   This is the footnote's second paragraph.
+ This is the footnote's second paragraph.
 
 .. [#label] Footnotes may be numbered, either manually (as in [1]_) or
    automatically using a "#"-prefixed label.  This footnote has a
@@ -927,7 +927,7 @@ A Unicode example:
 .. |heart| unicode:: 0x2665
    :trim:
 
-(Substitution definitions are not visible in the HTML source.)
+(Substitution definitions are only visible in the rST source.)
 
 Comments
 --------
@@ -942,7 +942,7 @@ Here's one:
 
    Comments may contain non-ASCII characters: ä ö ü æ ø å
 
-(View the HTML source to see the comment.)
+(View the HTML/LaTeX/... source to see the comment.)
 
 Raw text
 --------
