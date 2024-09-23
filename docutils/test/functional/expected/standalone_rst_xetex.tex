@@ -8,7 +8,6 @@
   \DeclareTextCommand{\textquotedbl}{\UnicodeEncodingName}{%
     {\addfontfeatures{RawFeature=-tlig,Mapping=}\char34}}%
 \fi
-\usepackage{ifthen}
 \usepackage{alltt}
 \usepackage{amsmath}
 \usepackage{polyglossia}
@@ -48,11 +47,12 @@
     {\end{list}}%
 }
 % hyperlinks:
-\ifthenelse{\isundefined{\hypersetup}}{
+\ifdefined\hypersetup
+\else
   \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
   \usepackage{bookmark}
   \urlstyle{same} % normal text font (alternatives: tt, rm, sf)
-}{}
+\fi
 \hypersetup{
   pdftitle={reStructuredText Test Document},
   pdfkeywords={reStructuredText, test, parser},

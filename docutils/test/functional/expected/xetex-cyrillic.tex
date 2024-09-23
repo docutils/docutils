@@ -8,7 +8,6 @@
   \DeclareTextCommand{\textquotedbl}{\UnicodeEncodingName}{%
     {\addfontfeatures{RawFeature=-tlig,Mapping=}\char34}}%
 \fi
-\usepackage{ifthen}
 \usepackage{polyglossia}
 \setdefaultlanguage{russian}
 \setotherlanguages{english}
@@ -24,11 +23,12 @@
 
 %%% Fallback definitions for Docutils-specific commands
 % hyperlinks:
-\ifthenelse{\isundefined{\hypersetup}}{
+\ifdefined\hypersetup
+\else
   \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
   \usepackage{bookmark}
   \urlstyle{same} % normal text font (alternatives: tt, rm, sf)
-}{}
+\fi
 \hypersetup{
   pdflang={ru},
 }

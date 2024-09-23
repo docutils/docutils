@@ -198,6 +198,9 @@ Output changes
      command. The "hyperref" package generates hyperlinks for labels by
      default, so there is no change in the PDF (except for "ref*").
 
+     Stop requiring "ifthen.sty". Replace use of
+     ``\ifthenelse{\isundefined...`` with the eTeX primitive ``\ifdefined``.
+
      .. _reference-label: docs/user/config.html#reference-label
 
   HTML5:

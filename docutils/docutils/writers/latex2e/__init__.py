@@ -435,7 +435,10 @@ class Babel:
     def __call__(self):
         """Return the babel call with correct options and settings"""
         languages = sorted(self.otherlanguages.keys())
-        languages.append(self.language or 'english')
+        if languages:
+            languages.append(f'main={self.language or "english"}')
+        else:
+            languages.append(self.language or 'english')
         self.setup = [r'\usepackage[%s]{babel}' % ','.join(languages)]
         # Deactivate "active characters"
         shorthands = []
@@ -456,7 +459,7 @@ class Babel:
             self.setup.extend([r'\makeatletter',
                                r'  \addto\extrasbasque{\bbl@deactivate{~}}',
                                r'\makeatother'])
-        if (languages[-1] == 'english'
+        if (languages[-1] == 'main=english'
             and 'french' in self.otherlanguages.keys()):
             self.setup += ['% Prevent side-effects if French hyphenation '
                            'patterns are not loaded:',
@@ -520,11 +523,12 @@ PreambleCmds.float = r"""\usepackage{float} % extended float configuration
 \floatplacement{figure}{H} % place figures here definitely"""
 
 PreambleCmds.linking = r"""%% hyperlinks:
-\ifthenelse{\isundefined{\hypersetup}}{
+\ifdefined\hypersetup
+\else
   \usepackage[%s]{hyperref}
   \usepackage{bookmark}
   \urlstyle{same} %% normal text font (alternatives: tt, rm, sf)
-}{}"""
+\fi"""
 
 PreambleCmds.minitoc = r"""%% local table of contents
 \usepackage{minitoc}"""
@@ -1254,7 +1258,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                             (self.documentoptions,
                              settings.documentclass)]
         self.requirements = SortableDict()  # made a list in depart_document()
-        self.requirements['__static'] = r'\usepackage{ifthen}'
         self.latex_preamble = [settings.latex_preamble]
         self.fallbacks = SortableDict()  # made a list in depart_document()
         self.pdfsetup = []  # PDF properties (hyperref package)

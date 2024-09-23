@@ -1,6 +1,6 @@
 %% docutils.sty: macros for Docutils LaTeX output.
 %%
-%%   Copyright © 2020 Günter Milde
+%%   Copyright © 2020, 2024 Günter Milde
 %%   Released under the terms of the `2-Clause BSD license`, in short:
 %%
 %%      Copying and distribution of this file, with or without modification,
@@ -8,7 +8,12 @@
 %%      notice and this notice are preserved.
 %%      This file is offered as-is, without any warranty.
 
+% docutils.sty
+% ************
+%
+% .. contents::
 % .. include:: README.md
+%    :parser: commonmark
 %
 % Implementation
 % ==============
@@ -17,7 +22,7 @@
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{docutils}
-  [2021/05/18 macros for Docutils LaTeX output]
+  [2024-09-23 macros for Docutils LaTeX output]
 
 % Helpers
 % -------
@@ -27,26 +32,30 @@
 % class handling for environments (block-level elements)
 % \begin{DUclass}{spam} tries \DUCLASSspam and
 % \end{DUclass}{spam} tries \endDUCLASSspam
-\ifx\DUclass\undefined % poor man's "provideenvironment"
- \newenvironment{DUclass}[1]%
-  {% "#1" does not work in end-part of environment.
-   \def\DocutilsClassFunctionName{DUCLASS#1}
+\ifdefined\DUclass
+\else % poor man's "provideenvironment"
+  \newenvironment{DUclass}[1]%
+    {% "#1" does not work in end-part of environment.
+     \def\DocutilsClassFunctionName{DUCLASS#1}
      \csname \DocutilsClassFunctionName \endcsname}%
-  {\csname end\DocutilsClassFunctionName \endcsname}%
+    {\csname end\DocutilsClassFunctionName \endcsname}%
 \fi
 
 % providelength::
 
 % Provide a length variable and set default, if it is new
-\providecommand*{\DUprovidelength}[2]{
-  \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
+\providecommand*{\DUprovidelength}[2]{%
+  \ifdefined#1
+  \else
+    \newlength{#1}\setlength{#1}{#2}%
+  \fi
 }
 
 
 % Configuration defaults
 % ----------------------
 %
-% See `Docutils LaTeX Writer`_ for details.
+% See `Generating LaTeX with Docutils`_ for details.
 %
 % abstract::
 
@@ -61,7 +70,7 @@
   \renewenvironment{quote}{\begin{center}}{\end{center}}%
 }
 
-% TODO: add \em to set dedication text in italics?
+% .. TODO: add \em to set dedication text in italics?
 %
 % docinfo::
 
@@ -88,28 +97,30 @@
 % admonition::
 
 % admonition environment (specially marked topic)
-\ifx\DUadmonition\undefined % poor man's "provideenvironment"
- \newbox{\DUadmonitionbox}
- \newenvironment{DUadmonition}%
-  {\begin{center}
-     \begin{lrbox}{\DUadmonitionbox}
-       \begin{minipage}{0.9\linewidth}
-  }%
-  {    \end{minipage}
-     \end{lrbox}
-     \fbox{\usebox{\DUadmonitionbox}}
-   \end{center}
-  }
+\ifdefined\DUadmonition
+\else % poor man's "provideenvironment"
+  \newbox{\DUadmonitionbox}
+  \newenvironment{DUadmonition}%
+    {\begin{center}
+       \begin{lrbox}{\DUadmonitionbox}
+         \begin{minipage}{0.9\linewidth}
+    }%
+    {    \end{minipage}
+       \end{lrbox}
+       \fbox{\usebox{\DUadmonitionbox}}
+     \end{center}
+    }
 \fi
 
 % fieldlist::
 
 % field list environment (for separate configuration of `field lists`)
-\ifthenelse{\isundefined{\DUfieldlist}}{
+\ifdefined\DUfieldlist
+\else
   \newenvironment{DUfieldlist}%
     {\quote\description}
     {\enddescription\endquote}
-}{}
+\fi
 
 % footnotes::
 
@@ -141,15 +152,17 @@
 % legend::
 
 % legend environment (in figures and formal tables)
-\ifthenelse{\isundefined{\DUlegend}}{
+\ifdefined\DUlegend
+\else
   \newenvironment{DUlegend}{\small}{}
-}{}
+\fi
 
 % lineblock::
 
 % line block environment
 \DUprovidelength{\DUlineblockindent}{2.5em}
-\ifthenelse{\isundefined{\DUlineblock}}{
+\ifdefined\DUlineblock
+\else
   \newenvironment{DUlineblock}[1]{%
     \list{}{\setlength{\partopsep}{\parskip}
             \addtolength{\partopsep}{\baselineskip}
@@ -160,14 +173,15 @@
     \raggedright
   }
   {\endlist}
-}{}
+\fi
 
 % optionlist::
 
 % list of command line options
 \providecommand*{\DUoptionlistlabel}[1]{\bfseries #1 \hfill}
 \DUprovidelength{\DUoptionlistindent}{3cm}
-\ifthenelse{\isundefined{\DUoptionlist}}{
+\ifdefined\DUoptionlist
+\else
   \newenvironment{DUoptionlist}{%
     \list{}{\setlength{\labelwidth}{\DUoptionlistindent}
             \setlength{\rightmargin}{1cm}
@@ -177,7 +191,7 @@
             \renewcommand{\makelabel}{\DUoptionlistlabel}}
   }
   {\endlist}
-}{}
+\fi
 
 % rubric::
 
@@ -221,3 +235,9 @@
   \hspace*{\fill}\hrulefill\hspace*{\fill}
   \vskip 0.5\baselineskip
 }
+
+
+% .. References:
+%
+% .. _Generating LaTeX with Docutils:
+%     https://docutils.sourceforge.io/docs/user/latex.html

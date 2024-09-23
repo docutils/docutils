@@ -124,8 +124,7 @@ $titledata""")
 parts = {
 'head_prefix': r"""\documentclass[a4paper]{article}
 """,
-'requirements': r"""\usepackage{ifthen}
-\usepackage[T1]{fontenc}
+'requirements': r"""\usepackage[T1]{fontenc}
 """,
 'latex_preamble': r"""% PDF Standard Fonts
 \usepackage{mathptmx} % Times
@@ -156,11 +155,12 @@ parts = {
 """,
 'pdfsetup': r"""
 % hyperlinks:
-\ifthenelse{\isundefined{\hypersetup}}{
+\ifdefined\hypersetup
+\else
   \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
   \usepackage{bookmark}
   \urlstyle{same} % normal text font (alternatives: tt, rm, sf)
-}{}
+\fi
 """,
 'titledata': ''}
 
@@ -227,9 +227,8 @@ head_image + r"""
 samples_default['spanish_quote'] = [
 [".. role:: language-es\n\nUnd damit :language-es:`basta`!",
 head_template.substitute(dict(parts,
-requirements=r"""\usepackage{ifthen}
-\usepackage[T1]{fontenc}
-\usepackage[spanish,english]{babel}
+requirements=r"""\usepackage[T1]{fontenc}
+\usepackage[spanish,main=english]{babel}
 \AtBeginDocument{\shorthandoff{.<>}}
 """)) + r"""
 Und damit \foreignlanguage{spanish}{basta}!
@@ -269,12 +268,13 @@ head_template.substitute(dict(parts,
 % class handling for environments (block-level elements)
 % \begin{DUclass}{spam} tries \DUCLASSspam and
 % \end{DUclass}{spam} tries \endDUCLASSspam
-\ifx\DUclass\undefined % poor man's "provideenvironment"
- \newenvironment{DUclass}[1]%
-  {% "#1" does not work in end-part of environment.
-   \def\DocutilsClassFunctionName{DUCLASS#1}
+\ifdefined\DUclass
+\else % poor man's "provideenvironment"
+  \newenvironment{DUclass}[1]%
+    {% "#1" does not work in end-part of environment.
+     \def\DocutilsClassFunctionName{DUCLASS#1}
      \csname \DocutilsClassFunctionName \endcsname}%
-  {\csname end\DocutilsClassFunctionName \endcsname}%
+    {\csname end\DocutilsClassFunctionName \endcsname}%
 \fi
 
 % title for topics, admonitions, unsupported section levels, and sidebar
@@ -989,12 +989,13 @@ head_template.substitute(
 % class handling for environments (block-level elements)
 % \begin{DUclass}{spam} tries \DUCLASSspam and
 % \end{DUclass}{spam} tries \endDUCLASSspam
-\ifx\DUclass\undefined % poor man's "provideenvironment"
- \newenvironment{DUclass}[1]%
-  {% "#1" does not work in end-part of environment.
-   \def\DocutilsClassFunctionName{DUCLASS#1}
+\ifdefined\DUclass
+\else % poor man's "provideenvironment"
+  \newenvironment{DUclass}[1]%
+    {% "#1" does not work in end-part of environment.
+     \def\DocutilsClassFunctionName{DUCLASS#1}
      \csname \DocutilsClassFunctionName \endcsname}%
-  {\csname end\DocutilsClassFunctionName \endcsname}%
+    {\csname end\DocutilsClassFunctionName \endcsname}%
 \fi
 """
     )
@@ -1101,12 +1102,13 @@ head_template.substitute(
 % class handling for environments (block-level elements)
 % \begin{DUclass}{spam} tries \DUCLASSspam and
 % \end{DUclass}{spam} tries \endDUCLASSspam
-\ifx\DUclass\undefined % poor man's "provideenvironment"
- \newenvironment{DUclass}[1]%
-  {% "#1" does not work in end-part of environment.
-   \def\DocutilsClassFunctionName{DUCLASS#1}
+\ifdefined\DUclass
+\else % poor man's "provideenvironment"
+  \newenvironment{DUclass}[1]%
+    {% "#1" does not work in end-part of environment.
+     \def\DocutilsClassFunctionName{DUCLASS#1}
      \csname \DocutilsClassFunctionName \endcsname}%
-  {\csname end\DocutilsClassFunctionName \endcsname}%
+    {\csname end\DocutilsClassFunctionName \endcsname}%
 \fi
 """)
 ) + r"""

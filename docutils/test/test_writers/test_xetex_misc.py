@@ -45,8 +45,11 @@ px_body = r"""
 
 px_fallback = r"""
 % Provide a length variable and set default, if it is new
-\providecommand*{\DUprovidelength}[2]{
-  \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
+\providecommand*{\DUprovidelength}[2]{%
+  \ifdefined#1
+  \else
+    \newlength{#1}\setlength{#1}{#2}%
+  \fi
 }
 
 \DUprovidelength{\pdfpxdimen}{1bp}

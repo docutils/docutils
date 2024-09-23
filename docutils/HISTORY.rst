@@ -162,6 +162,9 @@ Release 0.22b.dev (unpublished)
     move XeTeX-specific code to the "xetex" writer.
   - Don't wrap references with custom reference-label_ in
     a ``\hyperref`` command.
+  - Stop requiring "ifthen.sty". Replace use of ``\ifthenelse{\isundefined...``
+    with the eTeX primitive ``\ifdefined``.
+  - Mark the main language when loading "babel".
   - Provide an "unknown_references_resolver" (cf. `docutils/TransformSpec`)
     for citation references resolved with BibTeX (cf. `use_bibtex`_ setting).
 

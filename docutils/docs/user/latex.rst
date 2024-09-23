@@ -379,7 +379,7 @@ Templates
 Some customizations require commands at places other than the insertion
 point of stylesheets or depend on the deletion/replacement of parts of the
 document. This can be done via a custom template. See the `publisher
-documentation`_ for a description of the document parts available in a
+documentation`_ for a description of the `document parts`_ available in a
 template file.
 
 Option:
@@ -396,7 +396,10 @@ Example:
     --template=titlepage.tex
 
 .. _publisher documentation: ../api/publisher.html
+.. _document parts:
+    ../api/publisher.html#parts-provided-by-the-xe-latex-writers
 .. _template: config.html#template-latex-writers
+
 
 Raw LaTeX
 `````````
