@@ -1,4 +1,4 @@
-/* Minimal style sheet for the HTML output of Docutils.                    */
+t/* Minimal style sheet for the HTML output of Docutils.                    */
 /*                                                                         */
 /* :Author: Günter Milde, based on html4css1.css by David Goodger          */
 /* :Id: $Id$                                                               */
@@ -235,13 +235,10 @@ table.align-left, table.align-center, table.align-right {
 div.line-block { display: block; }
 div.line-block div.line-block, pre { margin-left: 2em; }
 
-/* Code line numbers: align-right, don't copy with drag-and-drop */
+/* Code line numbers: don't copy with drag-and-drop */
 pre.code .ln { display: none; }
 pre.code code:before {
   content: attr(data-lineno);
-  display: inline-block;
-  min-width: 1.8em;
-  text-align: right;
   font-size: small;
   color: gray;
 }
