@@ -22,8 +22,8 @@ Release 0.22b.dev (unpublished)
   - We have started to add type hints to Docutils.
     This will be a complex programme of work, and as such
     for the time being these type hints are 'provisional',
-    and should not be relied upon by consumers of Docutils.
-    (feature-request #87)
+    and should not be relied upon by consumers of Docutils
+    (feature-request #87).
   - Add tox.ini to pyproject.toml to be in sdist (bug #486).
   - Fix license issue (bug #487).
 
@@ -61,7 +61,7 @@ Release 0.22b.dev (unpublished)
     Provisional.
   - New "attribute validating functions"
     convert string representations to correct data type,
-    normalize values,
+    normalize values, and
     raise ValueError for invalid attribute names or values.
   - New function `parse_measure()`.
   - Removed `Element.set_class()`.
@@ -70,13 +70,14 @@ Release 0.22b.dev (unpublished)
 
   - New parser for Docutils XML sources. Provisional.
 
+* docutils/parsers/recommonmark_wrapper.py
+
+  - New method `Parser.finish_parse()` to clean up (before validating).
+
 * docutils/parsers/rst/languages/
 
   - Removed mistranslations of the "admonition" directive name.
 
-* docutils/parsers/recommonmark_wrapper.py
-
-  - New method `Parser.finish_parse()` to clean up (before validating).
 
 * docutils/parsers/rst/directives/misc.py
 

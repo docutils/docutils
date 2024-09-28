@@ -107,11 +107,11 @@ Writers
 
     __ docs/user/latex.html#length-units
 
-Misc
-----
+Removals
+--------
 
 * Remove `io.BinaryFileOutput` and `core.publish_cmdline_to_binary()`
-  in Docutils 0.24.
+  in Docutils 0.24.
 
 * Remove `parsers.rst.directives.CSVTable.HeaderDialect`
   in Docutils 1.0.
@@ -131,7 +131,7 @@ Misc
 * Remove the "rawsource" argument from `nodes.Text.__init__()`
   in Docutils 2.0.
 
-* Remove the deprecated attributes `nodes.Element.known_attributes`,
+* Remove attributes `nodes.Element.known_attributes`,
   `nodes.Element.basic_attributes`, and `nodes.Element.local_attributes`,
   in Docutils 2.0.
 
@@ -145,6 +145,9 @@ Misc
   `core.Publisher.__init__()` and the `core.publish_*()` convenience
   functions in Docutils 2.0.  Since Docutils 0.22, you may use "reader",
   "parser", and "writer" arguments for component names as well as instances.
+
+Misc
+----
 
 * Revise the `String I/O`__ interface used by the `publish_string()`
   and `publish_from_doctree()` publisher convenience functions.

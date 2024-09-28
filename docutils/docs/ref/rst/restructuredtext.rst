@@ -3083,6 +3083,11 @@ Measures are only supported where explicitly mentioned in the reference
 manuals (`directive option`_ values of type "length__" or "percentage__").
 In the `document tree`_, they are stored in attributes of type `measure`_.
 
+It is up to the processing system to provide a fallback/workaround
+or raise an error if the output format does not support a unit
+(or values without unit).
+For the behaviour of the Docutils writers, see the `writer documentation`_.
+
 .. _directive option: `directive options`_
 __ directives.html#length
 __ directives.html#percentage
@@ -3103,19 +3108,13 @@ ex    x-height of the element's font
 ----  ---------------------------------------------------------
 cm    centimeters              1 cm = 10 mm
 mm    millimeters              1 mm = 1/1000 m
-in    inches                   1 in = 2.54 cm = 96 px
+in    inches                   1 in = 25.4 mm = 96 px
 pc    picas                    1 pc = 1/6 in = 12 pt
 pt    points                   1 pt = 1/72 in
 px    pixels                   1 px = 3/4 pt = 1/96 in [#]_
 ====  =======================  ================================
 
-The following are all valid length values:
-"1.5em", "20 mm", ".5 in", "42".
-
-It is up to the processing system to provide a fallback/workaround or
-raise an error if the output format does not support a unit or
-values without unit.  For the behaviour of the Docutils writers,
-see the `writer documentation`_.
+The following are all valid length values: "1.5em", "20 mm", ".5 in", "42".
 
 .. [#] a subset of `length units in CSS3`_
 .. [#] In LaTeX, the default definition is 1 px = 1 pt = 1/72 in
