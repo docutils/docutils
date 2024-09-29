@@ -3,7 +3,7 @@
 % rubber: set program xelatex
 \usepackage{fontspec}
 % \defaultfontfeatures{Scale=MatchLowercase}
-% straight double quotes (defined T1 but missing in TU):
+% straight double quotes (defined in T1 but missing in TU):
 \ifdefined \UnicodeEncodingName
   \DeclareTextCommand{\textquotedbl}{\UnicodeEncodingName}{%
     {\addfontfeatures{RawFeature=-tlig,Mapping=}\char34}}%

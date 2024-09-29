@@ -143,6 +143,10 @@ class WarningsTestCase(unittest.TestCase):
             core.publish_string('warnings test', writer=latex2e.Writer(),
                                 settings_overrides=settings)
 
+    def test_deprecation_warnings(self):
+        with self.assertWarnsRegex(DeprecationWarning, 'will be removed'):
+            latex2e.SortableDict(deprecated=True)
+
 
 if __name__ == '__main__':
     unittest.main()

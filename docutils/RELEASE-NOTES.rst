@@ -113,6 +113,8 @@ Removals
 * Remove `io.BinaryFileOutput` and `core.publish_cmdline_to_binary()`
   in Docutils 0.24.
 
+* Remove `writers.latex2e.SortableDict` in Docutils 0.24.
+
 * Remove `parsers.rst.directives.CSVTable.HeaderDialect`
   in Docutils 1.0.
 
@@ -364,6 +366,8 @@ Release 0.21 (2024-04-09)
   `docutils.nodes.reprunicode`, `docutils.nodes.ensure_str()`
     Python 2 compatibility hacks
   `docutils.utils.Reporter.set_conditions()`
+    obsolete
+  `writers.latex2e.Table.get_caption`
     obsolete
 
 * New files:

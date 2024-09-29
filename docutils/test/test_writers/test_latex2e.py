@@ -177,6 +177,14 @@ head_image = head_template.substitute(
     dict(parts, requirements=parts['requirements']
          + '\\usepackage{graphicx}\n'))
 
+head_minitoc = head_template.substitute(
+    dict(parts, requirements=parts['requirements']
+         + '%% local table of contents\n'
+           '\\usepackage{minitoc}\n'
+           '\\dosecttoc\n'
+           '\\mtcsetdepth{secttoc}{5}\n'
+           '\\setcounter{secnumdepth}{0}\n'))
+
 head_textcomp = head_template.substitute(
     dict(parts, requirements=parts['requirements']
          + '\\usepackage{textcomp} % text symbol macros\n'))
@@ -244,6 +252,40 @@ head_template.substitute(dict(parts, requirements=parts['requirements']
                               fallbacks=parts['fallbacks_highlight']))
 + r"""
 \texttt{\DUrole{code}{x=1}}
+
+\end{document}
+"""],
+]
+
+samples_default['minitoc'] = [
+# local toc reqires the minitoc package
+# and either \tableofcontents or \faketableofcontents
+["""\
+section with local ToC
+======================
+
+.. contents::
+   :local:
+
+section not in local toc
+========================
+""",
+head_minitoc + r"""
+
+\section{section with local ToC%
+  \label{section-with-local-toc}%
+}
+
+\phantomsection\label{contents}
+\mtcsettitle{secttoc}{}
+\secttoc
+
+
+\section{section not in local toc%
+  \label{section-not-in-local-toc}%
+}
+
+\faketableofcontents % for local ToCs
 
 \end{document}
 """],

@@ -490,9 +490,15 @@ class Babel:
 class SortableDict(dict):
     """Dictionary with additional sorting methods
 
-    Tip: use key starting with with '_' for sorting before small letters
-         and with '~' for sorting after small letters.
+    Deprecated. Will be removed in Docutils 0.24.
     """
+
+    def __init__(self, *args, **kwargs):
+        warnings.warn('`writers.latex2e.SortableDict` is obsolete'
+                      ' and will be removed in Docutils 0.24.',
+                      DeprecationWarning, stacklevel=2)
+        super().__init__(*args, **kwargs)
+
     def sortedkeys(self):
         """Return sorted list of keys"""
         return sorted(self.keys())
@@ -1025,19 +1031,6 @@ class Table:
         except IndexError:
             return 'l'
 
-    def get_caption(self) -> str:
-        """Deprecated. Will be removed in Docutils 0.22."""
-        warnings.warn('`writers.latex2e.Table.get_caption()` is obsolete'
-                      ' and will be removed in Docutils 0.22.',
-                      DeprecationWarning, stacklevel=2)
-
-        if not self.caption:
-            return ''
-        caption = ''.join(self.caption)
-        if 1 == self._translator.thead_depth():
-            return r'\caption{%s}\\' '\n' % caption
-        return r'\caption[]{%s (... continued)}\\' '\n' % caption
-
     def need_recurse(self):
         if self._latex_type == 'longtable':
             return 1 == self._translator.thead_depth()
@@ -1257,9 +1250,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.head_prefix = [r'\documentclass[%s]{%s}' %
                             (self.documentoptions,
                              settings.documentclass)]
-        self.requirements = SortableDict()  # made a list in depart_document()
+        self.requirements = {}  # converted to a list in depart_document()
         self.latex_preamble = [settings.latex_preamble]
-        self.fallbacks = SortableDict()  # made a list in depart_document()
+        self.fallbacks = {}  # converted to a list in depart_document()
         self.pdfsetup = []  # PDF properties (hyperref package)
         self.title = []
         self.subtitle = []
@@ -2023,10 +2016,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if (self.babel.otherlanguages
             or self.babel.language not in ('', 'english')):
             self.requirements['babel'] = self.babel()
-        # * conditional requirements (before style sheet)
-        self.requirements = self.requirements.sortedvalues()
-        # * coditional fallback definitions (after style sheet)
-        self.fallbacks = self.fallbacks.sortedvalues()
         # * PDF properties
         self.pdfsetup.append(PreambleCmds.linking % self.hyperref_options)
         if self.pdfauthor:
@@ -2044,6 +2033,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # * make sure to generate a toc file if needed for local contents:
         if 'minitoc' in self.requirements and not self.has_latex_toc:
             self.out.append('\n\\faketableofcontents % for local ToCs\n')
+        # * conditional requirements (before style sheet)
+        self.requirements = [self.requirements[key]
+                             for key in sorted(self.requirements.keys())]
+        # * coditional fallback definitions (after style sheet)
+        self.fallbacks = [self.fallbacks[key]
+                          for key in sorted(self.fallbacks.keys())]
 
     def make_title(self) -> None:
         # Auxiliary function called by `self.depart_document()`.
