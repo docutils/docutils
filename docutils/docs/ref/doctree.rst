@@ -4001,7 +4001,7 @@ _`%ids.type`
 
 _`%measure`
   | A number which may be immediately followed by a unit or percent sign.
-    ReStructuredText supports `CSS2 length units`_.
+    ReStructuredText supports `CSS3 length units`_.
     Handling of values without unit depends on the writer/output format
     (see the writer specific documentation in the `user documentation`__
     for details). Resolves to CDATA_.
@@ -5317,7 +5317,7 @@ Bibliography
 .. _bibliographic fields:   rst/restructuredtext.html#bibliographic-fields
 .. _block quote:            rst/restructuredtext.html#block-quotes
 .. _bullet list:            rst/restructuredtext.html#bullet-lists
-.. _CSS2 length units:      rst/restructuredtext.html#length-units
+.. _CSS3 length units:      rst/restructuredtext.html#length-units
 .. _citations:              rst/restructuredtext.html#citations
 .. _definition list:        rst/restructuredtext.html#definition-lists
 .. _directive:              rst/restructuredtext.html#directives

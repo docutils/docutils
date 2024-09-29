@@ -115,6 +115,10 @@ Removals
 
 * Remove `writers.latex2e.SortableDict` in Docutils 0.24.
 
+* Remove `parsers.rst.directives.length_units` in Docutils 0.24.
+  Use `parsers.rst.directives.CSS3_LENGTH_UNITS`.  Mind that this
+  is a tuple, not a list.
+
 * Remove `parsers.rst.directives.CSVTable.HeaderDialect`
   in Docutils 1.0.
 
@@ -181,6 +185,14 @@ Misc
 
 Release 0.22b.dev (unpublished)
 ===============================
+
+reStructuredText:
+  Support `CSS3 units`_. This adds "ch", "rem", "vw", "vh", "vmin",
+  "vmax", and "Q" to the `supported length units`__.
+  Note that some output formats don't support all units.
+
+  .. _CSS3 units: https://www.w3.org/TR/css-values-3/#lengths
+  __ docs/ref/rst/restructuredtext.html#length-units
 
 Document Tree / Docutils DTD
   - Allow multiple <term> elements in a `\<definition_list_item>`__

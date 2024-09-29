@@ -3096,35 +3096,49 @@ __ directives.html#percentage
 Length Units
 ------------
 
-The reStructuredText parser supports the `length units in CSS2`_. [#]_
+The reStructuredText parser supports the `length units in CSS3`_. [#]_
 Unit identifiers are case-sensitive (in contrast to CSS):
 
 .. class:: align-center
 
-====  =======================  ================================
+====  =======================  ==================================
 em    the element's font size
-----  ---------------------------------------------------------
+----  -----------------------------------------------------------
 ex    x-height of the element's font
-----  ---------------------------------------------------------
+----  -----------------------------------------------------------
+ch    width of the “0” (ZERO, U+0030) glyph in the element’s font
+----  -----------------------------------------------------------
+rem   font size of the root element
+----  -----------------------------------------------------------
+vw    1% of the viewport (or paper) width
+----  -----------------------------------------------------------
+vh    1% of the viewport (or paper) height
+----  -----------------------------------------------------------
+vmin  1% of the viewport’s smaller dimension
+----  -----------------------------------------------------------
+vmax  1% of the viewport’s larger dimension
+----  -----------------------------------------------------------
 cm    centimeters              1 cm = 10 mm
 mm    millimeters              1 mm = 1/1000 m
+Q     quarter-millimeters      1 Q = 1/4 mm [#]_
 in    inches                   1 in = 25.4 mm = 96 px
 pc    picas                    1 pc = 1/6 in = 12 pt
 pt    points                   1 pt = 1/72 in
 px    pixels                   1 px = 3/4 pt = 1/96 in [#]_
-====  =======================  ================================
+====  =======================  ==================================
 
 The following are all valid length values: "1.5em", "20 mm", ".5 in", "42".
 
-.. [#] a subset of `length units in CSS3`_
+.. [#] Up to Docutils 0.21, support was restricted to the
+   `length units in CSS2`_.
+.. [#] The unit "Q" is common in Japanese typesetting.
 .. [#] In LaTeX, the default definition is 1 px = 1 pt = 1/72 in
    (cf. section `Length units <../../user/latex.html#length-units>`__
    in the LaTeX writer documentation).
 
 .. _length units in CSS2:
    https://www.w3.org/TR/CSS2/syndata.html#length-units
-.. _length units in CSS3:
-   https://www.w3.org/TR/css-values-3/#lengths
+.. _length units in CSS3: https://www.w3.org/TR/css-values-3/#lengths
 .. _XSL units: https://www.w3.org/TR/xsl/#d0e5752
 
 

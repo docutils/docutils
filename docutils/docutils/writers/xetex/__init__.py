@@ -147,17 +147,17 @@ class XeLaTeXTranslator(latex2e.LaTeXTranslator):
             self.requirements['_inputenc'] = (r'\XeTeXinputencoding %s '
                                               % self.latex_encoding)
 
-    def to_latex_length(self, length_str: str) -> str:
+    def to_latex_length(self, length_str: str, node=None) -> str:
         """Convert "measure" `length_str` to LaTeX length specification.
 
         XeTeX does not know the length unit px.
         Use ``\\pdfpxdimen``, the macro holding the value of 1 px in pdfTeX.
         This way, configuring works the same for pdftex and xetex.
         """
-        length_str = super().to_latex_length(length_str)
+        length_str = super().to_latex_length(length_str, node)
         if length_str.endswith('px'):
             if not self.fallback_stylesheet:
                 self.fallbacks['_providelength'] = PreambleCmds.providelength
-            self.fallbacks['px'] = '\n\\DUprovidelength{\\pdfpxdimen}{1bp}\n'
+            self.fallbacks['px'] = '\n\\DUprovidelength{\\pdfpxdimen}{1bp}'
             return length_str.replace('px', '\\pdfpxdimen')
         return length_str

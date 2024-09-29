@@ -2229,6 +2229,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             size = float(size[:-2]) * 0.423     # convert pc to cm
         elif size.endswith('mm'):
             size = float(size[:-2]) * 0.1       # convert mm to cm
+        elif size.endswith('Q'):
+            size = float(size[:-1]) * 0.25      # convert Q to cm
         elif size.endswith('cm'):
             size = float(size[:-2])
         elif size[-1:] in '0123456789.':        # no unit, use px

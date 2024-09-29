@@ -54,7 +54,6 @@ px_fallback = r"""
 
 \DUprovidelength{\pdfpxdimen}{1bp}
 
-
 """
 
 

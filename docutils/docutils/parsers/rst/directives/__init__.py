@@ -244,7 +244,17 @@ def percentage(argument: str) -> int:
     return nonnegative_int(argument)
 
 
-length_units = ['em', 'ex', 'in', 'cm', 'mm', 'pt', 'pc', 'px']
+CSS3_LENGTH_UNITS = ('em', 'ex', 'ch', 'rem', 'vw', 'vh', 'vmin', 'vmax',
+                     'cm', 'mm', 'Q', 'in', 'pt', 'pc', 'px')
+"""Length units that are supported by the reStructuredText parser.
+
+Corresponds to the `length units in CSS3`__.
+
+__ https://www.w3.org/TR/css-values-3/#lengths
+"""
+
+length_units = [*CSS3_LENGTH_UNITS]
+"""Deprecated, will be removed in Docutils 0.24 or equivalent."""
 
 
 def get_measure(argument, units):
@@ -265,7 +275,7 @@ def get_measure(argument, units):
 
 
 def length_or_unitless(argument: str) -> str:
-    return get_measure(argument, length_units + [''])
+    return get_measure(argument, CSS3_LENGTH_UNITS + ('',))
 
 
 def length_or_percentage_or_unitless(argument, default=''):
@@ -286,7 +296,7 @@ def length_or_percentage_or_unitless(argument, default=''):
     '3px'
     """
     try:
-        return get_measure(argument, length_units + ['%'])
+        return get_measure(argument, CSS3_LENGTH_UNITS + ('%',))
     except ValueError as error:
         try:
             return get_measure(argument, ['']) + default

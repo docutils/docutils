@@ -22,7 +22,7 @@
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{docutils}
-  [2024-09-23 macros for Docutils LaTeX output]
+  [2024-09-24 macros for Docutils LaTeX output]
 
 % Helpers
 % -------
@@ -236,8 +236,38 @@
   \vskip 0.5\baselineskip
 }
 
+% Length Units
+% ------------
+%
+% Emulating `CSS3 length units`_ unknown to LaTeX.
+%
+% rem::
+
+\DUprovidelength{\DUremdimen}{1em}
+
+% vmin::
+
+\AtBeginDocument{
+  \ifdim\paperwidth>\paperheight\relax
+    \DUprovidelength{\DUvmindimen}{0.01\paperheight}
+  \else
+    \DUprovidelength{\DUvmindimen}{0.01\paperwidth}
+  \fi
+}
+
+% vmax::
+
+\AtBeginDocument{
+  \ifdim\paperwidth>\paperheight\relax
+    \DUprovidelength{\DUvmaxdimen}{0.01\paperwidth}
+  \else
+    \DUprovidelength{\DUvmaxdimen}{0.01\paperheight}
+  \fi
+}
+
 
 % .. References:
 %
 % .. _Generating LaTeX with Docutils:
 %     https://docutils.sourceforge.io/docs/user/latex.html
+% .. _CSS3 length units: https://www.w3.org/TR/css-values-3/#lengths

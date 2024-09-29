@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.22b.dev: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Test length specifications</title>
+<link rel="stylesheet" href="../input/data/minimal.css" type="text/css" />
+<link rel="stylesheet" href="../input/data/plain.css" type="text/css" />
+</head>
+<body>
+<main id="test-length-specifications">
+<h1 class="title">Test length specifications</h1>
+
+<section id="images-and-figures">
+<h2>Images and Figures</h2>
+<figure>
+<img alt="blue square" height="32" src="../input/data/blue%20square.png" width="32" />
+<figcaption>
+<p>scale 100%, no size specification</p>
+</figcaption>
+</figure>
+<figure style="width: 50%">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 25%;" />
+<figcaption>
+<p>width 25%, no height, figure width 50%</p>
+</figcaption>
+</figure>
+<figure style="width: 50%">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 25%; height: 16px;" />
+<figcaption>
+<p>width 25%, height 16px, figure width 50%</p>
+</figcaption>
+</figure>
+<figure style="width: 20em">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 10em; height: 16px;" />
+<figcaption>
+<p>width 10 em, figure width 20 em</p>
+</figcaption>
+</figure>
+<figure style="width: 40ex">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 20ex; height: 16px;" />
+<figcaption>
+<p>width 20 ex, figure width 40 ex</p>
+</figcaption>
+</figure>
+<figure style="width: 30ch">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 15ch; height: 16px;" />
+<figcaption>
+<p>width 15 ch, figure width 30 ch</p>
+</figcaption>
+</figure>
+<figure style="width: 20rem">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 10rem; height: 16px;" />
+<figcaption>
+<p>width 10 rem, figure width 20 rem</p>
+</figcaption>
+</figure>
+<figure style="width: 30vw">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 25vw; height: 16px;" />
+<figcaption>
+<p>width 25 vw, figure width 30 vw</p>
+</figcaption>
+</figure>
+<figure style="width: 30vh">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 25vh; height: 16px;" />
+<figcaption>
+<p>width 25 vh, figure width 30 vh</p>
+</figcaption>
+</figure>
+<figure style="width: 30vmin">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 25vmin; height: 16px;" />
+<figcaption>
+<p>width 25 vmin, figure width 30 vmin</p>
+</figcaption>
+</figure>
+<figure style="width: 30vmax">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 25vmax; height: 16px;" />
+<figcaption>
+<p>width 25 vmax, figure width 30 vmax</p>
+</figcaption>
+</figure>
+<figure style="width: 10cm">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 5cm; height: 16px;" />
+<figcaption>
+<p>width 5 cm, figure width 10 cm</p>
+</figcaption>
+</figure>
+<figure style="width: 100mm">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 50mm; height: 16px;" />
+<figcaption>
+<p>width 50 mm, figure width 100 mm</p>
+</figcaption>
+</figure>
+<figure style="width: 400Q">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 200Q; height: 16px;" />
+<figcaption>
+<p>width 200 Q, figure width 400 Q</p>
+</figcaption>
+</figure>
+<figure style="width: 4in">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 2in; height: 16px;" />
+<figcaption>
+<p>width 2 in, figure width 4 in</p>
+</figcaption>
+</figure>
+<figure style="width: 24pc">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 12pc; height: 16px;" />
+<figcaption>
+<p>width 12 pc, figure width 24 pc</p>
+</figcaption>
+</figure>
+<figure style="width: 288pt">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 144pt; height: 16px;" />
+<figcaption>
+<p>width 144 pt, figure width 288pt</p>
+</figcaption>
+</figure>
+<figure style="width: 384px">
+<img alt="blue square" src="../input/data/blue%20square.png" style="width: 192px; height: 16px;" />
+<figcaption>
+<p>width 192 px, figure width 384 px</p>
+</figcaption>
+</figure>
+<figure style="width: 384px">
+<img alt="blue square" src="../input/data/blue%20square.png" style="height: 16px;" width="192" />
+<figcaption>
+<p>width 192 &lt;no unit&gt;, figure width 384 &lt;no unit&gt;</p>
+</figcaption>
+</figure>
+</section>
+<section id="ch-em-and-rem-test1ch-test1em-test1rem">
+<h2>ch, em, and rem: <img alt="test1ch" src="../input/data/blue%20square.png" style="height: 1ch;" /> <img alt="test1em" src="../input/data/blue%20square.png" style="height: 1em;" /> <img alt="test1rem" src="../input/data/blue%20square.png" style="height: 1rem;" /></h2>
+<p>Image height 1ch, 1em, and 1rem: <img alt="test1ch" src="../input/data/blue%20square.png" style="height: 1ch;" /> <img alt="test1em" src="../input/data/blue%20square.png" style="height: 1em;" /> <img alt="test1rem" src="../input/data/blue%20square.png" style="height: 1rem;" /></p>
+<p>The units &quot;em&quot; and &quot;ch&quot; change with the current font size.
+The unit &quot;rem&quot; is tied to the document root fontsize.</p>
+</section>
+<section id="tables">
+<h2>Tables</h2>
+<table>
+<tbody>
+<tr><td><p>value</p></td>
+<td><p>unit</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 25%;">
+<tbody>
+<tr><td><p>25</p></td>
+<td><p>%</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 10em;">
+<tbody>
+<tr><td><p>10</p></td>
+<td><p>em</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 20ex;">
+<tbody>
+<tr><td><p>20</p></td>
+<td><p>ex</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 15ch;">
+<tbody>
+<tr><td><p>15</p></td>
+<td><p>ch</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 10rem;">
+<tbody>
+<tr><td><p>10</p></td>
+<td><p>rem</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 25vw;">
+<tbody>
+<tr><td><p>25</p></td>
+<td><p>vw</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 25vh;">
+<tbody>
+<tr><td><p>25</p></td>
+<td><p>vh</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 25vmin;">
+<tbody>
+<tr><td><p>25</p></td>
+<td><p>vmin</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 25vmax;">
+<tbody>
+<tr><td><p>25</p></td>
+<td><p>vmax</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 5cm;">
+<tbody>
+<tr><td><p>5</p></td>
+<td><p>cm</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 50mm;">
+<tbody>
+<tr><td><p>50</p></td>
+<td><p>mm</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 200Q;">
+<tbody>
+<tr><td><p>200</p></td>
+<td><p>Q</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 2in;">
+<tbody>
+<tr><td><p>2</p></td>
+<td><p>in</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 12pc;">
+<tbody>
+<tr><td><p>12</p></td>
+<td><p>pc</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 144pt;">
+<tbody>
+<tr><td><p>144</p></td>
+<td><p>pt</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 192px;">
+<tbody>
+<tr><td><p>192</p></td>
+<td><p>px</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width: 192px;">
+<tbody>
+<tr><td><p>192</p></td>
+<td><p>&lt;no unit&gt;</p></td>
+</tr>
+</tbody>
+</table>
+<style type="text/css"><!--
+ figure {background: lightgreen;}
+ --></style></section>
+</main>
+</body>
+</html>

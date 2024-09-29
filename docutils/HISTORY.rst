@@ -78,6 +78,9 @@ Release 0.22b.dev (unpublished)
 
   - Removed mistranslations of the "admonition" directive name.
 
+* docutils/parsers/rst/directives/__init__.py
+
+  - Support CSS3 `length units`_. Fixes feature-request #57.
 
 * docutils/parsers/rst/directives/misc.py
 
@@ -161,15 +164,20 @@ Release 0.22b.dev (unpublished)
     remove optional argument `pxunit` (ignored since at least 2012),
     drop trailing zeroes from length values,
     move XeTeX-specific code to the "xetex" writer.
+    Handle CSS3 `length units`_.
   - Don't wrap references with custom reference-label_ in
     a ``\hyperref`` command.
-  - Stop requiring "ifthen.sty". Replace use of ``\ifthenelse{\isundefined...``
-    with the eTeX primitive ``\ifdefined``.
   - Mark the main language when loading "babel".
   - Provide an "unknown_references_resolver" (cf. `docutils/TransformSpec`)
     for citation references resolved with BibTeX (cf. `use_bibtex`_ setting).
 
   .. _reference-label: docs/user/config.html#reference-label
+
+* docutils/writers/latex2e/docutils.sty
+
+  - Replace use of ``\ifthenelse{\isundefined...`` (from "ifthen.sty")
+    with the eTeX primitive ``\ifdefined``.
+  - Add macros to emulate CSS3 `length units`_ unknown to LaTeX.
 
 * docutils/writers/manpage.py
 
@@ -199,6 +207,8 @@ Release 0.22b.dev (unpublished)
 * tools/rst2odt_prepstyles.py
 
   - Removed. Use `docutils.writers.odf_odt.prepstyles`.
+
+.. _length units: docs/ref/rst/restructuredtext.html#length-units
 
 
 Release 0.21.2 (2024-04-23)
