@@ -277,7 +277,6 @@ further body subelements) or `simple elements`_.
 :Docutils class: ``nodes.Part``
 
 
-
 Inline Elements
 ---------------
 
@@ -2254,7 +2253,8 @@ Pseudo-XML_ fragment from simple parsing::
 The <inline> element is a generic inline container.
 
 :Category:   `Inline Elements`_
-:Analogues:  <inline> is analogous to the HTML <span> element.
+:Analogues:  <inline> is analogous to the HTML_ <span> element and the
+             Docbook_ <phrase> element.
 :Processing: Writers_ typically pass the classes_ attribute to the output
              document and leave styling to the backend or a custom
              stylesheet_. They may also process the classes_ attribute
@@ -2944,7 +2944,43 @@ Pseudo-XML_ fragment from simple parsing::
 <problematic>
 =============
 
-`To be completed`_.
+The <problematic> element highlights a source part that caused a parsing
+problem.
+
+:Category:   `Inline Elements`_
+:Analogues:  <problematic> has no direct analogues in common DTDs.
+:Processing: Typically displayed in red colour.
+             If the refid_ attribute is present, the element should
+             point to the referenced element.
+:Parents:    All elements employing the `%text.model`_ parameter
+             entity in their content models may contain <problematic>.
+:Children:   <problematic> elements may contain text data
+             plus `inline elements`_ (`%text.model`_).
+:Attributes: The <problematic> element contains the `common attributes`_
+             and refid_.
+
+Examples
+--------
+
+The reStructuredText parser marks ambiguous or invalid inline syntax as
+<problematic> and adds a reference to the associated `\<system_message>`_.
+The behaviour can be configured with the `report_level`_ setting.
+
+The following paragraph contains unbalanced `inline markup`_::
+
+    a single *star
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        a single
+        <problematic ids="problematic-1" refid="system-message-1">
+            *
+        star
+    <system_message backrefs="problematic-1" ids="system-message-1"
+                    level="2" line="1" source="example.rst" type="WARNING">
+        <paragraph>
+            Inline emphasis start-string without end-string.
 
 
 <raw>
@@ -3435,7 +3471,44 @@ Pseudo-XML_ fragment from simple parsing::
 <system_message>
 ================
 
-`To be completed`_.
+The <system_message> element is used for feedback from the processing
+system.
+
+:Category:   `Compound Body Elements`_
+:Analogues:  <system_message> has no direct analogues in common DTDs.
+             It can be emulated with primitives and type effects.
+:Processing: Rendered similar to an `\<admonition>`_, with the generated
+             title "System Message", its type_/level_ and, if available,
+             source_ and line_.
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their content models
+             may contain <system_message>.
+:Children:   <system_message> elements contain one or more `body elements`_.
+:Attributes: The <system_message> element accepts the `common
+             attributes`_ plus backrefs_, level_, line_, and type_.
+:Parameter Entities: The `%body.elements`_ parameter entity directly includes
+             <system_message>.  The `%structure.model`_ parameter entity
+             indirectly includes <system_message>.
+
+In Docutils, the generation of system messages can be configured with the
+`report_level`_ setting.
+
+Examples
+--------
+
+An undefined or misspelled directive_ generates an error message::
+
+    .. contants::
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <system_message level="3" line="8" source="example.rst" type="ERROR">
+        <paragraph>
+            Unknown directive type "contants".
+        <literal_block xml:space="preserve">
+            .. contants::
+
+See also `\<problematic>`_.
 
 
 <table>
@@ -4417,7 +4490,8 @@ elements.
 
 Attribute type: `%number`_.  Default value: none.
 
-The ``level`` attribute is used in the `\<system_message>`_ element.
+The ``level`` attribute is used in the `\<system_message>`_ element to
+indicate the message's `severity level`_.  See also the "type_" attribute.
 
 
 ``line``
@@ -4425,7 +4499,9 @@ The ``level`` attribute is used in the `\<system_message>`_ element.
 
 Attribute type: `%number`_.  Default value: none.
 
-The ``line`` attribute is used in the `\<system_message>`_ element.
+The ``line`` attribute is used in the `\<system_message>`_ element to
+indicate the position of the reported problem in the document source.
+See also the source_ attribute.
 
 
 ``ltrim``
@@ -4650,16 +4726,19 @@ a uniform scaling factor (integer percentage value).
 
 Attribute type: `CDATA`_.  Default value: none.
 
-The ``source`` attribute is used to store the path or URI of the
-source text that was used to produce the document tree.
+The ``source`` attribute stores the path, URI, or a description
+of the source that was used to produce the document tree. [#]_
 
-It is one of the `common attributes`_, declared for all Docutils
-elements but typically only used with the `\<document>`_ and
-`\<system_message>`_ elements.
+``source`` is one of the `common attributes`_ but typically only
+used with the `\<document>`_ and `\<system_message>`_ elements.
 
-.. note:: All ``docutils.nodes.Node`` instances also support an
-   *internal* ``source`` attribute that is used when reporting
-   processing problems.
+.. note:: All ``docutils.nodes.Node`` instances also support
+          *internal* ``source`` and ``line`` attributes
+          for use in diagnostic output.
+
+.. [#] An element's ``source`` attribute may differ from the main
+       document ``source`` if the document is assembled from several
+       sources (e.g. via the `"include" directive`_).
 
 
 ``start``
@@ -4668,7 +4747,7 @@ elements but typically only used with the `\<document>`_ and
 Attribute type: `%number`_.  Default value: none (implies 1).
 
 The ``start`` attribute is used in the `\<enumerated_list>`_ element to
-store the ordinal value of the first item in the list, in decimal.
+store the ordinal value of the first item in the list, in decimal notation.
 
 For lists beginning at value 1 ("1", "a", "A", "i", or "I"),
 this attribute may be omitted.
@@ -4717,12 +4796,15 @@ browser's title bar, in a user's history or bookmarks, or in search results.
 .. _HTML <title> element:
     https://html.spec.whatwg.org/multipage/semantics.html#the-title-element
 
+
 ``type``
 =========
 
 Attribute type: NMTOKEN_.  Default value: none.
 
 The ``type`` attribute is used in the `\<system_message>`_ element.
+It holds the name of the message's `severity level`_ (cf. the "level_"
+attribute).
 
 
 ``uri``
@@ -4778,6 +4860,7 @@ It is a fixed attribute, meant to communicate to an XML parser that the
 element contains significant whitespace.  The attribute value should not
 be set in a document instance.
 
+
 ----------------------------
  Parameter Entity Reference
 ----------------------------
@@ -4796,6 +4879,7 @@ by wrapper DTDs.
 
 In addition, the Docutils DTD defines parameter entities for
 `custom attribute types`_.
+
 
 Attribute Entities
 ==================
@@ -4826,6 +4910,7 @@ Entity definition::
 
 The `\<image>`_ element directly employs the ``%align-hv.att``
 parameter entity in its attribute list.
+
 
 ``%anonymous.att``
 ------------------
@@ -4996,6 +5081,7 @@ Entity definition::
 Via `%reference.atts`_, the ``%refuri.att`` parameter entity is
 indirectly employed in the attribute lists of the `\<citation_reference>`_,
 `\<footnote_reference>`_, `\<reference>`_, and `\<target>`_ elements.
+
 
 ``%tbl.colspec.att``
 --------------------
@@ -5263,10 +5349,10 @@ Bibliography
                 `XML Exchange Table Model DTD`,
                 OASIS Technical Memorandum 9901:1999,
                 http://www.oasis-open.org/html/tm9901.html.
-                W3C Recommendation,
-                https://www.w3.org/TR/xml/.
 
 .. [xml1.0]    `Extensible Markup Language (XML) 1.0`,
+               W3C Recommendation,
+               https://www.w3.org/TR/xml/.
 
 .. _DocBook: https://tdg.docbook.org/tdg/5.1/.
 .. _DocBook <caution>: https://tdg.docbook.org/tdg/5.1/caution.html
@@ -5304,12 +5390,15 @@ Bibliography
 .. _datestamp:      ../user/config.html#datestamp
 .. _id_prefix:      ../user/config.html#id-prefix
 .. _image_loading:  ../user/config.html#image-loading
+.. _report_level:     ../user/config.html#report-level
 .. _stylesheet:     ../user/config.html#stylesheet
 
 .. _transform:
 .. _transforms:         ../api/transforms.html
 .. _DocInfo transform:  ../api/transforms.html#docinfo
 .. _DocTitle transform: ../api/transforms.html#doctitle
+
+.. _severity level: ../peps/pep-0258.html#error-handling
 
 .. _A ReStructuredText Primer: ../user/rst/quickstart.html
 .. _reStructuredText Markup Specification: rst/restructuredtext.html
@@ -5327,9 +5416,10 @@ Bibliography
 .. _explicit markup blocks: rst/restructuredtext.html#explicit-markup-blocks
 .. _footnote reference:     rst/restructuredtext.html#footnote-references
 .. _grid table:             rst/restructuredtext.html#grid-tables
-.. _indirect target:      rst/restructuredtext.html#indirect-hyperlink-targets
+.. _indirect target:        rst/restructuredtext.html#indirect-hyperlink-targets
+.. _inline markup:          rst/restructuredtext.html#inline-markup
 .. _internal hyperlink targets:
-                          rst/restructuredtext.html#internal-hyperlink-targets
+                            rst/restructuredtext.html#internal-hyperlink-targets
 .. _line block:             rst/restructuredtext.html#line-blocks
 .. _literal block:          rst/restructuredtext.html#literal-blocks
 .. _footnotes:
@@ -5376,6 +5466,7 @@ Bibliography
 .. _identifier normalization:   rst/directives.html#identifier-normalization
 .. _"image" directive:          rst/directives.html#image
 .. _"important" directive:      rst/directives.html#important
+.. _"include" directive:        rst/directives.html#include
 .. _"list-table":               rst/directives.html#list-table
 .. _"math" directive:           rst/directives.html#math
 .. _"meta" directive:           rst/directives.html#meta

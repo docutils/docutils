@@ -457,9 +457,8 @@ reference (``[#note]_``), can also be referred to by a plain hyperlink
 reference (``note_``).  Of course, each type of reference (hyperlink,
 footnote, citation) may be processed and rendered differently.  Some
 care should be taken to avoid reference name conflicts.
-
-`Substitution references`_ and `substitution definitions`_ use a
-different namespace.
+References to `substitution definitions`_ (`substitution references`_)
+use a different namespace.
 
 .. [#case-forgiving] Matching `substitution references`_ to
    `substitution definitions`_ is `case-sensitive but forgiving`_.

@@ -28,14 +28,15 @@ Command line interface
   .. code:: diff
 
        - COMMAND [OPTIONS] [SOURCE [DESTINATION]]
-       + COMMAND [OPTIONS] [SOURCE [SOURCE2 [...]]] [>DESTINATION]
+       + COMMAND [OPTIONS] [SOURCE [SOURCE2 [...]]]
 
   * Stop accepting the DESTINATION positional argument in Docutils 1.0.
-    Use output redirection or the option ``--output=DESTINATION``
-    (available since Docutils 0.20).
+    Use ``--output=DESTINATION`` (cf. the "output_" configuration setting)
+    or output redirection.
 
-  * Accept more than one source document and the short option
-    ``-o`` for ``--output`` in Docutils 2.0
+  * Accept the short option ``-o`` for ``--output`` in Docutils 1.0
+
+  * Accept more than one source document in Docutils 2.0
 
   For the rationale, see https://clig.dev/#arguments-and-flags.
 
@@ -438,7 +439,7 @@ Release 0.20 (2023-05-04)
     are now ignored by the "xetex" writer.
     Place common settings in section `[latex writers]`_.
 
-  - New command line setting output_. Obsoletes the ``<destination>``
+  - New configuration setting "output_".  Obsoletes the ``<destination>``
     positional argument (cf. `future changes`__).
 
     __ `command-line usage pattern`_
@@ -533,8 +534,7 @@ Release 0.18 (2021-10-26)
 
       Example:
         with ``--id-prefix="DU-"``, a section with title "34. May"
-        currently gets the identifier key ``DU-may`` and after the
-        change the identifier key ``DU-34-may``.
+        now gets the identifier key ``DU-34-may`` instead of ``DU-may``.
 
     - The default value for the auto_id_prefix_ setting changed to ``%``:
       "use the tag name as prefix for auto-generated IDs".

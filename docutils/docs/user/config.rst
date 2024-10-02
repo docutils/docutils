@@ -227,8 +227,6 @@ Some knowledge of Python_ is assumed for some attributes.
    https://docs.python.org/3/library/configparser.html
 .. _Python: https://www.python.org/
 .. _RFC 822: https://www.rfc-editor.org/rfc/rfc822.txt
-.. _front-end tool:
-.. _application: tools.html
 __ ../api/runtime-settings.html#active-sections
 
 
@@ -396,7 +394,8 @@ exception will propagate; otherwise, Docutils will exit.
 
 See also report_level_.
 
-*Default*: 4 (severe).  *Options*: ``--halt``, ``--strict``.
+:Default: 4 (severe).
+:Options: ``--halt``, ``--strict`` (same as ``--halt=info``).
 
 
 id_prefix
@@ -407,8 +406,8 @@ Ensure the value conforms to the restrictions on identifiers in the output
 format, as it is not subjected to the `identifier normalization`_.
 See also auto_id_prefix_.
 
-*Default*: "" (no prefix).
-*Option*: ``--id-prefix`` (hidden, intended mainly for programmatic use).
+:Default: "" (no prefix).
+:Option: ``--id-prefix`` (hidden, intended mainly for programmatic use).
 
 
 input_encoding
@@ -471,11 +470,11 @@ The language of document parts can be specified with a
 output
 ------
 
-The path of the output destination.
-An existing file will be overwritten without warning.
-Use "-" for `stdout`.
+The path of the output destination.  Use "-" for `stdout`.
 
-Obsoletes the `\<destination>`_ positional argument
+.. Caution:: **An existing file will be overwritten** without warning!
+
+Obsoletes the `_destination`_ positional argument
 (cf. `Future changes`_ in the RELEASE-NOTES).
 
 *Default*: None (stdout). *Option*: ``--output``.
@@ -568,18 +567,16 @@ command with a call to a converter, e.g.::
 report_level
 ------------
 
-Report system messages at or higher than <level>:
+Report system messages at or higher than the given `severity level`_:
 
-  1  info
-  2  warning
-  3  error
-  4  severe
-  5  none
+  1  info,  2  warning,  3  error,  4  severe,  5  none
 
 See also halt_level_.
 
 :Default: 2 (warning).
-:Options: ``--report``, ``-r``, ``--verbose``, ``-v``, ``--quiet``, ``-q``.
+:Options: | ``--report``, ``-r`` (with level as number or name)
+          | ``--verbose``, ``-v`` (same as ``--report=1``)
+          | ``--quiet``, ``-q`` (same as ``--report=5``)
 
 
 root_prefix
@@ -714,9 +711,10 @@ Enable backlinks from section titles to table of contents entries
 traceback
 ---------
 
-Enable or disable Python tracebacks when halt-level system messages and
-other exceptions occur.  Useful for debugging, and essential for issue
-reports.  Exceptions are allowed to propagate, instead of being
+Enable or disable Python tracebacks when system messages with
+a severity above the `halt_level`_ and other exceptions occur.
+Useful for debugging, and essential for issue reports.
+Exceptions are allowed to propagate, instead of being
 caught and reported (in a user-friendly way) by Docutils.
 
 :Default: None (disabled). [#]_
@@ -1140,8 +1138,8 @@ lists using the `"class" directive`_ (values "compact" and "open").
 
 embed_stylesheet
 ~~~~~~~~~~~~~~~~
-Embed the stylesheet in the output HTML file.  The stylesheet file
-must specified by the stylesheet_path_ setting and must be
+Embed stylesheet(s) in the HTML output.  The stylesheet files
+must be specified by the stylesheet_path_ setting and must be
 accessible during processing.
 See also `embed_stylesheet [latex writers]`_.
 
@@ -1879,7 +1877,7 @@ stylesheet_path
 List of style files (comma-separated_). Relative paths are expanded if a
 matching file is found in the stylesheet_dirs__.
 If embed_stylesheet__ is False, paths are rewritten relative to
-the output file (if output_ or `\<destination>`_ are specified)
+the output file (if output_ or `_destination`_ are specified)
 or the current work directory.
 Overrides also stylesheet__. [#override]_
 See also `stylesheet_path [html writers]`_.
@@ -1888,7 +1886,6 @@ For files in the `TeX input path`_, the stylesheet__  option is recommended.
 
 *Default*: empty list.  *Option*: ``--stylesheet-path``.
 
-.. _<destination>: tools.html#usage-pattern
 __ `stylesheet_dirs [latex writers]`_
 __ `embed_stylesheet [latex writers]`_
 __
@@ -2175,7 +2172,7 @@ Pretty-print <#text> nodes.
 [applications]
 ==============
 
-Some `front end tools`_ provide additional settings.
+The following applications (`front-end tools`_) provide additional settings.
 
 
 .. _buildhtml:
@@ -2372,8 +2369,11 @@ List of paths of applied configuration files.
 
 _directories
 ~~~~~~~~~~~~
-(``buildhtml.py`` front end.)  List of paths to source
-directories, set from positional arguments.
+Only with the `[buildhtml application]`_.
+
+List of paths to source directories, set from `positional arguments
+<tools.html#buildhtml-py>`__.
+
 
 *Default*: None (current working directory).  No command-line options.
 
@@ -2386,13 +2386,18 @@ For command-line use, set the DOCUTILSCONFIG_ variable.
 
 _destination
 ~~~~~~~~~~~~
-Path to output destination, set from positional arguments.
+Path to output destination, set from `positional arguments`_
+or the output_ setting.
 
-*Default*: None (stdout).  No command-line options.
+Deprecated, obsoleted by the output_ setting.  Will be removed
+in Docutils 2.0 (cf. `Future changes`_ in the RELEASE-NOTES).
+
+*Default*: None (stdout).  *Option*: ``--output``.
+
 
 _source
 ~~~~~~~
-Path to input source, set from positional arguments.
+Path to input source, set from `positional arguments`_.
 
 *Default*: None (stdin).  No command-line options.
 
@@ -2502,6 +2507,8 @@ If the first line matches the second line is ignored.
 .. _publish_string(): ../api/publisher.html#publish-string
 .. _publish_from_doctree(): ../api/publisher.html#publish-from-doctree
 
+.. _severity level: ../peps/pep-0258.html#error-handling
+
 .. RestructuredText Directives
 .. _"class" directive: ../ref/rst/directives.html#class
 .. _"code": ../ref/rst/directives.html#code
@@ -2542,8 +2549,11 @@ If the first line matches the second line is ignored.
 
 .. _Docutils HTML writers: html.html
 
-.. _front end tools: tools.html
+.. _application:
+.. _front-end tool:
+.. _front-end tools: tools.html
 .. _buildhtml.py: tools.html#buildhtml-py
+.. _positional arguments: tools.html#usage-pattern
 
 .. _BCP 47: https://www.rfc-editor.org/rfc/bcp/bcp47.txt
 .. _Error Handlers:
