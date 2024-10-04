@@ -25,6 +25,7 @@ if TYPE_CHECKING:
     from typing import Any, BinaryIO, ClassVar, Final, Literal, TextIO
 
     from docutils import nodes
+    from docutils.nodes import StrPath
 
 # Guess the locale's preferred encoding.
 # If no valid guess can be made, _locale_encoding is set to `None`:
@@ -93,7 +94,7 @@ class Input(TransformSpec):
     def __init__(
         self,
         source: str | TextIO | nodes.document | None = None,
-        source_path: str | os.PathLike[str] | None = None,
+        source_path: StrPath | None = None,
         encoding: str | Literal['unicode'] | None = 'utf-8',
         error_handler: str | None = 'strict',
     ) -> None:
@@ -239,7 +240,7 @@ class Output(TransformSpec):
     def __init__(
         self,
         destination: TextIO | str | bytes | None = None,
-        destination_path: str | os.PathLike[str] | None = None,
+        destination_path: StrPath | None = None,
         encoding: str | None = None,
         error_handler: str | None = 'strict',
     ) -> None:
@@ -252,7 +253,7 @@ class Output(TransformSpec):
         self.destination: TextIO | str | bytes | None = destination
         """The destination for output data."""
 
-        self.destination_path: str | os.PathLike[str] | None = destination_path
+        self.destination_path: StrPath | None = destination_path
         """A text reference to the destination."""
 
         if not destination_path:
@@ -396,7 +397,7 @@ class FileInput(Input):
     def __init__(
         self,
         source: TextIO | None = None,
-        source_path: str | os.PathLike[str] | None = None,
+        source_path: StrPath | None = None,
         encoding: str | Literal['unicode'] | None = 'utf-8',
         error_handler: str | None = 'strict',
         autoclose: bool = True,
@@ -481,16 +482,15 @@ class FileOutput(Output):
     # (Do not use binary mode ('wb') for text files, as this prevents the
     # conversion of newlines to the system specific default.)
 
-    def __init__(
-        self,
-        destination: TextIO | None = None,
-        destination_path: str | os.PathLike[str] | None = None,
-        encoding: str | None = None,
-        error_handler: str | None = 'strict',
-        autoclose: bool = True,
-        handle_io_errors: None = None,
-        mode=None,
-    ) -> None:
+    def __init__(self,
+                 destination: TextIO | None = None,
+                 destination_path: StrPath | None = None,
+                 encoding: str | None = None,
+                 error_handler: str | None = 'strict',
+                 autoclose: bool = True,
+                 handle_io_errors: None = None,
+                 mode=None,
+                 ) -> None:
         """
         :Parameters:
             - `destination`: either a file-like object (which is written
@@ -508,8 +508,7 @@ class FileOutput(Output):
               support for text files.
         """
         super().__init__(
-            destination, destination_path, encoding, error_handler,
-        )
+            destination, destination_path, encoding, error_handler)
         self.opened = True
         self.autoclose = autoclose
         if handle_io_errors is not None:

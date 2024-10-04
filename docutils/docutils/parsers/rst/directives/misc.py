@@ -9,7 +9,6 @@ from __future__ import annotations
 __docformat__ = 'reStructuredText'
 
 import re
-import sys
 import time
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -23,16 +22,7 @@ from docutils.parsers.rst.directives.body import CodeBlock, NumberLines
 from docutils.transforms import misc
 
 if TYPE_CHECKING:
-    import os
-    if sys.version_info[:2] >= (3, 12):
-        from typing import TypeAlias
-    else:
-        from typing_extensions import TypeAlias
-
-    from docutils.nodes import Node
-
-    StrPath: TypeAlias = str | os.PathLike[str]
-    """File system path. No bytes!"""
+    from docutils.nodes import Node, StrPath
 
 
 def adapt_path(path: str, source='', root_prefix='/') -> str:

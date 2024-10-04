@@ -18,16 +18,16 @@ from typing import TYPE_CHECKING
 from docutils import core, io
 
 if TYPE_CHECKING:
-    import os
     from typing import Any, Literal
 
     from docutils import nodes
+    from docutils.nodes import StrPath
     from docutils.core import Publisher
 
 
 def html_parts(input_string: str | bytes,
-               source_path: str | os.PathLike[str] | None = None,
-               destination_path: str | os.PathLike[str] | None = None,
+               source_path: StrPath | None = None,
+               destination_path: StrPath | None = None,
                input_encoding: Literal['unicode'] | str = 'unicode',
                doctitle: bool = True,
                initial_header_level: int = 1,
@@ -66,8 +66,8 @@ def html_parts(input_string: str | bytes,
 
 
 def html_body(input_string: str | bytes,
-              source_path: str | os.PathLike[str] | None = None,
-              destination_path: str | os.PathLike[str] | None = None,
+              source_path: StrPath | None = None,
+              destination_path: StrPath | None = None,
               input_encoding: Literal['unicode'] | str = 'unicode',
               output_encoding: Literal['unicode'] | str = 'unicode',
               doctitle: bool = True,
@@ -95,7 +95,7 @@ def html_body(input_string: str | bytes,
 
 
 def internals(source: str,
-              source_path: str | os.PathLike[str] | None = None,
+              source_path: StrPath | None = None,
               input_encoding: Literal['unicode'] | str = 'unicode',
               settings_overrides: dict[str, Any] | None = None,
               ) -> tuple[nodes.document, Publisher]:

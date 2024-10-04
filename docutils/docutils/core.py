@@ -22,11 +22,15 @@ import pprint
 import os
 import sys
 import warnings
+from typing import TYPE_CHECKING
 
 from docutils import (__version__, __version_details__, SettingsSpec,
                       io, utils, readers, parsers, writers)
 from docutils.frontend import OptionParser
 from docutils.readers import doctree
+
+if TYPE_CHECKING:
+    from docutils.nodes import StrPath
 
 
 class Publisher:
@@ -196,7 +200,7 @@ class Publisher:
 
     def set_source(self,
                    source: str | None = None,
-                   source_path: str | os.PathLike[str] | None = None,
+                   source_path: StrPath | None = None,
                    ) -> None:
         if source_path is None:
             source_path = self.settings._source
@@ -210,7 +214,7 @@ class Publisher:
 
     def set_destination(self,
                         destination: str | None = None,
-                        destination_path: str | os.PathLike[str] | None = None,
+                        destination_path: StrPath | None = None,
                         ) -> None:
         if destination_path is None:
             if (self.settings.output and self.settings._destination

@@ -34,7 +34,7 @@ from typing import TYPE_CHECKING, overload
 # import xml.dom.minidom as dom # -> conditional import in Node.asdom()
 #                                    and document.asdom()
 
-# import docutils.transforms # -> conditional import in document.__init__()
+# import docutils.transforms # -> delayed import in document.__init__()
 
 if TYPE_CHECKING:
     import numbers
@@ -62,6 +62,9 @@ if TYPE_CHECKING:
                                          _ContentModelQuantifier]
     _ContentModelTuple: TypeAlias = tuple[_ContentModelItem, ...]
 
+    StrPath: TypeAlias = str | os.PathLike[str]
+    """File system path. No bytes!"""
+
     _UpdateFun: TypeAlias = Callable[[str, Any, bool], None]
 
 
@@ -81,7 +84,7 @@ class Node:
     Override in subclass instances that are not terminal nodes.
     """
 
-    source: str | os.PathLike[str] | None = None
+    source: StrPath | None = None
     """Path or description of the input source which generated this Node."""
 
     line: int | None = None
@@ -1750,7 +1753,7 @@ class document(Root, Element):
                  ) -> None:
         Element.__init__(self, *args, **kwargs)
 
-        self.current_source: str | os.PathLike[str] | None = None
+        self.current_source: StrPath | None = None
         """Path to or description of the input source being processed."""
 
         self.current_line: int | None = None
@@ -1831,7 +1834,7 @@ class document(Root, Element):
         self.transformer: Transformer = docutils.transforms.Transformer(self)
         """Storage for transforms to be applied to this document."""
 
-        self.include_log: list[tuple[str|os.PathLike[str], tuple]] = []
+        self.include_log: list[tuple[StrPath, tuple]] = []
         """The current source's parents (to detect inclusion loops)."""
 
         self.decoration: decoration | None = None
@@ -1876,8 +1879,7 @@ class document(Root, Element):
         base_id = ''
         id = ''
         for name in node['names']:
-            if id_prefix:
-                # allow names starting with numbers if `id_prefix`
+            if id_prefix:  # allow names starting with numbers
                 base_id = make_id('x'+name)[1:]
             else:
                 base_id = make_id(name)
@@ -1893,12 +1895,11 @@ class document(Root, Element):
             else:
                 prefix = id_prefix + auto_id_prefix
                 if prefix.endswith('%'):
-                    prefix = '%s%s-' % (prefix[:-1],
-                                        suggested_prefix
-                                        or make_id(node.tagname))
+                    prefix = f"""{prefix[:-1]}{suggested_prefix
+                                               or make_id(node.tagname)}-"""
             while True:
                 self.id_counter[prefix] += 1
-                id = '%s%d' % (prefix, self.id_counter[prefix])
+                id = f'{prefix}{self.id_counter[prefix]}'
                 if id not in self.ids:
                     break
         node['ids'].append(id)
@@ -2096,7 +2097,7 @@ class document(Root, Element):
         self.transform_messages.append(message)
 
     def note_source(self,
-                    source: str | os.PathLike[str] | None,
+                    source: StrPath | None,
                     offset: int | None,
                     ) -> None:
         self.current_source = source and os.fspath(source)

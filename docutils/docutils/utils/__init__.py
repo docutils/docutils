@@ -33,10 +33,9 @@ if TYPE_CHECKING:
     else:
         from typing_extensions import TypeAlias
 
-    from docutils.nodes import Node
+    from docutils.nodes import Node, StrPath
     from docutils.frontend import Values
 
-    StrPath: TypeAlias = str | os.PathLike[str]
     _ObserverFunc: TypeAlias = Callable[[nodes.system_message], None]
 
 

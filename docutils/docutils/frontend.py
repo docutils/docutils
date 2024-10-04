@@ -74,8 +74,7 @@ if TYPE_CHECKING:
     from typing import Any, ClassVar, Literal, Protocol
 
     from docutils import SettingsSpec, _OptionTuple, _SettingsSpecTuple
-
-    _FsPath = str | os.PathLike[str]
+    from docutils.io import StrPath
 
     class _OptionValidator(Protocol):
         def __call__(
@@ -479,9 +478,9 @@ def validate_smartquotes_locales(
     return lc_quotes
 
 
-def make_paths_absolute(pathdict: dict[str, list[_FsPath] | _FsPath],
+def make_paths_absolute(pathdict: dict[str, list[StrPath] | StrPath],
                         keys: tuple[str],
-                        base_path: _FsPath | None = None,
+                        base_path: StrPath | None = None,
                         ) -> None:
     """
     Interpret filesystem path settings relative to the `base_path` given.
@@ -505,7 +504,7 @@ def make_paths_absolute(pathdict: dict[str, list[_FsPath] | _FsPath],
             pathdict[key] = value
 
 
-def make_one_path_absolute(base_path: _FsPath, path: _FsPath) -> str:
+def make_one_path_absolute(base_path: StrPath, path: StrPath) -> str:
     # deprecated, will be removed
     warnings.warn('frontend.make_one_path_absolute() will be removed '
                   'in Docutils 0.23.', DeprecationWarning, stacklevel=2)
@@ -954,7 +953,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                 self.defaults.update(component.settings_default_overrides)
 
     @classmethod
-    def get_standard_config_files(cls) -> Sequence[_FsPath]:
+    def get_standard_config_files(cls) -> Sequence[StrPath]:
         """Return list of config files, from environment or standard."""
         if 'DOCUTILSCONFIG' in os.environ:
             config_files = os.environ['DOCUTILSCONFIG'].split(os.pathsep)
@@ -1001,7 +1000,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         values._config_files = self.config_files
         return values
 
-    def check_args(self, args: list[str]) -> tuple[str | None, str | None]:
+    def check_args(self, args: list[str]) -> tuple[str|None, str|None]:
+        # provisional: argument handling will change, see RELEASE_NOTES
         source = destination = None
         if args:
             source = args.pop(0)
