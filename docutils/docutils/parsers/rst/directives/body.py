@@ -54,6 +54,8 @@ class BasePseudoSection(Directive):
         text = '\n'.join(self.content)
         node = self.node_class(text, *(titles + messages))
         node['classes'] += self.options.get('class', [])
+        (node.source,
+         node.line) = self.state_machine.get_source_and_line(self.lineno)
         self.add_name(node)
         if text:
             self.state.nested_parse(self.content, self.content_offset, node)
@@ -86,6 +88,11 @@ class Sidebar(BasePseudoSection):
 
 
 class LineBlock(Directive):
+    """Legacy directive for line blocks.
+
+    Use is deprecated in favour of the line block syntax,
+    cf. `parsers.rst.states.Body.line_block()`.
+    """
 
     option_spec = {'class': directives.class_option,
                    'name': directives.unchanged}
@@ -94,12 +101,16 @@ class LineBlock(Directive):
     def run(self):
         self.assert_has_content()
         block = nodes.line_block(classes=self.options.get('class', []))
+        (block.source,
+         block.line) = self.state_machine.get_source_and_line(self.lineno)
         self.add_name(block)
         node_list = [block]
-        for line_text in self.content:
+        for i, line_text in enumerate(self.content):
             text_nodes, messages = self.state.inline_text(
                 line_text.strip(), self.lineno + self.content_offset)
             line = nodes.line(line_text, '', *text_nodes)
+            line.source = block.source
+            line.line = block.line + i
             if line_text.strip():
                 line.indent = len(line_text) - len(line_text.lstrip())
             block += line
@@ -274,6 +285,8 @@ class Compound(Directive):
         text = '\n'.join(self.content)
         node = nodes.compound(text)
         node['classes'] += self.options.get('class', [])
+        (node.source,
+         node.line) = self.state_machine.get_source_and_line(self.lineno)
         self.add_name(node)
         self.state.nested_parse(self.content, self.content_offset, node)
         return [node]
@@ -300,6 +313,8 @@ class Container(Directive):
                 % (self.name, self.arguments[0]))
         node = nodes.container(text)
         node['classes'].extend(classes)
+        (node.source,
+         node.line) = self.state_machine.get_source_and_line(self.lineno)
         self.add_name(node)
         self.state.nested_parse(self.content, self.content_offset, node)
         return [node]

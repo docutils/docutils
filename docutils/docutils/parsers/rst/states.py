@@ -632,7 +632,7 @@ class Inliner:
         URIs) is found last.
 
         :text: source string
-        :lineno: absolute line number (cf. statemachine.get_source_and_line())
+        :lineno: absolute line number, cf. `statemachine.get_source_and_line()`
         """
         self.reporter = memo.reporter
         self.document = memo.document
@@ -1599,6 +1599,8 @@ class Body(RSTState):
         block = nodes.line_block()
         self.parent += block
         lineno = self.state_machine.abs_line_number()
+        (block.source,
+         block.line) = self.state_machine.get_source_and_line(lineno)
         line, messages, blank_finish = self.line_block_line(match, lineno)
         block += line
         self.parent += messages
@@ -1628,6 +1630,8 @@ class Body(RSTState):
         text = '\n'.join(indented)
         text_nodes, messages = self.inline_text(text, lineno)
         line = nodes.line(text, '', *text_nodes)
+        (line.source,
+         line.line) = self.state_machine.get_source_and_line(lineno)
         if match.string.rstrip() != '|':  # not empty
             line.indent = len(match.group(1)) - 1
         return line, messages, blank_finish
