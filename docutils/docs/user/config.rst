@@ -672,10 +672,12 @@ strip_elements_with_classes
 
 List of "classes" attribute values (comma-separated_).
 Values are appended. [#append-values]_
-Matching elements are removed from the `document tree`_.
+Matching elements are removed from the `document tree`_
+(by the `StripClassesAndElements` transform_).
 
 .. WARNING:: Potentially dangerous: may lead to an invalid document tree
    and subsequent writer errors.  Use with caution.
+   It is recommended to validate_ the document.
 
 *Default*: empty list.  *Option*: ``--strip-elements-with-class``.
 
@@ -777,7 +779,9 @@ file_insertion_enabled_ for another security-relevant setting.
 validate
 --------
 
-Validate the parsing result.
+Validate the parsing result.  Report elements that do not comply
+with the restrictions set out in the `Docutils Generic document
+type definition`_.
 
 *Default*: False.  *Options*: ``--validate``, ``--no-validation``.
 
@@ -2497,6 +2501,7 @@ If the first line matches the second line is ignored.
 
 .. References
 
+.. _Docutils Generic document type definition:
 .. _Docutils Document Tree:
 .. _Document Tree: ../ref/doctree.html
 
@@ -2506,6 +2511,8 @@ If the first line matches the second line is ignored.
 .. _Publisher Interface: ../api/publisher.html
 .. _publish_string(): ../api/publisher.html#publish-string
 .. _publish_from_doctree(): ../api/publisher.html#publish-from-doctree
+
+.. _transform: ../api/transforms.html
 
 .. _severity level: ../peps/pep-0258.html#error-handling
 

@@ -217,6 +217,9 @@ class Include(Directive):
         settings._source = self.options['source']
         document = utils.new_document(settings._source, settings)
         document.include_log = self.state.document.include_log
+        document.ids = self.state.document.ids
+        document.nameids = self.state.document.nameids
+        document.nametypes = self.state.document.nametypes
         parser = self.options['parser']()
         parser.parse(text, document)
         self.state.document.parse_messages.extend(document.parse_messages)

@@ -17,7 +17,7 @@ if __name__ == '__main__':
     # so we import the local `docutils` package.
     sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
 
-from docutils import parsers, utils
+from docutils import core, parsers, utils
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
 from docutils.utils import new_document
@@ -25,12 +25,11 @@ from docutils.utils.code_analyzer import with_pygments
 from test.test_parsers.test_rst.test_directives.test_code \
     import PYGMENTS_2_14_PLUS
 
-
-TEST_ROOT = Path(__file__).resolve().parents[3]
-
+FILE_DIR = Path(__file__).resolve().parent
+TEST_ROOT = FILE_DIR.parents[2]
 
 # optional 3rd-party markdown parser
-md_parser_name = 'recommonmark'
+md_parser_name = 'pycmark'
 try:  # check availability
     md_parser_class = parsers.get_parser_class(md_parser_name)
 except ImportError:
@@ -52,12 +51,30 @@ class ParserTestCase(unittest.TestCase):
         settings.warning_stream = ''
         settings.halt_level = 5
         for name, cases in totest.items():
+            if name == 'with transforms':
+                continue  # see test_publish() below
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     document = new_document('test data', settings.copy())
                     parser.parse(case_input, document)
                     output = document.pformat()
                     self.assertEqual(case_expected, output)
+
+    def test_publish(self):
+        # Special case for tests of issue reporting.
+        # To see the system message from the duplicate id, we need transforms.
+        settings = {'_disable_config': True,
+                    'output_encoding': 'unicode',
+                    'warning_stream': '',
+                    }
+        name = 'with transforms'
+        for casenum, (sample, expected) in enumerate(totest[name]):
+            with self.subTest(id=f'totest[{name!r}][{casenum}]'):
+                output = core.publish_string(sample,
+                                             source_path='test data',
+                                             parser=Parser(),
+                                             settings_overrides=settings)
+                self.assertEqual(expected, output)
 
 
 try:
@@ -68,11 +85,10 @@ else:
     unichr_exception = ''
 
 
-# prepend this directory (relative to the test root):
+# prepend this directory (relative to the cwd):
 def mydir(path):
-    return os.path.relpath(
-        os.path.join(TEST_ROOT, 'test_parsers/test_rst/test_directives', path),
-        os.getcwd()).replace('\\', '/')
+    return os.path.relpath(os.path.join(FILE_DIR, path),
+                           os.getcwd()).replace('\\', '/')
 
 
 include1 = mydir('include1.rst')
@@ -90,7 +106,7 @@ include15 = mydir('includes/include15.rst')
 include16 = mydir('includes/include16.rst')
 include_literal = mydir('include_literal.rst')
 include_md = mydir('include.md')
-include_xml = TEST_ROOT/'data/duplicate-id.xml'
+include_xml = mydir('includes/include.xml')
 include = TEST_ROOT/'data/include.rst'
 latin2 = TEST_ROOT/'data/latin2.rst'
 utf_16_file = TEST_ROOT/'data/utf-16-le-sig.rst'
@@ -833,6 +849,33 @@ f"""\
                 .. end of inclusion from "{include10}"
 """],
 [f"""\
+Inclusion 1
+===========
+Name clash: The included file uses the same section title.
+
+.. include:: {include1}
+   :parser: rst
+""",
+f"""\
+<document source="test data">
+    <section dupnames="inclusion\\ 1" ids="inclusion-1">
+        <title>
+            Inclusion 1
+        <paragraph>
+            Name clash: The included file uses the same section title.
+        <section dupnames="inclusion\\ 1" ids="inclusion-1-1">
+            <title>
+                Inclusion 1
+            <system_message backrefs="inclusion-1-1" level="1" line="2" source="{include1}" type="INFO">
+                <paragraph>
+                    Duplicate implicit target name: "inclusion 1".
+            <paragraph>
+                This file is used by \n\
+                <literal>
+                    test_include.py
+                .
+"""],
+[f"""\
 Include file with whitespace in the path:
 
 .. include:: {include11}
@@ -1465,32 +1508,6 @@ f"""\
         File "include15.rst": example of rekursive inclusion.
 """],
 [f"""\
-Include Docutils XML file:
-
-.. include:: {include_xml}
-   :parser: xml
-
-The duplicate id is reported and would be appended
-by the "universal.Messages" transform.
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        Include Docutils XML file:
-    <section>
-        <title ids="s4">
-            nice heading
-        <paragraph>
-            Text with \n\
-            <strong ids="s4">
-                strong
-                statement
-             and more text.
-    <paragraph>
-        The duplicate id is reported and would be appended
-        by the "universal.Messages" transform.
-"""],
-[f"""\
 No circular inclusion.
 
 .. list-table::
@@ -1531,7 +1548,7 @@ A paragraph.
 <document source="test data">
     <paragraph>
         Include Markdown source.
-    <section ids="title-1" names="title\\ 1">
+    <section depth="1" ids="section-1">
         <title>
             Title 1
         <paragraph>
@@ -1542,11 +1559,85 @@ A paragraph.
                 also emphasis
         <paragraph>
             No whitespace required around a
-            <reference name="phrase reference" refuri="/uri">
+            <reference refuri="/uri">
                 phrase reference
             .
+        <target ids="phrase-reference" names="phrase\\ reference" refuri="/uri">
     <paragraph>
         A paragraph.
+"""],
+]
+
+# Transforms are required for these tests: The system_message about
+# duplicate name/id is appended by the "universal.Messages" transform.
+totest['with transforms'] = [
+[f"""\
+.. _common id:
+
+Include Docutils XML file:
+
+.. include:: {include_xml}
+   :parser: xml
+""",
+f"""\
+<document source="test data">
+    <target refid="common-id">
+    <paragraph ids="common-id" names="common\\ id">
+        Include Docutils XML file:
+    <section>
+        <title names="nice\\ heading">
+            nice heading
+        <paragraph>
+            Text with \n\
+            <strong ids="common-id">
+                strong
+                statement
+             and more text.
+    <section classes="system-messages">
+        <title>
+            Docutils System Messages
+        <system_message level="3" line="3" source="{include_xml}" type="ERROR">
+            <paragraph>
+                Duplicate ID: "common-id" used by <target ids="common-id" names="common\\ id"> and <strong ids="common-id">
+"""],
+[f"""\
+Inclusion 1
+===========
+Name clash: The included file uses the same section title `inclusion 1`_.
+
+.. include:: {include1}
+   :parser: rst
+
+Inclusion 2
+===========
+""",
+"""\
+<document source="test data">
+    <section dupnames="inclusion\\ 1" ids="inclusion-1">
+        <title>
+            Inclusion 1
+        <paragraph>
+            Name clash: The included file uses the same section title \n\
+            <problematic ids="problematic-1" refid="system-message-1">
+                `inclusion 1`_
+            .
+        <section dupnames="inclusion\\ 1" ids="inclusion-1-1">
+            <title>
+                Inclusion 1
+            <paragraph>
+                This file is used by \n\
+                <literal>
+                    test_include.py
+                .
+    <section ids="inclusion-2" names="inclusion\\ 2">
+        <title>
+            Inclusion 2
+    <section classes="system-messages">
+        <title>
+            Docutils System Messages
+        <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="3" source="test data" type="ERROR">
+            <paragraph>
+                Duplicate target name, cannot be used as a unique reference: "inclusion 1".
 """],
 ]
 

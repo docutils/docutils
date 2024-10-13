@@ -1603,6 +1603,10 @@ The "include" directive recognizes the following options:
     Parse the included content with the specified parser.
     See the `"parser" configuration setting`_ for available parsers.
 
+    .. Caution::
+       There is is no check whether the inserted elements are valid at the
+       point of insertion. It is recommended to validate_ the document.
+
     (New in Docutils 0.17)
 
 ``start-after`` : text_
@@ -2273,6 +2277,7 @@ Common Option Value Types
 .. _"title" configuration setting: ../../user/config.html#title
 .. _toc_backlinks: ../../user/config.html#toc-backlinks
 .. _use_latex_toc: ../../user/config.html#use-latex-toc
+.. _validate: ../../user/config.html#validate
 
 .. _reStructuredText Standard Definition Files: definitions.html
 
