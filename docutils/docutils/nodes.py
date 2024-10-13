@@ -1869,7 +1869,10 @@ class document(Root, Element):
             for id in node['ids']:
                 self.ids.setdefault(id, node)
                 if self.ids[id] is not node:
-                    msg = self.reporter.severe('Duplicate ID: "%s".' % id)
+                    msg = self.reporter.error(f'Duplicate ID: "{id}" used by '
+                                              f'{self.ids[id].starttag()} '
+                                              f'and {node.starttag()}',
+                                              base_node=node)
                     if msgnode is not None:
                         msgnode += msg
             return id

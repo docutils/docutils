@@ -151,14 +151,8 @@ def element2node(element, document=None, unindent=True):
             if key in node.list_attributes:
                 value = value.split()
             node.attributes[key] = value  # node becomes invalid!
-    # register ids, check for duplicates
-    for id in node['ids']:
-        document.ids.setdefault(id, node)
-        if document.ids[id] is not node:
-            document.reporter.error(f'Duplicate ID: "{id}" used by '
-                                    f'{document.ids[id].starttag()} '
-                                    f'and {node.starttag()}',
-                                    base_node=node)
+    if node['ids']:  # register, check for duplicates
+        document.set_id(node)
 
     # Append content:
     # update "unindent" flag: change line indentation?

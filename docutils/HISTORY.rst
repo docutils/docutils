@@ -65,6 +65,7 @@ Release 0.22b.dev (unpublished)
     raise ValueError for invalid attribute names or values.
   - New function `parse_measure()`.
   - Removed `Element.set_class()`.
+  - Downgrade "duplicate ID" message level from SERIOUS to ERROR.
 
 * docutils/parsers/docutils_xml.py
 
