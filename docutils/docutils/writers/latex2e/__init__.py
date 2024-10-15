@@ -1794,8 +1794,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_caption(self, node) -> None:
         self.out.append('\n\\caption{')
+        self.out += self.ids_to_labels(node, set_anchor=False)
+        self.visit_inline(node)
 
     def depart_caption(self, node) -> None:
+        self.depart_inline(node)
         self.out.append('}\n')
 
     def visit_title_reference(self, node) -> None:

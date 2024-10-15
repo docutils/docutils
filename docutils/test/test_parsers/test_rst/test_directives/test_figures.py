@@ -41,6 +41,7 @@ class ParserTestCase(unittest.TestCase):
 totest = {}
 
 totest['figures'] = [
+# Note: A figure with no caption nor legend is not valid according to the DTD.
 ["""\
 .. figure:: picture.png
 """,
@@ -94,20 +95,54 @@ totest['figures'] = [
                 A picture with a legend but no caption.
 """],
 ["""\
+.. figure:: picture.png
+
+   .. The comment replacing the caption must be empty.
+
+   This should be a legend.
+""",
+"""\
+<document source="test data">
+    <figure>
+        <image uri="picture.png">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Figure caption must be a paragraph or empty comment.
+        <literal_block xml:space="preserve">
+            .. figure:: picture.png
+            \n\
+               .. The comment replacing the caption must be empty.
+            \n\
+               This should be a legend.
+"""],
+# Passing a class value to the caption is done with a class directive
+# that inserts a pending node (to be removed by the ClassAttribute transform).
+# A hyperlink target before the caption is removed by a transform, too.
+["""\
 .. Figure:: picture.png
    :height: 100
    :width: 200
    :scale: 50
    :loading: embed
 
-   A picture with image options and a caption.
+   .. class:: custom
+   .. _figure:caption:
+
+   A picture with image options and a caption with class value and target.
 """,
 """\
 <document source="test data">
     <figure>
         <image height="100" loading="embed" scale="50" uri="picture.png" width="200">
+        <pending>
+            .. internal attributes:
+                 .transform: docutils.transforms.misc.ClassAttribute
+                 .details:
+                   class: ['custom']
+                   directive: 'class'
+        <target ids="figure-caption" names="figure:caption">
         <caption>
-            A picture with image options and a caption.
+            A picture with image options and a caption with class value and target.
 """],
 ["""\
 .. Figure:: picture.png
@@ -116,18 +151,19 @@ totest['figures'] = [
    :width: 200
    :scale: 50
    :loading: lazy
+   :class: image-class
    :figwidth: 300
    :figclass: class1 class2
    :name: fig:pix
 
-   A picture with image options on individual lines, and this caption.
+   A figure with options and this caption.
 """,
 """\
 <document source="test data">
     <figure classes="class1 class2" width="300px">
-        <image alt="alternate text" height="100" ids="fig-pix" loading="lazy" names="fig:pix" scale="50" uri="picture.png" width="200">
+        <image alt="alternate text" classes="image-class" height="100" ids="fig-pix" loading="lazy" names="fig:pix" scale="50" uri="picture.png" width="200">
         <caption>
-            A picture with image options on individual lines, and this caption.
+            A figure with options and this caption.
 """],
 ["""\
 .. figure:: picture.png
@@ -160,20 +196,6 @@ totest['figures'] = [
                :align: top
             \n\
                A figure with wrong alignment.
-"""],
-["""\
-This figure lacks a caption. It may still have a
-"Figure 1."-style caption appended in the output.
-
-.. figure:: picture.png
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        This figure lacks a caption. It may still have a
-        "Figure 1."-style caption appended in the output.
-    <figure>
-        <image uri="picture.png">
 """],
 ["""\
 .. figure:: picture.png

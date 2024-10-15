@@ -550,6 +550,9 @@ A left-aligned figure, 70% wide:
    :width: 40 px
    :figwidth: 70 %
 
+   .. class:: captionclass1 captionclass2
+   .. _caption-label:
+
    This is the caption.
 
    This is the legend.

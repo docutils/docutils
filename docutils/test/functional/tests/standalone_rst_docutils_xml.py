@@ -8,4 +8,5 @@ settings_overrides = {
     'sectsubtitle_xform': True,
     # format output with indents and newlines
     'indents': True,
+    'validate': True,  # check conformance to Docutils Generic DTD
     }

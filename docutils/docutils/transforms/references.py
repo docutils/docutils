@@ -76,11 +76,15 @@ class PropagateTargets(Transform):
                 getattr(target, 'expect_referenced_by_name', {}))
             next_node.expect_referenced_by_id.update(
                 getattr(target, 'expect_referenced_by_id', {}))
+            # Remove target node from places where it is invalid.
+            if isinstance(target.parent, nodes.figure) and isinstance(
+                    next_node, nodes.caption):
+                target.parent.remove(target)
+                continue
             # Set refid to point to the first former ID of target
             # which is now an ID of next_node.
             target['refid'] = target['ids'][0]
-            # Clear ids and names; they have been moved to
-            # next_node.
+            # Clear ids and names; they have been moved to next_node.
             target['ids'] = []
             target['names'] = []
             self.document.note_refid(target)

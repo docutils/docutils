@@ -150,8 +150,8 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     # use the <figcaption> semantic tag.
     def visit_caption(self, node) -> None:
         if isinstance(node.parent, nodes.figure):
-            self.body.append('<figcaption>\n')
-        self.body.append(self.starttag(node, 'p', ''))
+            self.body.append(self.starttag(node, 'figcaption'))
+        self.body.append('<p>')
 
     def depart_caption(self, node) -> None:
         self.body.append('</p>\n')
@@ -275,7 +275,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
 
     # place inside HTML5 <figcaption> element (together with caption)
     def visit_legend(self, node) -> None:
-        if not isinstance(node.parent[1], nodes.caption):
+        if not isinstance(node.previous_sibling(), nodes.caption):
             self.body.append('<figcaption>\n')
         self.body.append(self.starttag(node, 'div', CLASS='legend'))
 

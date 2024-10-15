@@ -1374,7 +1374,7 @@
                     A left-aligned figure, 70% wide:
                 <figure align="left" classes="figclass1 figclass2" width="70%">
                     <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/biohazard.png" width="40px">
-                    <caption>
+                    <caption classes="captionclass1 captionclass2" ids="caption-label" names="caption-label">
                         This is the caption.
                     <legend>
                         <paragraph>
@@ -2425,15 +2425,15 @@
         <system_message level="1" line="476" source="functional/input/data/standard.rst" type="INFO">
             <paragraph>
                 Hyperlink target "image-target-3" is not referenced.
-        <system_message level="1" line="640" source="functional/input/data/standard.rst" type="INFO">
+        <system_message level="1" line="643" source="functional/input/data/standard.rst" type="INFO">
             <paragraph>
                 Hyperlink target "target1" is not referenced.
-        <system_message level="1" line="641" source="functional/input/data/standard.rst" type="INFO">
+        <system_message level="1" line="644" source="functional/input/data/standard.rst" type="INFO">
             <paragraph>
                 Hyperlink target "target2" is not referenced.
-        <system_message level="1" line="686" source="functional/input/data/standard.rst" type="INFO">
+        <system_message level="1" line="689" source="functional/input/data/standard.rst" type="INFO">
             <paragraph>
                 Hyperlink target "docutils" is not referenced.
-        <system_message level="1" line="852" source="functional/input/data/standard.rst" type="INFO">
+        <system_message level="1" line="855" source="functional/input/data/standard.rst" type="INFO">
             <paragraph>
                 Hyperlink target "hyperlink targets" is not referenced.

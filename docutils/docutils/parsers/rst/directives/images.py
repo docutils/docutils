@@ -152,22 +152,29 @@ class Figure(Image):
         if align:
             figure_node['align'] = align
         if self.content:
+            # optional caption (single paragraph or empty comment)
+            # + optional legend (arbitrary body elements).
             node = nodes.Element()          # anonymous container for parsing
             self.state.nested_parse(self.content, self.content_offset, node)
-            first_node = node[0]
-            if isinstance(first_node, nodes.paragraph):
-                caption = nodes.caption(first_node.rawsource, '',
-                                        *first_node.children)
-                caption.source = first_node.source
-                caption.line = first_node.line
-                figure_node += caption
-            elif not (isinstance(first_node, nodes.comment)
-                      and len(first_node) == 0):
+            for i, child in enumerate(node):
+                # skip temporary nodes that will be removed by transforms
+                if isinstance(child, (nodes.target, nodes.pending)):
+                    figure_node += child
+                    continue
+                if isinstance(child, nodes.paragraph):
+                    caption = nodes.caption(child.rawsource, '',
+                                            *child.children)
+                    caption.source = child.source
+                    caption.line = child.line
+                    figure_node += caption
+                    break
+                if isinstance(child, nodes.comment) and len(child) == 0:
+                    break
                 error = self.reporter.error(
-                      'Figure caption must be a paragraph or empty comment.',
-                      nodes.literal_block(self.block_text, self.block_text),
-                      line=self.lineno)
+                    'Figure caption must be a paragraph or empty comment.',
+                    nodes.literal_block(self.block_text, self.block_text),
+                    line=self.lineno)
                 return [figure_node, error]
-            if len(node) > 1:
-                figure_node += nodes.legend('', *node[1:])
+            if len(node) > i+1:
+                figure_node += nodes.legend('', *node[i+1:])
         return [figure_node]
