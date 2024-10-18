@@ -78,6 +78,10 @@ To run the code, Python_ must be installed.
 * Docutils versions 0.19 to 0.20.1 require Python 3.7 or later.
 * Docutils versions 0.16 to 0.18 require Python 2.7 or 3.5+.
 
+The **type hints** added in version 0.22 use Python 3.10 syntax.
+However, the Python interpreter treats them as annotations
+unless ``typing.TYPE_CHECKING`` is set to ``True``.
+
 .. _Python: https://www.python.org/.
 
 

@@ -19,12 +19,16 @@ Release 0.22b.dev (unpublished)
 
 * General
 
-  - We have started to add type hints to Docutils.
-    This will be a complex programme of work, and as such
-    for the time being these type hints are 'provisional',
-    and should not be relied upon by consumers of Docutils
-    (feature-request #87).
-  - Add tox.ini to pyproject.toml to be in sdist (bug #486).
+  - We have started to add type hints to Docutils (feature-request #87).
+
+    This will be a complex programme of work and as such,
+    for the time being, these type hints are "provisional"
+    and should not be relied upon.
+
+    By default, the Python interpreter treats type hints as annotations.
+    Python >= 3.10 is required with active type hints
+    (``typing.TYPE_CHECKING == True``).
+
   - Fix license issue (bug #487).
 
 * docs/ref/docutils.dtd
@@ -200,6 +204,10 @@ Release 0.22b.dev (unpublished)
   - Fix conversion factor of "pc" (pica) to "cm".
   - Fix conversion of image width in "%" if the height is specified.
   - Adjust fallback DPI value (currently not used) to match CSS units.
+
+* pyproject.toml
+
+  - Add tox.ini to the "include" list (fixes bug #486).
 
 * tools/rst2odt.py
 
