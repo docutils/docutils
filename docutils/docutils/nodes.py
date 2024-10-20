@@ -1772,8 +1772,7 @@ class document(Root, Element):
         """Mapping of substitution names to substitution_definition nodes."""
 
         self.substitution_names: dict[str, str] = {}
-        """Mapping of case-normalized substitution names to case-sensitive
-        names."""
+        """Mapping of case-normalized to case-sensitive substitution names."""
 
         self.refnames: dict[str, list[Element]] = {}
         """Mapping of names to lists of referencing nodes."""
@@ -1785,8 +1784,8 @@ class document(Root, Element):
         """Mapping of names to unique id's."""
 
         self.nametypes: dict[str, bool] = {}
-        """Mapping of names to hyperlink type (boolean: True => explicit,
-        False => implicit."""
+        """Mapping of names to hyperlink type. True: explicit, False: implicit.
+        """
 
         self.ids: dict[str, Element] = {}
         """Mapping of ids to nodes."""
@@ -3112,7 +3111,7 @@ def parse_measure(measure: str) -> tuple[numbers.Rational, str]:
 # __ https://docutils.sourceforge.io/docs/ref/doctree.html#attribute-reference
 # __ https://docutils.sourceforge.io/docs/ref/doctree.html#attribute-types
 
-def validate_enumerated_type(*keywords: str) -> Callable[[str], str]:
+def create_keyword_validator(*keywords: str) -> Callable[[str], str]:
     """
     Return a function that validates a `str` against given `keywords`.
 
@@ -3248,12 +3247,12 @@ ATTRIBUTE_VALIDATORS: dict[str, Callable[[str], Any]] = {
     'colwidth': int,  # sic! CALS: CDATA (measure or number+'*')
     'content': str,  # <meta>
     'delimiter': str,
-    'dir': validate_enumerated_type('ltr', 'rtl', 'auto'),  # <meta>
+    'dir': create_keyword_validator('ltr', 'rtl', 'auto'),  # <meta>
     'dupnames': validate_refname_list,
-    'enumtype': validate_enumerated_type('arabic', 'loweralpha', 'lowerroman',
+    'enumtype': create_keyword_validator('arabic', 'loweralpha', 'lowerroman',
                                          'upperalpha', 'upperroman'),
     'format': str,  # CDATA (space separated format names)
-    'frame': validate_enumerated_type('top', 'bottom', 'topbot', 'all',
+    'frame': create_keyword_validator('top', 'bottom', 'topbot', 'all',
                                       'sides', 'none'),  # from CALS, ignored
     'height': validate_measure,
     'http-equiv': str,  # <meta>
@@ -3262,7 +3261,7 @@ ATTRIBUTE_VALIDATORS: dict[str, Callable[[str], Any]] = {
     'level': int,
     'line': int,
     'ltrim': validate_yesorno,
-    'loading': validate_enumerated_type('embed', 'link', 'lazy'),
+    'loading': create_keyword_validator('embed', 'link', 'lazy'),
     'media': str,  # <meta>
     'morecols': int,
     'morerows': int,
@@ -3287,9 +3286,9 @@ ATTRIBUTE_VALIDATORS: dict[str, Callable[[str], Any]] = {
     'title': str,
     'type': validate_NMTOKEN,
     'uri': str,
-    'valign': validate_enumerated_type('top', 'middle', 'bottom'),  # from CALS
+    'valign': create_keyword_validator('top', 'middle', 'bottom'),  # from CALS
     'width': validate_measure,
-    'xml:space': validate_enumerated_type('default', 'preserve'),
+    'xml:space': create_keyword_validator('default', 'preserve'),
     }
 """
 Mapping of `attribute names`__ to validating functions.

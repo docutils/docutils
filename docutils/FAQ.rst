@@ -1051,8 +1051,8 @@ __ `How should I mark up lists?`_
 Why do enumerated lists only use numbers (no letters or roman numerals)?
 ------------------------------------------------------------------------
 
-The rendering of enumerators (the numbers or letters acting as list
-markers) is completely governed by the stylesheet, so either the
+In HTML, the rendering of enumerators (the numbers or letters acting as
+list markers) is completely governed by the stylesheet, so either the
 browser can't find the stylesheet (try enabling the
 `embed_stylesheet`_ setting [``--embed-stylesheet`` option]), or the
 browser can't understand it (try a not too old Firefox, Chrome, Opera,

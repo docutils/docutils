@@ -1067,8 +1067,8 @@ class Table:
                 n_c = len(self._col_specs)
                 a.append('\\endhead\n')
                 # footer on all but last page (if it fits):
-                twidth = sum(node['colwidth']+2 for node in self._col_specs)
-                if twidth > 30 or (twidth > 12 and not self.colwidths_auto):
+                t_width = sum(node['colwidth']+2 for node in self._col_specs)
+                if t_width > 30 or (t_width > 12 and not self.colwidths_auto):
                     a.append(r'\multicolumn{%d}{%s}'
                              % (n_c, self.get_multicolumn_width(0, n_c))
                              + r'{\raggedleft\ldots continued on next page}\\'

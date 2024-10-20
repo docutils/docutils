@@ -23,7 +23,7 @@ from typing import TYPE_CHECKING
 from docutils import ApplicationError, DataError
 from docutils import io, nodes
 # for backwards compatibility
-from docutils.nodes import unescape  # noqa: F401
+from docutils.nodes import unescape  # noqa: F401 (imported but unused)
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence, Iterable

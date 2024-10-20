@@ -6,7 +6,6 @@ test_destination = "standalone_rst_docutils_xml.xml"
 writer = "docutils_xml"
 settings_overrides = {
     'sectsubtitle_xform': True,
-    # format output with indents and newlines
-    'indents': True,
+    'indents': True,  # format output with indents and newlines
     'validate': True,  # check conformance to Docutils Generic DTD
     }

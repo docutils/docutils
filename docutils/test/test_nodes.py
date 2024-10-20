@@ -1140,9 +1140,9 @@ class AttributeTypeTests(unittest.TestCase):
     __ https://docutils.sourceforge.io/docs/ref/doctree.html#attribute-types
     """
 
-    def test_validate_enumerated_type(self):
+    def test_create_keyword_validator(self):
         # function factory for "choice validators"
-        food = nodes.validate_enumerated_type('ham', 'spam')
+        food = nodes.create_keyword_validator('ham', 'spam')
         self.assertEqual(food('ham'), 'ham')
         with self.assertRaisesRegex(ValueError,
                                     '"bacon" is not one of "ham", "spam".'):

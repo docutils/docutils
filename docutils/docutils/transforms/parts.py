@@ -20,7 +20,7 @@ class SectNum(Transform):
     Automatically assigns numbers to the titles of document sections.
 
     It is possible to limit the maximum section level for which the numbers
-    are added.  For those sections that are auto-numbered, the "autonum"
+    are added.  For those sections that are auto-numbered, the "auto"
     attribute is set, informing the contents table generator that a different
     form of the TOC should be used.
     """
