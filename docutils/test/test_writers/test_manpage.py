@@ -562,6 +562,58 @@ Test title, docinfo to man page header.
 """],
 ]
 
+# TODO check we get an INFO not a WARNING
+totest['image'] = [
+        ["""text
+
+.. image:: gibsnich.png
+   :alt: an image of something
+
+more text
+""",
+document_start + indend_macros + """.TH "" "" "" ""
+.SH Name
+ \\- \n\
+text
+[image: an image of something/gibsnich.png]
+.sp
+more text
+.\\" End of generated man page.
+"""],
+# TODO make alt text a quote like
+#
+# text
+#
+#    an image of something
+#
+# more text
+]
+
+# TODO check we get a WARNING
+#
+#   (WARNING/2) "image" not supported by "manpage" writer.
+#   Please provide an "alt" attribute with textual replacement.
+#
+
+totest['image-without-alt'] = [
+        ["""text
+
+.. image:: gibsnich.png
+
+more text
+""",
+document_start + indend_macros + """.TH "" "" "" ""
+.SH Name
+ \\- \n\
+text
+[image: gibsnich.png]
+.sp
+more text
+.\\" End of generated man page.
+"""],
+# TODO there should be nothing of the image in the manpage, might be decorative
+]
+
 
 if __name__ == '__main__':
     unittest.main()
