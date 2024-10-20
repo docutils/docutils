@@ -41,8 +41,7 @@ if TYPE_CHECKING:
     from collections.abc import (Callable, Iterable, Iterator,
                                  Mapping, Sequence)
     from types import ModuleType
-    from typing import (Any, ClassVar, Final, Literal, Self,
-                        SupportsIndex, TypeVar)
+    from typing import Any, ClassVar, Final, Literal, Self, SupportsIndex
     if sys.version_info[:2] >= (3, 12):
         from typing import TypeAlias
     else:
@@ -53,8 +52,6 @@ if TYPE_CHECKING:
     from docutils.frontend import Values
     from docutils.transforms import Transformer, Transform
     from docutils.utils import Reporter
-
-    _DefaultT = TypeVar('_DefaultT')
 
     _ContentModelCategory: TypeAlias = tuple['Element' | tuple['Element', ...]]
     _ContentModelQuantifier = Literal['.', '?', '+', '*']
@@ -791,14 +788,6 @@ class Element(Node):
     def attlist(self) -> list[tuple[str, Any]]:
         return sorted(self.non_default_attributes().items())
 
-    @overload
-    def get(self, key: str) -> Any:
-        ...
-
-    @overload
-    def get(self, key: str, failobj: _DefaultT) -> Any | _DefaultT:
-        ...
-
     def get(self, key: str, failobj: Any | None = None) -> Any:
         return self.attributes.get(key, failobj)
 
@@ -808,14 +797,6 @@ class Element(Node):
     def delattr(self, attr: str) -> None:
         if attr in self.attributes:
             del self.attributes[attr]
-
-    @overload
-    def setdefault(self, key: str) -> Any:
-        ...
-
-    @overload
-    def setdefault(self, key: str, failobj: _DefaultT) -> Any | _DefaultT:
-        ...
 
     def setdefault(self, key: str, failobj: Any | None = None) -> Any:
         return self.attributes.setdefault(key, failobj)

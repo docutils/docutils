@@ -12,18 +12,17 @@ __docformat__ = 'reStructuredText'
 
 import importlib
 import warnings
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING
 
 from docutils import utils, parsers, Component
 from docutils.transforms import universal
 
 if TYPE_CHECKING:
-    from typing import Final, Literal
+    from typing import Final
 
     from docutils import nodes
     from docutils.io import Input
     from docutils.parsers import Parser
-    from docutils.readers import doctree, pep, standalone
     from docutils.transforms import Transform
 
 
@@ -123,43 +122,14 @@ class ReReader(Reader):
         return Component.get_transforms(self)
 
 
-@overload
-def get_reader_class(reader_name: Literal['standalone']
-                     ) -> type[standalone.Reader]:
-    ...
-
-
-@overload
-def get_reader_class(reader_name: Literal['doctree']) -> type[doctree.Reader]:
-    ...
-
-
-@overload
-def get_reader_class(reader_name: Literal['pep']) -> type[pep.Reader]:
-    ...
-
-
-@overload
-def get_reader_class(reader_name: str) -> type[Reader]:
-    ...
-
-
 def get_reader_class(reader_name: str) -> type[Reader]:
     """Return the Reader class from the `reader_name` module."""
     name = reader_name.lower()
-    if name == 'standalone':
-        from docutils.readers import standalone
-        return standalone.Reader
-    if name == 'doctree':
-        from docutils.readers import doctree
-        return doctree.Reader
-    if name == 'pep':
-        from docutils.readers import pep
-        return pep.Reader
-
     try:
-        module = importlib.import_module(name)
-    except ImportError as err:
-        raise ImportError(f'Reader "{reader_name}" not found.') from err
-    else:
-        return module.Reader
+        module = importlib.import_module('docutils.readers.'+name)
+    except ImportError:
+        try:
+            module = importlib.import_module(name)
+        except ImportError as err:
+            raise ImportError(f'Reader "{reader_name}" not found.') from err
+    return module.Reader
