@@ -204,6 +204,7 @@ Release 0.22b.dev (unpublished)
   - Fix conversion factor of "pc" (pica) to "cm".
   - Fix conversion of image width in "%" if the height is specified.
   - Adjust fallback DPI value (currently not used) to match CSS units.
+  - Fix errors with "*.xml" style files (bug #494).
 
 * pyproject.toml
 

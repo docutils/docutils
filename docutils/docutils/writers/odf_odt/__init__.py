@@ -673,8 +673,10 @@ class Writer(writers.Writer):
         """Copy images, settings, etc from the stylesheet doc into target doc.
         """
         stylespath = self.settings.stylesheet
+        if not stylespath.endswith('.odt'):
+            return  # an '.xml' stylesheet does not have settings or images
         inzipfile = zipfile.ZipFile(stylespath, 'r')
-        # Copy the styles.
+        # Copy the settings.
         s1 = inzipfile.read('settings.xml')
         self.write_zip_str(outzipfile, 'settings.xml', s1)
         # Copy the images.
@@ -923,14 +925,15 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         return self.str_stylesheet
 
     def retrieve_styles(self, extension):
-        """Retrieve the stylesheet from either a .xml file or from
-        a .odt (zip) file.  Return the content as a string.
+        """Retrieve the stylesheet from a .xml or .odt (zip) file.
+
+        Store in `self.*_styles*` attributes.
         """
-        s2 = None
         stylespath = self.settings.stylesheet
         ext = os.path.splitext(stylespath)[1]
         if ext == '.xml':
             s1 = Path(stylespath).read_text(encoding='utf-8')
+            s2 = ''
         elif ext == extension:
             zfile = zipfile.ZipFile(stylespath, 'r')
             s1 = zfile.read('styles.xml')
@@ -942,6 +945,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.str_stylesheet = s1
         self.str_stylesheetcontent = s2
         self.dom_stylesheet = etree.fromstring(self.str_stylesheet)
+        if not s2:
+            return
+        # TODO: dom_stylesheetcontent is never used. Remove?
         self.dom_stylesheetcontent = etree.fromstring(
             self.str_stylesheetcontent)
         self.table_styles = self.extract_table_styles(s2)
