@@ -3,6 +3,53 @@ TODOs
 
 :Date: $Date$
 
+Images
+------
+
+If the image has an "alt" attribute, use its value *instead of* the filename.
+Example::
+
+  text
+
+  .. image:: gibsnich.png
+     :alt: an image of something
+
+  more text
+
+With ``rst2man foo.rst > foo.roff`` I get a ::
+
+  (WARNING/2) "image" not supported
+
+and `man ./foo.roff` shows::
+
+
+  ()                                                                        ()
+
+  Name
+          - text [image: an image of something/gibsnich.png]
+
+         more text
+
+I would prefer an (INFO/1) instead of a warning and ::
+
+  ()                                                                        ()
+
+  Name
+         text
+
+             an image of something
+
+         more text
+
+
+
+For images without an :alt: attribute, the warning should be kept
+but amended with something in the line of
+
+   (WARNING/2) "image" not supported by "manpage" writer.
+   Please provide an "alt" attribute with textual replacement.
+
+
 Issues
 ------
 
