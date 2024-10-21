@@ -55,7 +55,6 @@ class WriterPublishTestCase(unittest.TestCase):
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
-                            'warning_stream': ''  # don't print warnings
                         }).decode()
                     self.assertEqual(case_expected, output)
 
