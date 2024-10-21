@@ -72,7 +72,7 @@ per-file-ignores =
   docutils/test/test_transforms/*:E122,E124,E128,E501
   docutils/test/test_writers/*:E122,E124,E128,E501
   # test output contains trailing whitespace, long lines, operator at end
-  docutils/test/test_writers/test_manpage.py:E128,W291,E501,W504
+  docutils/test/test_writers/test_manpage.py:E122,E128,W291,E501,W504
 
 exclude =
   .venv

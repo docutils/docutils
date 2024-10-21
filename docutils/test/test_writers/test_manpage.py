@@ -53,6 +53,7 @@ class WriterPublishTestCase(unittest.TestCase):
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
+                            'warning_stream': ''  # don't print warnings
                         }).decode()
                     self.assertEqual(case_expected, output)
 
@@ -564,7 +565,8 @@ Test title, docinfo to man page header.
 
 # TODO check we get an INFO not a WARNING
 totest['image'] = [
-        ["""text
+        ["""\
+text
 
 .. image:: gibsnich.png
    :alt: an image of something
@@ -594,7 +596,6 @@ more text
 #   (WARNING/2) "image" not supported by "manpage" writer.
 #   Please provide an "alt" attribute with textual replacement.
 #
-
 totest['image-without-alt'] = [
         ["""text
 
