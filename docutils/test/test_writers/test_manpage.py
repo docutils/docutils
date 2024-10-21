@@ -89,7 +89,7 @@ class WriterPublishTestCase(unittest.TestCase):
                     warnings.seek(0)
                     self.assertEqual(
                             case_warning,
-                            warnings.readline())
+                            warnings.readlines())
 
 
 
@@ -587,7 +587,7 @@ Test title, docinfo to man page header.
 # test defintion
 # [ input, expect, expected_warning ]
 totest_system_msgs ={}
-# TODO check we get an INFO not a WARNING
+# check we get an INFO not a WARNING
 totest_system_msgs['image'] = [
         ["""\
 text
@@ -601,29 +601,18 @@ document_start + indend_macros + """.TH "" "" "" ""
 .SH Name
  \\- \n\
 text
-[image: an image of something/gibsnich.png]
+.sp
+    an image of something
 .sp
 more text
 .\\" End of generated man page.
 """,
-"""\
-<string>:3: (WARNING/2) "image" not supported
-"""],
-# TODO make alt text a quote like
-#
-# text
-#
-#    an image of something
-#
-# more text
-]
+[]
+# TODO check INFO text
+# INFO not in warning_stream    #<string>:3: (INFO/1) "image" not supported\"""
+],
 
-# TODO check we get a WARNING
-#
-#   (WARNING/2) "image" not supported by "manpage" writer.
-#   Please provide an "alt" attribute with textual replacement.
-#
-totest_system_msgs['image-without-alt'] = [
+# check we get a WARNING if no alt text
         ["""text
 
 .. image:: gibsnich.png
@@ -634,15 +623,15 @@ document_start + indend_macros + """.TH "" "" "" ""
 .SH Name
  \\- \n\
 text
-[image: gibsnich.png]
+.sp
+    image: gibsnich.png
 .sp
 more text
 .\\" End of generated man page.
 """,
-"""\
-<string>:3: (WARNING/2) "image" not supported
-"""],
-# TODO there should be nothing of the image in the manpage, might be decorative
+[ '<string>:3: (WARNING/2) "image" not supported by "manpage" writer.\n',
+'Please provide an "alt" attribute with textual replacement.\n']
+]
 ]
 
 

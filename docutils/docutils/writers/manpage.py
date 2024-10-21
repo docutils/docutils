@@ -822,14 +822,20 @@ class Translator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_image(self, node):
-        self.document.reporter.warning('"image" not supported',
-                                       base_node=node)
-        text = []
+        msg = '"image" not supported by "manpage" writer.'
         if 'alt' in node.attributes:
-            text.append(node.attributes['alt'])
-        if 'uri' in node.attributes:
-            text.append(node.attributes['uri'])
-        self.body.append('[image: %s]\n' % ('/'.join(text)))
+            self.document.reporter.info(msg,
+                                        base_node=node)
+            self.body.append('.sp\n    %s\n' % (
+                    node.attributes['alt']))
+        elif 'uri' in node.attributes:
+            self.body.append('.sp\n    image: %s\n' % (
+                    node.attributes['uri']))
+            self.document.reporter.warning(
+                    f'''{msg}
+Please provide an "alt" attribute with textual replacement.''',
+                                       base_node=node)
+        # else 0 arguments to image not allowed
         raise nodes.SkipNode
 
     def visit_important(self, node) -> None:
