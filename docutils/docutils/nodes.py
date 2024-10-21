@@ -3205,7 +3205,14 @@ def validate_refname_list(value: str | list[str]) -> list[str]:
     return [whitespace_normalize_name(name) for name in value]
 
 
-def validate_yesorno(value: bool | Literal['0', '1']) -> bool:
+def validate_yesorno(value: str | int | bool) -> bool:
+    """Validate a `%yesorno`__ (flag) value.
+
+    The string literal "0" evaluates to ``False``, all other
+    values are converterd with `bool()`.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#yesorno
+    """
     if value == "0":
         return False
     return bool(value)

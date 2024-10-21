@@ -501,7 +501,7 @@ class ListTable(Table):
             if col_width is not None:
                 colspec.attributes['colwidth'] = col_width
             if stub_columns:
-                colspec.attributes['stub'] = 1
+                colspec.attributes['stub'] = True
                 stub_columns -= 1
             tgroup += colspec
         rows = []

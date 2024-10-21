@@ -861,7 +861,7 @@ class Inliner:
             elif target and (aliastype == 'uri'):
                 reference['refuri'] = alias
             else:
-                reference['anonymous'] = 1
+                reference['anonymous'] = True
         else:
             if target:
                 target['names'].append(refname)
@@ -929,7 +929,7 @@ class Inliner:
                     reference_node = nodes.reference(
                         '|%s%s' % (subref_text, endstring), '')
                     if endstring[-2:] == '__':
-                        reference_node['anonymous'] = 1
+                        reference_node['anonymous'] = True
                     else:
                         reference_node['refname'] = normalize_name(subref_text)
                         self.document.note_refname(reference_node)
@@ -980,7 +980,7 @@ class Inliner:
             name=whitespace_normalize_name(referencename))
         referencenode[0].rawsource = referencename
         if anonymous:
-            referencenode['anonymous'] = 1
+            referencenode['anonymous'] = True
         else:
             referencenode['refname'] = refname
             self.document.note_refname(referencenode)
@@ -1807,7 +1807,7 @@ class Body(RSTState):
         for colwidth in colwidths:
             colspec = nodes.colspec(colwidth=colwidth)
             if stub_columns:
-                colspec.attributes['stub'] = 1
+                colspec.attributes['stub'] = True
                 stub_columns -= 1
             tgroup += colspec
         if headrows:
@@ -2021,7 +2021,7 @@ class Body(RSTState):
         else:                       # anonymous target
             if refuri:
                 target['refuri'] = refuri
-            target['anonymous'] = 1
+            target['anonymous'] = True
             self.document.note_anonymous_target(target)
 
     def substitution_def(self, match):

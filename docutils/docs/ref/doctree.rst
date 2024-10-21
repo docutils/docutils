@@ -4102,7 +4102,7 @@ _`%yesorno`
     Resolves to NMTOKEN_.
   | Used in the anonymous_, colsep_, ltrim_, rtrim_, rowsep_,
     and `stub`_ attributes.
-    Python data type: ``int``.
+    Python data type: ``bool``.
 
 __ ../index.html#introductory-tutorial-material-for-end-users
 
