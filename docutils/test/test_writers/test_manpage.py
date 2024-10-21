@@ -10,6 +10,8 @@ Tests for manpage writer.
 from pathlib import Path
 import sys
 import unittest
+from io import StringIO
+import docutils
 
 if __name__ == '__main__':
     # prepend the "docutils root" to the Python library path
@@ -70,6 +72,26 @@ class WriterPublishTestCase(unittest.TestCase):
                             'use_reference_macros': True,
                         }).decode()
                     self.assertEqual(case_expected, output)
+
+    def test_system_msgs(self):
+        for name, cases in totest_system_msgs.items():
+            for casenum, (case_input, case_expected, case_warning) in enumerate(cases):
+                with self.subTest(id=f'totest_system_msgs[{name!r}][{casenum}]'):
+                    warnings = StringIO("")
+                    output = publish_string(
+                        source=case_input,
+                        writer=manpage.Writer(),
+                        settings_overrides={
+                            '_disable_config': True,
+                            'strict_visitor': True,
+                            'warning_stream': warnings,
+                        }).decode()
+                    self.assertEqual(case_expected, output)
+                    warnings.seek(0)
+                    self.assertEqual(
+                            case_warning,
+                            warnings.readline())
+
 
 
 document_start = r""".\" Man page generated from reStructuredText by manpage writer
@@ -563,8 +585,11 @@ Test title, docinfo to man page header.
 """],
 ]
 
+# test defintion
+# [ input, expect, expected_warning ]
+totest_system_msgs ={}
 # TODO check we get an INFO not a WARNING
-totest['image'] = [
+totest_system_msgs['image'] = [
         ["""\
 text
 
@@ -581,6 +606,9 @@ text
 .sp
 more text
 .\\" End of generated man page.
+""",
+"""\
+<string>:3: (WARNING/2) "image" not supported
 """],
 # TODO make alt text a quote like
 #
@@ -596,7 +624,7 @@ more text
 #   (WARNING/2) "image" not supported by "manpage" writer.
 #   Please provide an "alt" attribute with textual replacement.
 #
-totest['image-without-alt'] = [
+totest_system_msgs['image-without-alt'] = [
         ["""text
 
 .. image:: gibsnich.png
@@ -611,6 +639,9 @@ text
 .sp
 more text
 .\\" End of generated man page.
+""",
+"""\
+<string>:3: (WARNING/2) "image" not supported
 """],
 # TODO there should be nothing of the image in the manpage, might be decorative
 ]
