@@ -156,7 +156,7 @@ but a subset that is relevant for manual pages.
 The output is pure text, images are not included. Instead, the text
 description in their `"alt" attribute`_ is shown.
 
-.. TODO: a warning is given for image elements without `"alt" attribute`_.
+A warning is given for image elements without `"alt" attribute`_.
 
 The "manpage" writer ignores element attributes specifying a measure_.
 
