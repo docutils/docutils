@@ -832,9 +832,8 @@ class Translator(nodes.NodeVisitor):
             self.body.append('.sp\n    image: %s\n' % (
                     node.attributes['uri']))
             self.document.reporter.warning(
-                    f'''{msg}
-Please provide an "alt" attribute with textual replacement.''',
-                                       base_node=node)
+                    f'{msg}\nPlease provide an "alt" attribute with textual'
+                    ' replacement.', base_node=node)
         # else 0 arguments to image not allowed
         raise nodes.SkipNode
 
