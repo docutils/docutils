@@ -73,9 +73,9 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
     maxDiff = None
 
     def test_publish(self):
-        if not with_pygments:
-            del totest['syntax_highlight']
         for name, (settings_overrides, cases) in totest.items():
+            if name == 'syntax_highlight' and not with_pygments:
+                self.skipTest('syntax highlight requires pygments')
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     parts = docutils.core.publish_parts(

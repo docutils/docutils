@@ -50,14 +50,13 @@ class GetParserClassTestCase(unittest.TestCase):
         # raises ImportError on failure
 
 
-@unittest.skipIf(md_parser_class is not None,
-                 'Optional "recommonmark" module found.')
+@unittest.skipUnless(md_parser_class is None, '"recommonmark" module found.')
 class RecommonmarkMissingTests(unittest.TestCase):
 
     def test_missing_parser_message(self):
         # match multiline message (?s) = re.DOTALL "." also matches newline
-        with self.assertRaisesRegex(ImportError,
-                                    '(?s)requires the.*package .*recommonmark'):
+        with self.assertRaisesRegex(
+            ImportError, '(?s)requires the.*package .*recommonmark'):
             publish_string('test data', parser='recommonmark')
 
 

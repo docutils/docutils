@@ -40,12 +40,6 @@ class ParserTestCase(unittest.TestCase):
     maxDiff = None
 
     def test_parser(self):
-        # eventually skip optional parts:
-        if not with_pygments:
-            del totest['include_parsed_code']
-        if not md_parser_class:
-            del totest['include_markdown']
-
         parser = Parser()
         settings = get_default_settings(Parser)
         settings.warning_stream = ''
@@ -53,6 +47,11 @@ class ParserTestCase(unittest.TestCase):
         for name, cases in totest.items():
             if name == 'with transforms':
                 continue  # see test_publish() below
+            # eventually skip optional parts:
+            if name == 'include_markdown' and not md_parser_class:
+                self.skipTest('no markdown parser available')
+            if name == 'include_parsed_code' and not with_pygments:
+                self.skipTest('syntax highlight requires pygments')
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     document = new_document('test data', settings.copy())
