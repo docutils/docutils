@@ -141,7 +141,8 @@ class XmlAttributesTestCase(unittest.TestCase):
         node = docutils_xml.parse_element(xml)
         self.assertEqual(node.attributes, self.common_attributes | expected)
 
-    def test_auto(self):  # CDATA (str) number sequence: '1' or '*'
+    def test_auto(self):  # CDATA (str)
+        # also encodes footnote label type: '1': numbered, '*': symbols
         xml = '<footnote auto="*" backrefs="footnote-reference-2" />'
         expected = {'auto': '*',
                     'backrefs': ['footnote-reference-2']}
@@ -159,7 +160,15 @@ class XmlAttributesTestCase(unittest.TestCase):
 
     # 'classes':  classnames.type (list[str])  → test_bullet
 
-    def test_colwidth(self):  # CDATA (int) sic!
+    def test_colwidth(self):  # CDATA (int)
+        # Provisional. Currently, Docutils handles "colwidth" differently
+        # from the Exchange Table Model. This will eventually change
+        # (see https://docutils.sourceforge.io/docs/ref/doctree.html#colwidth).
+        xml = '<colspec colwidth="33*" stub="1" />'
+        expected = {'colwidth': 33, 'stub': 1}
+        node = docutils_xml.parse_element(xml)
+        self.assertEqual(node.attributes, self.common_attributes | expected)
+        # Note: the upstream default unit is "pt", not "*".
         xml = '<colspec colwidth="33" stub="1" />'
         expected = {'colwidth': 33, 'stub': 1}
         node = docutils_xml.parse_element(xml)

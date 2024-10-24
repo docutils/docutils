@@ -846,9 +846,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             and 'colwidths-given' not in node.parent.parent['classes']):
             return
         self.body.append(self.starttag(node, 'colgroup'))
-        total_width = sum(node['colwidth'] for node in self.colspecs)
+        total_width = sum(node.propwidth() for node in self.colspecs)
         for node in self.colspecs:
-            colwidth = node['colwidth'] / total_width
+            colwidth = node.propwidth() / total_width
             self.body.append(self.emptytag(node, 'col',
                                            style=f'width: {colwidth:.1%}'))
         self.body.append('</colgroup>\n')

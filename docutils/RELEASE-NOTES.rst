@@ -46,7 +46,7 @@ Command line interface
 Document Tree / Docutils DTD
 ----------------------------
 
-* Do not lowercase reference names in the `refname attribute`_
+* Do not lowercase reference names in the `"refname" attribute`_
   (matching hyperlinks, footnotes, and citations remains case insensitive),
   and drop the ``name`` attribute from <reference> nodes
   in Docutils 1.0.
@@ -57,7 +57,15 @@ Document Tree / Docutils DTD
 * The <footnote> element's first child (<label>) will become mandatory
   in Docutils 1.0.
 
-.. _refname attribute: docs/ref/doctree.html#refname
+* Values of the `"colwidth" attribute`_ will be stored in Python
+  element instances as `str` (with unit "*" for proportional values)
+  in Docutils 1.0.  (The method `nodes.colspec.propwidth()` provides
+  a stable means to extract a proportionional value as number.)
+
+  The default unit will change to "pt" in Docutils 2.0.
+
+.. _"refname" attribute: docs/ref/doctree.html#refname
+.. _"colwidth" attribute: docs/ref/doctree.html#colwidth
 
 Writers
 -------

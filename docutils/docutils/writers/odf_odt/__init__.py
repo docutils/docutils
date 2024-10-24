@@ -3085,7 +3085,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             '%s%%d.%%s' % TABLESTYLEPREFIX,
             (self.table_count, chr(self.column_count), )
         )
-        colwidth = node['colwidth'] / 12.0
+        colwidth = node.propwidth() / 12.0
         el1 = SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': colspec_name,
             'style:family': 'table-column',

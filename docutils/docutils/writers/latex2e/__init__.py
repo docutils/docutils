@@ -989,11 +989,11 @@ class Table:
             width = 80  # assumed standard line length
             factor = 0.93  # do not make it full linewidth
             # first see if we get too wide.
-            total_width = sum(node['colwidth']+1 for node in self._col_specs)
+            total_width = sum(node.propwidth()+1 for node in self._col_specs)
             if total_width > width:
                 factor *= width / total_width
-            self._colwidths = [(factor * (node['colwidth']+1)/width)
-                               + 0.005 for node in self._col_specs]
+            self._colwidths = [(factor * (node.propwidth()+1)/width) + 0.005
+                               for node in self._col_specs]
             latex_colspecs = ['p{%.3f\\DUtablewidth}' % colwidth
                               for colwidth in self._colwidths]
         else:
@@ -1010,7 +1010,7 @@ class Table:
                 allowance = 1
             else:
                 allowance = 0  # "widths" option specified, use exact ratio
-            self._colwidths = [(node['colwidth']+allowance)/norm_length
+            self._colwidths = [(node.propwidth()+allowance)/norm_length
                                for node in self._col_specs]
             total_width = sum(self._colwidths)
             # Limit to 100%, force 100% if table width is specified:
@@ -1067,7 +1067,7 @@ class Table:
                 n_c = len(self._col_specs)
                 a.append('\\endhead\n')
                 # footer on all but last page (if it fits):
-                t_width = sum(node['colwidth']+2 for node in self._col_specs)
+                t_width = sum(node.propwidth()+2 for node in self._col_specs)
                 if t_width > 30 or (t_width > 12 and not self.colwidths_auto):
                     a.append(r'\multicolumn{%d}{%s}'
                              % (n_c, self.get_multicolumn_width(0, n_c))

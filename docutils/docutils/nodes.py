@@ -37,7 +37,6 @@ from typing import TYPE_CHECKING, overload
 # import docutils.transforms # -> delayed import in document.__init__()
 
 if TYPE_CHECKING:
-    import numbers
     from collections.abc import (Callable, Iterable, Iterator,
                                  Mapping, Sequence)
     from types import ModuleType
@@ -2414,6 +2413,19 @@ class colspec(Part, Element):
         'align', 'char', 'charoff', 'colname', 'colnum',
         'colsep', 'colwidth', 'rowsep', 'stub')
 
+    def propwidth(self) -> int|float:
+        """Return numerical value of "colwidth__" attribute. Default 1.
+
+        Raise ValueError if "colwidth" is zero, negative, or a *fixed value*.
+
+        Provisional.
+
+        __ https://docutils.sourceforge.io/docs/ref/doctree.html#colwidth
+        """
+        # Move current implementation of validate_colwidth() here
+        # in Docutils 1.0
+        return validate_colwidth(self.get('colwidth', ''))
+
 
 class thead(Part, Element):
     """Row(s) that form the head of a `tgroup`."""
@@ -3059,14 +3071,20 @@ def pseudo_quoteattr(value: str) -> str:
     return '"%s"' % value
 
 
-def parse_measure(measure: str) -> tuple[numbers.Rational, str]:
-    """Parse a measure__, return value + optional unit.
+def parse_measure(measure: str, unit_pattern: str = '[a-zA-Zµ]*|%?'
+                  ) -> tuple[int|float, str]:
+    """Parse a measure__, return value + unit.
+
+    `unit_pattern` is a regular expression describing recognized units.
+    The default is suited for (but not limited to) CSS3 units and SI units.
+    It matches runs of ASCII letters or Greek mu, a single percent sign,
+    or no unit.
 
     __ https://docutils.sourceforge.io/docs/ref/doctree.html#measure
 
     Provisional.
     """
-    match = re.fullmatch('(-?[0-9.]+) *([a-zA-Zµ]*|%?)', measure)
+    match = re.fullmatch(f'(-?[0-9.]+) *({unit_pattern})', measure)
     try:
         try:
             value = int(match.group(1))
@@ -3149,7 +3167,8 @@ def validate_measure(measure: str) -> str:
 
     See `parse_measure()` for a function returning a "number + unit" tuple.
 
-    The unit may be any run of letters or a percent sign.
+    The unit may be a run of ASCII letters or Greek mu, a single percent sign,
+    or the empty string. Case is preserved.
 
     Provisional.
 
@@ -3157,6 +3176,31 @@ def validate_measure(measure: str) -> str:
     """
     value, unit = parse_measure(measure)
     return f'{value}{unit}'
+
+
+def validate_colwidth(measure: str|int|float) -> int|float:
+    """Validate the "colwidth__" attribute.
+
+    Provisional:
+        `measure` must be a `str` and will be returned as normalized `str`
+        (with unit "*" for proportional values) in Docutils 1.0.
+
+        The default unit will change to "pt" in Docutils 2.0.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#colwidth
+    """
+    if isinstance(measure, (int, float)):
+        value = measure
+    elif measure in ('*', ''):  # short for '1*'
+        value = 1
+    else:
+        try:
+            value, unit = parse_measure(measure, unit_pattern='[*]?')
+        except ValueError:
+            value = -1
+    if value <= 0:
+        raise ValueError(f'"{measure}" is no proportional measure.')
+    return value
 
 
 def validate_NMTOKEN(value: str) -> str:
@@ -3232,7 +3276,7 @@ ATTRIBUTE_VALIDATORS: dict[str, Callable[[str], Any]] = {
     'colnum': int,  # from CALS, currently ignored
     'cols': int,  # from CALS: "NMTOKEN, […] must be an integer > 0".
     'colsep': validate_yesorno,
-    'colwidth': int,  # sic! CALS: CDATA (measure or number+'*')
+    'colwidth': validate_colwidth,  # see docstring for pending changes
     'content': str,  # <meta>
     'delimiter': str,
     'dir': create_keyword_validator('ltr', 'rtl', 'auto'),  # <meta>

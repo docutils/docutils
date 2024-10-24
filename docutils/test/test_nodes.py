@@ -465,6 +465,31 @@ class ElementTests(unittest.TestCase):
         self.assertEqual(len(parent), 5)
 
 
+class ColspecTests(unittest.TestCase):
+
+    def test_propwidth(self):
+        # Return colwidth attribute value if it is a proportional measure.
+        colspec = nodes.colspec()
+        colspec['colwidth'] = '8.2*'  # value + '*'
+        self.assertEqual(colspec.propwidth(), 8.2)
+        colspec['colwidth'] = '2'  # in Docutils < 2.0, default unit is '*'
+        self.assertEqual(colspec.propwidth(), 2)
+        colspec['colwidth'] = '20%'  # percentual values not supported
+        with self.assertRaisesRegex(ValueError, '"20%" is no proportional me'):
+            colspec.propwidth()
+        colspec['colwidth'] = '2em'  # fixed values not supported
+        with self.assertRaisesRegex(ValueError, '"2em" is no proportional me'):
+            colspec.propwidth()
+        colspec['colwidth'] = '0*'  # value must be positive
+        with self.assertRaisesRegex(ValueError, r'"0\*" is no proportional '):
+            colspec.propwidth()
+        # for backwards compatibility, numerical values are accepted
+        colspec['colwidth'] = 8.2
+        self.assertEqual(colspec.propwidth(), 8.2)
+        colspec['colwidth'] = 2
+        self.assertEqual(colspec.propwidth(), 2)
+
+
 class ElementValidationTests(unittest.TestCase):
 
     def test_validate(self):
@@ -1114,22 +1139,33 @@ class MiscFunctionTests(unittest.TestCase):
                          ['a name', 'two\\', r'n\ames'])
 
     def test_parse_measure(self):
-        # measure is number + optional unit (letter(s) or percentage)
+        # measure is number + unit
+        # By default, a run of ASCII letters or µ, a single percent sign,
+        # or the empty string are recognized as unit.
         self.assertEqual(nodes.parse_measure('8ex'), (8, 'ex'))
         self.assertEqual(nodes.parse_measure('2.5'), (2.5, ''))
         self.assertEqual(nodes.parse_measure('-2s'), (-2, 's'))
+        # Spaces between number and unit are tolerated, case is preserved:
         self.assertEqual(nodes.parse_measure('2 µF'), (2, 'µF'))
         self.assertEqual(nodes.parse_measure('10 EUR'), (10, 'EUR'))
         self.assertEqual(nodes.parse_measure('.5 %'), (.5, '%'))
-        # scientific notation not supported
-        with self.assertRaisesRegex(ValueError, '"3e-4 mm" is no valid '):
-            nodes.parse_measure('3e-4 mm')
-        # unit must follow the number
-        with self.assertRaisesRegex(ValueError, '"EUR 23" is no valid '):
-            nodes.parse_measure('EUR 23')
-        # only single percent sign allowed
+        # Only a single percent sign is allowed:
         with self.assertRaisesRegex(ValueError, '"2%%" is no valid measure'):
             nodes.parse_measure('2%%')
+        # Scientific notation is not supported:
+        with self.assertRaisesRegex(ValueError, '"3e-4 mm" is no valid '):
+            nodes.parse_measure('3e-4 mm')
+        # Units must follow the number:
+        with self.assertRaisesRegex(ValueError, '"EUR 23" is no valid '):
+            nodes.parse_measure('EUR 23')
+        # Supported units can be configured with a "unit regexp pattern":
+        self.assertEqual(nodes.parse_measure('10 EUR', 'EUR|€'), (10, 'EUR'))
+        self.assertEqual(nodes.parse_measure('10 €', 'EUR|€'), (10, '€'))
+        with self.assertRaisesRegex(ValueError, '"20 DM" is no valid measure'):
+            nodes.parse_measure('20 DM', 'EUR|€')
+        # Measures without unit are only supported, if the pattern says so:
+        with self.assertRaisesRegex(ValueError, '"20" is no valid measure'):
+            nodes.parse_measure('20', 'EUR|€')
 
 
 class AttributeTypeTests(unittest.TestCase):
@@ -1171,7 +1207,7 @@ class AttributeTypeTests(unittest.TestCase):
             nodes.validate_identifier_list(s2)
 
     def test_validate_measure(self):
-        # number (may be decimal fraction) + optional unit
+        # measure == number (int or decimal fraction) + optional unit
         # internal whitespace is removed
         self.assertEqual(nodes.validate_measure('8 ex'), '8ex')
         self.assertEqual(nodes.validate_measure('2'), '2')
@@ -1199,6 +1235,7 @@ class AttributeTypeTests(unittest.TestCase):
     def test_validate_NMTOKEN(self):
         # str with ASCII-letters, digits, hyphen, underscore, and full-stop.
         self.assertEqual(nodes.validate_NMTOKEN('-8x_.'), '-8x_.')
+        # internal space is not allowed
         with self.assertRaises(ValueError):
             nodes.validate_NMTOKEN('why me')
 

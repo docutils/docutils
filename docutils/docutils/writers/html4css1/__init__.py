@@ -231,10 +231,10 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
             or ('colwidths-auto' in self.settings.table_style
                 and 'colwidths-given' not in node.parent.parent['classes'])):
             return
-        total_width = sum(node['colwidth'] for node in self.colspecs)
+        total_width = sum(node.propwidth() for node in self.colspecs)
         self.body.append(self.starttag(node, 'colgroup'))
         for node in self.colspecs:
-            colwidth = int(node['colwidth'] * 100.0 / total_width + 0.5)
+            colwidth = node.propwidth() * 100.0 / total_width + 0.5
             self.body.append(self.emptytag(node, 'col',
                                            width='%i%%' % colwidth))
         self.body.append('</colgroup>\n')
