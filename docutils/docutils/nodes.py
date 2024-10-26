@@ -813,7 +813,7 @@ class Element(Node):
             if cls.startswith('language-'):
                 return cls.removeprefix('language-')
         try:
-            return self.parent.get_language(fallback)
+            return self.parent.get_language_code(fallback)
         except AttributeError:
             return fallback
 

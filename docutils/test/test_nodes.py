@@ -240,6 +240,15 @@ class ElementTests(unittest.TestCase):
         element.clear()
         self.assertTrue(not len(element))
 
+    def test_get_language_code(self):
+        # Return language tag from node or parents
+        parent = nodes.Element(classes=['parental', 'language-pt-BR'])
+        self.assertEqual(parent.get_language_code('en'), 'pt-BR')
+        child = nodes.Element(classes=['small'])
+        self.assertEqual(child.get_language_code('en'), 'en')
+        parent.append(child)
+        self.assertEqual(child.get_language_code('en'), 'pt-BR')
+
     def test_normal_attributes(self):
         element = nodes.Element()
         self.assertTrue('foo' not in element)

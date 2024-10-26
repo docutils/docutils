@@ -68,6 +68,7 @@ Release 0.22b.dev (unpublished)
   - New function `parse_measure()`.
   - Removed `Element.set_class()`.
   - Downgrade "duplicate ID" message level from SERIOUS to ERROR.
+  - Fix recursion in `Element.get_language_code()`.
 
 * docutils/parsers/docutils_xml.py
 
