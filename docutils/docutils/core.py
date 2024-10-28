@@ -799,7 +799,10 @@ def rst2something(writer, documenttype, doc_path='') -> None:
         'from standalone reStructuredText sources '
         f'<https://docutils.sourceforge.io/docs/{doc_path}>.  '
         + default_description)
-    locale.setlocale(locale.LC_ALL, '')
+    try:
+        locale.setlocale(locale.LC_ALL, '')
+    except locale.Error as e:
+        sys.stderr.write(f'WARNING: Cannot set the default locale: {e}.\n')
     publish_cmdline(writer=writer, description=description)
 
 
