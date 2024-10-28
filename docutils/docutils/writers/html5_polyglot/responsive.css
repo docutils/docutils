@@ -294,9 +294,9 @@ span:target + h5, span:target + h6,
 dt:target, span:target, p:target,
 .contents :target,
 .contents:target > .topic-title,
-[role="doc-biblioentry"]:target > .label,
+[role="doc-biblioentry"]:target,
 [role="doc-biblioref"]:target,
-[role="note"]:target, /* Docutils 0.18 ... 0.19 */
+[role="note"]:target, /* Docutils 0.18 and 0.19 */
 [role="doc-footnote"]:target, /* Docutils >= 0.20 */
 [role="doc-noteref"]:target {
   background-color: #d2e6ec;
