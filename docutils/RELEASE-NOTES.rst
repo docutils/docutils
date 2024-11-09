@@ -288,6 +288,8 @@ Removed localisations:
 Removed files
   ``tools/rst2odt_prepstyles.py``
      Obsoleted by `docutils.writers.odf_odt.prepstyles`.
+  ``docutils/utils/roman.py``
+     Obsoleted by ``docutils/utils/_roman_numerals.py``
 
 Bugfixes and improvements (see HISTORY_).
 

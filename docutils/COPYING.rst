@@ -128,13 +128,6 @@ The exceptions to the `Public Domain Dedication`_ above are:
   Released under the terms of the `BSD 2-Clause License`_
   (`local copy <licenses/BSD-2-Clause.rst>`__).
 
-* docutils/utils/roman.py
-
-  copyright by Mark Pilgrim, released under the
-  `Zope Public License Version 2.1`_ (`local copy`__).
-
-  __ licenses/ZPL-2-1.rst
-
 * tools/editors/emacs/rst.el
 
   copyright by Free Software Foundation, Inc.,
@@ -153,7 +146,6 @@ licenses_ directory.
 .. _GNU General Public License: https://www.gnu.org/copyleft/gpl.html
 .. _BSD 2-Clause License: http://opensource.org/licenses/BSD-2-Clause
 .. _BSD 3-Clause License: https://opensource.org/licenses/BSD-3-Clause
-.. _Zope Public License Version 2.1: https://opensource.org/license/zpl-2-1/
 .. _OSI-approved: http://opensource.org/licenses/
 .. _license-list:
 .. _GPL-compatible: https://www.gnu.org/licenses/license-list.html

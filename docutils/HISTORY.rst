@@ -139,7 +139,8 @@ Release 0.22b.dev (unpublished)
 
 * docutils/utils/_roman_numerals.py
 
-  - Added new implementation.
+  - New implementation or Roman numeral support.
+    Replaces the local copy of docutils/utils/roman.py.
 
 * docutils/utils/error_reporting.py
 
@@ -203,7 +204,7 @@ Release 0.22b.dev (unpublished)
   - Fix conversion factor of "pc" (pica) to "cm".
   - Fix conversion of image width in "%" if the height is specified.
   - Adjust fallback DPI value (currently not used) to match CSS units.
-  - Fix errors with "*.xml" style files (bug #494).
+  - Fix errors with ``*.xml`` style files (bug #494).
 
 * pyproject.toml
 
