@@ -1587,11 +1587,14 @@ class Body(RSTState):
         return optlist
 
     def doctest(self, match, context, next_state):
+        line = self.document.current_line
         data = '\n'.join(self.state_machine.get_text_block())
         # TODO: prepend class value ['pycon'] (Python Console)
         # parse with `directives.body.CodeBlock` (returns literal-block
         # with class "code" and syntax highlight markup).
-        self.parent += nodes.doctest_block(data, data)
+        n = nodes.doctest_block(data, data)
+        n.line = line
+        self.parent += n
         return [], next_state, []
 
     def line_block(self, match, context, next_state):
