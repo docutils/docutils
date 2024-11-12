@@ -64,8 +64,14 @@ Document Tree / Docutils DTD
 
   The default unit will change to "pt" in Docutils 2.0.
 
+* The `\<doctest_block>`_ element will be deprecated in Docutils 1.0.
+  The rST parser will handle a `doctest block`_ similar to a "code" directive
+  with language "pycon" (Python console) and generate a <literal_block>.
+
 .. _"refname" attribute: docs/ref/doctree.html#refname
 .. _"colwidth" attribute: docs/ref/doctree.html#colwidth
+.. _<doctest_block>: docs/ref/doctree.html#doctest-block
+.. _doctest block: docs/ref/rst/restructuredtext.html#doctest-blocks
 
 Writers
 -------

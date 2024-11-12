@@ -1589,9 +1589,8 @@ class Body(RSTState):
     def doctest(self, match, context, next_state):
         line = self.document.current_line
         data = '\n'.join(self.state_machine.get_text_block())
-        # TODO: prepend class value ['pycon'] (Python Console)
-        # parse with `directives.body.CodeBlock` (returns literal-block
-        # with class "code" and syntax highlight markup).
+        # TODO: Parse with `directives.body.CodeBlock` with
+        # argument 'pycon' (Python Console) in Docutils 1.0.
         n = nodes.doctest_block(data, data)
         n.line = line
         self.parent += n

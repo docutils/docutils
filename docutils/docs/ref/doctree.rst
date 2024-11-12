@@ -1392,14 +1392,6 @@ The <doctest_block> element is a Python-specific variant of a
 :Children:   text data plus `inline elements`_ (`%text.model`_)
 :Attributes: the `common attributes`_ and `xml:space`_.
 
-<doctest_block> elements are used for interactive Python interpreter
-sessions, which are distinguished by their input prompt: ``>>>``.
-They are meant to illustrate usage by example, and provide an elegant
-and powerful testing environment via the `doctest module`_ in the
-Python standard library.
-
-.. _doctest module: https://docs.python.org/3/library/doctest.html
-
 Examples
 --------
 
@@ -1417,6 +1409,9 @@ Pseudo-XML_ fragment from simple parsing::
     <doctest_block xml:space="preserve">
         >>> print('this is a Doctest block')
         this is a Doctest block
+
+The <doctest_block> will be deprecated in Docutils 1.0, the
+reStructuredText parser will use a `\<literal_block>`_ instead.
 
 
 <document>
