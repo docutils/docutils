@@ -14,9 +14,10 @@
 
 """A Docutils-XML parser.
 
-   Provisional: The API is not fixed yet.
-   Defined objects may be renamed or changed in any Docutils release
-   without prior notice.
+   Provisional:
+     The API is not fixed yet.
+     Defined objects may be renamed or changed
+     in any Docutils release without prior notice.
 """
 
 import re
@@ -133,9 +134,7 @@ def element2node(element, document=None, unindent=True):
         node = nodeclass()
 
     node.line = int(element.get('source line'))
-    if isinstance(node, nodes.decoration):
-        document.decoration = node
-    elif isinstance(node, Unknown):
+    if isinstance(node, Unknown):
         node.tagname = element.tag
         document.reporter.warning(
             f'Unknown element type <{element.tag}>.',
@@ -151,8 +150,15 @@ def element2node(element, document=None, unindent=True):
             if key in node.list_attributes:
                 value = value.split()
             node.attributes[key] = value  # node becomes invalid!
+
+    # Bookkeeping (register some elements/attributes in document-wide lists)
+    if isinstance(node, nodes.decoration):
+        document.decoration = node
+    elif isinstance(node, nodes.substitution_definition):
+        document.note_substitution_def(node, ' '.join(node['names']), document)
     if node['ids']:  # register, check for duplicates
         document.set_id(node)
+    # TODO: anything missing?
 
     # Append content:
     # update "unindent" flag: change line indentation?

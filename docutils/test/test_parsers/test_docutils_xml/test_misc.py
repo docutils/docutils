@@ -105,6 +105,27 @@ totest['hyperlinks'] = ({},  # resolve hyperlinks
 """],
 ])
 
+totest['substitutions'] = ({},  # resolve substitutions
+[
+["""\
+<document source="test data">
+    <substitution_definition ltrim="0" names="holla">Mara</substitution_definition>
+    <paragraph>Das ist
+    <substitution_reference refname="Holla">Holla</substitution_reference>
+    die Waldfee</paragraph>
+</document>
+""",
+"""\
+<document source="test data">
+    <substitution_definition ltrim="0" names="holla">
+        Mara
+    <paragraph>
+        Das ist
+        Mara
+        \n\
+        die Waldfee
+"""],
+])
 
 if __name__ == '__main__':
     unittest.main()
