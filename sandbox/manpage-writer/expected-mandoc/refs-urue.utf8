@@ -25,10 +25,10 @@ EExxpplliicciitt MMaarrkkuupp
             They may be assigned 'autonumber labels' - for instance, [4] and
             [3].
 
-       [3]  a.k.a.  <third>
+       [3]  a.k.a.  third
 
 
-       [4]  a.k.a.  <fourth>
+       [4]  a.k.a.  fourth
 
 
 
@@ -53,8 +53,7 @@ EExxpplliicciitt MMaarrkkuupp
             Citation labels contain alphanumerics, underlines, hyphens and
             fullstops.  Case is not significant.
 
-            Given a citation like [this], one can also refer to it like <this>
-            .
+            Given a citation like [this], one can also refer to it like this .
 
        [this]
             here.
@@ -65,7 +64,7 @@ EExxpplliicciitt MMaarrkkuupp
        embedded External hyperlinks, like Python <https://www.python.org/> .
 
    IInntteerrnnaall HHyyppeerrlliinnkk TTaarrggeettss
-       Internal cross-references, like <example> .
+       Internal cross-references, like example .
 
        This is an example cross-reference target.
 
@@ -74,7 +73,7 @@ EExxpplliicciitt MMaarrkkuupp
         is my favourite programming language <https://www.python.org/> .
 
 TTiittlleess aarree ttaarrggeettss,, ttoooo
-       Implicit references, like targets, too <Titles> .
+       Implicit references, like Titles are targets, too .
 
 aanndd
        See the Python <https://www.python.org/>

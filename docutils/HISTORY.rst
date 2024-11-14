@@ -193,6 +193,8 @@ Release 0.22b.dev (unpublished)
   - Add module function insert_URI_breakpoints.
   - Add command line option ``--macro-references``/``--text-references``
     to enable/disable usage of *man* macros .UR/.UE.
+  - Do not output .UR/.UE macros without refuri in node.
+  - Use .MT/.ME macros for mailto.uris. 
 
 * docutils/writers/null.py
 

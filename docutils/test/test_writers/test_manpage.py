@@ -170,9 +170,9 @@ whatever.""",
          document_start + indend_macros + """.TH "" "" "" ""
 .SH Name
  \\- \n\
-.UR mailto:jdoe@example.com
+.MT mailto:jdoe@example.com
 Write to me
-.UE
+.ME
  with your questions.
 .sp
 whatever.

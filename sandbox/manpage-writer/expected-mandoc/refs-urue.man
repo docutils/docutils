@@ -62,13 +62,11 @@ labels\(aq \- for instance,
 [4] and [3]\&.
 .IP [3] 5
 a.k.a. 
-.UR third
-.UE
+third
 
 .IP [4] 5
 a.k.a. 
-.UR fourth
-.UE
+fourth
 
 
 .sp
@@ -100,8 +98,7 @@ Case is not significant.
 .sp
 Given a citation like [this], one
 can also refer to it like 
-.UR this
-.UE
+this
 \&.
 .IP [this] 5
 here.
@@ -121,8 +118,7 @@ Python
 .SS Internal Hyperlink Targets
 .sp
 Internal cross\-references, like 
-.UR example
-.UE
+example
 \&.
 .sp
 This is an example cross\-reference target.
@@ -140,9 +136,8 @@ programming language
 .SH Titles are targets, too
 .sp
 Implicit references, like 
-.UR Titles are
+Titles are
 targets, too
-.UE
 \&.
 .SH and
 .sp
@@ -152,9 +147,9 @@ Python
 .UE
  home page for info.
 .sp
-.UR mailto:jdoe@example.com
+.MT mailto:jdoe@example.com
 Write to me
-.UE
+.ME
  with your questions.
 .\" deduplicate _Python: https://www.python.org
 .
@@ -175,7 +170,7 @@ Write to me
 .SS Standalone email addresses
 .sp
 like 
-.UR someone@somewhere.com
-.UE
+.MT someone@somewhere.com
+.ME
 
 .\" End of generated man page.
