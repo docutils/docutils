@@ -86,7 +86,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 ..
 """
 
-# see groff_man_style recommends aplying non-printing break points
+# see groff_man_style recommends applying non-printing break points
 # in long URIs.
 NONPRINTING_BREAKPOINT = r'\:'
 
