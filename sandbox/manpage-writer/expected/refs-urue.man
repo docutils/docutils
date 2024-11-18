@@ -155,22 +155,27 @@ Write to me
 .
 .SS URIs with known schemes
 .sp
-.UR tel:+48\-816\-555\-1212
+.UR tel:+48-816-555-1212
+tel:+48\-816\-555\-1212
 .UE
 
-.UR urn:isbn:0\-486\-27557\-4
+.UR urn:isbn:0-486-27557-4
+urn:isbn:0\-486\-27557\-4
 .UE
 
 .UR news:comp.infosystems.www.servers.unix
+news:comp.infosystems.www.servers.unix
 .UE
 
 .UR https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top
+https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top
 .UE
 
 .SS Standalone email addresses
 .sp
 like 
-.MT someone@somewhere.com
+.MT mailto:someone@somewhere.com
+someone@somewhere.com
 .ME
 
 .\" End of generated man page.

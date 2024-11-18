@@ -83,17 +83,19 @@ aanndd
         with your questions.
 
    UURRIIss wwiitthh kknnoowwnn sscchheemmeess
-       <tel:+48-816-555-1212>
+       tel:+48-816-555-1212 <tel:+48-816-555-1212>
 
-       <urn:isbn:0-486-27557-4>
+       urn:isbn:0-486-27557-4 <urn:isbn:0-486-27557-4>
 
+       news:comp.infosystems.www.servers.unix
        <news:comp.infosystems.www.servers.unix>
 
+       https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top
        <https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top>
 
 
    SSttaannddaalloonnee eemmaaiill aaddddrreesssseess
-       like <someone@somewhere.com>
+       like someone@somewhere.com <mailto:someone@somewhere.com>
 
 
                                                                             ()
