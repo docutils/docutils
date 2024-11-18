@@ -1,0 +1,98 @@
+()                                                                          ()
+
+[1mName[0m
+        - from quickref.html
+
+[1mExplicit Markup[0m
+   [1mFootnotes[0m
+       Footnote references, like [5].  Note that footnotes may get rearranged,
+       e.g., to the bottom of the "page".
+
+       [5]  A numerical footnote. Note there's no colon after the [1m][22m.
+
+
+                                           ----
+
+
+
+            Autonumbered footnotes are possible, like using [1] and [2].
+
+       [1]  This is the first one.
+
+       [2]  This is the second one.
+
+            They  may  be assigned 'autonumber labels' - for instance, [4] and
+            [3].
+
+       [3]  a.k.a.  third
+
+
+       [4]  a.k.a.  fourth
+
+
+
+                                           ----
+
+
+
+            Auto-symbol footnotes are also possible, like this: [*] and [†].
+
+       [*]  This is the first one.
+
+       [†]  This is the second one.
+
+   [1mCitations[0m
+       Citation references, like [CIT2002].  Note that citations may  get  re‐
+       arranged, e.g., to the bottom of the "page".
+
+       [CIT2002]
+            A citation (as often used in journals).
+
+            Citation  labels  contain  alphanumerics,  underlines, hyphens and
+            fullstops.  Case is not significant.
+
+            Given a citation like [this], one can also refer to it like this .
+
+       [this]
+            here.
+
+   [1mExternal Hyperlink Targets[0m
+       External hyperlinks, like ]8;;https://www.python.org/\Python]8;;\ .
+
+       embedded External hyperlinks, like ]8;;https://www.python.org/\Python]8;;\ .
+
+   [1mInternal Hyperlink Targets[0m
+       Internal cross-references, like example .
+
+       This is an example cross-reference target.
+
+   [1mIndirect Hyperlink Targets[0m
+       ]8;;https://www.python.org/\Python]8;;\
+        is ]8;;https://www.python.org/\my favourite programming language]8;;\ .
+
+[1mTitles are targets, too[0m
+       Implicit references, like Titles are targets, too .
+
+[1mand[0m
+       See the ]8;;https://www.python.org/\Python]8;;\
+        home page for info.
+
+       ]8;;mailto:mailto:jdoe@example.com\Write to me]8;;\
+        with your questions.
+
+   [1mURIs with known schemes[0m
+       ]8;;tel:+48-816-555-1212\tel:+48-816-555-1212]8;;\
+
+       ]8;;urn:isbn:0-486-27557-4\urn:isbn:0-486-27557-4]8;;\
+
+       ]8;;news:comp.infosystems.www.servers.unix\news:comp.infosystems.www.servers.unix]8;;\
+
+       ]8;;https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top\https://john.doe@www.example.com:123/forum/questions/?tag=network‐
+       ing&order=newest#top]8;;\
+
+
+   [1mStandalone email addresses[0m
+       like ]8;;mailto:someone@somewhere.com\someone@somewhere.com]8;;\
+
+
+                                                                            ()

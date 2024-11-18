@@ -97,7 +97,7 @@ for L in "en" "de" ; do
   done
 done
 
-# reference macros
+echo "--- reference macros"
 EXT=-urue.man
 for EXP_F in $EXP_DIR/*$EXT ; do
   BASE=`basename $EXP_F`
@@ -109,6 +109,16 @@ for EXP_F in $EXP_DIR/*$EXT ; do
     if [ $? -ne 0 ] ; then
       inc_ERROR_CNT
     fi
+    for ENC in $ENCS ; do
+      F_BASE=${BASE%.man}
+      if [ -e $EXP_DIR/$F_BASE.$ENC ] ; then
+        man -T$ENC $OUT_DIR/$F_BASE.man > $OUT_DIR/$F_BASE.$ENC
+        diff -s -u $EXP_DIR/$F_BASE.$ENC $OUT_DIR/$F_BASE.$ENC
+        if [ $? -ne 0 ] ; then
+          inc_ERROR_CNT
+        fi
+      fi
+    done
   fi
 done
 
