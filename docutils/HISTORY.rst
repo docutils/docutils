@@ -195,6 +195,7 @@ Release 0.22b.dev (unpublished)
     to enable/disable usage of *man* macros .UR/.UE.
   - Do not output .UR/.UE macros without refuri in node.
   - Use .MT/.ME macros for mailto.uris. 
+  - If macro references is active output refuri always. 
 
 * docutils/writers/null.py
 

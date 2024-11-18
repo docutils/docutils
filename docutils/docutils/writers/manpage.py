@@ -1102,8 +1102,7 @@ class Translator(nodes.NodeVisitor):
             else:
                 self.body.append(".UR ")
                 self.context.append('.UE\n')
-            if not node['refuri'].endswith(node.astext()):
-                self.body.append("%s\n" % node['refuri'])
+            self.body.append("%s\n" % node['refuri'])
         else:
             self.context.append('')
 
