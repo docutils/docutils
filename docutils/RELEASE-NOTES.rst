@@ -57,6 +57,9 @@ Document Tree / Docutils DTD
 * The <footnote> element's first child (<label>) will become mandatory
   in Docutils 1.0.
 
+* The "rst" parser will warn if a "figure" directive is missing both
+  caption and legend in Docutils 1.0.
+
 * Values of the `"colwidth" attribute`_ will be stored in Python
   element instances as `str` (with unit "*" for proportional values)
   in Docutils 1.0.  (The method `nodes.colspec.propwidth()` provides
