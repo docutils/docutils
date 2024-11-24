@@ -351,9 +351,7 @@ class Translator(nodes.NodeVisitor):
         text = text.replace('\u2020', '\\(dg')
         return text
 
-    def visit_Text(self, node) -> None:
-        text = node.astext()
-        text = text.replace('\\', '\\e')
+    def encode_special_chars(self, text):
         replace_pairs = [
             ('-', '\\-'),
             ('\'', '\\(aq'),
@@ -363,6 +361,12 @@ class Translator(nodes.NodeVisitor):
             ]
         for (in_char, out_markup) in replace_pairs:
             text = text.replace(in_char, out_markup)
+        return text
+
+    def visit_Text(self, node) -> None:
+        text = node.astext()
+        text = text.replace('\\', '\\e')
+        text = self.encode_special_chars(text)
         # unicode
         text = self.deunicode(text)
         # prevent interpretation of "." at line start
