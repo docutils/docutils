@@ -92,7 +92,7 @@ Issues
 
     whatfore at the word start ?
 
-    Branden writes:
+    Branden Robinson writes:
 
      You will not need to generate the arguments to the MR macro with a leading
      \% escape sequence. ... see feature request #107
@@ -162,6 +162,29 @@ Notes
 * Images and equations are discouraged.
 
 * Lists in admonitions are not intended.
+
+* Branden Robinson on hyphens, minus <https://lwn.net/Articles/948563/> :
+
+    Unicode has a hyphen (U+2010) and a minus sign (U+2212), and "obviously", a
+    person should input those code points for their distinct purposes.
+
+    This works great until someone needs needs to input a "literal" for an
+    overloaded code point in the Basic Latin code chart that has syntactical
+    significance to something like a shell prompt or a language compiler. Then
+    they need that hen's tooth U+002D code point, even though it is meaningful
+    _only_ for talking to computers, and not for any other domain of discourse.
+    And that's not even taking into account the folks who ride in an want
+    distinguishable en dashes, em dashes, figure dashes, and others the LWN
+    article didn't mention. Fitting distinguishable glyphs for these into a
+    half-width character cell even with a fair number of pixels in the
+    horizontal dimension (say, more than 8) starts to become a real pickle.
+
+  and in groff_man_style ::
+
+    \-   Minus sign or basic Latin hyphen-minus. This escape sequence produces
+         the Unix command-line option dash in the output.  
+         “-” is a hyphen in the roff language; some output devices replace it
+         with U+2010 (hyphen) or similar.
 
 Discussions
 -----------
