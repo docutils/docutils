@@ -60,12 +60,11 @@ Document Tree / Docutils DTD
 * The "rst" parser will warn if a "figure" directive is missing both
   caption and legend in Docutils 1.0.
 
-* Values of the `"colwidth" attribute`_ will be stored in Python
-  element instances as `str` (with unit "*" for proportional values)
-  in Docutils 1.0.  (The method `nodes.colspec.propwidth()` provides
-  a stable means to extract a proportionional value as number.)
-
-  The default unit will change to "pt" in Docutils 2.0.
+* To match the definition in the "Exchange Table Model", the
+  `"colwidth" attribute`_ will be stored as a `str` (instead of
+  numerical) value in Python element instances in Docutils 1.0.
+  Proportional values will be stored with unit "*" in Docutils 2.0.
+  The default unit will change to "pt" in Docutils 3.0.
 
 * The `\<doctest_block>`_ element will be deprecated in Docutils 1.0.
   The rST parser will handle a `doctest block`_ similar to a "code" directive
@@ -489,8 +488,6 @@ Release 0.20 (2023-05-04)
 
 Release 0.19 (2022-07-05)
 =========================
-
-(Release 0.19b1 (2022-06-21))
 
 * Drop support for Python 2.7, 3.5, and 3.6.
 

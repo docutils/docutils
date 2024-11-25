@@ -901,10 +901,11 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
         self.relative_path_settings = ('warning_stream',)  # will be modified
 
-        warnings.warn('The frontend.OptionParser class will be replaced '
-                      'by a subclass of argparse.ArgumentParser '
-                      'in Docutils 0.21 or later.',
-                      DeprecationWarning, stacklevel=2)
+        warnings.warn(
+            'The frontend.OptionParser class will be replaced by a subclass '
+            'of argparse.ArgumentParser in Docutils 0.21 or later.\n  '
+            'To get default settings, use frontend.get_default_settings().',
+            DeprecationWarning, stacklevel=2)
         super().__init__(option_class=Option, add_help_option=False,
                          formatter=optparse.TitledHelpFormatter(width=78),
                          *args, **kwargs)

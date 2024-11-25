@@ -1607,7 +1607,7 @@ The "include" directive recognizes the following options:
        There is is no check whether the inserted elements are valid at the
        point of insertion. It is recommended to validate_ the document.
 
-    (New in Docutils 0.17)
+    (New in Docutils 0.17. Provisional.)
 
 ``start-after`` : text_
     Only the content after the first occurrence of the specified *text*

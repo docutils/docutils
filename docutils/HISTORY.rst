@@ -99,7 +99,7 @@ Release 0.22b.dev (unpublished)
 
 * docutils/parsers/rst/roles.py
 
-  - Renamed `normalized_role_options()` to `normalized_role_options()`
+  - Renamed `normalized_role_options()` to `normalize_options()`
     (it is now also used for directive options).
 
 * docutils/parsers/rst/states.py
@@ -770,7 +770,8 @@ Release 0.18 (2021-10-26)
 * docutils/frontend.py
   - Mark as provisional (will switch from using `optparse` to `argparse`).
   - Remove hack for the now obsolete "mod_python" Apache module.
-  - New function `get_default_settings()`.
+  - New function `get_default_settings()` as a replacement for the
+    deprecated `OptionParser`\ s `get_default_values()` method.
 
 * docutils/nodes.py
 
