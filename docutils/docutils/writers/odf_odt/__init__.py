@@ -2131,7 +2131,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         uri_parts = urllib.parse.urlparse(source)
         if uri_parts.scheme in ('', 'file'):
             source = urllib.parse.unquote(uri_parts.path)
-            if source.startswith('/'):
+            if self.settings.root_prefix and source.startswith('/'):
                 root_prefix = Path(self.settings.root_prefix)
                 source = (root_prefix/source[1:]).as_posix()
             else:

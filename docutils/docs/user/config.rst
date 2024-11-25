@@ -589,8 +589,8 @@ directives.
 Also applied when a writer converts an image URI__ to a local filesystem
 path in order to determine the image size or embed the image in the output.
 
-:Default: "/" (keep paths unchanged).
-:Option:  ``--root-prefix``
+:Default: "".
+:Option:  ``--root-prefix``.
 
 New in Docutils 0.21.
 

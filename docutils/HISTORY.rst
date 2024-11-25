@@ -37,15 +37,17 @@ Release 0.22b.dev (unpublished)
 * docutils/core.py
 
   - Removed `Publisher.setup_option_parser()` (internal, obsolete).
-  - Allow a string value (component name or alias) in the
-    "reader", "parser", and "writer" arguments of `Publisher.__init__()`
-    and the `publish_*()` convenience functions.
+  - Allow a string value (component name or alias) in the "reader",
+    "parser", and "writer" arguments of `Publisher.__init__()` and
+    the `publish_*()` convenience functions.
 
 * docutils/frontend.py
 
   - Drop short options ``-i`` and ``-o`` for ``--input-encoding``
     and ``--output-encoding``.
   - Change the default input encoding from ``None`` (auto-detect) to "utf-8".
+  - Change the default value of the _root_prefix setting to the empty string
+    (no change to the behaviour).
 
 * docutils/io.py
 
@@ -194,8 +196,8 @@ Release 0.22b.dev (unpublished)
   - Add command line option ``--macro-references``/``--text-references``
     to enable/disable usage of *man* macros .UR/.UE.
   - Do not output .UR/.UE macros without refuri in node.
-  - Use .MT/.ME macros for mailto.uris. 
-  - If macro references is active output refuri always. 
+  - Use .MT/.ME macros for mailto.uris.
+  - If macro references is active output refuri always.
 
 * docutils/writers/null.py
 
@@ -768,6 +770,7 @@ Release 0.18 (2021-10-26)
 =========================
 
 * docutils/frontend.py
+
   - Mark as provisional (will switch from using `optparse` to `argparse`).
   - Remove hack for the now obsolete "mod_python" Apache module.
   - New function `get_default_settings()` as a replacement for the

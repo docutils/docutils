@@ -25,12 +25,12 @@ if TYPE_CHECKING:
     from docutils.nodes import Node, StrPath
 
 
-def adapt_path(path: str, source='', root_prefix='/') -> str:
+def adapt_path(path: str, source='', root_prefix='') -> str:
     # Adapt path to files to include or embed.
     # `root_prefix` is prepended to absolute paths (cf. root_prefix setting),
     # `source` is the `current_source` of the including directive (which may
     # be a file included by the main document).
-    if path.startswith('/'):
+    if root_prefix and path.startswith('/'):
         base = Path(root_prefix)
         path = path[1:]
     else:

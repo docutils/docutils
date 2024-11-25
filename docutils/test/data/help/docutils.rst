@@ -20,7 +20,7 @@ General Docutils Options
 --time, -t              Include the time & date (UTC).
 --no-datestamp          Do not include a datestamp of any kind.
 --root-prefix=<path>    Base directory for absolute paths when reading from
-                        the local filesystem. Default "/".
+                        the local filesystem. Default "".
 --source-link, -s       Include a "View document source" link.
 --source-url=<URL>      Use <URL> for a source link; implies --source-link.
 --no-source-link        Do not include a "View document source" link.
