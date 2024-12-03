@@ -4194,8 +4194,8 @@ The ``ltrim`` attribute is used in the `\<substitution_definition>`_ element.
 Attribute type: EnumeratedType_, one of "embed", "link", or "lazy".
 Default value: none.
 
-The ``loading`` attribute is used in the `\<image>`_ element to
-indicate the preferred handling by the Docutils writer_. [#]_
+The ``loading`` attribute is used in the `\<image>`_ and `\<figure>`_
+elements to indicate the preferred handling by the Docutils writer_. [#]_
 The default depends on the writer and the image_loading_
 configuration setting.
 

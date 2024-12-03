@@ -89,16 +89,18 @@ Configuration File Syntax
 
 Configuration files are UTF-8-encoded text files.  The ConfigParser.py_
 module from Python_'s standard library is used to read them.
-From its documentation:
+From its documentation__:
 
-    The configuration file consists of sections, lead by a "[section]"
-    header and followed by "name: value" entries, with continuations
-    in the style of `RFC 822`_; "name=value" is also accepted.  Note
-    that leading whitespace is removed from values.  ...  Lines
-    beginning with "#" or ";" are ignored and may be used to provide
-    comments.
 
-.. Note:: No format string interpolation is done.
+    A configuration file consists of sections, each led by a ``[section]``
+    header, followed by key/value entries separated by a specific string
+    (``=`` or ``:`` by default).
+    […] Leading and trailing whitespace is removed from keys and values.
+    […] Configuration files may include comments, prefixed by specific
+    characters (``#`` and ``;`` by default).
+
+__ https://docs.python.org/3/library/configparser.html
+   #supported-ini-file-structure
 
 The following conventions apply to Docutils configuration files:
 
@@ -138,6 +140,10 @@ The following conventions apply to Docutils configuration files:
     Whitespace around the delimiter is not stripped. Write, e.g., ::
 
       expose_internals: source:line
+
+* No `format string interpolation`__ is done.
+
+__ https://docs.python.org/3/library/configparser.html#interpolation-of-values
 
 
 Example
@@ -464,8 +470,6 @@ The language of document parts can be specified with a
 
 *Default*: "en" (English).  *Options*: ``--language``, ``-l``.
 
-.. _class attribute: ../ref/doctree.html#classes
-
 
 output
 ------
@@ -695,8 +699,6 @@ is overridden by a `"title" directive`_.
 
 :Default: None (the displayed `document title`_).
 :Option:  ``--title``.
-
-.. _title attribute: ../ref/doctree.html#title-attribute
 
 
 toc_backlinks
@@ -1471,7 +1473,9 @@ __ https://html.spec.whatwg.org/multipage/sections.html
 image_loading
 """""""""""""
 Indicate at which point images should be loaded.
-Overridden by the `"image" directive`_'s ``:loading:`` option.
+
+Overridden by the `"loading"`_ option of the `"image"`_ and `"figure"`_
+directives.
 
 Supported values:
 
@@ -2504,6 +2508,9 @@ If the first line matches the second line is ignored.
 .. _Docutils Generic document type definition:
 .. _Docutils Document Tree:
 .. _Document Tree: ../ref/doctree.html
+.. _class attribute: ../ref/doctree.html#classes
+.. _title attribute: ../ref/doctree.html#title-attribute
+.. _"uri" attribute: ../ref/doctree.html#uri
 
 .. _Docutils Runtime Settings:
 .. _runtime settings: ../api/runtime-settings.html
@@ -2520,8 +2527,10 @@ If the first line matches the second line is ignored.
 .. _"class" directive: ../ref/rst/directives.html#class
 .. _"code": ../ref/rst/directives.html#code
 .. _"csv-table": ../ref/rst/directives.html#csv-table
-.. _"image" directive: ../ref/rst/directives.html#image
+.. _"figure": ../ref/rst/directives.html#figure
+.. _"image": ../ref/rst/directives.html#image
 .. _"include": ../ref/rst/directives.html#include
+.. _"loading": ../ref/rst/directives.html#loading
 .. _"math" directive: ../ref/rst/directives.html#math
 .. _"parsed-literal": ../ref/rst/directives.html#parsed-literal
 .. _"raw":

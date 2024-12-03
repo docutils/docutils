@@ -275,6 +275,8 @@ and name_ as well as
     option is also specified, they are combined.  For example, a height of
     200px and a scale of 50 is equivalent to a height of 100px with no scale.
 
+    .. _loading:
+
 ``loading`` : "embed", "link", or "lazy"
     Set the `loading attribute`_ to indicate the
     preferred handling by the Docutils Writer. [#]_
@@ -912,7 +914,7 @@ CSV Table
 :Directive Options: `see below <csv-table options_>`__
 :Directive Content: A CSV (comma-separated values) table
                     or (with the `file`_ or `url`_ options) none.
-:Configuration Settings: table_style_, file_insertion_enabled_
+:Configuration Settings: table_style_, file_insertion_enabled_, root_prefix_
 
 .. WARNING::
 
@@ -1529,7 +1531,7 @@ Including an External Document Fragment
 :Directive Arguments: one, required (path_ to the file to include)
 :Directive Options: `see below <include options_>`__
 :Directive Content: none
-:Configuration Setting: file_insertion_enabled_
+:Configuration Setting: file_insertion_enabled_, root_prefix_
 
 .. WARNING::
 
@@ -1645,7 +1647,7 @@ Raw Data Pass-Through
 :Directive Options: `see below <raw options_>`__
 :Directive Content: Stored verbatim, uninterpreted.
                     None (empty) if a ``file`` or ``url`` option given.
-:Configuration Settings: raw_enabled_, file_insertion_enabled_
+:Configuration Settings: raw_enabled_, file_insertion_enabled_, root_prefix_
 
 .. WARNING::
 
