@@ -14,7 +14,6 @@ __docformat__ = 'reStructuredText'
 
 import re
 import string
-import urllib.parse
 import warnings
 from pathlib import Path
 
@@ -1130,7 +1129,7 @@ class Table:
         return False
 
 
-class LaTeXTranslator(nodes.NodeVisitor):
+class LaTeXTranslator(writers.DoctreeTranslator):
     """
     Generate code for 8-bit LaTeX from a Docutils document tree.
 
@@ -1187,7 +1186,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # Settings
         # ~~~~~~~~
-        self.settings = settings = document.settings
+        settings = self.settings
         # warn of deprecated settings and changing defaults:
         if settings.use_latex_citations is None and not settings.use_bibtex:
             settings.use_latex_citations = False
@@ -2437,8 +2436,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_image(self, node) -> None:
         self.requirements['graphicx'] = self.graphicx_package
         attrs = node.attributes
-        # image URI may use %-encoding
-        imagepath = urllib.parse.unquote(attrs['uri'])
+        # convert image URI to filesystem path, do not adjust relative path:
+        imagepath = self.uri2path(attrs['uri'], output_path='')
         # alignment defaults:
         if 'align' not in attrs:
             # Set default align of image in a figure to 'center'

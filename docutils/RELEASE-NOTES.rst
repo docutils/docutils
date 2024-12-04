@@ -124,6 +124,12 @@ Writers
 
     __ docs/user/latex.html#length-units
 
+* "odt" writer:
+
+  - Align adjustment of relative image paths with the behaviour of HTML
+    and LaTeX writers: assume them relative to the *output* directory (as
+    required for image references in HTML), not the *source* directory.
+
 Removals
 --------
 

@@ -11,18 +11,21 @@ from __future__ import annotations
 __docformat__ = 'reStructuredText'
 
 import importlib
+import sys
+import urllib
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import docutils
-from docutils import languages, Component
+from docutils import Component, languages, nodes, utils
 from docutils.transforms import universal
 
 if TYPE_CHECKING:
     from typing import Any, Final
 
-    from docutils import nodes
     from docutils.io import Output
     from docutils.languages import LanguageModule
+    from docutils.nodes import StrPath
     from docutils.transforms import Transform
 
 
@@ -137,7 +140,108 @@ class UnfilteredWriter(Writer):
         return Component.get_transforms(self)
 
 
-WRITER_ALIASES = {'html': 'html4css1',  # may change to html5 some day
+class DoctreeTranslator(nodes.NodeVisitor):
+    """
+    Generic Docutils document tree translator base class.
+
+    Adds auxiliary methods and attributes that are used by several
+    Docutils writers to the `nodes.NodeVisitor` abstract superclass.
+    """
+
+    def __init__(self, document) -> None:
+        super().__init__(document)
+        self.settings = document.settings
+
+    def uri2path(self, uri: str, output_path: StrPath|None = None) -> Path:
+        """Return filesystem path corresponding to a `URI reference`__.
+
+        The `root_prefix`__ setting` is applied to URI references starting
+        with "/" (but not to absolute Windows paths or "file" URIs).
+
+        If `output_path` (defaults to the `output_path`__ setting) is
+        not empty, relative paths are adjusted.
+        (To work in the output document, URI references with relative path
+        relate to the output directory.  For access by the writer, paths
+        must be relative to the working directory.)
+
+        Use case:
+          The <image> element refers to the image via a "URI reference".
+          The corresponding filesystem path is required to read the
+          image size from the file or to embed the image in the output.
+
+          A filesystem path is also expected by the "LaTeX" output format
+          (with relative paths unchanged, relating to the output directory,
+          set `output_path` to the empty string).
+
+        Provisional: the function's location, interface and behaviour
+        may change without advance warning.
+
+        __ https://www.rfc-editor.org/rfc/rfc3986.html#section-4.1
+        __ https://docutils.sourceforge.io/docs/user/config.html#root-prefix
+        __ https://docutils.sourceforge.io/docs/user/config.html#output-path
+        """
+        if output_path is None:
+            output_path = self.settings.output_path
+        if uri.startswith('file:'):
+            return Path.from_uri(uri)
+        uri_parts = urllib.parse.urlsplit(uri)
+        if uri_parts.scheme != '':
+            raise ValueError(f'Cannot get file path corresponding to {uri}.')
+        # extract and adjust path from "relative URI reference"
+        path = urllib.parse.unquote(uri_parts.path)
+        if self.settings.root_prefix and path.startswith('/'):
+            return Path(self.settings.root_prefix) / path.removeprefix('/')
+        path = Path(path)
+        # adjust relative paths (but not "d:/foo" or similar)
+        if output_path and not path.is_absolute():
+            dest_dir = Path(output_path).parent.resolve()
+            path = Path(utils.relative_path(None, dest_dir/path))
+            # TODO: support paths relative to the *source* directory?
+            # source_path, line = utils.get_source_line(node)
+            # if source_path:
+            #     source_dir = Path(source_path).parent.resolve()
+            #     path = Path(utils.relative_path(None, source_dir/path)
+        return path
+
+
+if sys.version_info[:2] < (3, 13):
+    # Backport `pathlib.Path.from_uri()` class method:
+    import pathlib
+
+    # subclassing from Path must consider the OS flavour
+    # https://stackoverflow.com/questions/29850801/subclass-pathlib-path-fails
+    class Path(type(pathlib.Path())):  # noqa F811 (redefinition of 'Path')
+        """`pathlib.Path` with `from_uri()` classmethod backported from 3.13.
+        """
+
+        # `from_uri()` is copied from
+        # https://github.com/python/cpython/blob/3.13/Lib/pathlib/_local.py
+        # with minor adaptions
+        @classmethod
+        def from_uri(cls, uri):
+            """Return a new path from the given 'file' URI."""
+            if not uri.startswith('file:'):
+                raise ValueError(f"URI does not start with 'file:': {uri!r}")
+            path = uri[5:]
+            if path[:3] == '///':
+                # Remove empty authority
+                path = path[2:]
+            elif path[:12] == '//localhost/':
+                # Remove 'localhost' authority
+                path = path[11:]
+            if path[:3] == '///' or (path[:1] == '/' and path[2:3] in ':|'):
+                # Remove slash before DOS device/UNC path
+                path = path[1:]
+            if path[1:2] == '|':
+                # Replace bar with colon in DOS drive
+                path = path[:1] + ':' + path[2:]
+            path = cls(urllib.parse.unquote(path))
+            if not path.is_absolute():
+                raise ValueError(f"URI is not absolute: {uri!r}")
+            return path
+
+
+WRITER_ALIASES = {'html': 'html4css1',  # will change to html5 in Docutils 2.0
                   'html4': 'html4css1',
                   'xhtml10': 'html4css1',
                   'html5': 'html5_polyglot',
