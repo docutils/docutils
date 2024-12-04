@@ -30,6 +30,7 @@ from docutils.frontend import OptionParser
 from docutils.readers import doctree
 
 if TYPE_CHECKING:
+    from typing import TextIO
     from docutils.nodes import StrPath
 
 
@@ -213,25 +214,33 @@ class Publisher:
             error_handler=self.settings.input_encoding_error_handler)
 
     def set_destination(self,
-                        destination: str | None = None,
+                        destination: TextIO | None = None,
                         destination_path: StrPath | None = None,
                         ) -> None:
-        if destination_path is None:
-            if (self.settings.output and self.settings._destination
-                and self.settings.output != self.settings._destination):
-                raise SystemExit('The positional argument <destination> is '
-                                 'obsoleted by the --output option.  '
-                                 'You cannot use them together.')
-            if self.settings.output == '-':      # means stdout
-                self.settings.output = None
-            destination_path = (self.settings.output
-                                or self.settings._destination)
+        # Provisional: the "_destination" and "output" settings
+        # are deprecated and will be ignored in Docutils 2.0.
+        if destination_path is not None:
+            self.settings.output_path = os.fspath(destination_path)
         else:
-            destination_path = os.fspath(destination_path)
-        self.settings._destination = destination_path
+            # check 'output_path' and legacy settings
+            if getattr(self.settings, 'output', None
+                       ) and not self.settings.output_path:
+                self.settings.output_path = self.settings.output
+            if (self.settings.output_path and self.settings._destination
+                and self.settings.output_path != self.settings._destination):
+                raise SystemExit('The --output-path option obsoletes the '
+                                 'second positional argument (DESTINATION). '
+                                 'You cannot use them together.')
+            if self.settings.output_path is None:
+                self.settings.output_path = self.settings._destination
+            if self.settings.output_path == '-':  # use stdout
+                self.settings.output_path = None
+        self.settings._destination = self.settings.output \
+            = self.settings.output_path
+
         self.destination = self.destination_class(
             destination=destination,
-            destination_path=destination_path,
+            destination_path=self.settings.output_path,
             encoding=self.settings.output_encoding,
             error_handler=self.settings.output_encoding_error_handler)
 

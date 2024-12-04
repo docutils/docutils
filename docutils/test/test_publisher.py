@@ -139,14 +139,18 @@ class PublisherTests(unittest.TestCase):
     def test_set_destination(self):
         # Exit if `_destination` and `output` settings conflict.
         publisher = core.Publisher()
-        publisher.get_settings(output='out_name', _destination='out_name')
+        publisher.get_settings(output_path='out_name', _destination='other')
+        with self.assertRaises(SystemExit):
+            publisher.set_destination()
         # no conflict if both have same value:
+        publisher.settings._destination = 'out_name'
         publisher.set_destination()
         # no conflict if both are overridden:
         publisher.set_destination(destination_path='winning_dest')
-        # ... also sets _destination to 'winning_dest' -> conflict
-        with self.assertRaises(SystemExit):
-            publisher.set_destination()
+        # "output_path" and legacy settings are set to `destination_path`:
+        self.assertEqual(publisher.settings.output_path, 'winning_dest')
+        self.assertEqual(publisher.settings.output, 'winning_dest')
+        self.assertEqual(publisher.settings._destination, 'winning_dest')
 
 
 class ConvenienceFunctionTests(unittest.TestCase):
@@ -179,7 +183,7 @@ class ConvenienceFunctionTests(unittest.TestCase):
 
     def test_destination_output_conflict(self):
         # Exit if positional argument and --output option conflict.
-        settings = {'output': 'out_name'}
+        settings = {'output_path': 'out_name'}
         with self.assertRaises(SystemExit):
             core.publish_cmdline(argv=['-', 'dest_name'],
                                  settings_overrides=settings)

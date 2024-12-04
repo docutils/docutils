@@ -533,7 +533,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         # else link to style file:
         if adjust_path:
             # rewrite path relative to output (cf. config.html#stylesheet-path)
-            path = utils.relative_path(self.settings._destination, path)
+            path = utils.relative_path(self.settings.output_path, path)
         return self.stylesheet_link % self.encode(path)
 
     def starttag(self, node, tagname, suffix='\n', empty=False, **attributes):
@@ -645,7 +645,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
         __ https://www.rfc-editor.org/rfc/rfc3986.html
         """
-        destination = self.settings._destination or ''
+        destination = self.settings.output_path or ''
         uri_parts = urllib.parse.urlparse(uri)
         if uri_parts.scheme not in ('', 'file'):
             raise ValueError('Can only read local images.')

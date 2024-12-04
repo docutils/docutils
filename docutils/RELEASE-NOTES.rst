@@ -31,7 +31,7 @@ Command line interface
        + COMMAND [OPTIONS] [SOURCE [SOURCE2 [...]]]
 
   * Stop accepting the DESTINATION positional argument in Docutils 1.0.
-    Use ``--output=DESTINATION`` (cf. the "output_" configuration setting)
+    Use ``--output=DESTINATION`` (cf. the "output_path_" configuration setting)
     or output redirection.
 
   * Accept the short option ``-o`` for ``--output`` in Docutils 1.0
@@ -226,6 +226,8 @@ Configuration changes
     Use the long equivalents ``--input-encoding`` and ``--output-encoding``.
     (See `command line interface`_ for the rationale.)
 
+  - Rename configuration setting "output" to "output_path_".
+
 Output changes
   LaTeX:
      Don't wrap references with custom reference-label_ in a ``\hyperref``
@@ -303,6 +305,7 @@ Bugfixes and improvements (see HISTORY_).
 
 .. _Docutils Document Model:
 .. _Docutils XML: docs/ref/doctree.html
+.. _output_path: docs/user/config.html#output
 
 
 Release 0.21.2 (2024-04-23)

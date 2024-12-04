@@ -67,7 +67,7 @@ class Decorations(Transform):
                 if settings.source_url:
                     source = settings.source_url
                 else:
-                    source = utils.relative_path(settings._destination,
+                    source = utils.relative_path(settings.output_path,
                                                  settings._source)
                 text.extend([
                     nodes.reference('', 'View document source',

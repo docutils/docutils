@@ -198,12 +198,12 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         required_files_copied = {}
         # This is a link (URL) in HTML, so we use "/", not os.sep:
         self.theme_file_path = 'ui/%s' % settings.theme
-        if not settings.output:
+        if not settings.output_path:
             raise docutils.ApplicationError(
                 'Output path not specified, you may need to copy'
                 ' the S5 theme files "by hand" or set the "--output" option.')
         dest = os.path.join(
-            os.path.dirname(settings.output), 'ui', settings.theme)
+            os.path.dirname(settings.output_path), 'ui', settings.theme)
         if not os.path.isdir(dest):
             os.makedirs(dest)
         default = False

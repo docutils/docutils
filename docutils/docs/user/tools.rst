@@ -331,9 +331,10 @@ For details, please see `Easy Slide Shows With reStructuredText & S5
 <slide-shows.html>`_.
 
 .. [#copy-theme] Theme files can only be copied by Docutils, if the
-   output_ destination path is specified.
+   `output path`_ is specified.
 
-.. _output: config.html#output
+.. _output path: config.html#output-path
+
 
 buildhtml.py
 ------------

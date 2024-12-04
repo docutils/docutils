@@ -1440,7 +1440,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             cmd = r'\input{%s}'
         if self.settings.stylesheet_path:
             # adapt path relative to output (cf. config.html#stylesheet-path)
-            return cmd % utils.relative_path(self.settings._destination, path)
+            return cmd % utils.relative_path(self.settings.output_path, path)
         return cmd % path.as_posix()
 
     def to_latex_encoding(self, docutils_encoding):

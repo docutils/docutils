@@ -587,7 +587,7 @@ def get_stylesheet_reference(settings: Values,
         assert not settings.stylesheet, (
             'stylesheet and stylesheet_path are mutually exclusive.')
         if relative_to is None:
-            relative_to = settings._destination
+            relative_to = settings.output_path
         return relative_path(relative_to, settings.stylesheet_path)
     else:
         return settings.stylesheet

@@ -120,7 +120,7 @@ Introduction
   .. class:: handout
 
   The console script to generate S5 slide shows.
-  
+
   .. _rst2s5: tools.html#rst2s5
 
 .. topic:: Keyboard Controls
@@ -374,9 +374,9 @@ Generating a Slide Show (1)
    to an existing theme using the ``--theme-url`` option.
 
    .. [#copy-theme] Theme files can only be copied by Docutils, if the
-      output_ destination path is specified.
-   
-   .. _output: config.html#output
+      `output path`_ is specified.
+
+   .. _output path: config.html#output-path
 
 
 Generating a Slide Show (2)
@@ -487,9 +487,9 @@ Themes
      * http://mozilla.wikicities.com/wiki/Firefox_S5:Designs
      * http://lachy.id.au/dev/mozilla/firefox/s5/
      * http://www.openlight.com/Python-S5-Theme.tar.gz
-     
-     Do a web search for "S5
-     theme" and you're bound to find plenty of choices.
+
+     Do a web search for "S5 theme" and you're bound to find plenty
+     of choices.
 
 * "``--theme``" option.
 

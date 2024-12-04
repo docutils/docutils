@@ -1789,7 +1789,7 @@ text encoding
 The encoding of the LaTeX source file is Docutils' *output* encoding
 but LaTeX' *input* encoding.
 
-Option: output-encoding_
+Option: output_encoding_
     ``--output-encoding=OUTPUT-ENCODING``
 
 Default:
@@ -1824,7 +1824,7 @@ Note:
    (where *n* is the Unicode page-number) to the style sheet might help.
 
 .. _LaTeX Unicode: http://www.unruh.de/DniQ/latex/unicode/
-.. _output-encoding: config.html#output-encoding
+.. _output_encoding: config.html#output-encoding
 .. _inputenc: https://ctan.org/pkg/inputenc
 .. _ucs: https://ctan.org/pkg/unicode
 
@@ -2085,7 +2085,7 @@ The easiest solution is to use xelatex_ for `PDF generation`_.
 
 With "traditional" TeX engines (e.g. pdflatex_):
 
-- Generate LaTeX code with `output-encoding`_ "utf-8".
+- Generate LaTeX code with the default `output_encoding`_ "utf-8".
 
 - Add the pmboxdraw_ package to the `style sheets`_.
   (For shaded boxes also add the `color` package.)
