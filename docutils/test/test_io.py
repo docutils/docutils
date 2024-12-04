@@ -10,7 +10,6 @@ Test module for `docutils.io`.
 
 import codecs
 import locale
-import os.path
 import sys
 import unittest
 import warnings
@@ -34,7 +33,7 @@ else:
     EncodingWarning = UnicodeWarning  # NoQA: A001 (builtin in Py > 0.9)
 
 # DATA_ROOT is ./test/data/ from the docutils root
-DATA_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
+DATA_ROOT = Path(__file__).parent / 'data'
 
 # normalize the preferred encoding's name:
 with warnings.catch_warnings():
@@ -118,13 +117,16 @@ class InputTests(unittest.TestCase):
         expected = 'data\n\ufeff blah\n'  # only leading ZWNBSP removed
         input_ = du_io.StringInput(source=source.encode('utf-16-be'),
                                    encoding=None)
-        self.assertEqual(expected, input_.read())
+        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
+            self.assertEqual(expected, input_.read())
         input_ = du_io.StringInput(source=source.encode('utf-16-le'),
                                    encoding=None)
-        self.assertEqual(expected, input_.read())
+        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
+            self.assertEqual(expected, input_.read())
         input_ = du_io.StringInput(source=source.encode('utf-8'),
                                    encoding=None)
-        self.assertEqual(expected, input_.read())
+        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
+            self.assertEqual(expected, input_.read())
         # With `str` input all ZWNBSPs are still there.
         input_ = du_io.StringInput(source=source)
         self.assertEqual(source, input_.read())
@@ -135,14 +137,16 @@ class InputTests(unittest.TestCase):
 data
 blah
 """, encoding=None)
-        data = input_.read()  # noqa: F841
+        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
+            data = input_.read()  # noqa: F841
         self.assertEqual('ascii', input_.successful_encoding)
         input_ = du_io.StringInput(source=b"""\
 #! python
 # -*- coding: ascii -*-
 print("hello world")
 """, encoding=None)
-        data = input_.read()  # noqa: F841
+        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
+            data = input_.read()  # noqa: F841
         self.assertEqual('ascii', input_.successful_encoding)
         input_ = du_io.StringInput(source=b"""\
 #! python
@@ -276,10 +280,10 @@ class FileInputTests(unittest.TestCase):
         with warnings.catch_warnings():
             if SUPPRESS_ENCODING_WARNING:
                 warnings.filterwarnings('ignore', category=EncodingWarning)
-            source = du_io.FileInput(
-                source_path=os.path.join(DATA_ROOT, 'utf-8-sig.rst'),
-                encoding=None)
-        self.assertTrue(source.read().startswith('Grüße'))
+            source = du_io.FileInput(source_path=DATA_ROOT/'utf-8-sig.rst',
+                                     encoding=None)
+        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
+            self.assertTrue(source.read().startswith('Grüße'))
 
     def test_bom_utf_16(self):
         """Drop BOM from utf-16 encoded files, use correct encoding.
@@ -288,10 +292,10 @@ class FileInputTests(unittest.TestCase):
         with warnings.catch_warnings():
             if SUPPRESS_ENCODING_WARNING:
                 warnings.filterwarnings('ignore', category=EncodingWarning)
-            source = du_io.FileInput(
-                source_path=os.path.join(DATA_ROOT, 'utf-16-le-sig.rst'),
-                encoding=None)
-        self.assertTrue(source.read().startswith('Grüße'))
+            source = du_io.FileInput(source_path=DATA_ROOT/'utf-16-le-sig.rst',
+                                     encoding=None)
+        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
+            self.assertTrue(source.read().startswith('Grüße'))
 
     def test_coding_slug(self):
         """Use self-declared encoding.
@@ -299,24 +303,22 @@ class FileInputTests(unittest.TestCase):
         with warnings.catch_warnings():
             if SUPPRESS_ENCODING_WARNING:
                 warnings.filterwarnings('ignore', category=EncodingWarning)
-            source = du_io.FileInput(
-                source_path=os.path.join(DATA_ROOT, 'latin2.rst'),
-                encoding=None)
-        self.assertTrue(source.read().endswith('škoda\n'))
+            source = du_io.FileInput(source_path=DATA_ROOT/'latin2.rst',
+                                     encoding=None)
+        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
+            self.assertTrue(source.read().endswith('škoda\n'))
 
     def test_fallback_utf8(self):
         """Try 'utf-8', if encoding is not specified in the source."""
         with warnings.catch_warnings():
             if SUPPRESS_ENCODING_WARNING:
                 warnings.filterwarnings('ignore', category=EncodingWarning)
-            source = du_io.FileInput(
-                source_path=os.path.join(DATA_ROOT, 'utf8.rst'),
-                encoding=None)
+            source = du_io.FileInput(source_path=DATA_ROOT/'utf8.rst',
+                                     encoding=None)
         self.assertEqual('Grüße\n', source.read())
 
     def test_readlines(self):
-        source = du_io.FileInput(
-            source_path=os.path.join(DATA_ROOT, 'include.rst'))
+        source = du_io.FileInput(source_path=DATA_ROOT/'include.rst')
         data = source.readlines()
         self.assertEqual(['Some include text.\n'], data)
 

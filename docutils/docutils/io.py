@@ -152,7 +152,9 @@ class Input(TransformSpec):
             # explicitly given.
             encoding_candidates = [self.encoding]
         else:
-            data_encoding = self.determine_encoding_from_data(data)
+            with warnings.catch_warnings():
+                warnings.filterwarnings('ignore', category=DeprecationWarning)
+                data_encoding = self.determine_encoding_from_data(data)
             if data_encoding:
                 # `data` declares its encoding with  "magic comment" or BOM,
                 encoding_candidates = [data_encoding]
@@ -168,6 +170,10 @@ class Input(TransformSpec):
                     fallback = locale.getpreferredencoding(do_setlocale=False)
                 if fallback and fallback.lower() != 'utf-8':
                     encoding_candidates.append(fallback)
+        if not self.encoding and encoding_candidates[0] != 'utf-8':
+            warnings.warn('Input encoding auto-detection will be removed and '
+                          'the encoding values None and "" become invalid '
+                          'in Docutils 1.0.', DeprecationWarning, stacklevel=2)
         for enc in encoding_candidates:
             try:
                 decoded = str(data, enc, self.error_handler)
@@ -195,13 +201,21 @@ class Input(TransformSpec):
     )
     """Sequence of (start_bytes, encoding) tuples for encoding detection.
     The first bytes of input data are checked against the start_bytes strings.
-    A match indicates the given encoding."""
+    A match indicates the given encoding.
+
+    Internal. Will be removed in Docutils 1.0.
+    """
 
     def determine_encoding_from_data(self, data: bytes) -> str | None:
         """
         Try to determine the encoding of `data` by looking *in* `data`.
         Check for a byte order mark (BOM) or an encoding declaration.
+
+        Deprecated. Will be removed in Docutils 1.0.
         """
+        warnings.warn('docutils.io.Input.determine_encoding_from_data() '
+                      'will be removed in Docutils 1.0.',
+                      DeprecationWarning, stacklevel=2)
         # check for a byte order mark:
         for start_bytes, encoding in self.byte_order_marks:
             if data.startswith(start_bytes):

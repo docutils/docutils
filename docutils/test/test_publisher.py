@@ -207,8 +207,9 @@ class ConvenienceFunctionTests(unittest.TestCase):
         # input encoding detection will be removed in Docutils 1.0
         source = '.. encoding: latin1\n\nGrüße'
         settings['input_encoding'] = None
-        output = core.publish_string(source.encode('latin1'),
-                                     settings_overrides=settings)
+        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
+            output = core.publish_string(source.encode('latin1'),
+                                         settings_overrides=settings)
         self.assertTrue(output.endswith('Grüße\n'))
 
     def test_publish_string_output_encoding(self):

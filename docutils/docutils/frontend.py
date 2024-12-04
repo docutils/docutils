@@ -135,8 +135,9 @@ def validate_encoding(setting: str,
     if value is None:
         value = setting
     if value == '':
-        warnings.warn('Input encoding detection will be removed '
-                      'in Docutils 1.0.', DeprecationWarning, stacklevel=2)
+        warnings.warn('Input encoding detection will be removed and the '
+                      'special encoding values None and "" become invalid '
+                      'in Docutils 1.0.', FutureWarning, stacklevel=2)
         return None
     try:
         codecs.lookup(value)
