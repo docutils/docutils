@@ -25,8 +25,8 @@ import mimetypes
 import os
 import os.path
 import re
+import sys
 import urllib.parse
-import urllib.request
 import warnings
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -460,7 +460,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             reading_problems.append('Reading external files disabled.')
         if not reading_problems:
             try:
-                imagepath = self.uri2imagepath(uri)
+                imagepath = self.uri2path(uri)
                 with PIL.Image.open(imagepath) as img:
                     imgsize = img.size
             except (ValueError, OSError, UnicodeEncodeError) as err:
@@ -626,38 +626,47 @@ class HTMLTranslator(nodes.NodeVisitor):
             return
         child['classes'].append(class_)
 
-    def uri2imagepath(self, uri):
-        """Get POSIX filesystem path corresponding to an URI.
+    def uri2path(self, uri: str) -> Path:
+        """Return filesystem path corresponding to a `URI reference`__.
 
-        The image directive expects an image URI__. Some writers require the
-        corresponding image path to read the image size from the file or to
-        embed the image in the output.
+        The `root_prefix`__ setting` is applied to URI references starting
+        with "/" (but not to absolute Windows paths or "file" URIs).
 
-        URIs with absolute "path" part consider the ``root_prefix`` setting.
+        If the `output_path`__ setting is not empty, relative paths are
+        adjusted.  (To work in the output document, URI references with
+        relative path relate to the output directory.  For access by the
+        writer, paths must be relative to the working directory.)
 
-        In order to work in the output document, URI references with relative
-        path relate to the output directory.  For access by the writer, the
-        corresponding image path must be relative to the current working
-        directory.
+        Use case:
+          The <image> element refers to the image via a "URI reference".
+          The corresponding filesystem path is required to read the
+          image size from the file or to embed the image in the output.
+
+          A filesystem path is also expected by the "LaTeX" output format
+          (with relative paths unchanged, relating to the output directory).
 
         Provisional: the function's location, interface and behaviour
         may change without advance warning.
 
-        __ https://www.rfc-editor.org/rfc/rfc3986.html
+        __ https://www.rfc-editor.org/rfc/rfc3986.html#section-4.1
+        __ https://docutils.sourceforge.io/docs/user/config.html#root-prefix
+        __ https://docutils.sourceforge.io/docs/user/config.html#output-path
         """
-        destination = self.settings.output_path or ''
-        uri_parts = urllib.parse.urlparse(uri)
-        if uri_parts.scheme not in ('', 'file'):
-            raise ValueError('Can only read local images.')
-        imagepath = urllib.parse.unquote(uri_parts.path)
-        if self.settings.root_prefix and imagepath.startswith('/'):
-            root_prefix = Path(self.settings.root_prefix)
-            imagepath = (root_prefix/imagepath.removeprefix('/')).as_posix()
-        elif not os.path.isabs(imagepath):  # path may be absolute Windows path
-            destdir = os.path.abspath(os.path.dirname(destination))
-            imagepath = utils.relative_path(None,
-                                            os.path.join(destdir, imagepath))
-        return imagepath
+        if uri.startswith('file:'):
+            return Path.from_uri(uri)
+        uri_parts = urllib.parse.urlsplit(uri)
+        if uri_parts.scheme != '':
+            raise ValueError(f'Cannot get file path corresponding to {uri}.')
+        # extract and adjust path from "relative URI reference"
+        path = urllib.parse.unquote(uri_parts.path)
+        if self.settings.root_prefix and path.startswith('/'):
+            return Path(self.settings.root_prefix) / path.removeprefix('/')
+        path = Path(path)
+        if self.settings.output_path and not path.is_absolute():
+            # rewrite relative paths, but not "d:/foo" or similar
+            dest_dir = Path(self.settings.output_path).parent.resolve()
+            path = Path(utils.relative_path(None, dest_dir/path))
+        return path
 
     def visit_Text(self, node) -> None:
         text = node.astext()
@@ -1187,7 +1196,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['loading'] = 'lazy'
         elif loading == 'embed':
             try:
-                imagepath = self.uri2imagepath(uri)
+                imagepath = self.uri2path(uri)
                 if mimetype == 'image/svg+xml':
                     imagedata = Path(imagepath).read_text(encoding='utf-8')
                 else:
@@ -1911,3 +1920,40 @@ class SimpleListChecker(nodes.GenericNodeVisitor):
     visit_substitution_definition = ignore_node
     visit_target = ignore_node
     visit_pending = ignore_node
+
+
+# Backport `pathlib.Path.from_uri()` class method:
+
+if sys.version_info[:2] < (3, 13):
+    import pathlib
+
+    # subclassing from Path must consider the OS flavour
+    # https://stackoverflow.com/questions/29850801/subclass-pathlib-path-fails
+    class Path(type(pathlib.Path())):  # noqa F811 (redefinition of 'Path')
+        """`pathlib.Path` with `from_uri()` classmethod backported from 3.13.
+        """
+        # copied from
+        # https://github.com/python/cpython/blob/3.13/Lib/pathlib/_local.py
+        # with minor adaptions
+        @classmethod
+        def from_uri(cls, uri):
+            """Return a new path from the given 'file' URI."""
+            if not uri.startswith('file:'):
+                raise ValueError(f"URI does not start with 'file:': {uri!r}")
+            path = uri[5:]
+            if path[:3] == '///':
+                # Remove empty authority
+                path = path[2:]
+            elif path[:12] == '//localhost/':
+                # Remove 'localhost' authority
+                path = path[11:]
+            if path[:3] == '///' or (path[:1] == '/' and path[2:3] in ':|'):
+                # Remove slash before DOS device/UNC path
+                path = path[1:]
+            if path[1:2] == '|':
+                # Replace bar with colon in DOS drive
+                path = path[:1] + ':' + path[2:]
+            path = cls(urllib.parse.unquote(path))
+            if not path.is_absolute():
+                raise ValueError(f"URI is not absolute: {uri!r}")
+            return path

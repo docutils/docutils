@@ -572,15 +572,14 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
             if (PIL and ('width' not in node or 'height' not in node)
                 and self.settings.file_insertion_enabled):
                 try:
-                    imagepath = self.uri2imagepath(uri)
+                    imagepath = self.uri2path(uri)
                     with PIL.Image.open(imagepath) as img:
                         img_size = img.size
                 except (ValueError, OSError, UnicodeEncodeError) as e:
                     self.document.reporter.warning(
                         f'Problem reading image file: {e}')
                 else:
-                    self.settings.record_dependencies.add(
-                        imagepath.replace('\\', '/'))
+                    self.settings.record_dependencies.add(imagepath.as_posix())
                     if 'width' not in atts:
                         atts['width'] = '%dpx' % img_size[0]
                     if 'height' not in atts:

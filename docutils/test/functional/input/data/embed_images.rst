@@ -6,7 +6,7 @@ to embed still images in the output document. [#]_ SVG images are
 directly included, other images are base64_ encoded and included
 as a `data URI`_.
 
-.. figure:: file:../../../docs/user/rst/images/biohazard.png
+.. figure:: ../../../docs/user/rst/images/biohazard.png
    :alt: biohazard
    :align: left
    :width: 2em
@@ -15,7 +15,7 @@ as a `data URI`_.
 
    Embedded PNG image in a figure.
 
-.. figure:: file:../../../docs/user/rst/images/biohazard-scaling.svg
+.. figure:: ../../../docs/user/rst/images/biohazard-scaling.svg
    :alt: biohazard
    :align: right
    :width: 2em

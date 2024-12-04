@@ -4490,6 +4490,9 @@ Attribute type: `CDATA`_.  Default value: none.
 The ``uri`` attribute is used in the `\<image>`_ and `\<figure>`_
 elements to refer to the image via a `URI Reference`_ [#]_. [rfc3986]_
 
+The `root_prefix`_ configuration setting is applied when a URI Reference
+starting with "/" is converted to a local filesystem path.
+
 .. [#] Examples are a full URI, an *absolute-path reference* (begins with
    a single slash character) or a *relative-path reference* (does not
    begin with a slash character).
@@ -5198,6 +5201,7 @@ Bibliography
 .. _id_prefix:        ../user/config.html#id-prefix
 .. _image_loading:    ../user/config.html#image-loading
 .. _report_level:     ../user/config.html#report-level
+.. _root_prefix:     ../user/config.html#root-prefix
 .. _stylesheet:       ../user/config.html#stylesheet
 .. _syntax_highlight: ../user/config.html#syntax-highlight
 

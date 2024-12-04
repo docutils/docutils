@@ -588,17 +588,28 @@ root_prefix
 Base directory, prepended to a filesystem path__ starting with "/" when
 including files with the `"include"`_, `"raw"`_, or `"csv-table"`_
 directives.
+Also applied to the `"uri" attribute`_ of an <image> or <figure> starting
+with "/" when it is converted to a local filesystem path.
+Not applied to absolute Windows paths and ``file:`` URIs.
 
-Also applied when a writer converts an image URI__ to a local filesystem
-path in order to determine the image size or embed the image in the output.
+Example:
+  The HTML server for a documentation project serves files from the
+  "DocumentRoot" ``/var/www/html/``.
+  Image files are stored in a dedicated directory ``/var/www/html/pictures/``.
 
-:Default: "".
+  With ``root-prefix=/var/www/html``, the rST "image" directive ::
+
+    .. image:: /pictures/mylogo.png
+
+  works for LaTeX output and HTML output with embedded images as well as
+  for HTML output with images included via URI reference.
+
+:Default: "" (empty string).
 :Option:  ``--root-prefix``.
 
 New in Docutils 0.21.
 
 __ ../ref/rst/directives.html#path
-__ ../ref/rst/directives.html#uri
 
 
 sectnum_xform
@@ -609,7 +620,7 @@ Enable automatic section numbering by Docutils
 with the `"sectnum" directive`_.
 
 If disabled, section numbers might be added to the output by the
-renderer (e.g. by LaTeX or via a CSS style definition).
+renderer (e.g. by CSS style rules or by LaTeX).
 
 :Default: True.
 :Options: ``--section-numbering``, ``--no-section-numbering``.

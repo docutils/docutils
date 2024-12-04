@@ -23,12 +23,6 @@ import docutils
 import docutils.core
 from docutils.writers import html5_polyglot
 
-# TEST_ROOT is ./test/ from the docutils root
-TEST_ROOT = Path(__file__).parents[1]
-DATA_ROOT = TEST_ROOT / 'data'
-ROOT_PREFIX = (TEST_ROOT / 'functional/input').as_posix()
-
-
 # Parts returned by `publish_parts()` for the HTML5 writer by default:
 #   * empty input string
 #   * default configuration settings.
