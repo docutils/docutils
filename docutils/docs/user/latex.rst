@@ -60,30 +60,29 @@ Docutils specific LaTeX macros
 ------------------------------
 
 Some Docutils objects have no LaTeX counterpart, they will be typeset
-using a Docutils specific LaTeX *macro* (command, environment, or
-length) to allow customization. By convention, special macros use the
-prefix ``\DU``\ [#]_.
-
-The `docutils.sty`_ LaTeX package providing required definitions is
-part of Docutils ≥ 0.17 and available on CTAN since 2020-09-04.
-The generated LaTeX documents should be kept processable by a standard LaTeX
-installation. Therefore fallback definitions are included after the `custom
-style sheets`_, if a macro is required in the document and
-the `stylesheet`_ setting does not include "docutils".
+using a Docutils specific LaTeX *macro* (command, environment, or length)
+to allow customization.  By convention, these macros use the prefix
+``\DU``\ [#]_.
+Fallback definitions are included after the `custom style sheets`_,
+for all macros required in the document.  Alternatively, you may list
+"docutils" in the `stylesheet`_ setting to use the `"docutils" package`_
+instead.
 
 * Custom `style sheets`_ can define alternative implementations with
   ``\newcommand``, ``\newenvironment``, and ``\newlength`` followed by
   ``\setlength``.
 
-* Definitions with `raw LaTeX`_ are part of the document body. Use
+* Definitions with `raw LaTeX`_ are part of the document body.  Use
   ``\def``, ``\renewcommand`` or ``\renewenvironment``, and ``\setlength``.
 
-See the test output standalone_rst_latex.tex_ for an example of the fallback
-definitions and their use in the document.
+See docutils.sty_ and the test output `standalone_rst_latex.tex`_ for
+an example of the fallback definitions and their use in the document.
 
 .. [#] DU for Documentation Utilities = Docutils
 
-.. _docutils.sty: https://ctan.org/pkg/docutils
+.. _"docutils" package: https://ctan.org/pkg/docutils
+.. _docutils.sty:
+    https://mirrors.ctan.org/macros/latex/contrib/docutils/docutils.sty.html
 
 
 .. _length unit:
@@ -1974,35 +1973,43 @@ This can be solved with the "unicode" hyperref_option_ setting::
 image inclusion
 ```````````````
 
-Images__ are included in LaTeX with the help of the `graphicx` package. The
-supported file formats depend on the used driver:
+Images_ are included in LaTeX with the help of the `graphicx`_ package.
+The supported graphic formats depend on the postprocessor:
 
-* pdflatex_, lualatex, and xelatex_ work with PNG, JPG, or PDF,
-  but **not EPS**.
-* Standard latex_ can include **only EPS** graphics, no other format.
-* latex + dvipdfmx works with EPS and JPG (add 'dvipdfmx' to the
-  documentoptions_ or graphicx-option_ setting
-  and 'bmpsize' to the stylesheet_ setting).
+* pdflatex_, lualatex_, and xelatex_ work with PNG, JPG, and PDF
+  but *not EPS*.
 
-If PDF-image inclusion in PDF files fails, specifying
-``--graphicx-option=pdftex`` might help.
+* When compiling to DVI with the ``latex`` command, support depends on
+  the viewer or post-processor:
+
+  - dvips supports EPS but not other format,
+  - dvipdfmx works with EPS and JPG (add 'dvipdfmx' to the documentoptions_
+    or graphicx-option_ setting and 'bmpsize' to the stylesheet_ setting).
+
+* SVG images are supported if the `"svg" package`_ is listed in the
+  stylesheet_ setting.  Pass the ``--shell-escape`` option to the LaTeX
+  compiler to enable image conversion on the fly by Inkscape_.
+  (New in Docutils 0.22.)
+
+* The Rubber_ wrapper can be used for automatic image conversion.
 
 For details see grfguide.pdf_.
 
-The Rubber_ wrapper can be used for automatic image conversion.
-
 Docutils expects a URI-reference_ as pointer to the image ressource.
-LaTeX requires it to refer to a local file.
+The LaTeX writer transforms it to a filesystem path.
 By default, LaTeX does not accept spaces and more than one dot in the
 filename. If using "traditional" filenames is not an option, loading the
 grffile_ package may help.
 
-__ ../ref/rst/directives.html#images
+.. _images: ../ref/rst/directives.html#images
+.. _graphicx: https://ctan.org/pkg/graphicx
+.. _graphicx-option: config.html#graphicx-option
 .. _grfguide.pdf:
    https://mirrors.ctan.org/macros/latex/required/graphics/grfguide.pdf
-.. _grffile: https://ctan.org/pkg/grffile
-.. _graphicx-option: config.html#graphicx-option
 .. _URI-reference: https://www.rfc-editor.org/rfc/rfc3986.html#section-4.1
+.. _"svg" package: https://ctan.org/pkg/svg
+.. _Inkscape: https://inkscape.org/
+.. _grffile: https://ctan.org/pkg/grffile
 
 
 Why are my images too big?

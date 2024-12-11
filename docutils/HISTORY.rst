@@ -177,8 +177,11 @@ Release 0.22b.dev (unpublished)
   - Mark the main language when loading "babel".
   - Provide an "unknown_references_resolver" (cf. `docutils/TransformSpec`)
     for citation references resolved with BibTeX (cf. `use_bibtex`_ setting).
+  - Support SVG image inclusion with the "svg" LaTeX package (see the
+    `stylesheet`__ configuration setting).
 
   .. _reference-label: docs/user/config.html#reference-label
+  __ docs/user/config.html#stylesheet-latex-writers
 
 * docutils/writers/latex2e/docutils.sty
 

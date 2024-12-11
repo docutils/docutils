@@ -2483,10 +2483,14 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             post.append('\n')
         pre.reverse()
         self.out.extend(pre)
+        if imagepath.suffix == '.svg' and 'svg' in self.settings.stylesheet:
+            cmd = 'includesvg'
+        else:
+            cmd = 'includegraphics'
         options = ''
         if include_graphics_options:
-            options = '[%s]' % (','.join(include_graphics_options))
-        self.out.append('\\includegraphics%s{%s}' % (options, imagepath))
+            options = f"[{','.join(include_graphics_options)}]"
+        self.out.append(f'\\{cmd}{options}{{{imagepath}}}')
         self.out.extend(post)
 
     def depart_image(self, node) -> None:

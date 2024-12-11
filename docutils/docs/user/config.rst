@@ -1853,7 +1853,7 @@ compound enumerators.  This has no effect unless
 
 stylesheet
 ~~~~~~~~~~
-List of style files (comma-separated_). Used verbatim
+Comma-separated_ list of style files (LaTeX packages). Used verbatim
 (under Windows, path separators are normalized to forward slashes).
 Overrides also stylesheet_path__. [#override]_
 See also `stylesheet [html writers]`_.
@@ -1863,11 +1863,23 @@ referenced with ``\usepackage`` (values with extension ``.sty`` or no
 extension) or ``\input`` (any other extension).
 LaTeX will search the specified files in the `TeX input path`_.
 
+Some values change the behaviour of the LaTeX writer:
+
+:docutils: If the `"docutils" package`_ is listed, fallback definitions
+           for `Docutils specific LaTeX macros`_ are loaded from there
+           instead of literal inclusion in the output document.
+:svg:      If the `"svg" package`_ is listed, SVG images_ are
+           included with the ``\includesvg`` command instead of
+           the default ``\includegraphics`` (new in Docutils 0.22).
+
 *Default*: empty list.  *Option*: ``--stylesheet``.
 
 __ `stylesheet_path [latex writers]`_
 __ `embed_stylesheet [latex writers]`_
 .. _TeX input path: https://texfaq.org/FAQ-tds
+.. _"docutils" package: https://ctan.org/pkg/docutils
+.. _Docutils specific LaTeX macros: latex.html#docutils-specific-latex-macros
+.. _"svg" package: https://ctan.org/pkg/svg
 
 
 .. _stylesheet_dirs [latex writers]:
@@ -2513,8 +2525,8 @@ If the first line matches the second line is ignored.
 
 .. References
 
-.. _Docutils Generic document type definition:
 .. _Docutils Document Tree:
+.. _Docutils Generic document type definition:
 .. _Document Tree: ../ref/doctree.html
 .. _class attribute: ../ref/doctree.html#classes
 .. _title attribute: ../ref/doctree.html#title-attribute
@@ -2536,6 +2548,7 @@ If the first line matches the second line is ignored.
 .. _"code": ../ref/rst/directives.html#code
 .. _"csv-table": ../ref/rst/directives.html#csv-table
 .. _"figure": ../ref/rst/directives.html#figure
+.. _images:
 .. _"image": ../ref/rst/directives.html#image
 .. _"include": ../ref/rst/directives.html#include
 .. _"loading": ../ref/rst/directives.html#loading

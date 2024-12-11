@@ -163,10 +163,34 @@ head_textcomp + r"""
 """],
 ])
 
-samples['image'] = ({}, [
-[".. image:: blue%20square.png",
+samples['images'] = ({}, [
+["""
+.. image:: blue%20square.png
+.. image:: vectors.svg
+""",
 head_image + r"""
 \includegraphics{blue square.png}
+
+\includegraphics{vectors.svg}
+
+\end{document}
+"""],
+])
+
+samples['svg-image'] = ({'stylesheet': 'svg'}, [
+["""
+.. image:: pixels.png
+.. image:: vectors.svg
+""",
+head_template.substitute(dict(parts,
+requirements=r"""\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+""",
+stylesheet=r"""\usepackage{svg}
+""")) + r"""
+\includegraphics{pixels.png}
+
+\includesvg{vectors.svg}
 
 \end{document}
 """],
@@ -1144,6 +1168,7 @@ This is the \emph{document}.
 \end{document}
 """],
 ])
+
 
 samples['stylesheet_path'] = ({'stylesheet_path': f'{spam},{ham}'}, [
 ["""two stylesheet links in the header""",

@@ -171,7 +171,7 @@ HTML4_ [#]_ ✓             ✓     ✓     ✓     (✓)   (✓)   (✓)   (✓
 
 HTML5_      ✓             ✓     ✓     ✓     ✓     ✓     ✓     ✓     ✓
 
-LaTeX_ [#]_        ✓      ✓     ✓
+LaTeX_ [#]_ ✓ [#]_ ✓      ✓     ✓
 
 ODT_        ✓      ✓      ✓     ✓     ✓
 =========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
@@ -190,6 +190,9 @@ ODT_        ✓      ✓      ✓     ✓     ✓
        Some build systems, e.g. rubber_ support additional formats
        via on-the-fly image conversion.
 
+.. [#] New in Docutils 0.22.
+       The `"svg" package`_ must be listed in the stylesheet__ setting.
+
 __ https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
 .. _HTML4:
 .. _html4 writer: ../../user/html.html#html4css1
@@ -198,7 +201,9 @@ __ https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
 .. _LaTeX: ../../user/latex.html#image-inclusion
 .. _ODT: ../../user/odt.html
 .. _manpage: ../../user/manpage.html
-.. _rubber: https://github.com/petrhosek/rubber
+.. _rubber: https://gitlab.com/latex-rubber/rubber
+.. _"svg" package: https://ctan.org/pkg/svg
+__ ../../user/config.html#stylesheet-latex-writers
 
 
 Image
@@ -271,7 +276,7 @@ and name_ as well as
 
 ``height`` : length_
     The desired height of the image.
-    Used to reserve space or scale the image vertically.  When the ``scale``
+    Used to reserve space or scale the image vertically.  When the scale_
     option is also specified, they are combined.  For example, a height of
     200px and a scale of 50 is equivalent to a height of 100px with no scale.
 
@@ -287,6 +292,8 @@ and name_ as well as
             specifies the "`lazy loading attribute`_".
 
     (New in Docutils 0.21.)
+
+    .. _scale:
 
 ``scale`` : integer percentage (the "%" symbol is optional)
     The uniform scaling factor of the image.  The default is "100 %",
@@ -305,7 +312,7 @@ and name_ as well as
 ``width`` : length_ or percentage_ of the current line width
     The width of the image.
     Used to reserve space or scale the image horizontally.  As with ``height``
-    above, when the ``scale`` option is also specified, they are combined.
+    above, when the scale_ option is also specified, they are combined.
 
 .. [#] Currently only recognized by the `HTML5 writer`_
    (overriding the `image_loading`_ configuration setting).
@@ -596,7 +603,7 @@ is parsed and marked up as Python source code.
 
 The parsing can be turned off with the syntax_highlight_ configuration
 setting and command line option or by specifying the language as
-`class <class option_>`_ option instead of directive argument.
+`class <class option>`_ option instead of directive argument.
 This also avoids warnings when Pygments_ is not installed or the language
 is not in the `supported languages and markup formats`_.
 
@@ -2295,7 +2302,6 @@ Common Option Value Types
 .. _loading attribute: ../doctree.html#loading
 .. _names attribute: ../doctree.html#names
 .. _title attribute: ../doctree.html#title-attribute
-.. _uri attribute: ../doctree.html#uri
 .. _width attribute: ../doctree.html#width
 .. _<admonition>: ../doctree.html#admonition
 .. _<attention>: ../doctree.html#attention
