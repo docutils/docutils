@@ -294,8 +294,10 @@ class Writer(writers.Writer):
 
     def assemble_parts(self) -> None:
         """Assemble the `self.parts` dictionary of output fragments."""
-        writers.Writer.assemble_parts(self)
+        super().assemble_parts()
         for part in self.visitor_attributes:
+            if part in self.parts:
+                continue  # make the function idempotent
             lines = getattr(self, part)
             if part in self.head_parts:
                 if lines:
@@ -1256,9 +1258,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         # ~~~~~~~~~~~~~~~~~~~~~~~~
 
         # Document parts
-        self.head_prefix = [r'\documentclass[%s]{%s}' %
-                            (self.documentoptions,
-                             settings.documentclass)]
+        self.head_prefix = [f'\\documentclass[{self.documentoptions}]'
+                            f'{{{settings.documentclass}}}']
         self.requirements = {}  # converted to a list in depart_document()
         self.latex_preamble = [settings.latex_preamble]
         self.fallbacks = {}  # converted to a list in depart_document()

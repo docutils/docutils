@@ -179,7 +179,7 @@ class Writer(writers.Writer):
         return subs
 
     def assemble_parts(self) -> None:
-        writers.Writer.assemble_parts(self)
+        super().assemble_parts()
         for part in self.visitor_attributes:
             self.parts[part] = ''.join(getattr(self, part))
 
