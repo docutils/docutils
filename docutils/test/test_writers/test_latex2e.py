@@ -39,72 +39,21 @@ class WriterPublishTestCase(unittest.TestCase):
     settings = {
         '_disable_config': True,
         'strict_visitor': True,
-        # Explicit set current default to avoid latex writer future warnings:
+        'output_encoding': 'unicode',
+        # avoid latex writer future warnings:
         'use_latex_citations': False,
         'legacy_column_widths': True,
         }
 
-    def run_samples(self, samples, settings):
-        for name, cases in samples.items():
+    def test_publish(self):
+        for name, (settings_overrides, cases) in samples.items():
             for casenum, (rst_input, expected) in enumerate(cases):
-                with self.subTest(id=f'samples_default[{name!r}][{casenum}]'):
-                    output = publish_string(source=rst_input,
-                                            writer=latex2e.Writer(),
-                                            settings_overrides=settings)
-                    output = output.decode()
+                with self.subTest(id=f'samples[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=rst_input,
+                        writer=latex2e.Writer(),
+                        settings_overrides=self.settings|settings_overrides)
                     self.assertEqual(expected, output)
-
-    def test_defaults(self):
-        settings = self.settings.copy()
-        self.run_samples(samples_default, settings)
-
-    def test_docutils_toc(self):
-        settings = self.settings.copy()
-        settings['use_latex_toc'] = False
-        self.run_samples(samples_docutils_toc, settings)
-
-    def test_book(self):
-        settings = self.settings.copy()
-        settings['documentclass'] = 'book'
-        self.run_samples(samples_book, settings)
-
-    def test_latex_sectnum(self):
-        settings = self.settings.copy()
-        settings['use_latex_toc'] = False
-        settings['sectnum_xform'] = False
-        self.run_samples(samples_latex_sectnum, settings)
-
-    def test_latex_citations(self):
-        settings = self.settings.copy()
-        settings['use_latex_citations'] = True
-        self.run_samples(samples_latex_citations, settings)
-
-    def test_table_style_auto(self):
-        settings = self.settings.copy()
-        settings['table_style'] = ['colwidths-auto']
-        self.run_samples(samples_table_style_auto, settings)
-
-    def test_booktabs(self):
-        settings = self.settings.copy()
-        settings['table_style'] = ['booktabs']
-        self.run_samples(samples_table_style_booktabs, settings)
-
-    def test_link_stylesheet(self):
-        settings = self.settings.copy()
-        settings['stylesheet_path'] = f'{spam},{ham}'
-        self.run_samples(samples_stylesheet, settings)
-
-    def test_embed_embed_stylesheet(self):
-        settings = self.settings.copy()
-        settings['stylesheet_path'] = f'{spam},{ham}'
-        settings['embed_stylesheet'] = True
-        settings['warning_stream'] = ''
-        self.run_samples(samples_stylesheet_embed, settings)
-
-    def test_bibtex(self):
-        settings = self.settings.copy()
-        settings['use_bibtex'] = ['alpha', 'xampl']
-        self.run_samples(samples_bibtex, settings)
 
 
 head_template = string.Template(
@@ -194,45 +143,36 @@ head_alltt = head_template.substitute(
          + '\\usepackage{alltt}\n'))
 
 
-samples_default = {}
-samples_docutils_toc = {}
-samples_book = {}
-samples_latex_sectnum = {}
-samples_latex_citations = {}
-samples_stylesheet = {}
-samples_stylesheet_embed = {}
-samples_table_style_auto = {}
-samples_table_style_booktabs = {}
-samples_bibtex = {}
+samples = {}
 
-samples_default['url_chars'] = [
+samples['url_chars'] = ({}, [
 ["http://nowhere/url_with%28parens%29",
 head + r"""
 \url{http://nowhere/url_with\%28parens\%29}
 
 \end{document}
 """],
-]
+])
 
-samples_default['textcomp'] = [
+samples['textcomp'] = ({}, [
 ["2 µm is just 2/1000000 m",
 head_textcomp + r"""
-2 µm is just 2/1000000 m
+2 \textmu{}m is just 2/1000000 m
 
 \end{document}
 """],
-]
+])
 
-samples_default['image'] = [
+samples['image'] = ({}, [
 [".. image:: blue%20square.png",
 head_image + r"""
 \includegraphics{blue square.png}
 
 \end{document}
 """],
-]
+])
 
-samples_default['spanish_quote'] = [
+samples['spanish_quote'] = ({}, [
 [".. role:: language-es\n\nUnd damit :language-es:`basta`!",
 head_template.substitute(dict(parts,
 requirements=r"""\usepackage[T1]{fontenc}
@@ -243,9 +183,9 @@ Und damit \foreignlanguage{spanish}{basta}!
 
 \end{document}
 """],
-]
+])
 
-samples_default['code_role'] = [
+samples['code_role'] = ({}, [
 [':code:`x=1`',
 head_template.substitute(dict(parts, requirements=parts['requirements']
                               + '\\usepackage{color}\n',
@@ -255,9 +195,9 @@ head_template.substitute(dict(parts, requirements=parts['requirements']
 
 \end{document}
 """],
-]
+])
 
-samples_default['minitoc'] = [
+samples['minitoc'] = ({}, [
 # local toc reqires the minitoc package
 # and either \tableofcontents or \faketableofcontents
 ["""\
@@ -289,9 +229,9 @@ head_minitoc + r"""
 
 \end{document}
 """],
-]
+])
 
-samples_docutils_toc['table_of_contents'] = [
+samples['table_of_contents'] = ({'use_latex_toc': False}, [
 ["""\
 .. contents:: Table of Contents
 
@@ -363,9 +303,10 @@ Paragraph 2.
 
 \end{document}
 """],
-]
+])
 
-samples_default['footnote_text'] = [
+
+samples['footnote_text'] = ({}, [
 ["""\
 .. [1] paragraph
 
@@ -400,14 +341,14 @@ paragraph
 
 \end{document}
 """],
-]
+])
 
-samples_default['no_sectnum'] = [
+samples['no_sectnum'] = ({}, [
 ["""\
 .. contents::
 
-first section
--------------
+unnumbered section
+------------------
 """,
 # expected output
 head_template.substitute(dict(parts,
@@ -418,15 +359,15 @@ head_template.substitute(dict(parts,
 \tableofcontents
 
 
-\section{first section%
-  \label{first-section}%
+\section{unnumbered section%
+  \label{unnumbered-section}%
 }
 
 \end{document}
 """],
-]
+])
 
-samples_default['sectnum'] = [
+samples['sectnum'] = ({}, [
 ["""\
 .. contents::
 .. sectnum::
@@ -443,15 +384,15 @@ head_template.substitute(dict(parts,
 \tableofcontents
 
 
-\section{1   first section%
+\section{1~~~first section%
   \label{first-section}%
 }
 
 \end{document}
 """],
-]
+])
 
-samples_default['depth'] = [
+samples['depth'] = ({}, [
 ["""\
 .. contents::
     :depth: 1
@@ -475,9 +416,9 @@ head_template.substitute(dict(parts,
 
 \end{document}
 """],
-]
+])
 
-samples_book['depth'] = [
+samples['book'] = ({'documentclass': 'book'}, [
 ["""\
 .. contents::
     :depth: 1
@@ -503,10 +444,11 @@ head_template.substitute(dict(parts,
 
 \end{document}
 """],
-]
+])
 
 
-samples_latex_sectnum['no_sectnum'] = [
+samples['no_sectnum'] = ({'use_latex_toc': False,
+                          'sectnum_xform': False}, [
 ["""\
 some text
 
@@ -525,9 +467,10 @@ some text
 
 \end{document}
 """],
-]
+])
 
-samples_latex_sectnum['sectnum'] = [
+samples['latex_sectnum'] = ({'use_latex_toc': False,
+                             'sectnum_xform': False}, [
 ["""\
 .. sectnum::
 
@@ -549,9 +492,10 @@ some text
 
 \end{document}
 """],
-]
+])
 
-samples_latex_citations['citations_with_underscore'] = [
+
+samples['latex_citations'] = ({'use_latex_citations': True}, [
 ["""\
 Just a test citation [my_cite2006]_.
 
@@ -570,10 +514,6 @@ The underscore is mishandled.
 
 \end{document}
 """],
-]
-
-
-samples_latex_citations['adjacent_citations'] = [
 ["""\
 Two non-citations: [MeYou2007]_[YouMe2007]_.
 
@@ -608,10 +548,10 @@ important.
 
 \end{document}
 """],
-]
+])
 
 
-samples_default['enumerated_lists'] = [
+samples['enumerated_lists'] = ({}, [
 ["""\
 1. Item 1.
 2. Second to the previous item this one will explain
@@ -657,13 +597,13 @@ head + r"""
 
 \end{document}
 """],
-]
+])
 
 # TODO: need to test for quote replacing if the language uses "ASCII-quotes"
 # as active character (e.g. de (ngerman)).
 
 
-samples_default['table_caption'] = [
+samples['tables'] = ({}, [
 ["""\
 .. table:: Foo
 
@@ -686,9 +626,6 @@ head_table + r"""
 
 \end{document}
 """],
-]
-
-samples_default['table_styles'] = [
 ["""\
 .. table::
    :class: borderless
@@ -794,9 +731,10 @@ head_table + """
 
 \\end{document}
 """],
-]
+])
 
-samples_table_style_booktabs['table_styles'] = [
+
+samples['booktabs'] = ({'table_style': ['booktabs']}, [
 # borderless overrides "booktabs" table_style
 ["""\
 .. table::
@@ -864,8 +802,10 @@ head_booktabs + """
 
 \\end{document}
 """],
-]
-samples_table_style_auto['table_styles'] = [
+])
+
+
+samples['colwidths_auto'] = ({'table_style': ['colwidths-auto']}, [
 ["""\
 .. table::
    :class: borderless
@@ -924,9 +864,9 @@ head_table + """
 
 \\end{document}
 """],
-]
+])
 
-samples_default['table_align'] = [
+samples['table_align'] = ({}, [
 ["""\
 .. table::
    :align: right
@@ -949,9 +889,9 @@ head_table + """
 
 \\end{document}
 """],
-]
+])
 
-samples_default['table_empty_cells'] = [
+samples['table_empty_cells'] = ({}, [
 ["""\
 ===== ======
 Title
@@ -1010,9 +950,9 @@ c4
 
 \\end{document}
 """],
-]
+])
 
-samples_default['table_nonstandard_class'] = [
+samples['table_nonstandard_class'] = ({}, [
 ["""\
 .. table::
    :class: my-class
@@ -1063,12 +1003,11 @@ head_template.substitute(
 
 \\end{document}
 """],
-]
+])
 
 # The "[" needs to be protected (otherwise it will be seen as an
 # option to "\\", "\item", etc. ).
-
-samples_default['bracket_protection'] = [
+samples['bracket_protection'] = ({}, [
 ["""
 * [no option] to this item
 """,
@@ -1079,9 +1018,9 @@ head + r"""
 
 \end{document}
 """],
-]
+])
 
-samples_default['literal_block'] = [
+samples['literal_block'] = ({}, [
 ["""\
 Test special characters { [ \\\\ ] } in literal block::
 
@@ -1102,9 +1041,9 @@ Test special characters \{ {[} \textbackslash{} {]} \} in literal block:
 
 \end{document}
 """],
-]
+])
 
-samples_default['raw'] = [
+samples['raw'] = ({}, [
 [r""".. raw:: latex
 
    $E=mc^2$
@@ -1162,9 +1101,9 @@ compound paragraph continuation.
 
 \end{document}
 """],
-]
+])
 
-samples_default['title_with_inline_markup'] = [
+samples['title_with_inline_markup'] = ({}, [
 ["""\
 This is the *Title*
 ===================
@@ -1204,9 +1143,9 @@ This is the \emph{document}.
 
 \end{document}
 """],
-]
+])
 
-samples_stylesheet['two-styles'] = [
+samples['stylesheet_path'] = ({'stylesheet_path': f'{spam},{ham}'}, [
 ["""two stylesheet links in the header""",
 head_template.substitute(dict(parts,
 stylesheet=r"""\usepackage{%s}
@@ -1216,9 +1155,11 @@ two stylesheet links in the header
 
 \end{document}
 """],
-]
+])
 
-samples_stylesheet_embed['two-styles'] = [
+samples['embed_stylesheet'] = ({'stylesheet_path': f'{spam},{ham}',
+                                'embed_stylesheet': True,
+                                'warning_stream': ''}, [
 ["""two stylesheets embedded in the header""",
 head_template.substitute(dict(parts,
 stylesheet=f"""\
@@ -1232,9 +1173,9 @@ two stylesheets embedded in the header
 
 \end{document}
 """],
-]
+])
 
-samples_bibtex['alpha'] = [
+samples['bibtex'] = ({'use_bibtex': ['alpha', 'xampl']}, [
 ["""\
 Just a test citation [book-full]_.
 """,
@@ -1254,7 +1195,7 @@ No bibliography if there is no citation.
 
 \end{document}
 """],
-]
+])
 
 
 if __name__ == '__main__':

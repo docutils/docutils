@@ -114,8 +114,7 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
                 expected = format_parts(default_parts | expected_parts)
                 for key in parts.keys():
                     with self.subTest(id=f'totest[{name!r}][{casenum}][{key}]'):
-                        self.assertEqual(f'{expected[key]}',
-                                         f'{parts[key]}')
+                        self.assertEqual(f'{expected[key]}', f'{parts[key]}')
 
 
 totest = {}

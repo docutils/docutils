@@ -45,8 +45,8 @@ else:
     SCALING_OUTPUT = ''
 
 
-class Html5WriterPublishPartsTestCase(unittest.TestCase):
-    """Test case for HTML5 writer via the publish_parts() interface."""
+class Html4WriterPublishPartsTestCase(unittest.TestCase):
+    """Test case for "html4css1" writer via the publish_parts() interface."""
 
     maxDiff = None
 
