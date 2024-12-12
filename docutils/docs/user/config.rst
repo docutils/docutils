@@ -465,7 +465,7 @@ include "fr", "en-GB", "pt-br" (the same as "pt-BR"), and
 
 The language of document parts can be specified with a
 "language-<language tag>" `class attribute`_, e.g.
-``.. class:: language-el-polyton`` for a quote in polytonic Greek.
+``.. class:: language-grc`` for a quote in Ancient Greek.
 
 *Default*: "en" (English).  *Options*: ``--language``, ``-l``.
 

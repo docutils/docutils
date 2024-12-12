@@ -82,7 +82,7 @@ Here are examples of `body elements`_:
 
          - This is a bullet list.
 
-         - Bullets can be "*", "+", or "-".
+         - Bullets can be ``*``, ``+``, or ``-``.
 
   2. `Enumerated lists`_::
 
@@ -129,7 +129,7 @@ Here are examples of `body elements`_:
 - `Literal blocks`_::
 
       Literal blocks are either indented or line-prefix-quoted blocks,
-      and indicated with a double-colon ("::") at the end of the
+      and indicated with a double-colon (``::``) at the end of the
       preceding paragraph (right here -->)::
 
           if literal_block:
@@ -147,8 +147,8 @@ Here are examples of `body elements`_:
 
 - `Doctest blocks`_::
 
-      >>> print 'Python-specific usage examples; begun with ">>>"'
-      Python-specific usage examples; begun with ">>>"
+      >>> print 'Python-specific usage examples; begun with ">>> "'
+      Python-specific usage examples; begun with ">>> "
       >>> print '(cut and pasted from interactive Python sessions)'
       (cut and pasted from interactive Python sessions)
 
@@ -387,9 +387,9 @@ to double up. [#caveat]_
    or `"figure"`_ directive), whitespace is ignored by default.
 
 .. [#literal-context]
-   In literal context (`literal blocks`_ and `inline literals`_,
+   In *literal context* (`literal blocks`_, `inline literals`_,
    content of the `"code"`_, `"math"`_, and `"raw"`_ directives,
-   content of the `"raw" role`_ and `custom roles`_ based on it),
+   content of the `:raw:`_ role and `custom roles`_ based on it),
    reStructuredText markup characters lose their semantics
    so there is no reason to escape them.
 
@@ -546,7 +546,7 @@ __ https://en.wikipedia.org/wiki/Combining_character
 
 Rather than imposing a fixed number and order of section title
 adornment styles, the order enforced will be the order as encountered.
-The first style encountered will be an outermost title (like HTML H1),
+The first style encountered will be an outermost title (like HTML <H1>),
 the second style will be a subtitle, the third will be a subsubtitle,
 and so on.
 
@@ -678,7 +678,7 @@ Bullet Lists
 
 :Doctree elements: `\<bullet_list>`_, `\<list_item>`_
 
-A text block which begins with a "*", "+", "-", "•", "‣", or "⁃",
+A text block which begins with a ``*``, ``+``, ``-``, ``•``, ``‣``, or ``⁃``,
 followed by whitespace, is a bullet list item (a.k.a. "unordered" list
 item).  List item bodies must be left-aligned and indented relative to
 the bullet; the text immediately after the bullet determines the
@@ -738,38 +738,38 @@ The following enumeration sequences are recognized:
 - uppercase Roman numerals: I, II, III, IV, ..., MMMMCMXCIX (4999).
 - lowercase Roman numerals: i, ii, iii, iv, ..., mmmmcmxcix (4999).
 
-In addition, the auto-enumerator, "#", may be used to automatically
+In addition, the auto-enumerator, ``#``, may be used to automatically
 enumerate a list.  Auto-enumerated lists may begin with explicit
 enumeration, which sets the sequence.  Fully auto-enumerated lists use
 arabic numerals and begin with 1.
 
 The following formatting types are recognized:
 
-- suffixed with a period: "1.", "A.", "a.", "I.", "i.".
-- surrounded by parentheses: "(1)", "(A)", "(a)", "(I)", "(i)".
-- suffixed with a right-parenthesis: "1)", "A)", "a)", "I)", "i)".
+- suffixed with a period: ``1.``, ``A.``, ``a.``, ``I.``, ``i.``.
+- surrounded by parentheses: ``(1)``, ``(A)``, ``(a)``, ``(I)``, ``(i)``.
+- suffixed with a right-parenthesis: ``1)``, ``A)``, ``a)``, ``I)``, ``i)``.
 
 While parsing an enumerated list, a new list will be started whenever:
 
 - An enumerator is encountered which does not have the same format and
-  sequence type as the current list (e.g. "1.", "(a)" produces two
+  sequence type as the current list (e.g. ``1.``, ``(a)`` produces two
   separate lists).
 
-- The enumerators are not in sequence (e.g., "1.", "3." produces two
+- The enumerators are not in sequence (e.g., ``1.``, ``3.`` produces two
   separate lists).
 
-It is recommended that the enumerator of the first list item be
-ordinal-1 ("1", "A", "a", "I", or "i").  Although other start-values
-will be recognized, they may not be supported by the output format.  A
-level-1 [info] system message will be generated for any list beginning
-with a non-ordinal-1 enumerator.
+It is recommended that the enumerator of the first list item be ordinal-1
+(``1``, ``A``, ``a``, ``I``, or ``i``).
+Although other start-values will be recognized, they may not be supported
+by the output format.  A level-1 [info] system message will be generated
+for any list beginning with a non-ordinal-1 enumerator.
 
-Lists using Roman numerals must begin with "I"/"i" or a
-multi-character value, such as "II" or "XV".  Any other
-single-character Roman numeral ("V", "X", "L", "C", "D", "M") will be
-interpreted as a letter of the alphabet, not as a Roman numeral.
+Lists using Roman numerals must begin with ``I``/``i`` or a
+multi-character value, such as ``II`` or ``XV``.  Any other
+single-character Roman numeral (``V``, ``X``, ``L``, ``C``, ``D``, ``M``)
+will be interpreted as a letter of the alphabet, not as a Roman numeral.
 Likewise, lists using letters of the alphabet may not begin with
-"I"/"i", since these are recognized as Roman numeral 1.
+``I``/``i``, since these are recognized as Roman numeral 1.
 
 The second line of each enumerated list item is checked for validity.
 This is to prevent ordinary paragraphs from being mistakenly
@@ -787,8 +787,8 @@ one line.  This text is parsed as an enumerated list item::
 
 .. Caution::
     If a single-line paragraph begins with text identical to an enumerator
-    ("A.", "1.", "(b)", "I)", etc.), the first character will have to be
-    escaped in order to have the line parsed as an ordinary paragraph::
+    (``A.``, ``1.``, ``(b)``, ``I)``, etc.), the first character will have
+    to be escaped in order to have the line parsed as an ordinary paragraph::
 
         \A. Einstein was a really smart dude.
 
@@ -829,9 +829,10 @@ definition.
   to prevent recognition as an `option list`_ item.
 
 * Optional `classifiers` may follow the term on the same line, each after
-  an inline " : " (space, colon, space).  Inline markup is parsed in the
-  term line before the classifier delimiters are recognized.  A delimiter
-  will only be recognized if it appears outside of any inline markup.
+  an inline :literal:`\  : \ ` (space, colon, space).
+  Inline markup is parsed in the term line before the classifier
+  delimiters are recognized.  A delimiter will only be recognized if it
+  appears outside of any inline markup.
 
 * A `definition` is a block indented relative to the term, and may
   contain multiple paragraphs and other body elements.  There may be no
@@ -901,7 +902,7 @@ see `Bibliographic Fields`_ or `directive options`_ below or the
 
 Field lists are mappings from *field names* to *field bodies*, modeled on
 RFC822_ headers.  A field name may consist of any characters, but
-colons (":") inside of field names must be backslash-escaped
+colons (``:``) inside of field names must be backslash-escaped
 when followed by whitespace.\ [#]_
 Inline markup is parsed in field names, but care must be taken when
 using `interpreted text`_ with explicit roles in field names: the role
@@ -984,33 +985,37 @@ element.
 The registered bibliographic field names and their corresponding
 doctree elements are as follows:
 
-  ============= ================
-  Field name    doctree element
-  ============= ================
-  Abstract      `\<topic>`_
-  Address       `\<address>`_
-  Author        `\<author>`_
-  Authors       `\<authors>`_
-  Contact       `\<contact>`_
-  Copyright     `\<copyright>`_
-  Date          `\<date>`_
-  Dedication    `\<topic>`_
-  Organization  `\<organization>`_
-  Revision      `\<revision>`_
-  Status        `\<status>`_
-  Version       `\<version>`_
-  ============= ================
+  ===================  ================
+  Field name [#i18n]_  doctree element
+  ===================  ================
+  Abstract             `\<topic>`_
+  Address              `\<address>`_
+  Author               `\<author>`_
+  Authors              `\<authors>`_
+  Contact              `\<contact>`_
+  Copyright            `\<copyright>`_
+  Date                 `\<date>`_
+  Dedication           `\<topic>`_
+  Organization         `\<organization>`_
+  Revision             `\<revision>`_
+  Status               `\<status>`_
+  Version              `\<version>`_
+  ===================  ================
 
-The "Authors" field may contain either: a single paragraph consisting
-of a list of authors, separated by ";" or "," (";" is checked first,
-so "Doe, Jane; Doe, John" will work.); multiple paragraphs (one per
-author); or a bullet list whose elements each contain a single
-paragraph per author. In some languages
-(e.g. Swedish), there is no singular/plural distinction between
-"Author" and "Authors", so only an "Authors" field is provided, and a
-single name is interpreted as an "Author".  If a single name contains
-a comma, end it with a semicolon to disambiguate: ":Authors: Doe,
-Jane;".
+.. compound::
+   The "Authors" field may contain
+
+   * a single paragraph consisting of a list of authors, separated by
+     ``;`` or ``,`` (``;`` is checked first, so ``Doe, Jane; Doe,
+     John`` will work.) [#i18n]_
+   * multiple paragraphs (one per author) or
+   * a bullet list whose elements each contain a single paragraph per author.
+
+   In some languages (e.g. Swedish), there is no singular/plural distinction
+   between "Author" and "Authors", so only an "Authors" field is provided,
+   and a single name is interpreted as an "Author".  If a single name
+   contains a comma, end it with a semicolon to disambiguate:
+   ``:Författare: Doe, Jane;``.
 
 The "Address" field is for a multi-line surface mailing address.
 Newlines and whitespace will be preserved.
@@ -1020,13 +1025,14 @@ elements.  Only one of each is allowed.  They become topic elements
 with "Dedication" or "Abstract" titles (or language equivalents)
 immediately following the docinfo element.
 
-This field-name-to-element mapping can be replaced for other
-languages.  See `Docutils Internationalization`_ for details.
-
 Unregistered/generic fields may contain one or more paragraphs or
 arbitrary body elements. To support custom styling, the field name is
 also added to the `"classes" attribute`_ value after being converted
 into a valid identifier form.
+
+.. [#i18n] Docutils supports localised bibliographic field names and
+   author separators.  See the language_code_ setting and, for details,
+   `Docutils Internationalization`_
 
 
 RCS Keywords
@@ -1124,7 +1130,7 @@ Options may be followed by an argument placeholder, whose role and
 syntax should be explained in the description text.
 Either a space or an equals sign may be used as a delimiter between long
 options and option argument placeholders;
-short options ("-" or "+" prefix only) use a space or omit the delimiter.
+short options (``-`` or ``+`` prefix only) use a space or omit the delimiter.
 Option arguments may take one of two forms:
 
 - Begins with a letter (``[a-zA-Z]``) and subsequently consists of
@@ -1158,7 +1164,7 @@ Literal Blocks
 
 :Doctree element: `\<literal_block>`_
 
-A paragraph consisting of two colons ("::") signifies that the
+A paragraph consisting of two colons (``::``) signifies that the
 following text block(s) comprise a literal block.  The literal block
 must either be indented or quoted (see below).  No markup processing
 is done within a literal block.  It is left as-is, and is typically
@@ -1177,15 +1183,15 @@ rendered in a monospaced typeface::
     is outside of the literal block, and is therefore treated as an
     ordinary paragraph.
 
-The paragraph containing only "::" will be completely removed from the
+The paragraph containing only ``::`` will be completely removed from the
 output; no empty paragraph will remain.
 
-As a convenience, the "::" is recognized at the end of any paragraph.
+As a convenience, the ``::`` is also recognized at the end of any paragraph.
 If immediately preceded by whitespace, both colons will be removed
 from the output (this is the "partially minimized" form).  When text
-immediately precedes the "::", *one* colon will be removed from the
-output, leaving only one colon visible (i.e., "::" will be replaced by
-":"; this is the "fully minimized" form).
+immediately precedes the ``::``, *one* colon will be removed from the
+output, leaving only one colon visible (i.e., ``::`` will be replaced by
+``:``; this is the "fully minimized" form).
 
 In other words, these are all equivalent (please pay attention to the
 colons after "Paragraph"):
@@ -1284,7 +1290,7 @@ Line Blocks
 Line blocks are useful for address blocks, verse (poetry, song
 lyrics), and unadorned lists, where the structure of lines is
 significant.  Line blocks are groups of lines beginning with vertical
-bar ("|") prefixes.  Each vertical bar prefix indicates a new line, so
+bar (``|``) prefixes.  Each vertical bar prefix indicates a new line, so
 line breaks are preserved.  Initial indents are also significant,
 resulting in a nested structure.  Inline markup is supported.
 Continuation lines are wrapped portions of long lines; they begin with
@@ -1404,11 +1410,11 @@ docstrings.  They are meant to illustrate usage by example, and
 provide an elegant and powerful testing environment via the `doctest
 module`_ in the Python standard library.
 
-Doctest blocks are text blocks which begin with ``">>> "``, the Python
-interactive interpreter main prompt, and end with a blank line.
-Doctest blocks are treated as a special case of literal blocks,
-without requiring the literal block syntax.  If both are present, the
-literal block syntax takes priority over Doctest block syntax::
+Doctest blocks are text blocks which begin with the Python interactive
+interpreter main prompt (``>>>`` followed by a space) and end with
+a blank line. Doctest blocks are treated as a special case of literal
+blocks, without requiring the literal block syntax.  If both are present,
+the literal block syntax takes priority over Doctest block syntax::
 
     This is an ordinary paragraph.
 
@@ -1458,12 +1464,13 @@ Emacs.  See `Simple Tables`_ for a simpler (but limited)
 representation.
 
 Grid tables are described with a visual grid made up of the characters
-"-", "=", "|", and "+".  The hyphen ("-") is used for horizontal lines
-(row separators).  The equals sign ("=") may be used to separate
-optional header rows from the table body (not supported by the `Emacs
-table mode`_).  The vertical bar ("|") is used for vertical lines
-(column separators).  The plus sign ("+") is used for intersections of
-horizontal and vertical lines.  Example::
+``-``, ``=``, ``|``, and ``+``.
+The hyphen (``-``) is used for horizontal lines (row separators).
+The equals sign (``=``) may be used to separate optional header rows
+from the table body (not supported by the `Emacs table mode`_).
+The vertical bar (``|``) is used for vertical lines (column separators).
+The plus sign (``+``) is used for intersections of horizontal and
+vertical lines.  Example::
 
     +------------------------+------------+----------+----------+
     | Header row, column 1   | Header 2   | Header 3 | Header 4 |
@@ -1535,10 +1542,10 @@ be represented in most cells.  Simple tables allow multi-line rows (in
 all but the first column) and column spans, but not row spans.  See
 `Grid Tables`_ above for a complete table representation.
 
-Simple tables are described with horizontal borders made up of "=" and
-"-" characters.  The equals sign ("=") is used for top and bottom
+Simple tables are described with horizontal borders made up of ``=`` and
+``-`` characters.  The equals sign (``=``) is used for top and bottom
 table borders, and to separate optional header rows from the table
-body.  The hyphen ("-") is used to indicate column spans in a single
+body.  The hyphen (``-``) is used to indicate column spans in a single
 row by underlining the joined columns, and may optionally be used to
 explicitly and/or visually separate rows.
 
@@ -1548,10 +1555,10 @@ Regardless of spans, the top border *must* fully describe all table
 columns.  There must be at least two columns in the table (to
 differentiate it from section headers).  The top border may be
 followed by header rows, and the last of the optional header rows is
-underlined with '=', again with spaces at column boundaries.  There
+underlined with ``=``, again with spaces at column boundaries.  There
 may not be a blank line below the header row separator; it would be
 interpreted as the bottom border of the table.  The bottom boundary of
-the table consists of '=' underlines, also with spaces at column
+the table consists of ``=`` underlines, also with spaces at column
 boundaries.  For example, here is a truth table, a three-column table
 with one header row and four body rows::
 
@@ -1564,7 +1571,7 @@ with one header row and four body rows::
     True   True   True
     =====  =====  =======
 
-Underlines of '-' may be used to indicate column spans by "filling in"
+Underlines of ``-`` may be used to indicate column spans by "filling in"
 column margins to join adjacent columns.  Column span underlines must
 be complete (they must cover all columns) and align with established
 column boundaries.  Text lines containing column span underlines may
@@ -1598,13 +1605,13 @@ tables`_ if this limitation is unacceptable.
    To start a new row in a simple table without text in the first
    column in the processed output, use one of these:
 
-   * an empty comment (".."), which may be omitted from the processed
+   * an empty comment (``..``), which may be omitted from the processed
      output (see Comments_ below)
 
-   * a backslash escape ("``\``") followed by a space (see `Escaping
-     Mechanism`_ above)
+   * a backslash escape followed by a space
+     (:literal:`\\ \ `), see `Escaping Mechanism`_ above.
 
-Underlines of '-' may also be used to visually separate rows, even if
+Underlines of ``-`` may also be used to visually separate rows, even if
 there are no column spans.  This is especially useful in long tables,
 where rows are many lines long.
 
@@ -1647,14 +1654,14 @@ and comments_.
 
 An explicit markup block is a text block:
 
-- whose first line begins with ".." followed by whitespace (the
-  "explicit markup start"),
-- whose second and subsequent lines (if any) are indented relative to
-  the first, and
+- whose first line begins with ``..`` followed by whitespace
+  (the *explicit markup start*),
+- whose second and subsequent lines (if any) are indented
+  relative to the first, and
 - which ends before an unindented line.
 
-Explicit markup blocks are analogous to field list items. The
-maximum common indentation is always removed from the second and
+Explicit markup blocks are analogous to field list items.
+The maximum common indentation is always removed from the second and
 subsequent lines of the block body.  Therefore, if the first construct
 fits in one line and the indentation of the first and second
 constructs should differ, the first construct should not begin on the
@@ -1674,19 +1681,19 @@ Footnotes
 :Config settings:  footnote_references_
 :See also:         `footnote references`_
 
-Each footnote consists of an explicit markup start (".. "), a left
-square bracket, the footnote label, a right square bracket, and
+Each footnote consists of an explicit markup start (:literal:`.. \ `),
+a left square bracket, the footnote label, a right square bracket, and
 whitespace, followed by indented body elements.  A footnote label can
 be:
 
 - a whole decimal number consisting of one or more digits,
 
-- a single "#" (denoting `auto-numbered footnotes`_),
+- a single ``#`` (denoting `auto-numbered footnotes`_),
 
-- a "#" followed by a `simple reference name`_ (an `autonumber label`_),
+- a ``#`` followed by a `simple reference name`_ (an `autonumber label`_),
   or
 
-- a single "*" (denoting `auto-symbol footnotes`_).
+- a single ``*`` (denoting `auto-symbol footnotes`_).
 
 The footnote content (body elements) must be consistently indented
 and left-aligned.  The first body element within a
@@ -1722,7 +1729,7 @@ Syntax diagram::
 Auto-Numbered Footnotes
 .......................
 
-A number sign ("#") may be used as the first character of a footnote
+A number sign (``#``) may be used as the first character of a footnote
 label to request automatic numbering of the footnote or footnote
 reference.
 
@@ -1740,16 +1747,16 @@ requesting automatic numbering: ``[#label]``.  These labels are called
 _`autonumber labels`.  Autonumber labels do two things:
 
 - On the footnote itself, they generate a hyperlink target whose name
-  is the autonumber label (doesn't include the "#").
+  is the autonumber label (doesn't include the ``#``).
 
 - They allow an automatically numbered footnote to be referred to more
   than once, as a footnote reference or hyperlink reference.  For
   example::
 
-      If [#note]_ is the first footnote reference, it will show up as
-      "[1]".  We can refer to it again as [#note]_ and again see
-      "[1]".  We can also refer to it as note_ (an ordinary internal
-      hyperlink reference).
+      If [#note]_ is the first footnote reference, it will
+      show up as "[1]".  We can refer to it again as [#note]_
+      and again see "[1]".  We can also refer to it as note_
+      (an ordinary internal hyperlink reference).
 
       .. [#note] This is the footnote labeled "note".
 
@@ -1759,8 +1766,8 @@ labels (``[#]_``), the footnotes and footnote references must be in
 the same relative order but need not alternate in lock-step.  For
 example::
 
-    [#]_ is a reference to footnote 1, and [#]_ is a reference to
-    footnote 2.
+    [#]_ is a reference to footnote 1,
+    and [#]_ is a reference to footnote 2.
 
     .. [#] This is footnote 1.
     .. [#] This is footnote 2.
@@ -1778,7 +1785,7 @@ same as the order in which a person would read them.
 Auto-Symbol Footnotes
 .....................
 
-An asterisk ("*") may be used for footnote labels to request automatic
+An asterisk (``*``) may be used for footnote labels to request automatic
 symbol generation for footnotes and footnote references.  The asterisk
 may be the only character in the label.  For example::
 
@@ -1791,34 +1798,34 @@ and footnote references.  The number of references must be equal to
 the number of footnotes.  One symbol footnote cannot have multiple
 references.
 
-The standard Docutils system uses the following symbols for footnote
-marks [#]_:
+The standard Docutils system uses the following symbols for
+footnote marks: [#]_
 
-- asterisk/star ("*")
-- dagger (HTML character entity "&dagger;", Unicode U+02020)
-- double dagger ("&Dagger;"/U+02021)
-- section mark ("&sect;"/U+000A7)
-- pilcrow or paragraph mark ("&para;"/U+000B6)
-- number sign ("#")
-- spade suit ("&spades;"/U+02660)
-- heart suit ("&hearts;"/U+02665)
-- diamond suit ("&diams;"/U+02666)
-- club suit ("&clubs;"/U+02663)
+- asterisk/star (``*``)
+- dagger (``†``, U+02020)
+- double dagger (``‡``, U+02021)
+- section mark (``§``, U+000A7)
+- pilcrow or paragraph mark (``¶``, U+000B6)
+- number sign (``#``)
+- spade suit (``♠``, U+02660)
+- heart suit (``♥``, U+02665)
+- diamond suit (``♦``, U+02666)
+- club suit (``♣``, U+02663)
 
 .. [#] This list was inspired by the list of symbols for "Note
    Reference Marks" in The Chicago Manual of Style, 14th edition,
-   section 12.51.  "Parallels" ("||") were given in CMoS instead of
+   section 12.51.  "Parallels" (``||``) were given in CMoS instead of
    the pilcrow.  The last four symbols (the card suits) were added
    arbitrarily.
 
 If more than ten symbols are required, the same sequence will be
-reused, doubled and then tripled, and so on ("**" etc.).
+reused, doubled and then tripled, and so on (``**`` etc.).
 
 .. Note:: When using auto-symbol footnotes, the choice of output
-   encoding is important.  Many of the symbols used are not encodable
-   in 8-bit text encodings such as Latin-1 (ISO 8859-1).  The
-   use of UTF-8 for the output encoding is recommended.  An
-   alternative for HTML and XML output is to use the
+   encoding is important.  Many of the symbols used are not
+   encodable in 8-bit text encodings such as Latin-1 (ISO 8859-1).
+   The use of UTF-8 for the output encoding is recommended.
+   An alternative for HTML and XML output is to use the
    "xmlcharrefreplace" `output encoding error handler`_.
 
 
@@ -1882,9 +1889,9 @@ Hyperlink targets identify a location within or outside of a document,
 which may be linked to by `hyperlink references`_.
 
 Hyperlink targets may be named or anonymous.  *Named hyperlink targets*
-consist of an explicit markup start (".. "), an underscore, the
-reference name (no trailing underscore), a colon, whitespace, and a
-link block::
+consist of an explicit markup start (:literal:`.. \ `), an underscore,
+the reference name (no trailing underscore), a colon, whitespace, and
+a link block::
 
     .. _hyperlink-name: link-block
 
@@ -1892,8 +1899,8 @@ Reference names are whitespace-neutral and case-insensitive.  See
 `Reference Names`_ for details and examples.
 
 *Anonymous hyperlink targets* consist of an explicit markup start
-(".. "), two underscores, a colon, whitespace, and a link block; there
-is no reference name::
+(:literal:`.. \ `), two underscores, a colon, whitespace, and
+a link block; there is no reference name::
 
     .. __: anonymous-hyperlink-target-link-block
 
@@ -2081,13 +2088,13 @@ instead of one::
 
     See `the web site of my favorite programming language`__.
 
-Anonymous targets begin with ".. __:"; no reference name is required
+Anonymous targets begin with ``.. __:``, no reference name is required
 or allowed::
 
     .. __: https://www.python.org
 
-As a convenient alternative, anonymous targets may begin with "__"
-only::
+As a convenient alternative, anonymous targets may begin with
+two underscores only::
 
     __ https://www.python.org
 
@@ -2132,9 +2139,9 @@ An `"admonition"`_ (note, caution, etc.) contains other body elements::
 
        - Here is a bullet list.
 
-Directives are indicated by an explicit markup start (".. ") followed
-by the directive type, two colons, and whitespace (together called the
-"directive marker").  Directive types are case-insensitive single
+Directives are indicated by an explicit markup start (:literal:`.. \ `)
+followed by the directive type, two colons, and whitespace (together called
+the *directive marker*).  Directive types are case-insensitive single
 words (alphanumerics plus isolated internal hyphens, underscores,
 plus signs, colons, and periods; no whitespace).  Two colons are used
 after the directive type for these reasons:
@@ -2149,7 +2156,7 @@ after the directive type for these reasons:
   directive (i.e., the directive-handler is not installed), a level-3
   (error) system message is generated, and the entire directive block
   (including the directive itself) will be included as a literal
-  block.  Thus "::" is a natural choice.
+  block.  Thus ``::`` is a natural choice.
 
 The directive block consists of any text on the first line of the
 directive after the directive marker, and any subsequent indented
@@ -2214,7 +2221,7 @@ Substitution Definitions
 :See also:        `substitution references`_
 
 Substitution definitions are indicated by an explicit markup start
-(".. ") followed by a vertical bar, the substitution text, another
+(:literal:`.. \ `) followed by a vertical bar, the substitution text, another
 vertical bar, whitespace, and the definition block.  Substitution text
 may not begin or end with whitespace.  A substitution definition block
 contains an embedded `inline-compatible directive`_ (such as "image" or
@@ -2378,7 +2385,7 @@ directives_, footnotes_, `hyperlink targets`_, or `substitution
 definitions`_ will be processed as a comment element.
 
 .. tip:: To ensure that none of the other explicit markup constructs
-         is recognized, leave the ".." on a line by itself.
+         is recognized, leave the ``..`` on a line by itself.
 
 Arbitrary indented text may be used on the lines following the explicit
 markup start::
@@ -2476,18 +2483,18 @@ although not encouraged.  Inline markup cannot be nested.
 There are nine inline markup constructs.  Five of the constructs use
 identical start-strings and end-strings to indicate the markup:
 
-- emphasis_: "*"
-- `strong emphasis`_: "**"
-- `interpreted text`_: "`"
-- `inline literals`_: "``"
-- `substitution references`_: "|"
+- emphasis_: ``*``
+- `strong emphasis`_: ``**``
+- `interpreted text`_: `````
+- `inline literals`_: ``````
+- `substitution references`_: ``|``
 
 Three constructs use different start-strings and end-strings:
 
-- `inline internal targets`_: "_`" and "`"
-- `footnote references`_: "[" and "]_"
-- `hyperlink references`_: "`" and "\`_" (phrases), or just a
-  trailing "_" (single words)
+- `inline internal targets`_: ``_``` and `````
+- `footnote references`_: ``[`` and ``]_``
+- `hyperlink references`_: ````` and ``\`_`` (phrases), or just a
+  trailing ``_`` (single words)
 
 `Standalone hyperlinks`_ are recognized implicitly, and use no extra
 markup.
@@ -2561,8 +2568,8 @@ inline markup:
    https://en.wikipedia.org/wiki/Quotation_mark,_non-English_usage
 
 The inline markup recognition rules were devised to allow 90% of non-markup
-uses of "*", "`", "_", and "|" without escaping. For example, none of the
-following terms are recognized as containing inline markup strings:
+uses of ``*``, `````, ``_``, and ``|`` without escaping.  For example, none
+of the following terms are recognized as containing inline markup strings:
 
 - 2 * x  a ** b  (* BOM32_* ` `` _ __ | (breaks rule 1)
 - || (breaks rule 3)
@@ -2608,19 +2615,19 @@ Inline markup delimiter characters are used for multiple constructs,
 so to avoid ambiguity there must be a specific recognition order for
 each character.  The inline markup recognition order is as follows:
 
-- Asterisks: `Strong emphasis`_ ("**") is recognized before emphasis_
-  ("*").
+- Asterisks: `Strong emphasis`_ (``**``) is recognized before emphasis_
+  (``*``).
 
-- Backquotes: `Inline literals`_ ("``"), `inline internal targets`_
-  (leading "_`", trailing "`"), are mutually independent, and are
-  recognized before phrase `hyperlink references`_ (leading "`",
-  trailing "\`_") and `interpreted text`_ ("`").
+- Backquotes: `Inline literals`_ (``````), `inline internal targets`_
+  (leading ``_```, trailing `````), are mutually independent, and are
+  recognized before phrase `hyperlink references`_ (leading `````,
+  trailing ``\`_``) and `interpreted text`_ (`````).
 
-- Trailing underscores: Footnote references ("[" + label + "]_") and
-  simple `hyperlink references`_ (name + trailing "_") are mutually
+- Trailing underscores: Footnote references (``[`` + label + ``]_``) and
+  simple `hyperlink references`_ (name + trailing ``_``) are mutually
   independent.
 
-- Vertical bars: `Substitution references`_ ("|") are independently
+- Vertical bars: `Substitution references`_ (``|``) are independently
   recognized.
 
 - `Standalone hyperlinks`_ are the last to be recognized.
@@ -2666,8 +2673,8 @@ Emphasis
 --------
 
 :Doctree element:  `\<emphasis>`_
-:Start/End string: "*"
-:Standard role:    `"emphasis"`_
+:Start/End string: ``*``
+:Standard role:    `:emphasis:`_
 
 Text enclosed by single asterisk characters is emphasized::
 
@@ -2680,8 +2687,8 @@ Strong Emphasis
 ---------------
 
 :Doctree element:  `\<strong>`_
-:Start/End string: "**"
-:Standard role:    `"strong"`_
+:Start/End string: ``**``
+:Standard role:    `:strong:`_
 
 Text enclosed by double-asterisks is emphasized strongly::
 
@@ -2695,7 +2702,7 @@ Interpreted Text
 
 :Doctree element:  depends on the explicit or implicit role and
                    processing
-:Start/End string: "`"
+:Start/End string: `````\
 :Configuration:    `"default-role"`_ directive
 :See also:         `reStructuredText Interpreted Text Roles`_
 
@@ -2762,9 +2769,9 @@ Inline Literals
 ---------------
 
 :Doctree element:  `\<literal>`_
-:Start/End string: "``"
-:Standard role:    `"literal"`_
-:See also:         `"code" role`_
+:Start/End string: ``````\
+:Standard role:    `:literal:`_
+:See also:         `:code:`_
 
 Text enclosed by double-backquotes is treated as inline literals::
 
@@ -2783,7 +2790,7 @@ output formatter, thus the preservation of whitespace cannot be
 guaranteed.  If the preservation of line breaks and/or other
 whitespace is important, `literal blocks`_ should be used.
 
-Inline literals or the `"code" role`_ are useful for short code snippets.
+Inline literals or the `:code:`_ role are useful for short code snippets.
 For example::
 
     The regular expression ``[+-]?(\d+(\.\d*)?|\.\d+)`` matches
@@ -2801,21 +2808,21 @@ Hyperlink References
      :class: borderless
      :widths: grid
 
-     ================  =========  =======  ========
-      reference type    name       start    end
-     ================  =========  =======  ========
-      named             simple_    none     "_"
-      ..                phrase_    "`"      "\`_"
-      anonymous_        simple     none     "__"
-      ..                phrase     "`"      "\`__"
-     ================  =========  =======  ========
+     ===================  ==========  ========  =========
+      reference type       name        start     end
+     ===================  ==========  ========  =========
+      named                simple_     none      ``_``
+      ..                   phrase_     `````\    ``\`_``
+      anonymous_           simple      none      ``__``
+      ..                   phrase      `````\    ``\`__``
+     ===================  ==========  ========  =========
 
 :See also:        `hyperlink targets`_
 
 .. _simple:    `simple reference names`_
 .. _phrase:    `phrase references`_
 
-Hyperlink references are indicated by a trailing underscore, "_",
+Hyperlink references are indicated by a trailing underscore (``_``)
 except for `standalone hyperlinks`_ which are recognized
 independently.  The underscore can be thought of as a right-pointing
 arrow.  The trailing underscores point away from hyperlink references,
@@ -2840,7 +2847,8 @@ Embedded URIs and Aliases
 `````````````````````````
 
 :Doctree elements:  `\<reference>`_, `\<target>`_
-:Start/End strings: "<"   ">" (only recognized inside `hyperlink references`_)
+:Start/End strings: ``<``   ``>``
+                    (only recognized inside `hyperlink references`_)
 
 A hyperlink reference may directly embed a target URI or an "alias"
 hyperlink reference within angle brackets as follows::
@@ -2922,7 +2930,7 @@ Inline Internal Targets
 ------------------------
 
 :Doctree element:   `\<target>`_
-:Start/End strings: "_`"   "`"
+:Start/End strings: ``_```   `````
 :See also:          `hyperlink targets`_
 
 Inline internal targets are the equivalent of explicit `internal
@@ -2946,7 +2954,7 @@ Footnote References
 .. class:: field-indent-12em
 
 :Doctree element:  `\<footnote_reference>`_
-:Start/End string: "["   "]_"
+:Start/End string: ``[``   ``]_``
 :Config settings:  footnote_references_,
                    trim_footnote_reference_space_
 :See also:         footnotes_
@@ -2957,12 +2965,12 @@ by a trailing underscore.  Footnote labels are one of:
 
 - one or more digits (i.e., a number),
 
-- a single "#" (denoting `auto-numbered footnotes`_),
+- a single ``#`` (denoting `auto-numbered footnotes`_),
 
-- a "#" followed by a simple `reference name`_ (an `autonumber label`_),
+- a ``#`` followed by a simple `reference name`_ (an `autonumber label`_),
   or
 
-- a single "*" (denoting `auto-symbol footnotes`_).
+- a single ``*`` (denoting `auto-symbol footnotes`_).
 
 For example::
 
@@ -2982,7 +2990,7 @@ Citation References
 -------------------
 
 :Doctree element: `\<citation_reference>`_
-:Start/End string: "["   "]_"
+:Start/End string: ``[``   ``]_``
 :See also:        citations_
 
 Each citation reference consists of a square-bracketed label followed by
@@ -2997,13 +3005,13 @@ Substitution References
 -----------------------
 
 :Doctree elements: `\<substitution_reference>`_, `\<reference>`_
-:Start/End string: "|" (optionally followed by "_" or "__").
+:Start/End string: ``|`` (optionally followed by ``_`` or ``__``).
 
 :See also: `substitution definitions`_
 
 Vertical bars are used to bracket the substitution reference text.  A
 substitution reference may also be a hyperlink reference by appending
-a "_" (named) or "__" (anonymous_) suffix; the substitution text is
+a ``_`` (named) or ``__`` (anonymous_) suffix; the substitution text is
 used for the reference text in the named case.
 
 The processing system replaces substitution references with the
@@ -3061,9 +3069,9 @@ Two forms of standalone hyperlinks are recognized:
        someone@somewhere.com
 
 Punctuation at the end of a URI is not considered part of the URI,
-unless the URI is terminated by a closing angle bracket (">").
+unless the URI is terminated by a closing angle bracket (``>``).
 Backslashes may be used in URIs to escape markup characters,
-specifically asterisks ("*") and underscores ("_") which are valid URI
+specifically asterisks (``*``) and underscores (``_``) which are valid URI
 characters (see `Escaping Mechanism`_ above).
 
 .. [#URI] Uniform Resource Identifier.  URIs are a general form of
@@ -3126,7 +3134,7 @@ pt    points                   1 pt = 1/72 in
 px    pixels                   1 px = 3/4 pt = 1/96 in [#]_
 ====  =======================  ==================================
 
-The following are all valid length values: "1.5em", "20 mm", ".5 in", "42".
+The following are all valid length values: 1.5em, 20 mm, .5 in, 42.
 
 .. [#] Up to Docutils 0.21, support was restricted to the
    `length units in CSS2`_.
@@ -3144,7 +3152,7 @@ The following are all valid length values: "1.5em", "20 mm", ".5 in", "42".
 Percentage Unit
 ---------------
 
-Percentage values have a percent sign ("%") as unit.  Percentage
+Percentage values have a percent sign (``%``) as unit.  Percentage
 values are relative to other values, depending on the context in which
 they occur.
 
@@ -3172,6 +3180,7 @@ Markup errors are handled according to the specification in
     ../../user/config.html#character-level-inline-markup
 .. _footnote_references:
     ../../user/config.html#footnote-references
+.. _language_code: ../../user/config.html#language-code
 .. _output encoding error handler:
     ../../user/config.html#output-encoding-error-handler
 .. _strip_comments: ../../user/config.html#strip-comments
@@ -3200,11 +3209,11 @@ Markup errors are handled according to the specification in
 .. _inline images: directives.html#inline-images
 
 .. _reStructuredText Interpreted Text Roles: roles.html
-.. _"code" role: roles.html#code
-.. _"emphasis": roles.html#emphasis
-.. _"literal": roles.html#literal
-.. _"raw" role: roles.html#raw
-.. _"strong": roles.html#strong
+.. _`:code:`: roles.html#code
+.. _`:emphasis:`: roles.html#emphasis
+.. _`:literal:`: roles.html#literal
+.. _`:raw:`: roles.html#raw
+.. _`:strong:`: roles.html#strong
 
 .. _Document Tree:
 .. _The Docutils Document Tree: ../doctree.html
@@ -3279,8 +3288,7 @@ Markup errors are handled according to the specification in
 
 .. _Docutils Generic DTD: ../docutils.dtd
 
-.. _Docutils Internationalization:
-    ../../howto/i18n.html#docutils-language-module
+.. _Docutils Internationalization: ../../howto/i18n.html
 
 .. _PEP 258: ../../peps/pep-0258.html
 .. _writer:
