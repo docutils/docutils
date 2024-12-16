@@ -5,6 +5,8 @@
 
 """LaTeX2e document tree Writer."""
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
 # code contributions from several people included, thanks to all.
@@ -236,7 +238,8 @@ class Writer(writers.Writer):
         )
 
     relative_path_settings = ('template',)
-    settings_defaults = {'sectnum_depth': 0}  # updated by SectNum transform
+    settings_defaults = {'sectnum_depth': 0,
+                         'sectnum_start': 1}  # updated by SectNum transform
     config_section = 'latex2e writer'
     config_section_dependencies = ('writers', 'latex writers')
 
@@ -830,8 +833,10 @@ class DocumentClass:
         self._with_part = with_part
         self.sections = ['section', 'subsection', 'subsubsection',
                          'paragraph', 'subparagraph']
-        if self.document_class in ('book', 'memoir', 'report',
-                                   'scrbook', 'scrreprt'):
+        if (self.document_class.endswith('book')
+            or self.document_class.endswith('report')
+            or self.document_class in ('ctexrep', 'memoir', 'mwbk',
+                                       'mwrep', 'scrreprt')):
             self.sections.insert(0, 'chapter')
         if self._with_part:
             self.sections.insert(0, 'part')
@@ -847,13 +852,22 @@ class DocumentClass:
         # unsupported levels
         return 'DUtitle'
 
-    def latex_section_depth(self, depth):
+    def latex_section_depth(self, depth: int) -> int:
         """
         Return LaTeX equivalent of Docutils section level `depth`.
 
         Given the value of the ``:depth:`` option of the "contents" or
         "sectnum" directive, return the corresponding value for the
         LaTeX ``tocdepth`` or ``secnumdepth`` counters.
+
+        LaTeX section depth values:
+          :-1|0: part (optional, 0 with "article"-like document classes)
+          :0:    chapter (missing in "article"-like document classes)
+          :1:    section
+          :2:    subsection
+          :3:    subsubsection
+          :4:    paragraph
+          :5:    subparagraph
         """
         depth = min(depth, len(self.sections))  # limit to supported levels
         if 'chapter' in self.sections:
@@ -1373,40 +1387,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         if settings.hyperref_options:
             self.hyperref_options += ',' + settings.hyperref_options
 
-        # LaTeX Toc
-        # include all supported sections in toc and PDF bookmarks
-        # (or use documentclass-default (as currently))?
-
-        # Section numbering
-        if settings.sectnum_xform:  # section numbering by Docutils
-            PreambleCmds.secnumdepth = r'\setcounter{secnumdepth}{0}'
-        else:  # section numbering by LaTeX:
-            secnumdepth = settings.sectnum_depth
-            # Possible values of settings.sectnum_depth:
-            # None  "sectnum" directive without depth arg -> LaTeX default
-            #  0    no "sectnum" directive -> no section numbers
-            # >0    value of "depth" argument -> translate to LaTeX levels:
-            #       -1  part    (0 with "article" document class)
-            #        0  chapter (missing in "article" document class)
-            #        1  section
-            #        2  subsection
-            #        3  subsubsection
-            #        4  paragraph
-            #        5  subparagraph
-            if secnumdepth is not None:
-                PreambleCmds.secnumdepth = (
-                    r'\setcounter{secnumdepth}{%d}'
-                    % self.d_class.latex_section_depth(secnumdepth))
-            # start with specified number:
-            if (hasattr(settings, 'sectnum_start')
-                and settings.sectnum_start != 1):
-                self.requirements['sectnum_start'] = (
-                    r'\setcounter{%s}{%d}' % (self.d_class.sections[0],
-                                              settings.sectnum_start-1))
-            # TODO: currently ignored (configure in a stylesheet):
-            ## settings.sectnum_prefix
-            ## settings.sectnum_suffix
-
     # Auxiliary Methods
     # -----------------
 
@@ -1815,7 +1795,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         if self.use_latex_citations:
             self.push_output_collector([])
         else:
-            # self.requirements['~fnt_floats'] = PreambleCmds.footnote_floats
             self.out.append(r'\begin{figure}[b]')
             self.append_hypertargets(node)
 
@@ -2048,7 +2027,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.out.append('\n\\faketableofcontents % for local ToCs\n')
         # * conditional requirements (before style sheet)
         self.requirements = [self.requirements[key]
-                             for key in sorted(self.requirements.keys())]
+                             for key in sorted(self.requirements.keys())
+                             if self.requirements[key]]
         # * coditional fallback definitions (after style sheet)
         self.fallbacks = [self.fallbacks[key]
                           for key in sorted(self.fallbacks.keys())]
@@ -2903,11 +2883,36 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.out.append('}\n')
 
     def visit_section(self, node) -> None:
+        # Update counter-prefix for compound enumerators
         self.section_level += 1
-        # Initialize counter for potential subsections:
+        # initialize counter for potential subsections
         self._section_number.append(0)
-        # Counter for this section's level (initialized by parent section):
+        # counter for this section's level (initialized by parent section)
         self._section_number[self.section_level - 1] += 1
+
+        # Add LaTeX section numbering configuration code to requirements.
+        if 'sectnum' in self.requirements:
+            return  # already done
+        # settings.sectnum_depth values:
+        #    0    no section numbering or section numbering by Docutils
+        #   >0    value of "sectnum"'s :depth: option (1 = top level section)
+        #   None  "sectnum" directive without depth arg -> keep default
+        if self.settings.sectnum_xform:  # section numbering by Docutils
+            sectnum_depth = 0
+        else:  # section numbering by LaTeX:
+            sectnum_depth = self.settings.sectnum_depth
+            if self.settings.sectnum_start != 1:
+                self.requirements['sectnum_start'] = (
+                    r'\setcounter{%s}{%d}' % (self.d_class.sections[0],
+                                              self.settings.sectnum_start-1))
+            # TODO: currently ignored (configure in a stylesheet):
+            # settings.sectnum_prefix
+            # settings.sectnum_suffix
+        if sectnum_depth is None:
+            self.requirements['sectnum'] = ''
+        else:
+            self.requirements['sectnum'] = r'\setcounter{secnumdepth}{%d}' % (
+                self.d_class.latex_section_depth(sectnum_depth))
 
     def depart_section(self, node) -> None:
         # Remove counter for potential subsections:
@@ -3167,8 +3172,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.context.append('')
         # Section title
         else:
-            if hasattr(PreambleCmds, 'secnumdepth'):
-                self.requirements['secnumdepth'] = PreambleCmds.secnumdepth
             level = self.section_level
             section_name = self.d_class.section(level)
             self.out.append('\n\n')

@@ -454,7 +454,7 @@ first chapter
 head_template.substitute(dict(parts,
     head_prefix=r"""\documentclass[a4paper]{book}
 """,
-    requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n'
+    requirements=parts['requirements'] + '\\setcounter{secnumdepth}{-1}\n'
 )) + r"""
 \phantomsection\label{contents}
 \pdfbookmark[1]{Contents}{contents}
@@ -493,8 +493,7 @@ some text
 """],
 ])
 
-samples['latex_sectnum'] = ({'use_latex_toc': False,
-                             'sectnum_xform': False}, [
+samples['latex_sectnum'] = ({'sectnum_xform': False}, [
 ["""\
 .. sectnum::
 
@@ -504,9 +503,7 @@ first section
 -------------
 """,
 # expected output
-head_template.substitute(dict(parts,
-    requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n'
-)) + r"""
+head + r"""
 some text
 
 
