@@ -380,9 +380,8 @@ def decode_path(path: str|bytes|None) -> str:
 
     Decode file/path string in a failsafe manner if not already done.
 
-    Deprecated.
+    Deprecated. Will be removed in Docutils 1.0.
     """
-    # TODO: is this still required with Python 3?
     if isinstance(path, str):
         return path
     if path is None:
@@ -469,7 +468,7 @@ def new_document(source_path: StrPath, settings: Values|None = None
     Return a new empty document object.
 
     :Parameters:
-        `source_path` : string
+        `source_path` : str or pathlib.Path
             The path to or description of the source text of the document.
         `settings` : optparse.Values object
             Runtime settings.  If none are provided, a default core set will
@@ -494,7 +493,6 @@ def new_document(source_path: StrPath, settings: Values|None = None
     from docutils import frontend
     if settings is None:
         settings = frontend.get_default_settings()
-    source_path = decode_path(source_path)
     reporter = new_reporter(source_path, settings)
     document = nodes.document(settings, reporter, source=source_path)
     document.note_source(source_path, -1)
@@ -575,9 +573,9 @@ def get_stylesheet_reference(settings: Values,
     """
     Retrieve a stylesheet reference from the settings object.
 
-    Deprecated. Use get_stylesheet_list() instead to
-    enable specification of multiple stylesheets as a comma-separated
-    list.
+    Deprecated. Will be removed in Docutils 1.0.
+    Use get_stylesheet_list() instead to enable specification of multiple
+    stylesheets as a comma-separated list.
     """
     warnings.warn('utils.get_stylesheet_reference()'
                   ' is obsoleted by utils.get_stylesheet_list()'

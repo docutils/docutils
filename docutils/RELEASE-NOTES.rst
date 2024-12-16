@@ -145,6 +145,9 @@ Removals
 * Remove `parsers.rst.directives.CSVTable.HeaderDialect`
   in Docutils 1.0.
 
+* Remove `utils.decode_path()` and `utils.get_stylesheet_reference()`
+  in Docutils 1.0.
+
 * Remove support for the `recommonmark parser`_ in Docutils 1.0.
   Recommonmark is unmaintained since 2021 and deprecated in favour
   of the `MyST parser`_.
