@@ -412,10 +412,11 @@ However, it uses semantic HTML5 elements for the document, `"header"`_, and
 `"footer"`_ and a description list for the `"docinfo"`_ part.
 
 
-Parts Provided by the (Xe)LaTeX Writers
-```````````````````````````````````````
+Parts Provided by the LaTeX Writers
+```````````````````````````````````
 
-All parts returned by the (Xe)LaTeX writers are of data type `str`.
+All parts returned by the LaTeX writers ("latex" writer and "xelatex"
+writer) are of data type `str`.
 
 _`"abstract"`
     Formatted content of the "abstract" `bibliographic field`_.
@@ -435,11 +436,11 @@ _`"dedication"`
     Formatted content of the "dedication" `bibliographic field`_.
 
 "docinfo"
-    Bibliographic data, i.e. the `\<docinfo>`_ element's content,
-    rendered as a table.
+    `Bibliographic data`_ except `"abstract"`_ and `"dedication"`_
+    (i.e. the `\<docinfo>`_ element's content), rendered as a table.
 
-    With ``--use-latex-docinfo`` the <author>, <organization>,
-    <contact>, <address" and <date> are moved to `"titledata"`_.
+    If the use_latex_docinfo_ setting is True, <author>, <organization>,
+    <contact>, <address>, and <date> are moved to `"titledata"`_.
 
 "fallbacks"
     Fallback definitions for Docutils-specific LaTeX commands and environments.
@@ -448,7 +449,7 @@ _`"dedication"`
     The declaration of documentclass and document options.
 
 "latex_preamble"
-    The argument of the ``--latex-preamble`` option.
+    The argument of the latex_preamble_ setting.
 
 "pdfsetup"
     PDF properties ("hyperref" package setup).
@@ -462,23 +463,26 @@ _`"dedication"`
 "subtitle"
     Document subtitle text and any inline markup.
 
+"template"
+    Content of the template__ file.
+    The output document (i.e. part `"whole"`_) is generated from the
+    template by substituting placeholders with the corresponding
+    parts using `string.Template.substitute()`_.
+    New in Docutils 0.22.
+
 "title"
     Document title text and any inline markup.
 
 _`"titledata"`
     The combined title data in ``\title``, ``\author``, and ``\date`` macros.
 
-    With ``--use-latex-docinfo``, this includes the <author>,
-    <organization>, <contact>, <address" and <date> docinfo items.
+    If use_latex_docinfo_ is True, "titledata" includes content from
+    the `\<docinfo>`_ elements <author>, <organization>, <contact>,
+    <address>, and <date>.
 
-See the template files default.tex_, titlepage.tex_, titlingpage.tex_,
-and xelatex.tex_ for examples how these parts are combined
-into a valid LaTeX document.
-
-.. _default.tex: ../../docutils/writers/latex2e/default.tex
-.. _titlepage.tex: ../../docutils/writers/latex2e/titlepage.tex
-.. _titlingpage.tex: ../../docutils/writers/latex2e/titlingpage.tex
-.. _xelatex.tex: ../../docutils/writers/latex2e/xelatex.tex
+__ ../user/config.html#template-latex-writers
+.. _string.Template.substitute():
+    https://docs.python.org/3/library/string.html#template-strings
 
 
 publish_programmatically()
@@ -671,18 +675,21 @@ _`enable_exit_status` : bool
 .. _nodes.document: ../ref/doctree.html#document
 .. _"source" attribute: ../ref/doctree.html#source
 
+.. _bibliographic data:
 .. _bibliographic field:
     ../ref/rst/restructuredtext.html#bibliographic-fields
 
 .. _Docutils Configuration: ../user/config.html
 .. _configuration files: ../user/config.html#configuration-files
 .. _input_encoding: ../user/config.html#input-encoding
+.. _latex_preamble: ../user/config.html#latex-preamble
 .. _output_encoding: ../user/config.html#output-encoding
 .. _output_encoding_error_handler:
     ../user/config.html#output-encoding-error-handler
-.. _template: ../user/config.html#template
-.. _reader component name: ../user/config.html#reader
 .. _parser component name: ../user/config.html#parser
+.. _reader component name: ../user/config.html#reader
+.. _template: ../user/config.html#template
+.. _use_latex_docinfo: ../user/config.html#use-latex-docinfo
 .. _writer component name: ../user/config.html#writer-docutils-application
 
 .. _command-line applications: ../user/tools.html

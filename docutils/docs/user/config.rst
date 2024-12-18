@@ -629,8 +629,8 @@ renderer (e.g. by CSS style rules or by LaTeX).
 source_link
 -----------
 
-Include a "View document source" link in the document footer.  URL will
-be relative to the destination.
+Include a "View document source" link in the document footer.  The URL will
+be relative to the output_path_ (if specified) or the current work directory.
 
 :Default: None (disabled).
 :Options: ``--source-link``, ``-s``, ``--no-source-link``.
@@ -1940,8 +1940,26 @@ __ latex.html#table-style
 
 template
 ~~~~~~~~
-Path [#pwd]_ to template file, which must be encoded in UTF-8.
+
+Path [#pwd]_ to a template file, which must be encoded in UTF-8.
 See also `template [html writers]`_.
+
+Relative paths are searched in the working directory and the "latex2e"
+writer directory.
+Docutils provides the template files default.tex_, titlepage.tex_,
+titlingpage.tex_, and xelatex.tex_.
+The output document is generated from the template by
+substituting placeholders with the corresponding parts__
+using `string.Template`_.substitute().
+
+__ ../api/publisher.html#parts-provided-by-the-latex-writers
+.. _string.Template:
+    https://docs.python.org/3/library/string.html#template-strings
+.. _default.tex: ../../docutils/writers/latex2e/default.tex
+.. _titlepage.tex: ../../docutils/writers/latex2e/titlepage.tex
+.. _titlingpage.tex: ../../docutils/writers/latex2e/titlingpage.tex
+.. _xelatex.tex: ../../docutils/writers/latex2e/xelatex.tex
+
 
 :Default: writer dependent (see `[latex2e writer]`_, `[xetex writer]`_).
 :Option:  ``--template``.
@@ -2017,10 +2035,9 @@ Writer Specific Defaults
     \usepackage{courier}
 
 :template__:
-  "default.tex" in the ``docutils/writers/latex2e/`` directory
-  (installed automatically).
+  default.tex_.
 
-  __ `template [latex writers]`_
+__ `template [latex writers]`_
 
 
 font_encoding
@@ -2056,12 +2073,7 @@ Writer Specific Defaults
   The optional argument ``HyphenChar=None`` to the monospace font
   prevents word hyphenation in literal text.
 
-:template__: "xelatex.tex" in the ``docutils/writers/latex2e/`` directory
-             (installed automatically).
-
-             .. TODO: show full path with ``--help`` (like in the HTML
-                writers) and add the following line: for the exact
-                machine-specific path, use the ``--help`` option).
+:template__: xelatex.tex_.
 
 .. _Linux Libertine: http://www.linuxlibertine.org/
 __ `template [latex writers]`_

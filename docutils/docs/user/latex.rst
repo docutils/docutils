@@ -1792,7 +1792,7 @@ Option: output_encoding_
     ``--output-encoding=OUTPUT-ENCODING``
 
 Default:
-  "utf-8"
+  "utf-8" (LaTeX's default input encoding)
 
 Example:
   Encode the LaTeX source file with the ISO `latin-1` (west european)
@@ -1811,9 +1811,6 @@ Note:
   :utf8x: supported by the `ucs`_ package covers a wider range of Unicode
           characters than does "utf8".  It is, however, a non-standard
           extension and no longer developed.
-
-  Currently, the "latex2e" writer inserts ``\usepackage[utf8]{inputenc}``
-  into the LaTeX source if it is UTF-8 encoded.
 
 .. with utf8x:
    If LaTeX issues a Warning about unloaded/unknown characters adding ::

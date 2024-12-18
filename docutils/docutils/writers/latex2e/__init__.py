@@ -286,14 +286,10 @@ class Writer(writers.Writer):
         # copy parts
         for part in self.visitor_attributes:
             setattr(self, part, getattr(visitor, part))
-        # get template string from file
-        templatepath = Path(self.document.settings.template)
-        if not templatepath.exists():
-            templatepath = self.default_template_path / templatepath.name
-        template = templatepath.read_text(encoding='utf-8')
         # fill template
         self.assemble_parts()  # create dictionary of parts
-        self.output = string.Template(template).substitute(self.parts)
+        self.output = string.Template(self.parts['template']
+                                      ).substitute(self.parts)
 
     def assemble_parts(self) -> None:
         """Assemble the `self.parts` dictionary of output fragments."""
@@ -309,6 +305,11 @@ class Writer(writers.Writer):
             else:
                 # body contains inline elements, so join without newline
                 self.parts[part] = ''.join(lines)
+        # get template string from file
+        templatepath = Path(self.document.settings.template)
+        if not templatepath.exists():
+            templatepath = self.default_template_path / templatepath.name
+        self.parts['template'] = templatepath.read_text(encoding='utf-8')
 
 
 class Babel:
@@ -1557,13 +1558,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                whitespace=re.compile('[\n\r\t\v\f]')):
         """Cleanse, encode, and return attribute value text."""
         return self.encode(whitespace.sub(' ', text))
-
-    # TODO: is this used anywhere? -> update (use template) or delete
-    ## def astext(self):
-    ##     """Assemble document parts and return as string."""
-    ##     head = '\n'.join(self.head_prefix + self.stylesheet + self.head)
-    ##     body = ''.join(self.body_prefix  + self.body + self.body_suffix)
-    ##     return head + '\n' + body
 
     def is_inline(self, node):
         """Check whether a node represents an inline or block-level element"""

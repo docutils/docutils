@@ -179,6 +179,7 @@ Release 0.22b.dev (unpublished)
     for citation references resolved with BibTeX (cf. `use_bibtex`_ setting).
   - Support SVG image inclusion with the "svg" LaTeX package (see the
     `stylesheet`__ configuration setting).
+  - Add "template" to the parts returned by `Writer.assemble_parts()`.
 
   .. _reference-label: docs/user/config.html#reference-label
   __ docs/user/config.html#stylesheet-latex-writers
@@ -3438,7 +3439,7 @@ Release 0.3.3 (2004-05-09)
 
 * docutils/writers/__init__.py:
 
-  - Added assemble_parts method to the Writer class to allow for
+  - Added assemble_parts() method to the Writer class to allow for
     access to a documents individual parts.
   - Documented & set default for ``Writer.output`` attribute.
 
