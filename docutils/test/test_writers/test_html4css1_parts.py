@@ -2,6 +2,7 @@
 
 # $Id$
 # Author: reggie dugard <reggie@users.sourceforge.net>
+# Maintainer: docutils-develop@lists.sourceforge.net
 # Copyright: This module has been placed in the public domain.
 
 """
@@ -103,8 +104,8 @@ def format_parts(parts):
     return parts
 
 
-class Html5WriterPublishPartsTestCase(unittest.TestCase):
-    """Test HTML5 writer `publish_parts()` interface."""
+class Html4WriterPublishPartsTestCase(unittest.TestCase):
+    """Test "html4css1" writer `publish_parts()` interface."""
 
     maxDiff = None
 

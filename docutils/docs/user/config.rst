@@ -87,7 +87,7 @@ priority.
 Configuration File Syntax
 -------------------------
 
-Configuration files are UTF-8-encoded text files.  The ConfigParser.py_
+Configuration files are UTF-8-encoded text files.  The configparser_
 module from Python_'s standard library is used to read them.
 From its documentation__:
 
@@ -99,6 +99,7 @@ From its documentation__:
     […] Configuration files may include comments, prefixed by specific
     characters (``#`` and ``;`` by default).
 
+.. _configparser: https://docs.python.org/3/library/configparser.html
 __ https://docs.python.org/3/library/configparser.html
    #supported-ini-file-structure
 
@@ -229,8 +230,6 @@ in the following sections.
 Some knowledge of Python_ is assumed for some attributes.
 
 
-.. _ConfigParser.py:
-   https://docs.python.org/3/library/configparser.html
 .. _Python: https://www.python.org/
 __ ../api/runtime-settings.html#active-sections
 
