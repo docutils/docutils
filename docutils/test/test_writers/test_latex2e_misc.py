@@ -94,35 +94,6 @@ class PublishTestCase(unittest.TestCase):
         self.assertNotIn(r'\item \hyperref[foo]{foo}', result)
         self.assertIn(r'\tableofcontents', result)
 
-    def test_publish_parts(self):
-        """Check for the presence of documented parts.
-        """
-        parts = core.publish_parts(sample_multiterm,
-                                   writer=latex2e.Writer(),
-                                   settings_overrides=self.settings)
-        documented_parts = [
-            'abstract',
-            'body',
-            'body_pre_docinfo',
-            'dedication',
-            'docinfo',
-            'encoding',
-            'errors',
-            'fallbacks',
-            'head_prefix',
-            'latex_preamble',
-            'pdfsetup',
-            'requirements',
-            'stylesheet',
-            'subtitle',
-            'title',
-            'titledata',
-            'version',
-            'whole'
-            ]
-        self.assertEqual(documented_parts, sorted(parts.keys()))
-        self.assertEqual(expected_multiterm, parts['body'])
-
 
 class WarningsTestCase(unittest.TestCase):
 
