@@ -409,37 +409,34 @@ def extract_name_value(line):
     """
     attlist = []
     while line:
-        equals = line.find('=')
-        if equals == -1:
+        equals_index = line.find('=')
+        if equals_index == -1:
             raise NameValueError('missing "="')
-        attname = line[:equals].strip()
-        if equals == 0 or not attname:
-            raise NameValueError(
-                  'missing attribute name before "="')
-        line = line[equals+1:].lstrip()
+        attname = line[:equals_index].strip()
+        if equals_index == 0 or not attname:
+            raise NameValueError('missing attribute name before "="')
+        line = line[equals_index+1:].lstrip()
         if not line:
-            raise NameValueError(
-                  'missing value after "%s="' % attname)
+            raise NameValueError(f'missing value after "{attname}="')
         if line[0] in '\'"':
-            endquote = line.find(line[0], 1)
-            if endquote == -1:
+            endquote_index = line.find(line[0], 1)
+            if endquote_index == -1:
                 raise NameValueError(
-                      'attribute "%s" missing end quote (%s)'
-                      % (attname, line[0]))
-            if len(line) > endquote + 1 and line[endquote + 1].strip():
-                raise NameValueError(
-                      'attribute "%s" end quote (%s) not followed by '
-                      'whitespace' % (attname, line[0]))
-            data = line[1:endquote]
-            line = line[endquote+1:].lstrip()
+                      f'attribute "{attname}" missing end quote ({line[0]})')
+            if (len(line) > endquote_index + 1
+                and line[endquote_index + 1].strip()):
+                raise NameValueError(f'attribute "{attname}" end quote '
+                                     f'({line[0]}) not followed by whitespace')
+            data = line[1:endquote_index]
+            line = line[endquote_index+1:].lstrip()
         else:
-            space = line.find(' ')
-            if space == -1:
+            space_index = line.find(' ')
+            if space_index == -1:
                 data = line
                 line = ''
             else:
-                data = line[:space]
-                line = line[space+1:].lstrip()
+                data = line[:space_index]
+                line = line[space_index+1:].lstrip()
         attlist.append((attname.lower(), data))
     return attlist
 
@@ -664,13 +661,13 @@ def escape2null(text: str) -> str:
     parts = []
     start = 0
     while True:
-        found = text.find('\\', start)
-        if found == -1:
+        bs_index = text.find('\\', start)
+        if bs_index == -1:
             parts.append(text[start:])
             return ''.join(parts)
-        parts.extend((text[start:found],
-                      '\x00' + text[found + 1:found + 2]))
-        start = found + 2  # skip character after escape
+        parts.extend((text[start:bs_index],
+                      '\x00' + text[bs_index + 1:bs_index + 2]))
+        start = bs_index + 2  # skip character after escape
 
 
 def split_escaped_whitespace(text: str) -> list[str]:

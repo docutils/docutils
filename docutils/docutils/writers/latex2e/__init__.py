@@ -1355,9 +1355,9 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                     self.requirements['_textquotedbl'] = (
                         r'\DeclareTextSymbolDefault{\textquotedbl}{T1}')
         # page layout with typearea (if there are relevant document options)
-        if (settings.documentclass.find('scr') == -1
-            and (self.documentoptions.find('DIV') != -1
-                 or self.documentoptions.find('BCOR') != -1)):
+        if (not settings.documentclass.startswith('scr')
+            and ('DIV' in self.documentoptions
+                 or 'BCOR' in self.documentoptions)):
             self.requirements['typearea'] = r'\usepackage{typearea}'
 
         # Stylesheets
@@ -2831,7 +2831,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         if 'refuri' in node:
             href = str(node['refuri']).translate(special_chars)
             # problematic chars double caret and unbalanced braces:
-            if href.find('^^') != -1 or self.has_unbalanced_braces(href):
+            if '^^' in href or self.has_unbalanced_braces(href):
                 self.error(
                     f'External link "{href}" not supported by LaTeX.\n'
                     ' (Must not contain "^^" or unbalanced braces.)')
@@ -3027,8 +3027,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         if (self.active_table._latex_type == 'longtable'
             and isinstance(node.parent, nodes.section)
             and node.parent.index(node) == 1
-            and self.d_class.section(
-                   self.section_level).find('paragraph') != -1):
+            and 'paragraph' in self.d_class.section(self.section_level)):
             self.out.append('\\leavevmode')
         self.active_table.open()
         self.active_table.set_table_style(node, self.settings)

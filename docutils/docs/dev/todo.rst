@@ -121,18 +121,6 @@ General
 Miscellaneous
 -------------
 
-Code cleanup and modernization:
-  Use flake8_? See also the configuration in `<../../tox.ini>`__.
-
-  Check and solve issue from  :PEP:`290` - Code Migration and Modernization.
-  (Covers issues up to Python 2.4, is there an equivalent for more recent
-  modernizations?)
-
-  Ensure `backwards compatibility`_!
-
-  .. _flake8: https://pypi.org/project/flake8/
-  .. _backwards compatibility: policies.html#backwards-compatibility-policy
-
 * Improve handling on Windows:
 
   - Get graphical installer.
@@ -239,8 +227,6 @@ Code cleanup and modernization:
     translations.
 
 
-* Add validation?  See http://pytrex.sourceforge.net, RELAX NG, pyRXP.
-
 * In ``docutils.readers.get_reader_class`` (& ``parsers`` &
   ``writers`` too), should we be importing "standalone" or
   "docutils.readers.standalone"?  (This would avoid importing
@@ -257,18 +243,6 @@ Code cleanup and modernization:
 
   Do we need it at all?  Or rather let the writers just ignore some
   nodes (like we already do for "class" values)?
-
-  The current implementation of the framework also leads to bug
-  `bug #241`__ "doctree-based publishing != publish_string".
-  The "components.Filter" transform is run by publish_doctree(). When
-  filtering based on the output format, it should be run by
-  publish_from_doctree() instead because only then the writer is
-  known.
-
-  So we need to either remove or fix the framework.
-
-  __ https://sourceforge.net/p/docutils/bugs/241/
-
 
 * Think about _`large documents` made up of multiple subdocument
   files.  Issues: continuity (`persistent sequences`_ above),
@@ -418,11 +392,6 @@ Code cleanup and modernization:
   System message?  Simple stderr output?
 
 * Rationalize Writer settings (HTML/LaTeX/PEP) -- share settings.
-
-* Add an "--include file" command-line option (config setting too?),
-  equivalent to ".. include:: file" as the first line of the doc text?
-  Especially useful for character entity sets, text transform specs,
-  boilerplate, etc.
 
 * Support "include" as embedded inline-compatible directive in substitution
   definitions, e.g. ::
@@ -603,7 +572,10 @@ latex-preamble). Objects can be given `reference names`_ with the
 ``\label{<refname}`` command, ``\ref{<refname>}`` inserts the
 corresponding number.
 
-No such mechanism exists in HTML.
+No such mechanism exists in HTML/CSS (there is "target-counter" for paged
+media but this is not supported by browsers as of 2024).
+Cf. https://stackoverflow.com/questions/16453488/ and
+https://stackoverflow.com/questions/9463523/.
 
 * We need _`persistent sequences`, similar to chapter and footnote
   numbers. See `OpenOffice.org XML`_ "fields".
