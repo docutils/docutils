@@ -959,24 +959,71 @@ samples['embed_stylesheet'] = ({'stylesheet_path': f'{spam},{ham}',
 ])
 
 
-samples['sectnum_xform False'] = ({'sectnum_xform': False}, [
-# no section numbers
+# section numbering by LaTeX
+samples['sectnum_xform False'] = ({'sectnum_xform': False,
+                                   # ignore str values of internal settings:
+                                   'sectnum_start': '42',
+                                   'sectnum_depth': '3'
+                                   }, [
 ["""\
-some text
+no sectnum directive -> suppress section numbers
 
-first section
--------------
+section
+-------
 """,
  {'body': r"""
-some text
+no sectnum directive -> suppress section numbers
 
 
-\section{first section%
-  \label{first-section}%
+\section{section%
+  \label{section}%
 }
 """,
   'requirements': '\\usepackage[T1]{fontenc}\n'
                   '\\setcounter{secnumdepth}{0}\n',
+  }],
+['no sectnum directive and no section -> no requirements',
+ {'body': '\nno sectnum directive and no section -> no requirements\n'
+  }],
+
+["""\
+default section numbers -> no requirements
+
+.. sectnum::
+
+section
+-------
+""",
+ {'body': r"""
+default section numbers -> no requirements
+
+
+\section{section%
+  \label{section}%
+}
+""",
+  }],
+["""\
+section numbers with custom start and depth
+
+.. sectnum::
+   :start: 7
+   :depth: 2
+
+section
+-------
+""",
+ {'body': r"""
+section numbers with custom start and depth
+
+
+\section{section%
+  \label{section}%
+}
+""",
+  'requirements': '\\usepackage[T1]{fontenc}\n'
+                  '\\setcounter{secnumdepth}{2}\n'
+                  '\\setcounter{section}{6}\n',
   }],
 ])
 

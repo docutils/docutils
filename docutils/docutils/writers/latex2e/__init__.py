@@ -238,8 +238,7 @@ class Writer(writers.Writer):
         )
 
     relative_path_settings = ('template',)
-    settings_defaults = {'sectnum_depth': 0,
-                         'sectnum_start': 1}  # updated by SectNum transform
+    settings_defaults = {}
     config_section = 'latex2e writer'
     config_section_dependencies = ('writers', 'latex writers')
 
@@ -2021,8 +2020,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.out.append('\n\\faketableofcontents % for local ToCs\n')
         # * conditional requirements (before style sheet)
         self.requirements = [self.requirements[key]
-                             for key in sorted(self.requirements.keys())
-                             if self.requirements[key]]
+                             for key in sorted(self.requirements.keys())]
         # * coditional fallback definitions (after style sheet)
         self.fallbacks = [self.fallbacks[key]
                           for key in sorted(self.fallbacks.keys())]
@@ -2884,27 +2882,29 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         # counter for this section's level (initialized by parent section)
         self._section_number[self.section_level - 1] += 1
 
-        # Add LaTeX section numbering configuration code to requirements.
+        # Section numbering configuration
         if 'sectnum' in self.requirements:
             return  # already done
-        # settings.sectnum_depth values:
+        # sectnum_depth values:
         #    0    no section numbering or section numbering by Docutils
         #   >0    value of "sectnum"'s :depth: option (1 = top level section)
         #   None  "sectnum" directive without depth arg -> keep default
         if self.settings.sectnum_xform:  # section numbering by Docutils
-            sectnum_depth = 0
-        else:  # section numbering by LaTeX:
-            sectnum_depth = self.settings.sectnum_depth
-            if self.settings.sectnum_start != 1:
-                self.requirements['sectnum_start'] = (
-                    r'\setcounter{%s}{%d}' % (self.d_class.sections[0],
-                                              self.settings.sectnum_start-1))
+            sectnum_depth = 0  # suppress LaTeX section numbers
+        else:
+            sectnum_depth = getattr(self.settings, 'sectnum_depth', 0)
+            if isinstance(sectnum_depth, str):
+                sectnum_depth = 0  # ignore values from config files
+            sectnum_start = getattr(self.settings, 'sectnum_start', 1)
+            if isinstance(sectnum_start, str):
+                sectnum_start = 1  # ignore values from config files
+            if sectnum_start != 1:
+                self.requirements['sectnum_start'] = r'\setcounter{%s}{%d}' % (
+                    self.d_class.sections[0], sectnum_start-1)
             # TODO: currently ignored (configure in a stylesheet):
             # settings.sectnum_prefix
             # settings.sectnum_suffix
-        if sectnum_depth is None:
-            self.requirements['sectnum'] = ''
-        else:
+        if sectnum_depth is not None:
             self.requirements['sectnum'] = r'\setcounter{secnumdepth}{%d}' % (
                 self.d_class.latex_section_depth(sectnum_depth))
 

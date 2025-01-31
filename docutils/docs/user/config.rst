@@ -614,12 +614,16 @@ __ ../ref/rst/directives.html#path
 sectnum_xform
 -------------
 
-Enable automatic section numbering by Docutils
-(`docutils.transforms.parts.SectNum`) associated
-with the `"sectnum" directive`_.
+Enable automatic section numbering by Docutils (`SectNum` transform_
+associated with the `"sectnum" directive`_).
 
-If disabled, section numbers might be added to the output by the
-renderer (e.g. by CSS style rules or by LaTeX).
+If disabled, the `SectNum` transform adds the `internal settings`_
+sectnum_depth_, sectnum_start_, sectnum_prefix_, and sectnum_suffix_
+to store the respective `"sectnum" directive options`__.
+Section numbers may be added to the output by the renderer
+(e.g. by CSS style rules or LaTeX).
+
+__ ../ref/rst/directives.html#sectnum-options
 
 :Default: True.
 :Options: ``--section-numbering``, ``--no-section-numbering``.
@@ -2399,13 +2403,13 @@ Internal Settings
 
 These settings are for internal use only; setting them in
 configuration files has no effect, and there are no corresponding
-command-line options.
+command-line options (except for `_destination`_).
 
 _config_files
 ~~~~~~~~~~~~~
 List of paths of applied configuration files.
 
-*Default*: None.  No command-line options.
+*Default*: None.
 
 _directories
 ~~~~~~~~~~~~
@@ -2414,15 +2418,14 @@ Only with the `[buildhtml application]`_.
 List of paths to source directories, set from `positional arguments
 <tools.html#buildhtml-py>`__.
 
-
-*Default*: None (current working directory).  No command-line options.
+*Default*: None (current working directory).
 
 _disable_config
 ~~~~~~~~~~~~~~~
 Prevent standard configuration files from being read.
 For command-line use, set the DOCUTILSCONFIG_ variable.
 
-:Default: None (config files enabled).  No command-line options.
+:Default: None (config files enabled).
 
 _destination
 ~~~~~~~~~~~~
@@ -2433,12 +2436,39 @@ in Docutils 2.0 (cf. `Future changes`_ in the RELEASE-NOTES).
 
 *Default*: None (stdout).  *Option*: ``--output``.
 
-
 _source
 ~~~~~~~
 Path to input source, set from `positional arguments`_.
 
-*Default*: None (stdin).  No command-line options.
+*Default*: None (stdin).
+
+sectnum_depth
+~~~~~~~~~~~~~
+Stores the value of the `"sectnum" directive`_'s "depth" option
+if sectnum_xform_ is False.
+
+No default. [#SectNum]_
+
+sectnum_prefix
+~~~~~~~~~~~~~~
+Stores the value of the `"sectnum" directive`_'s "prefix" option
+if sectnum_xform_ is False.
+
+No default. [#SectNum]_
+
+sectnum_start
+~~~~~~~~~~~~~
+Stores the value of the `"sectnum" directive`_'s "start" option
+if sectnum_xform_ is False.
+
+No default. [#SectNum]_
+
+sectnum_suffix
+~~~~~~~~~~~~~~
+Stores the value of the `"sectnum" directive`_'s "suffix" option
+if sectnum_xform_ is False.
+
+No default. [#SectNum]_
 
 --------------------------------------------------------------------------
 
@@ -2461,6 +2491,9 @@ Path to input source, set from `positional arguments`_.
    config_ command line option or in directories visited by the
    buildhtml_ application are resolved relative to the directory of
    the respective configuration file.
+
+.. [#SectNum] Added by the `SectNum` transform_, if and only if there
+   is a `"sectnum" directive`_ in the source document.
 
 __ https://docs.python.org/3/library/codecs.html#codecs.register
 
