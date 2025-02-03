@@ -2462,7 +2462,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         options = ''
         if include_graphics_options:
             options = f"[{','.join(include_graphics_options)}]"
-        self.out.append(f'\\{cmd}{options}{{{imagepath}}}')
+        self.out.append(f'\\{cmd}{options}{{{imagepath.as_posix()}}}')
         self.out.extend(post)
 
     def depart_image(self, node) -> None:

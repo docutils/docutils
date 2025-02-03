@@ -306,12 +306,12 @@ section not in local toc
 # include images with "\includegraphics", load "graphicx" package
 ["""\
 .. image:: blue%20square.png
-.. image:: vectors.svg
+.. image:: /images/vectors.svg
 """,
  {'body': r"""
 \includegraphics{blue square.png}
 
-\includegraphics{vectors.svg}
+\includegraphics{/images/vectors.svg}
 """,
   'requirements': '\\usepackage[T1]{fontenc}\n'
                   '\\usepackage{graphicx}\n',
@@ -1039,12 +1039,12 @@ samples['stylesheet_path'] = ({'stylesheet_path': f'{spam},{ham}'}, [
 samples['svg-image'] = ({'stylesheet': 'svg'}, [
 ["""\
 .. image:: blue%20square.png
-.. image:: vectors.svg
+.. image:: /images/vectors.svg
 """,
  {'body': r"""
 \includegraphics{blue square.png}
 
-\includesvg{vectors.svg}
+\includesvg{/images/vectors.svg}
 """,
   'requirements': '\\usepackage[T1]{fontenc}\n'
                   '\\usepackage{graphicx}\n',
