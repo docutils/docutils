@@ -8,8 +8,6 @@ Issues
 
 * lines starting with a ``{not typeset}  abc``
 
-* #481 no uppercasing of titles (config option)
-
 * #482 no default formatting ... use macros or leave to writer
 
 * How to typeset command/manpage names in text.
