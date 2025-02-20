@@ -1303,7 +1303,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.author_stack = []
         self.date = []
 
-        # PDF properties: pdftitle, pdfauthor
+        # PDF properties:
         self.pdfauthor = []
         self.pdfinfo = []
         if settings.language_code != 'en':
@@ -2003,6 +2003,9 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.requirements['babel'] = self.babel()
         # * PDF properties
         self.pdfsetup.append(PreambleCmds.linking % self.hyperref_options)
+        if self.document.get('title', ''):
+            self.pdfinfo.insert(0, '  pdftitle={%s},' %
+                                self.encode(self.document.get('title', '')))
         if self.pdfauthor:
             authors = self.author_separator.join(self.pdfauthor)
             self.pdfinfo.append('  pdfauthor={%s}' % authors)
@@ -2646,18 +2649,20 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.duclass_close(node)
 
     def visit_meta(self, node) -> None:
-        name = node.attributes.get('name')
-        content = node.attributes.get('content')
-        if not name or not content:
-            return
-        if name in ('author', 'creator', 'keywords', 'subject', 'title'):
+        if 'name' not in node or 'content' not in node:
+            raise nodes.SkipNode  # HTML specific or empty metadata
+        # TODO: Filter nodes with additional fields ("lang", "http-equiv", …)?
+        #       They are HTML-specific and may override equally named keys.
+        #       Only if name already present?  See also ODT writer.
+        name = node['name']
+        content = self.encode(node['content'])
+        if name in ('author', 'keywords', 'producer', 'subject', 'title'):
             # fields with dedicated hyperref options:
             self.pdfinfo.append('  pdf%s={%s},'%(name, content))
-        elif name == 'producer':
-            self.pdfinfo.append('  addtopdfproducer={%s},'%content)
+        elif name == 'creator':
+            self.pdfinfo.append('  addtopdfcreator={%s},'%content)
         else:
             # generic interface (case sensitive!)
-            # TODO: filter irrelevant nodes ("http-equiv", ...)?
             self.pdfinfo.append('  pdfinfo={%s={%s}},'%(name, content))
 
     def depart_meta(self, node) -> None:
@@ -3144,8 +3149,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         if isinstance(node.parent, nodes.document):
             self.push_output_collector(self.title)
             self.context.append('')
-            self.pdfinfo.append('  pdftitle={%s},' %
-                                self.encode(node.astext()))
         # Topic titles (topic, admonition, sidebar)
         elif (isinstance(node.parent, nodes.topic)
               or isinstance(node.parent, nodes.admonition)

@@ -747,12 +747,8 @@ class Writer(writers.Writer):
         el1.text = '1'
         el1 = SubElement(root, 'meta:editing-duration', nsdict=METNSD)
         el1.text = 'PT00M01S'
-        title = self.visitor.get_title()
         el1 = SubElement(root, 'dc:title', nsdict=METNSD)
-        if title:
-            el1.text = title
-        else:
-            el1.text = '[no title]'
+        el1.text = self.document.get('title', '[no title]')
         for prop, value in self.visitor.get_meta_dict().items():
             # 'keywords', 'description', and 'subject' have their own fields:
             if prop == 'keywords':

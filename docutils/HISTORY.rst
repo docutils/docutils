@@ -180,6 +180,8 @@ Release 0.22b.dev (unpublished)
   - Support SVG image inclusion with the "svg" LaTeX package (see the
     `stylesheet`__ configuration setting).
   - Add "template" to the parts returned by `Writer.assemble_parts()`.
+  - Use <document> "title" attribute in pdfinfo.
+  - Encode <meta> element content in pdfinfo.
 
   .. _reference-label: docs/user/config.html#reference-label
   __ docs/user/config.html#stylesheet-latex-writers
@@ -214,6 +216,7 @@ Release 0.22b.dev (unpublished)
   - Fix conversion of image width in "%" if the height is specified.
   - Adjust fallback DPI value (currently not used) to match CSS units.
   - Fix errors with ``*.xml`` style files (bug #494).
+  - Use <document> "title" attribute in document metadata.
 
 * pyproject.toml
 
