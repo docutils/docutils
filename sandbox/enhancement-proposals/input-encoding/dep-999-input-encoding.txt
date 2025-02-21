@@ -180,9 +180,7 @@ Rejected Ideas
       changeable on a per-source file basis". [:PEP:`263`]
   -1  complicates code
 
-  → "Outsourced" to the "inspecting_codecs_" package.
-
-  .. _inspecting_codecs: https://codeberg.org/milde/inspecting-codecs
+  → "Outsourced" to the "`inspecting codecs`_" package.
 
 
 Open Issues
@@ -212,6 +210,11 @@ References
 
 Patches #194 Deprecate PEP 263 coding slugs support
   https://sourceforge.net/p/docutils/patches/194/
+
+_`Inspecting codecs`:
+  | Codecs that determine the encoding by looking for a BOM
+    or encoding declaration.
+  | https://codeberg.org/milde/inspecting-codecs
 
 .. _input_encoding:
     https://docutils.sourceforge.io/docs/user/config.html#input-encoding

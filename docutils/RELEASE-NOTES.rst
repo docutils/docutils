@@ -279,6 +279,12 @@ New objects
      the `Docutils Document Model`_.
      Provisional.
 
+  `writers.DoctreeTranslator`
+     Generic Docutils document tree translator base class with
+     `uri2path()` auxiliary method.
+     Provisional.
+
+
 Removed objects
   `docutils.core.Publisher.setup_option_parser()`
      internal, obsolete,

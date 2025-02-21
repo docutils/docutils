@@ -153,6 +153,11 @@ Release 0.22b.dev (unpublished)
   - Do not increase indentation of follow-up lines inside inline elements.
     when formatting with `indents`_.
 
+* docutils/writers/__init__.py
+
+  - New base class `writers.DoctreeTranslator`
+    with auxiliary method `uri2path()`.
+
 * docutils/writers/_html_base.py
 
   - Make MathML the default math_output_.
@@ -180,6 +185,8 @@ Release 0.22b.dev (unpublished)
   - Support SVG image inclusion with the "svg" LaTeX package (see the
     `stylesheet`__ configuration setting).
   - Add "template" to the parts returned by `Writer.assemble_parts()`.
+  - Use standard `dict` for `LaTeXTranslator.requirements`
+    and`LaTeXTranslator.fallbacks`.
   - Use <document> "title" attribute in pdfinfo.
   - Encode <meta> element content in pdfinfo.
 

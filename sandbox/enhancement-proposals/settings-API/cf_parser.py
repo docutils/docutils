@@ -20,7 +20,7 @@ The ConfigParser:
 * Reads and parses the sequence of configuration files passed to its
   `read()` method.
 
-* Stores the extracted setting values as stings.
+* Stores the extracted setting values as strings.
 
 * Collects settings from "active sections" in its ACTIVE section.
 
@@ -35,7 +35,7 @@ The OptionParser:
 # 
 # +1 Collecting "appending_settings" becomes easier.
 # 
-# -1 Require inheriting configparser.RawConfigParser to allow storing
+# -1 Requires inheriting configparser.RawConfigParser to allow storing
 #    values other than strings. 
 #    (Alternative: collect in ``dict`` instead of ACTIVE section.)
 # 
@@ -59,9 +59,8 @@ class ConfigParser(configparser.ConfigParser):
     from all "active sections".
     """
 
-    not_utf8_error = ('Unable to read configuration file "%s": '
-                      'content not encoded as UTF-8.\n'
-                      'Skipping "%s" configuration file.')
+    not_utf8_error = ('Skipping configuration file "%s": '
+                      'Unable to read, content not encoded as UTF-8.\n')
 
     def __init__(self, *args,
                  active_sections=(),
@@ -103,7 +102,7 @@ class ConfigParser(configparser.ConfigParser):
         self._appending_setting_lists = collections.defaultdict(list)
 
     def clear(self):
-        """Clear all settings. Restore ACTIVE section.
+        """Clear all settings. Add empty ACTIVE section.
 
         The DEFAULT and the ACTIVE sections are always present.
         Exception: after an explicit `<instance>['ACTIVE'].clear()`.
@@ -120,8 +119,8 @@ class ConfigParser(configparser.ConfigParser):
             # Config files are UTF-8-encoded:
             try:
                 read_ok += super().read(filename, encoding='utf-8')
-            except UnicodeDecodeError:
-                sys.stderr.write(self.not_utf8_error % (filename, filename))
+            except UnicodeDecodeError as e:
+                sys.stderr.write(self.not_utf8_error % filename + str(e))
                 continue
             self.handle_side_effects()
             self.collect_active_settings()

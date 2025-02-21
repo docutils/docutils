@@ -55,7 +55,7 @@ files, in the following order:
    located in the current directory.
    The Docutils front end has to be executed from the directory
    containing this configuration file for it to take effect (note that
-   this may have nothing to do with the location of the source files).
+   this directory may differ from the location of the source files).
 
 3. ``~/.docutils``: This is a user-specific configuration file,
    located in the user's home directory.
@@ -2498,10 +2498,13 @@ No default. [#SectNum]_
 __ https://docs.python.org/3/library/codecs.html#codecs.register
 
 
-Old-Format Configuration Files
-==============================
+Appendix
+========
 
-Formerly, Docutils configuration files contained a single "[options]"
+Old-Format Configuration Files
+------------------------------
+
+Formerly, Docutils `configuration files`_ contained a single "[options]"
 section only.  This was found to be inflexible, and in August 2003
 Docutils adopted the current component-based configuration file
 sections as described above.
@@ -2524,7 +2527,7 @@ pep_template           [pep_html writer] template
 .. _auto-detect:
 
 Input Encoding Auto-Detection
-=============================
+-----------------------------
 
 Up to Docutils 0.21, the input_encoding_ default value was ``None`` and
 the actual input encoding detected from a `Unicode byte order mark` (BOM_)
@@ -2537,7 +2540,7 @@ However, **this feature** is deprecated and **will be removed** in
 Docutils 1.0.  See the `inspecting_codecs`_ package for a replacement.
 
 Encoding Declaration
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
 Input encoding auto-detection scans the source for an
 *encoding declaration* inspired by :PEP:`263`:
