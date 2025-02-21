@@ -1690,7 +1690,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.depart_inline(node)
 
     def visit_address(self, node) -> None:
-        self.visit_docinfo_item(node, 'address')
+        self.visit_docinfo_item(node)
 
     def depart_address(self, node) -> None:
         self.depart_docinfo_item(node)
@@ -1721,7 +1721,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def visit_author(self, node) -> None:
         self.pdfauthor.append(self.attval(node.astext()))
-        self.visit_docinfo_item(node, 'author')
+        self.visit_docinfo_item(node)
 
     def depart_author(self, node) -> None:
         self.depart_docinfo_item(node)
@@ -1873,7 +1873,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.duclass_close(node)
 
     def visit_contact(self, node) -> None:
-        self.visit_docinfo_item(node, 'contact')
+        self.visit_docinfo_item(node)
 
     def depart_contact(self, node) -> None:
         self.depart_docinfo_item(node)
@@ -1885,13 +1885,13 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.duclass_close(node)
 
     def visit_copyright(self, node) -> None:
-        self.visit_docinfo_item(node, 'copyright')
+        self.visit_docinfo_item(node)
 
     def depart_copyright(self, node) -> None:
         self.depart_docinfo_item(node)
 
     def visit_date(self, node) -> None:
-        self.visit_docinfo_item(node, 'date')
+        self.visit_docinfo_item(node)
 
     def depart_date(self, node) -> None:
         self.depart_docinfo_item(node)
@@ -1949,37 +1949,44 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.docinfo.append('\\end{tabularx}\n'
                                 '\\end{center}\n')
 
-    def visit_docinfo_item(self, node, name):
-        if self.use_latex_docinfo:
-            if name in ('author', 'organization', 'contact', 'address'):
-                # We attach these to the last author.  If any of them precedes
-                # the first author, put them in a separate "author" group
-                # (in lack of better semantics).
-                if name == 'author' or not self.author_stack:
-                    self.author_stack.append([])
-                if name == 'address':   # newlines are meaningful
-                    self.insert_newline = True
-                    text = self.encode(node.astext())
-                    self.insert_newline = False
-                else:
-                    text = self.attval(node.astext())
-                self.author_stack[-1].append(text)
-                raise nodes.SkipNode
-            elif name == 'date':
-                self.date.append(self.attval(node.astext()))
-                raise nodes.SkipNode
-        self.out.append('\\textbf{%s}: &\n\t' % self.language_label(name))
-        if name == 'address':
-            self.insert_newline = True
-            self.out.append('{\\raggedright\n')
-            self.context.append(' } \\\\\n')
+    def visit_docinfo_item(self, node, name=None) -> None:
+        # auxiliary method, called by the visitors of "bibliographic elements"
+        if name is not None:
+            warnings.warn('visit_docinfo_item(): argument "name" is obsolete'
+                          ' and will be removed in Docutils 0.24',
+                          DeprecationWarning, stacklevel=2)
+        if isinstance(node, nodes.address):
+            self.insert_newline = True  # preserve newlines
+        if self.use_latex_docinfo and isinstance(
+               node, (nodes.address, nodes.author, nodes.contact,
+                      nodes.date, nodes.organization)):
+            self.push_output_collector([])  # see depart_docinfo_item()
         else:
-            self.context.append(' \\\\\n')
+            self.out.append('\\textbf{%s}: &\n\t'
+                            % self.language_label(node.tagname))
+            if isinstance(node, nodes.address):
+                self.out.append('{\\raggedright\n')
 
     def depart_docinfo_item(self, node) -> None:
-        self.out.append(self.context.pop())
-        # for address we did set insert_newline
-        self.insert_newline = False
+        self.insert_newline = False  # reset change with <address> node
+        if self.use_latex_docinfo and isinstance(
+               node, (nodes.address, nodes.author, nodes.contact,
+                      nodes.date, nodes.organization)):
+            text = ''.join(self.out)
+            self.pop_output_collector()
+            if isinstance(node, nodes.date):
+                self.date.append(text)
+            else:
+                # Attach to the last author.  If any of them precedes
+                # the first author, put them in a separate "author" group
+                # (in lack of better semantics).
+                if isinstance(node, nodes.author) or not self.author_stack:
+                    self.author_stack.append([])
+                self.author_stack[-1].append(text)
+        else:
+            if isinstance(node, nodes.address):
+                self.out.append(' }')
+            self.out.append(' \\\\\n')
 
     def visit_doctest_block(self, node) -> None:
         self.visit_literal_block(node)
@@ -2751,7 +2758,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         pass
 
     def visit_organization(self, node) -> None:
-        self.visit_docinfo_item(node, 'organization')
+        self.visit_docinfo_item(node)
 
     def depart_organization(self, node) -> None:
         self.depart_docinfo_item(node)
@@ -2864,7 +2871,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.out.append('\n')
 
     def visit_revision(self, node) -> None:
-        self.visit_docinfo_item(node, 'revision')
+        self.visit_docinfo_item(node)
 
     def depart_revision(self, node) -> None:
         self.depart_docinfo_item(node)
@@ -2944,7 +2951,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.out.append(self.context.pop() + '\n')
 
     def visit_status(self, node) -> None:
-        self.visit_docinfo_item(node, 'status')
+        self.visit_docinfo_item(node)
 
     def depart_status(self, node) -> None:
         self.depart_docinfo_item(node)
@@ -3343,7 +3350,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         pass
 
     def visit_version(self, node) -> None:
-        self.visit_docinfo_item(node, 'version')
+        self.visit_docinfo_item(node)
 
     def depart_version(self, node) -> None:
         self.depart_docinfo_item(node)

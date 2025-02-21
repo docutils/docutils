@@ -453,7 +453,8 @@ class DocInfo(Transform):
                 f_body.children = _document.children
                 return True
         # Check failed, add a warning
-        content = [f'<{e.tagname}>' for e in f_body.children]
+        content = [f'<{e.tagname}>' for e in f_body.children
+                   if not isinstance(e, nodes.system_message)]
         if len(content) > 1:
             content = '[' + ', '.join(content) + ']'
         else:
@@ -491,7 +492,8 @@ class DocInfo(Transform):
             field[-1] += self.document.reporter.warning(
                 f'Cannot extract "{name}" from bibliographic field:\n'
                 f'Bibliographic field "{name}" must contain either\n'
-                ' a single paragraph (with author names separated by one of '
+                ' a single paragraph (with author names separated by a'
+                ' character from the set '
                 f'"{"".join(self.language.author_separators)}"),\n'
                 ' multiple paragraphs (one per author),\n'
                 ' or a bullet list with one author name per item.\n'

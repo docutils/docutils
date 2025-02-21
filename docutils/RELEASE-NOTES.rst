@@ -163,6 +163,9 @@ Removals
 * Remove the "rawsource" argument from `nodes.Text.__init__()`
   in Docutils 2.0.
 
+* Remove the "name" argument from
+  `writers.latex2e.LaTeXTranslator.visit_docinfo_item()` in Docutils 0.24
+
 * Remove attributes `nodes.Element.known_attributes`,
   `nodes.Element.basic_attributes`, and `nodes.Element.local_attributes`,
   in Docutils 2.0.

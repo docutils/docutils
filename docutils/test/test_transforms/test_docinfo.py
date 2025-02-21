@@ -360,7 +360,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     <paragraph>
                         Cannot extract "Authors" from bibliographic field:
                         Bibliographic field "Authors" must contain either
-                         a single paragraph (with author names separated by one of ";,"),
+                         a single paragraph (with author names separated by a character from the set ";,"),
                          multiple paragraphs (one per author),
                          or a bullet list with one author name per item.
                         Note: Leading initials can cause (mis)recognizing names as enumerated list.
@@ -375,7 +375,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     <paragraph>
                         Cannot extract "Authors" from bibliographic field:
                         Bibliographic field "Authors" must contain either
-                         a single paragraph (with author names separated by one of ";,"),
+                         a single paragraph (with author names separated by a character from the set ";,"),
                          multiple paragraphs (one per author),
                          or a bullet list with one author name per item.
                         Note: Leading initials can cause (mis)recognizing names as enumerated list.
@@ -393,7 +393,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     <paragraph>
                         Cannot extract "Authors" from bibliographic field:
                         Bibliographic field "Authors" must contain either
-                         a single paragraph (with author names separated by one of ";,"),
+                         a single paragraph (with author names separated by a character from the set ";,"),
                          multiple paragraphs (one per author),
                          or a bullet list with one author name per item.
                         Note: Leading initials can cause (mis)recognizing names as enumerated list.
@@ -411,7 +411,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     <paragraph>
                         Cannot extract "Authors" from bibliographic field:
                         Bibliographic field "Authors" must contain either
-                         a single paragraph (with author names separated by one of ";,"),
+                         a single paragraph (with author names separated by a character from the set ";,"),
                          multiple paragraphs (one per author),
                          or a bullet list with one author name per item.
                         Note: Leading initials can cause (mis)recognizing names as enumerated list.
