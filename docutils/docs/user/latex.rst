@@ -25,13 +25,11 @@ selection of `LaTeX Documentation on the net`_ and `books on LaTeX and
 related topics`_. For an introduction to LaTeX see, e.g., `LaTeX2e for
 authors`_.
 
-__ http://www.latex-project.org/
-.. _LaTeX2e for authors:
-   http://www.latex-project.org/guides/usrguide.pdf
-.. _LaTeX Documentation on the net:
-   http://www.latex-project.org/guides/
+__ https://www.latex-project.org/
+.. _LaTeX Documentation on the net: https://www.latex-project.org/guides/
 .. _books on LaTeX and related topics:
-   http://www.latex-project.org/guides/books.html
+    https://www.latex-project.org/guides/books.html
+.. _LaTeX2e for authors: https://www.latex-project.org/guides/usrguide.pdf
 
 
 .. _LaTeX packages:
@@ -53,7 +51,7 @@ can select from a *huge* selection of classes and packages (standard as well
 as user contributed) coming with your TeX distribution or available at
 CTAN_ as well as custom style sheets.
 
-.. _CTAN: http://www.ctan.org
+.. _CTAN: https://www.ctan.org
 
 
 Docutils specific LaTeX macros
@@ -137,8 +135,8 @@ PDF generation
 ==============
 
 In most cases, LaTeX code is not the desired end-format of the document.
-LaTeX offers many ways to generate PDF documents from the LaTeX
-source, including:
+There are several programs to generate PDF documents from the LaTeX source,
+including:
 
 _`pdflatex`
   Generates a PDF document directly from the LaTeX file.
@@ -150,12 +148,12 @@ _`xelatex` or _`lualatex`
   and system fonts. Export your document with the _`XeLaTeX writer` (writer
   name "``xetex``", frontend tool rst2xetex_).
 
-You may need to call LaTeX two or three times to get internal references
-correct.
+You may need to call the respective command two or three times
+to get internal references correct.
 
 .. _documentoptions: config.html#documentoptions
-.. _xetex: http://tug.org/xetex/
-.. _luatex: http://luatex.org/
+.. _xetex: https://tug.org/xetex/
+.. _luatex: https://www.luatex.org/
 .. _rst2latex: tools.html#rst2latex
 .. _rst2xetex: tools.html#rst2xetex
 
@@ -369,7 +367,7 @@ Example:
 
 .. _latex-preamble: config.html#latex-preamble
 .. _PDF standard fonts: https://en.wikipedia.org/wiki/PDF#Standard_Type_1_Fonts
-.. _Linux Libertine: http://www.linuxlibertine.org
+.. _Linux Libertine: https://www.linuxlibertine.org
 
 
 Templates
@@ -611,8 +609,10 @@ Option:
 document info
 -------------
 
-Content of the `bibliographic fields`__ at the top of a document.
+Content of the `bibliographic fields`_ at the top of a document.
 By default, docinfo items are typeset as a table.
+If use-latex-docinfo_ is True, the "Author/s", "Address", "Contact",
+"Organization", and "Date" fields are attached to the `document title`_.
 
 Options:
   use-latex-docinfo_, use-latex-abstract_
@@ -629,8 +629,7 @@ Example:
     \newlength{\DUdocinfowidth}
     \setlength{\DUdocinfowidth}{0.7\textwidth}
 
-__ ../ref/rst/restructuredtext.html#bibliographic-fields
-
+.. _bibliographic fields: ../ref/rst/restructuredtext.html#bibliographic-fields
 .. _use-latex-docinfo: config.html#use-latex-docinfo
 .. _use-latex-abstract: config.html#use-latex-abstract
 
@@ -656,10 +655,8 @@ Options:
   A separate title page is used also with the "abstract" document class.
 
 .. _section structure: rst/quickref.html#section-structure
-.. _TeX FAQ: http://www.tex.ac.uk/faq
-.. _style of document titles:
-   http://www.tex.ac.uk/cgi-bin/texfaq2html?label=titlsty
-
+.. _TeX FAQ: https://texfaq.org/
+.. _style of document titles: https://texfaq.org/FAQ-titlsty
 
 field lists
 -----------
@@ -755,29 +752,27 @@ font
 ----
 
 The selected text font influences the *look*, the *feel*,
-and the *readability* of the document (cf.
-http://www.csarven.ca/web-typography).
-Selecting a suitable font also solves the problem with `bad looking
-PDF output`_.
+and the *readability* of the document
+(cf. `Typography on the information highway`_).
+Selecting a suitable font also solves the problem with
+`bad looking PDF output`_.
 
-Font selection is one of the main differences between LaTeX and XeTeX/LuaTeX:
+Font selection is one of the main differences between pdflatex_
+and xelatex_/lualatex_:
 
-LaTeX
-  cannot use the fonts of the operating system directly but needs
-  specially installed fonts with additional supporting files.
+pdflatex_
+  requires specially installed fonts in a set of legacy `font encoding`_\ s.
 
-XeTeX/LuaTeX
-  can use system fonts and provides access to the full feature set of
+xelatex_ and lualatex_
+  can use system fonts and provide access to the full feature set of
   modern OpenType_ fonts.
-
-.. _OpenType: https://en.wikipedia.org/wiki/OpenType
 
 The default font setup is done in the latex-preamble_:
 
-LaTeX
+pdflatex_
   `PDF standard fonts`_ (Times, Helvetica, Courier)
 
-XeTeX/LuaTeX
+xelatex_/lualatex_
   `Linux Libertine`_, a free, high quality alternative to Times with a
   wide coverage of glyphs, styles, and OpenType features.
 
@@ -786,7 +781,7 @@ XeTeX/LuaTeX
 
 Alternative fonts can be selected by
 
-LaTeX
+pdflatex_
   a) specifying the corresponding LaTeX package(s) as argument to the
      stylesheet_ option_ or with the ``\usepackage`` LaTeX command.
 
@@ -832,7 +827,7 @@ LaTeX
       \renewcommand{\ttdefault}{txtt}
 
 
-XeTeX/LuaTeX
+xelatex_/lualatex_
   using the macros of the fontspec_ package. Use some font-viewer or
   -manager (e.g. fontmatrix_) to find out the correct names of the
   fonts on your system.
@@ -845,20 +840,21 @@ XeTeX/LuaTeX
       \setsansfont{DejaVu Sans}
       \setmonofont[HyphenChar=None]{DejaVu Sans Mono}
 
+.. _Typography on the information highway: https://csarven.ca/web-typography
+.. _OpenType: https://en.wikipedia.org/wiki/OpenType
 .. _fontspec: https://ctan.org/pkg/fontspec
-.. _fontmatrix: http://fontmatrix.net/
-.. _DejaVu: http://dejavu-fonts.org/
+.. _fontmatrix: https://fontmatrix.net/
+.. _DejaVu: https://dejavu-fonts.org/
 .. _documentoptions: config.html#documentoptions
+
 
 choice of suitable fonts
 ````````````````````````
 
-High quality free fonts suitable for use with XeTeX/LuaTeX are, e.g., listed
-at `Good Libre Fonts`_, `25 Best Free Quality Fonts`_ and the update
-`19 More Free Quality Fonts`_.
+With xelatex_/lualatex_, you may use any of the system fonts.
 
 The `LaTeX Font Catalogue`_ provides information and examples for a wide
-range of fonts available for use with LaTeX. Here is just a selection:
+range of fonts available for use with PdfLaTeX. Here is just a selection:
 
 a) The `Latin Modern`_ (LM) fonts are extended outline versions of the
    standard TeX font Computer Modern (CM).
@@ -975,25 +971,19 @@ d) PSNFSS_ Postscript fonts
        which is part of, e.g., `TeX Live`_.
 
 
-.. _LaTeX Font Catalogue: http://www.tug.dk/FontCatalogue/
+.. _LaTeX Font Catalogue: https://www.tug.org/FontCatalogue/
 .. _Latin Modern: https://ctan.org/pkg/lm
 .. _CM-Super: https://ctan.org/pkg/cm-super
 .. _bera: https://ctan.org/pkg/bera
-.. _TeX Gyre: http://www.gust.org.pl/projects/e-foundry/tex-gyre
+.. _TeX Gyre: https://www.gust.org.pl/projects/e-foundry/tex-gyre
 .. _PSNFSS: https://ctan.org/pkg/psnfss
 .. _Using common PostScript fonts with LaTeX:
    https://mirrors.ctan.org/macros/latex/required/psnfss/psnfss2e.pdf
-.. _TeX Live: http://tug.org/texlive/
+.. _TeX Live: https://www.tug.org/texlive/
 .. _txfonts: https://ctan.org/pkg/txfonts
 .. _PDF Standard Font:
    https://en.wikipedia.org/wiki/PDF#Standard_Type_1_Fonts
-.. _testflow:
-   http://www.tex.ac.uk/tex-archive/help/Catalogue/entries/testflow.html
-.. _Good Libre Fonts: http://typophile.com/node/18207
-.. _25 Best Free Quality Fonts:
-   http://www.alvit.de/blog/article/20-best-license-free-official-fonts
-.. _19 More Free Quality Fonts:
-   http://www.smashingmagazine.com/2006/10/11/17-more-free-quality-fonts/
+.. _testflow: https://ctan.org/pkg/testflow
 
 
 font encoding
@@ -1410,8 +1400,8 @@ Example 2:
 
 .. _typearea: https://ctan.org/pkg/typearea
 .. _geometry: https://ctan.org/pkg/geometry
-.. _KOMA-Script Guide:
-   https://mirrors.ctan.org/macros/latex/contrib/koma-script/doc/scrguien.pdf
+.. _KOMA-Script Guide: https://mirrors.ctan.org/
+    macros/latex/contrib/koma-script/doc/scrguide-en.pdf
 .. _geometry manual:
    https://mirrors.ctan.org/macros/latex/contrib/geometry/geometry.pdf
 
@@ -1437,7 +1427,7 @@ Example:
     \pagestyle{fancy}
 
 
-.. _fancyhdr: http://www.ctan.org/pkg/fancyhdr
+.. _fancyhdr: https://ctan.org/pkg/fancyhdr
 .. _"header" and "footer" directives: ../ref/rst/directives.html#header
 
 
@@ -1819,7 +1809,6 @@ Note:
 
    (where *n* is the Unicode page-number) to the style sheet might help.
 
-.. _LaTeX Unicode: http://www.unruh.de/DniQ/latex/unicode/
 .. _output_encoding: config.html#output-encoding
 .. _inputenc: https://ctan.org/pkg/inputenc
 .. _ucs: https://ctan.org/pkg/unicode
@@ -1892,11 +1881,11 @@ Troubleshooting
 Bad looking PDF output
 ``````````````````````
 
-  What I am looking for when I try Docutils is if the PDF files I can get
-  are of high quality. Unfortunately that never is the case.
+  What I am looking for when I try Docutils is PDF files of high quality.
+  Unfortunately that never is the case.
 
-  So am I just stupid or is there a way to get really high quality pdf from
-  Docutils?
+  So am I just stupid or is there a way to get really high quality PDF
+  from Docutils?
 
 Make sure the default font is not a bitmap font.
 
@@ -1943,8 +1932,7 @@ Right:
 See also the `Link text doesn’t break at end line`_ LaTeX FAQ entry.
 
 .. _breakurl: https://ctan.org/pkg/breakurl
-.. _Link text doesn’t break at end line:
-   http://www.tex.ac.uk/cgi-bin/texfaq2html?label=breaklinks
+.. _Link text doesn’t break at end line: https://texfaq.org/FAQ-breaklinks
 
 
 Glyph not defined in PD1 encoding
@@ -2057,7 +2045,7 @@ Warning: language … not supported
 The "latex" writer uses the LaTeX package Babel_ and the "xetex" writer
 uses Polyglossia_ for language_ support (hyphenation rules, auto-text
 localisations and typographic rules). Polyglossia_ supports more
-languages, so switching to the "xetex_" writer may help.
+languages, so switching to the "xetex" writer may help.
 
 For short quotes or if language support is provided by the user via other
 `LaTeX document classes and packages`_, the warning can be ignored.
@@ -2076,8 +2064,7 @@ for background information).
 It may help to load the `cmap` package (via `style sheets`_ or the custom
 `LaTeX preamble`_ (see also `Proper use of cmap and mmmap`_).
 
-.. _Searching PDF files:
-   http://www.tex.ac.uk/cgi-bin/texfaq2html?label=srchpdf
+.. _Searching PDF files: https://texfaq.org/FAQ-cpy-srchpdf
 .. _Proper use of cmap and mmmap:
    https://tex.stackexchange.com/questions/64409/proper-use-of-cmap-and-mmap
 
@@ -2085,7 +2072,8 @@ It may help to load the `cmap` package (via `style sheets`_ or the custom
 Unicode box drawing and block characters
 ````````````````````````````````````````
 
-The easiest solution is to use xelatex_ for `PDF generation`_.
+The easiest solution is to use xelatex_ or lualatex_ which directly
+support all Unicode characters (if included in the used font).
 
 With "traditional" TeX engines (e.g. pdflatex_):
 

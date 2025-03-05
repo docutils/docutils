@@ -866,7 +866,7 @@ rfc_base_url
 ~~~~~~~~~~~~
 Base URL for RFC references.
 
-*Default*: "http://www.faqs.org/rfcs/".  *Option*: ``--rfc-base-url``.
+*Default*: "https://tools.ietf.org/html/".  *Option*: ``--rfc-base-url``.
 
 smart_quotes
 ~~~~~~~~~~~~
@@ -1244,7 +1244,7 @@ MathJax:
   :Con: Rendering requires JavaScript and an Internet connection or local
         MathJax installation.
 
-  __ http://docs.mathjax.org/en/latest/input/tex/macros/index.html
+  __ https://docs.mathjax.org/en/latest/input/tex/macros/index.html
 
   A URL pointing to a MathJax library should be appended after whitespace.
   A warning is given if this is missing.
@@ -1288,11 +1288,11 @@ LaTeX:
 :Default: writer dependent (see `[html4css1 writer]`_, `[html5 writer]`_).
 :Option:  ``--math-output``.
 
-.. _MathJax: http://www.mathjax.org/
+.. _MathJax: https://www.mathjax.org/
 .. _MathML: https://www.w3.org/TR/MathML/
-.. _blahtexml: http://gva.noekeon.org/blahtexml/
-.. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
-.. _TtM: http://hutchinson.belmont.ma.us/tth/mml/
+.. _blahtexml: https://gva.noekeon.org/blahtexml/
+.. _LaTeXML: https://math.nist.gov/~BMiller/LaTeXML/
+.. _TtM: http://silas.psfc.mit.edu/tth/mml/
 .. _Pandoc: https://pandoc.org/
 
 
@@ -1736,7 +1736,7 @@ is prepended.
 
 *Default*: "".   *Option*: ``--hyperref-options``.
 
-.. _hyperref TeX package: http://tug.org/applications/hyperref/
+.. _hyperref TeX package: https://ctan.org/pkg/hyperref/
 
 
 latex_preamble
@@ -1999,10 +1999,13 @@ Use ``\cite`` for citations_.
 
 use_latex_docinfo
 ~~~~~~~~~~~~~~~~~
-Attach author and date to the `document title`_.
+Attach date and author information to the `document title`__.
 
-:Default: False (attach author and date to the `bibliographic fields`_).
+:Default: False (keep date and author info in the `document info`__ table).
 :Options: ``--use-latex-docinfo``, ``--use-docutils-docinfo``.
+
+__ latex.html#document-title
+__ latex.html#document-info
 
 use_latex_toc
 ~~~~~~~~~~~~~
@@ -2078,7 +2081,7 @@ Writer Specific Defaults
 
 :template__: xelatex.tex_.
 
-.. _Linux Libertine: http://www.linuxlibertine.org/
+.. _Linux Libertine: https://www.linuxlibertine.org/
 __ `template [latex writers]`_
 
 
@@ -2645,9 +2648,8 @@ If the first line matches the second line is ignored.
 .. _BCP 47: https://www.rfc-editor.org/rfc/bcp/bcp47.txt
 .. _Error Handlers:
     https://docs.python.org/3/library/codecs.html#error-handlers
-.. _ISO 639: http://www.loc.gov/standards/iso639-2/php/English_list.php
-.. _ISO 3166: http://www.iso.ch/iso/en/prods-services/iso3166ma/
-    02iso-3166-code-lists/index.html
+.. _ISO 639: https://www.loc.gov/standards/iso639-2/php/English_list.php
+.. _ISO 3166: https://www.iso.org/iso-3166-country-codes.html
 .. _language tag: https://www.w3.org/International/articles/language-tags/
 
 .. _codecs: https://docs.python.org/3/library/codecs.html
