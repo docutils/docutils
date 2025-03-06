@@ -1193,6 +1193,10 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     literal = False                     # literal text (block or inline)
     alltt = False                       # inside `alltt` environment
 
+    # Nodes affected by "use_latex_docinfo" setting:
+    LATEX_DOCINFO_NODES = (nodes.address, nodes.author, nodes.contact,
+                           nodes.date, nodes.organization)
+
     def __init__(self, document, babel_class=Babel) -> None:
         super().__init__(document)
         # Reporter
@@ -1298,9 +1302,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         # Title metadata:
         self.title_labels = []
         self.subtitle_labels = []
-        # (if use_latex_docinfo: collects lists of
-        # author/organization/contact/address lines)
-        self.author_stack = []
+        # with "use_latex_docinfo", we also need
+        self.author_stack = [['']]  # first item reserved for author name
         self.date = []
 
         # PDF properties:
@@ -1636,12 +1639,14 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                     self.fallbacks['DUclass'] = PreambleCmds.duclass
                 self.out.append('\\end{DUclass}\n')
 
-    def push_output_collector(self, new_out) -> None:
+    def push_output_collector(self, new_out: list) -> None:
         self.out_stack.append(self.out)
         self.out = new_out
 
-    def pop_output_collector(self) -> None:
+    def pop_output_collector(self) -> list:
+        old_out = self.out
         self.out = self.out_stack.pop()
+        return old_out
 
     def term_postfix(self, node):
         """
@@ -1957,9 +1962,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                           DeprecationWarning, stacklevel=2)
         if isinstance(node, nodes.address):
             self.insert_newline = True  # preserve newlines
-        if self.use_latex_docinfo and isinstance(
-               node, (nodes.address, nodes.author, nodes.contact,
-                      nodes.date, nodes.organization)):
+        if self.use_latex_docinfo and isinstance(node,
+                                                 self.LATEX_DOCINFO_NODES):
             self.push_output_collector([])  # see depart_docinfo_item()
         else:
             label = self.language_label(node.tagname)
@@ -1973,19 +1977,21 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def depart_docinfo_item(self, node) -> None:
         self.insert_newline = False  # reset change with <address> node
-        if self.use_latex_docinfo and isinstance(
-               node, (nodes.address, nodes.author, nodes.contact,
-                      nodes.date, nodes.organization)):
-            text = ''.join(self.out)
-            self.pop_output_collector()
+        if self.use_latex_docinfo and isinstance(node,
+                                                 self.LATEX_DOCINFO_NODES):
+            # Collect date and author info for use in `self.make_title()`:
+            text = ''.join(self.pop_output_collector())
             if isinstance(node, nodes.date):
                 self.date.append(text)
+            elif isinstance(node, nodes.author):
+                # Insert author name as first item of an "author info" list.
+                # If author name already set, start a new list.
+                if self.author_stack[-1][0]:
+                    self.author_stack.append([text])
+                else:
+                    self.author_stack[-1][0] = text
             else:
-                # Attach to the last author.  If any of them precedes
-                # the first author, put them in a separate "author" group
-                # (in lack of better semantics).
-                if isinstance(node, nodes.author) or not self.author_stack:
-                    self.author_stack.append([])
+                # Append affiliation/contact info to current "author info".
                 self.author_stack[-1].append(text)
         else:
             if isinstance(node, nodes.address):
@@ -2023,8 +2029,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         if self.pdfinfo:
             self.pdfsetup += [r'\hypersetup{'] + self.pdfinfo + ['}']
         # * title (including author(s) and date if using "latex_docinfo")
-        if self.title or (self.use_latex_docinfo
-                          and (self.author_stack or self.date)):
+        if self.title or self.date or self.author_stack != [['']]:
             self.make_title()  # see below
         # * bibliography
         if self._bibitems:
@@ -2042,11 +2047,12 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def make_title(self) -> None:
         # Auxiliary function called by `self.depart_document()`.
         #
-        # Append ``\title``, ``\author``, and ``\date`` to "titledata".
-        # (We need all three, even if empty, to prevent errors
-        # and/or automatic display of the current date by \maketitle.)
-        # Append ``\maketitle`` to "body_pre_docinfo" parts.
-        #
+        # The document title is stored in the "titledata" document part.
+        # Date and author info is included with "use_latex_docinfo".
+        # However, we need the ``\title``, ``\author``, and ``\date``
+        # macros even if empty, to prevent errors and/or automatic
+        # display of the current date by ``\maketitle``.
+
         # \title
         title_arg = [''.join(self.title)]  # ensure len == 1
         if self.title:
@@ -2057,15 +2063,16 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                           ] + self.subtitle_labels
         self.titledata.append(r'\title{%s}' % '%\n  '.join(title_arg))
         # \author
-        author_arg = ['\\\\\n'.join(author_entry)
-                      for author_entry in self.author_stack]
-        self.titledata.append(r'\author{%s}' %
-                              ' \\and\n'.join(author_arg))
+        # author name(s) and optional affiliation and contact info
+        # cf. https://tex.stackexchange.com/a/377030/288060.
+        authors = ['\\\\\n'.join((field for field in author_entry if field))
+                   for author_entry in self.author_stack]
+        self.titledata.append(r'\author{%s}' % ' \\and\n'.join(authors))
         # \date
         self.titledata.append(r'\date{%s}' % ', '.join(self.date))
         # \maketitle
-        # Must be in the document body. We add it to `body_pre_docinfo`
-        # to allow templates to put `titledata` into the document preamble.
+        # Must be in the document body.  Append to "body_pre_docinfo" part
+        # so templates may use the "titledata" part in the document preamble.
         self.body_pre_docinfo.append('\\maketitle\n')
 
     def append_bibliogaphy(self) -> None:

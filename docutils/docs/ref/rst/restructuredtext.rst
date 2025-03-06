@@ -1003,12 +1003,12 @@ doctree elements are as follows:
   ===================  ================
 
 .. compound::
-   The "Authors" field may contain
+   The "_`Authors`" field may contain
 
    * a single paragraph consisting of a list of authors, separated by
      ``;`` or ``,`` (``;`` is checked first, so ``Doe, Jane; Doe,
-     John`` will work.) [#i18n]_
-   * multiple paragraphs (one per author) or
+     John`` will work), [#i18n]_
+   * multiple paragraphs (one per author), or
    * a bullet list whose elements each contain a single paragraph per author.
 
    In some languages (e.g. Swedish), there is no singular/plural distinction
@@ -1016,6 +1016,11 @@ doctree elements are as follows:
    and a single name is interpreted as an "Author".  If a single name
    contains a comma, end it with a semicolon to disambiguate:
    ``:Författare: Doe, Jane;``.
+
+   There is currently no way to represent an individual author's
+   organization or contact info in a reStructuredText "Authors" field.
+   However, you may use an "Author" field followed by
+   "Organization", "Address", and/or "Contact" for each author.
 
 The "Address" field is for a multi-line surface mailing address.
 Newlines and whitespace will be preserved.

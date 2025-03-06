@@ -687,14 +687,52 @@ This is the \emph{document}.
 \date{}
 """
   }],
-
 # template
 ["""\
 """,
  {'body': '',
   'requirements': '\\usepackage[T1]{fontenc}\n'
   }],
+# bibliographic fields
+["""
+:contact: here@home
+:organization: Example & Cie.
+:author:  Mr. Smith
+:date:    yesterday
+:address: 0231 Abendglanz
+          Milky Way 23 b
+""",
+ {'requirements': '\\usepackage[T1]{fontenc}\n'
+                  '\\usepackage{tabularx}\n',
+  'fallbacks': r"""
+% Provide a length variable and set default, if it is new
+\providecommand*{\DUprovidelength}[2]{%
+  \ifdefined#1
+  \else
+    \newlength{#1}\setlength{#1}{#2}%
+  \fi
+}
 
+% width of docinfo table
+\DUprovidelength{\DUdocinfowidth}{0.9\linewidth}
+""",
+  'pdfsetup': DEFAULT_PARTS['pdfsetup']
+  + '\\hypersetup{\n  pdfauthor={Mr. Smith}\n}\n',
+  'docinfo': r"""
+% Docinfo
+\begin{center}
+\begin{tabularx}{\DUdocinfowidth}{lX}
+\textbf{Contact}: & \href{mailto:here@home}{here@home} \\
+\textbf{Organization}: & Example \& Cie. \\
+\textbf{Author}: & Mr. Smith \\
+\textbf{Date}: & yesterday \\
+\textbf{Address}: & {\raggedright
+0231 Abendglanz\\
+Milky Way 23 b} \\
+\end{tabularx}
+\end{center}
+""",
+  }],
 ])
 
 samples['book'] = ({'documentclass': 'book'}, [
@@ -939,6 +977,59 @@ Paragraph 2.
 """,
   'requirements': '\\usepackage[T1]{fontenc}\n'
                   '\\setcounter{secnumdepth}{0}\n',
+  }],
+])
+
+samples['LaTeX docinfo'] = ({'use_latex_docinfo': True}, [
+# bibliographic fields
+["""
+:contact: here@home
+:organization: Example & Cie.
+:author:  Mr. Smith
+:date:    yesterday
+:address: 0231 Abendglanz
+          Milky Way 23 b
+""",
+ {'pdfsetup': DEFAULT_PARTS['pdfsetup']
+  + '\\hypersetup{\n  pdfauthor={Mr. Smith}\n}\n',
+  'titledata': r"""\title{}
+\author{Mr. Smith\\
+\href{mailto:here@home}{here@home}\\
+Example \& Cie.\\
+0231 Abendglanz\\
+Milky Way 23 b}
+\date{yesterday}
+""",
+  'body_pre_docinfo': '\\maketitle\n',
+  }],
+# bibliographic fields
+["""
+:keywords: custom, docinfo, field
+""",
+ {'requirements': '\\usepackage[T1]{fontenc}\n'
+                  '\\usepackage{tabularx}\n',
+  'fallbacks': r"""
+% Provide a length variable and set default, if it is new
+\providecommand*{\DUprovidelength}[2]{%
+  \ifdefined#1
+  \else
+    \newlength{#1}\setlength{#1}{#2}%
+  \fi
+}
+
+% width of docinfo table
+\DUprovidelength{\DUdocinfowidth}{0.9\linewidth}
+""",
+  'docinfo': r"""
+% Docinfo
+\begin{center}
+\begin{tabularx}{\DUdocinfowidth}{lX}
+\textbf{keywords}: &
+custom, docinfo, field
+\\
+\end{tabularx}
+\end{center}
+""",
   }],
 ])
 

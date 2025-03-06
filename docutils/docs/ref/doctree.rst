@@ -611,7 +611,7 @@ documents with multiple authors.
 Examples
 --------
 
-In reStructuredText, "authors" is one of the registered
+In reStructuredText, the `"authors" field`_ is one of the registered
 `bibliographic fields`_::
 
     Document Title
@@ -631,10 +631,8 @@ Complete pseudo-XML_ result after parsing and applying transforms_::
                 <author>
                     Jane Doe
 
-In reStructuredText, multiple author's names are separated with
-semicolons (";") or commas (","); semicolons take precedence.
-There is currently no way to represent the author's organization,
-address, or contact in a reStructuredText "Authors" field.
+There is currently no way to represent an individual author's <organization>,
+<address>, or <contact> in a reStructuredText `"authors" field`_.
 
 See `\<docinfo>`_ for a more complete example, including processing
 context.
@@ -5221,6 +5219,7 @@ Bibliography
 .. _auto-symbol:            rst/restructuredtext.html#auto-symbol-footnotes
 .. _bibliographic data:
 .. _bibliographic fields:   rst/restructuredtext.html#bibliographic-fields
+.. _"authors" field:        rst/restructuredtext.html#authors
 .. _block quote:            rst/restructuredtext.html#block-quotes
 .. _bullet list:            rst/restructuredtext.html#bullet-lists
 .. _CSS3 length units:      rst/restructuredtext.html#length-units
