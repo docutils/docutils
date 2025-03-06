@@ -130,7 +130,7 @@ hr {
 
 /* Lists */
 
-dl.field-list.narrow, dl.docinfo, dl.option-list {
+dl.field-list.narrow {
   --field-indent: 2.4em;
 }
 
@@ -377,6 +377,9 @@ table.align-right {
   }
   body {
     --field-indent: 4em;
+  }
+  dl.docinfo {
+    --field-indent: 5%;
   }
   pre, pre * {
   font-size: 0.9em;

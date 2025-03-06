@@ -69,10 +69,9 @@ span.problematic {
 /* Lists */
 
 /* compact and simple lists: no margin between items */
-.simple  li, .simple  ul, .simple  ol,
-.compact li, .compact ul, .compact ol,
-.simple  > li p, dl.simple  > dd,
-.compact > li p, dl.compact > dd {
+.simple  li, .simple  ul, .simple  ol, .simple  > li p,
+.compact li, .compact ul, .compact ol, .compact > li p,
+dl.simple  > dd, dl.compact > dd, dl.docinfo > dd {
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -141,7 +140,7 @@ dl.option-list > dd > *:first-child
 /* Bibliographic Fields (docinfo) */
 dl.docinfo pre.address {
   font: inherit;
-  margin: 0.5em 0;
+  margin: 0;
 }
 dl.docinfo > dd.authors > p { margin: 0; }
 
