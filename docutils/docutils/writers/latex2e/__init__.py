@@ -1962,10 +1962,14 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                       nodes.date, nodes.organization)):
             self.push_output_collector([])  # see depart_docinfo_item()
         else:
-            self.out.append('\\textbf{%s}: &\n\t'
-                            % self.language_label(node.tagname))
+            label = self.language_label(node.tagname)
+            self.out.append('\\textbf{%s}: &' % label)
             if isinstance(node, nodes.address):
-                self.out.append('{\\raggedright\n')
+                self.out.append(' {\\raggedright\n')
+            elif len(label) + len(node.astext()) > 64:
+                self.out.append('\n  ')
+            else:
+                self.out.append(' ')
 
     def depart_docinfo_item(self, node) -> None:
         self.insert_newline = False  # reset change with <address> node
@@ -1985,7 +1989,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                 self.author_stack[-1].append(text)
         else:
             if isinstance(node, nodes.address):
-                self.out.append(' }')
+                self.out.append('}')
             self.out.append(' \\\\\n')
 
     def visit_doctest_block(self, node) -> None:
