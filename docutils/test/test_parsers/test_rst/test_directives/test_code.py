@@ -25,10 +25,16 @@ from docutils.utils.code_analyzer import with_pygments
 
 if with_pygments:
     import pygments
-    _pv = re.match(r'^([0-9]+)\.([0-9]*)', pygments.__version__)
-    PYGMENTS_2_14_PLUS = (int(_pv[1]), int(_pv[2])) >= (2, 14)
+
+    pygments_version = tuple(map(int, pygments.__version__.split('.')[:2]))
 else:
-    PYGMENTS_2_14_PLUS = None
+    pygments_version = (0, 0)
+
+PYGMENTS_2_14_PLUS = pygments_version >= (2, 14)
+if pygments_version >= (2, 19):
+    def_ws = '<inline classes="whitespace">\n             '
+else:
+    def_ws = ' '
 
 
 class ParserTestCase(unittest.TestCase):
@@ -159,14 +165,14 @@ totest['code_parsing'] = [
       # and now for something completely different
       print(8/2)
 """,
-"""\
+f"""\
 <document source="test data">
     <literal_block classes="code python3 testclass" ids="my-function" names="my_function" xml:space="preserve">
         <inline classes="ln">
              7 \n\
         <inline classes="keyword">
             def
-         \n\
+        {def_ws}
         <inline classes="name function">
             my_function
         <inline classes="punctuation">

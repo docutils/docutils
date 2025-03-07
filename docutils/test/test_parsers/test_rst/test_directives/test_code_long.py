@@ -22,8 +22,7 @@ from docutils.parsers.rst import Parser
 from docutils.utils import new_document
 from docutils.utils.code_analyzer import with_pygments
 from test.test_parsers.test_rst.test_directives.test_code \
-    import PYGMENTS_2_14_PLUS
-
+    import PYGMENTS_2_14_PLUS, def_ws
 
 @unittest.skipUnless(with_pygments, 'needs Pygments')
 class ParserTestCase(unittest.TestCase):
@@ -55,14 +54,14 @@ totest['code_parsing_long'] = [
       # and now for something completely different
       print(8/2)
 """,
-"""\
+f"""\
 <document source="test data">
     <literal_block classes="code python3" xml:space="preserve">
         <inline classes="ln">
              7 \n\
         <inline classes="keyword">
             def
-         \n\
+        {def_ws}
         <inline classes="name function">
             my_function
         <inline classes="punctuation">

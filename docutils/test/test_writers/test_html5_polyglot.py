@@ -11,7 +11,6 @@ This is the document body (not HTML <body>).
 """
 
 from pathlib import Path
-import re
 import sys
 import unittest
 
@@ -28,8 +27,7 @@ from docutils.writers import html5_polyglot
 
 if with_pygments:
     import pygments
-    _pv = re.match(r'^([0-9]+)\.([0-9]*)', pygments.__version__)
-    if (int(_pv[1]), int(_pv[2])) >= (2, 14):
+    if tuple(map(int, pygments.__version__.split('.')[:2])) >= (2, 14):
         # pygments output changed in version 2.14
         with_pygments = False
 
