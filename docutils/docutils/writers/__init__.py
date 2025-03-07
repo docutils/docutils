@@ -210,7 +210,7 @@ if sys.version_info[:2] < (3, 13):
 
     # subclassing from Path must consider the OS flavour
     # https://stackoverflow.com/questions/29850801/subclass-pathlib-path-fails
-    class Path(type(pathlib.Path())):  # noqa F811 (redefinition of 'Path')
+    class Path(type(pathlib.Path())):  # noqa: F811 (redefinition of 'Path')
         """`pathlib.Path` with `from_uri()` classmethod backported from 3.13.
         """
 
