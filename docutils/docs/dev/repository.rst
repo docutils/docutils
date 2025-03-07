@@ -147,7 +147,7 @@ We'll assume that the Docutils "trunk" is checked out under the
 
    __ https://pip.pypa.io/en/stable/topics/local-project-installs/
       #editable-installs
-      
+
    .. _manual install:
 
 2. Install "manually".

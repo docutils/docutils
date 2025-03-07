@@ -24,7 +24,7 @@ with the "fullwidth" class argument use full text width.
 
 
 .. table:: A fullwidth table with LaTeX math commands
-  :class: numbered colwidths-auto fullwidth 
+  :class: numbered colwidths-auto fullwidth
 
   ========= ===========  ========= ===========  ============= ================
   `\arccos` ``\arccos``  `\gcd`    ``\gcd``     `\Pr`         ``\Pr``

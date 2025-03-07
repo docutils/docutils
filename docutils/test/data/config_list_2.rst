@@ -3,9 +3,9 @@ expose_internals: f
 strip-classes: ham,  eggs
 strip-elements-with-classes: eggs,salt
 # `stylesheet` overrides earlier `stylesheet` and `stylesheet_path` settings
-stylesheet: style2.css, 
+stylesheet: style2.css,
             style3.css
-smartquotes-locales: nl: „”’’, 
+smartquotes-locales: nl: „”’’,
                      cs: »«›‹
 
 [html4css1 writer]

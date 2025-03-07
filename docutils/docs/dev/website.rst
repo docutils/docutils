@@ -61,7 +61,7 @@ Maintainer
    once to create the directories in the filesystem before preparing for
    HTML processing.
 
-#. Any .html document with a corresponding .rst/.txt file is regenerated 
+#. Any .html document with a corresponding .rst/.txt file is regenerated
    if the .rst/.txt has changed, but no new .html files will be generated.
 
    Therefore *touch* the .html-file and then the .rst/.txt.
