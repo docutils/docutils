@@ -9,7 +9,6 @@ Test the 'code' directive in parsers/rst/directives/body.py.
 """
 
 from pathlib import Path
-import re
 import sys
 import unittest
 

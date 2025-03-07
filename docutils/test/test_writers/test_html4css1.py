@@ -26,6 +26,7 @@ from docutils.writers import html4css1
 
 if with_pygments:
     import pygments
+
     if tuple(map(int, pygments.__version__.split('.')[:2])) >= (2, 14):
         # pygments output changed in version 2.14
         with_pygments = False

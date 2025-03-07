@@ -24,6 +24,7 @@ from docutils.utils.code_analyzer import with_pygments
 from test.test_parsers.test_rst.test_directives.test_code \
     import PYGMENTS_2_14_PLUS, def_ws
 
+
 @unittest.skipUnless(with_pygments, 'needs Pygments')
 class ParserTestCase(unittest.TestCase):
     def test_parser(self):
