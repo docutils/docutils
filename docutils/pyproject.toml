@@ -30,14 +30,16 @@ requires-python = ">=3.9"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Environment :: Console",
-    "Intended Audience :: End Users/Desktop",
-    "Intended Audience :: Other Audience",
     "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Other Audience",
     "Intended Audience :: System Administrators",
     "License :: Public Domain",
     "License :: OSI Approved :: BSD License",
     "License :: OSI Approved :: GNU General Public License (GPL)",
     "Operating System :: OS Independent",
+    "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.9",
@@ -47,8 +49,18 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Topic :: Documentation",
+    "Topic :: Software Development",
     "Topic :: Software Development :: Documentation",
+    "Topic :: Text Editors :: Documentation",
     "Topic :: Text Processing",
+    "Topic :: Text Processing :: General",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Topic :: Text Processing :: Markup :: LaTeX",
+    "Topic :: Text Processing :: Markup :: Markdown",
+    "Topic :: Text Processing :: Markup :: reStructuredText",
+    "Topic :: Text Processing :: Markup :: XML",
+    "Topic :: Utilities",
     "Natural Language :: English",  # main/default language, keep first
     "Natural Language :: Afrikaans",
     "Natural Language :: Arabic",
@@ -106,8 +118,6 @@ rst2xml = "docutils.core:rst2xml"
 
 # Sdist (*.tar.gz) generation
 [tool.flit.sdist]
-
-# TODO: include generated HTML ?
 include = [
     "*.rst",
     "*.txt",
