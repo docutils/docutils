@@ -349,7 +349,7 @@ class HelperFunctionTests(unittest.TestCase):
     # samples for the (un)escaping tests:
     escaped = r'escapes: \*one, \\*two, \\\*three in\side no\ space' + '\\'
     nulled = ('escapes: \x00*one, \x00\\*two, \x00\\\x00*three'
-              + ' in\x00side no\x00 space\x00')
+              ' in\x00side no\x00 space\x00')
     unescaped = r'escapes: *one, \*two, \*three inside nospace'
 
     def test_escape2null(self):

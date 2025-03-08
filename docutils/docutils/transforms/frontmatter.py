@@ -466,10 +466,14 @@ class DocInfo(Transform):
         return False
 
     rcs_keyword_substitutions = [
-          (re.compile(r'\$' r'Date: (\d\d\d\d)[-/](\d\d)[-/](\d\d)[ T][\d:]+'
-                      r'[^$]* \$', re.IGNORECASE), r'\1-\2-\3'),
-          (re.compile(r'\$' r'RCSfile: (.+),v \$', re.IGNORECASE), r'\1'),
-          (re.compile(r'\$[a-zA-Z]+: (.+) \$'), r'\1')]
+        (re.compile(
+            r'\$' r'Date: (\d\d\d\d)[-/](\d\d)[-/](\d\d)[ T][\d:]+'  # NoQA: ISC001
+            r'[^$]* \$', re.IGNORECASE), r'\1-\2-\3'),
+        (re.compile(
+            r'\$' r'RCSfile: (.+),v \$',  # NoQA: ISC001
+            re.IGNORECASE), r'\1'),
+        (re.compile(r'\$[a-zA-Z]+: (.+) \$'), r'\1'),
+    ]
 
     def extract_authors(self, field, name, docinfo):
         try:

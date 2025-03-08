@@ -98,7 +98,7 @@ roles = {
     'kājenes-atsauce': 'footnote-reference',
     'citātā-atsauce': 'citation-reference',
     'aizvietojuma-atsauce': 'substitution-reference',
-    'mēr''kis': 'target',
+    'mērkis': 'target',
     'atsauce-uz-uri': 'uri-reference',
     'uri': 'uri-reference',
     'url': 'uri-reference',
