@@ -17,7 +17,12 @@ into useful formats, such as HTML, XML, and LaTeX.  For
 input Docutils supports reStructuredText, an easy-to-read,
 what-you-see-is-what-you-get plaintext markup syntax."""  # wrap at col 60
 readme.content-type = "text/plain"
+urls.Changelog = "https://docutils.sourceforge.io/HISTORY.html"
+urls.Code = "https://sourceforge.net/p/docutils/code/"
+urls.Documentation = "https://docutils.sourceforge.io/docs/"
+urls.Download = "https://pypi.org/project/docutils/"
 urls.Homepage = "https://docutils.sourceforge.io"
+urls."Issue tracker" = "https://sourceforge.net/p/docutils/bugs/"
 license.file = "COPYING.rst"
 requires-python = ">=3.9"
 
