@@ -2581,14 +2581,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         lexer = pygments.lexers.get_lexer_by_name(language, stripall=True)
         if language in ('latex', 'tex'):
             fmtr = OdtPygmentsLaTeXFormatter(
-                lambda name, parameters=():
-                self.rststyle(name, parameters),
-                escape_function=escape_cdata)
+                self.rststyle, escape_function=escape_cdata
+            )
         else:
             fmtr = OdtPygmentsProgFormatter(
-                lambda name, parameters=():
-                self.rststyle(name, parameters),
-                escape_function=escape_cdata)
+                self.rststyle, escape_function=escape_cdata
+            )
         return pygments.highlight(insource, lexer, fmtr)
 
     def fill_line(self, line):

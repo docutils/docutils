@@ -842,7 +842,7 @@ class BoundedDummy(Parser):
 
     def parse(self, reader):
         "Parse the contents of the container"
-        self.parseending(reader, lambda: reader.nextline())
+        self.parseending(reader, reader.nextline)
         # skip last line
         reader.nextline()
         return []
@@ -1354,7 +1354,7 @@ class Container:
     def searchall(self, type):
         "Search for all embedded containers of a given type"
         lst = []
-        self.searchprocess(type, lambda container: lst.append(container))
+        self.searchprocess(type, lst.append)
         return lst
 
     def searchremove(self, type):
