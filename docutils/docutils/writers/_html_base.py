@@ -495,11 +495,14 @@ class HTMLTranslator(writers.DoctreeTranslator):
         # Apply image node attributes:
         if 'style' in atts:
             # update style declarations
-            style_att = f"{svg.get('style', '')}; {atts['style']}"
-            style_att = [d.partition(':') for d in style_att.split(';')
-                         if d.strip()]
-            style_att = dict((k.strip(), v.strip()) for k, p, v in style_att)
-            style_att = ' '.join(f'{k}: {v};' for k, v in style_att.items())
+            clean_atts = {}
+            style_atts = [svg.get('style', '')] + atts['style'].split(';')
+            for att in style_atts:
+                if not att.strip():
+                    continue
+                key, _, value = att.partition(':')
+                clean_atts[key.strip()] = value.strip()
+            style_att = ' '.join(f'{k}: {v};' for k, v in clean_atts.items())
             svg.set('style', style_att)
         for dimension in ('width', 'height'):
             if dimension in atts:

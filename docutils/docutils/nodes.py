@@ -3195,7 +3195,7 @@ def validate_colwidth(measure: str|int|float) -> int|float:
         value = 1
     else:
         try:
-            value, unit = parse_measure(measure, unit_pattern='[*]?')
+            value, _unit = parse_measure(measure, unit_pattern='[*]?')
         except ValueError:
             value = -1
     if value <= 0:
