@@ -13,7 +13,7 @@ See https://docutils.sourceforge.io/docs/user/odt.html#page-size
 
 # Author: Michael Schutte <michi@uiae.at>
 
-from xml.etree import ElementTree as etree
+from xml.etree import ElementTree as ET
 
 import sys
 import zipfile
@@ -34,9 +34,9 @@ def prepstyle(filename) -> None:
 
     root = None
     # some extra effort to preserve namespace prefixes
-    for event, elem in etree.iterparse(styles, events=("start", "start-ns")):
+    for event, elem in ET.iterparse(styles, events=("start", "start-ns")):
         if event == "start-ns":
-            etree.register_namespace(elem[0], elem[1])
+            ET.register_namespace(elem[0], elem[1])
         elif event == "start":
             if root is None:
                 root = elem
@@ -55,7 +55,7 @@ def prepstyle(filename) -> None:
 
     for item in zin.infolist():
         if item.filename == "styles.xml":
-            zout.writestr(item, etree.tostring(root, encoding="UTF-8"))
+            zout.writestr(item, ET.tostring(root, encoding="UTF-8"))
         else:
             zout.writestr(item, zin.read(item.filename))
 

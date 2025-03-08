@@ -26,7 +26,7 @@ import tempfile
 import time
 import urllib
 import weakref
-from xml.etree import ElementTree as etree
+from xml.etree import ElementTree as ET
 from xml.dom import minidom
 import zipfile
 
@@ -65,10 +65,10 @@ IMAGE_NAME_COUNTER = itertools.count()
 #   that support for the ability to get the parent of an element.
 #
 _parents = weakref.WeakKeyDictionary()
-if isinstance(etree.Element, type):
-    _ElementInterface = etree.Element
+if isinstance(ET.Element, type):
+    _ElementInterface = ET.Element
 else:
-    _ElementInterface = etree._ElementInterface
+    _ElementInterface = ET._ElementInterface
 
 
 class _ElementInterfaceWrapper(_ElementInterface):
@@ -570,7 +570,7 @@ class Writer(writers.Writer):
         updated, new_dom_styles, updated_node = self.update_stylesheet(
             self.visitor.get_dom_stylesheet(), language_code, region_code)
         if updated:
-            s1 = etree.tostring(new_dom_styles)
+            s1 = ET.tostring(new_dom_styles)
         self.write_zip_str(zfile, 'styles.xml', s1)
         self.store_embedded_files(zfile)
         self.copy_from_stylesheet(zfile)
@@ -696,7 +696,7 @@ class Writer(writers.Writer):
             attrib=MANIFEST_NAMESPACE_ATTRIB,
             nsdict=MANIFEST_NAMESPACE_DICT,
         )
-        doc = etree.ElementTree(root)
+        doc = ET.ElementTree(root)
         SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': self.MIME_TYPE,
             'manifest:full-path': '/',
@@ -727,7 +727,7 @@ class Writer(writers.Writer):
             attrib=META_NAMESPACE_ATTRIB,
             nsdict=META_NAMESPACE_DICT,
         )
-        doc = etree.ElementTree(root)
+        doc = ET.ElementTree(root)
         root = SubElement(root, 'office:meta', nsdict=METNSD)
         el1 = SubElement(root, 'meta:generator', nsdict=METNSD)
         el1.text = 'Docutils/rst2odf.py/%s' % (VERSION, )
@@ -861,7 +861,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'office:document-content',
             attrib=CONTENT_NAMESPACE_ATTRIB,
         )
-        self.content_tree = etree.ElementTree(element=root)
+        self.content_tree = ET.ElementTree(element=root)
         self.current_element = root
         SubElement(root, 'office:scripts')
         SubElement(root, 'office:font-face-decls')
@@ -940,16 +940,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                                '.xml file' % (stylespath, extension))
         self.str_stylesheet = s1
         self.str_stylesheetcontent = s2
-        self.dom_stylesheet = etree.fromstring(self.str_stylesheet)
+        self.dom_stylesheet = ET.fromstring(self.str_stylesheet)
         if not s2:
             return
         # TODO: dom_stylesheetcontent is never used. Remove?
-        self.dom_stylesheetcontent = etree.fromstring(
+        self.dom_stylesheetcontent = ET.fromstring(
             self.str_stylesheetcontent)
         self.table_styles = self.extract_table_styles(s2)
 
     def extract_table_styles(self, styles_str):
-        root = etree.fromstring(styles_str)
+        root = ET.fromstring(styles_str)
         table_styles = {}
         auto_styles = root.find(
             '{%s}automatic-styles' % (CNSD['office'], ))
@@ -1051,7 +1051,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             or self.settings.custom_header
             or self.settings.custom_footer):
             self.add_header_footer(self.dom_stylesheet)
-        return etree.tostring(self.dom_stylesheet)
+        return ET.tostring(self.dom_stylesheet)
 
     def get_dom_stylesheet(self):
         return self.dom_stylesheet
@@ -1434,7 +1434,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def astext(self):
         root = self.content_tree.getroot()
-        et = etree.ElementTree(root)
+        et = ET.ElementTree(root)
         return ToString(et)
 
     def content_astext(self):
@@ -2632,7 +2632,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         lines1.extend((my_lines_str2, '</wrappertag1>'))
         s1 = ''.join(lines1)
         s1 = s1.encode("utf-8")
-        el1 = etree.fromstring(s1)
+        el1 = ET.fromstring(s1)
         for child in el1:
             self.current_element.append(child)
 
@@ -2854,7 +2854,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     for k, v in list(CONTENT_NAMESPACE_ATTRIB.items()))
                 contentstr = '<stuff %s>%s</stuff>' % (attrstr, rawstr, )
                 contentstr = contentstr.encode("utf-8")
-                content = etree.fromstring(contentstr)
+                content = ET.fromstring(contentstr)
                 if len(content) > 0:
                     el1 = content[0]
                     if self.in_header:

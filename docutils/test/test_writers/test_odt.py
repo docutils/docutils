@@ -35,7 +35,7 @@ from pathlib import Path
 import os
 import sys
 import unittest
-import xml.etree.ElementTree as etree
+import xml.etree.ElementTree as ET
 import zipfile
 
 if __name__ == '__main__':
@@ -113,10 +113,10 @@ class DocutilsOdtTestCase(unittest.TestCase):
         payloadfile.seek(0)
         zfile = zipfile.ZipFile(payloadfile, 'r')
         content1 = zfile.read(filename)
-        doc = etree.fromstring(content1)
+        doc = ET.fromstring(content1)
         self.reorder_attributes(doc)
         # return doc.toprettyxml(indent='  ')
-        return etree.tostring(doc)
+        return ET.tostring(doc)
 
     #
     # Unit test methods
