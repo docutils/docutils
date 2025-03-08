@@ -109,6 +109,8 @@ class Babel(latex2e.Babel):
                 ):
         del language_codes[key.lower()]
 
+    warn_msg = 'Language "%s" not supported by LaTeX (polyglossia)'
+
     def __init__(self, language_code, reporter) -> None:
         self.language_code = language_code
         self.reporter = reporter
