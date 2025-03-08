@@ -62,16 +62,16 @@ The billion laughs attack for ReStructuredText:
 
 |a| |c| continuation text
 """,
-"""\
+f"""\
 <document source="test data">
     <paragraph>
         The billion laughs attack for ReStructuredText:
     <substitution_definition names="a">
         lol
     <substitution_definition names="b">
-{}
+{b}
     <substitution_definition names="c">
-{}
+{c}
     <comment xml:space="preserve">
         ...
     <paragraph>
@@ -83,7 +83,7 @@ The billion laughs attack for ReStructuredText:
     <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="9" source="test data" type="ERROR">
         <paragraph>
             Substitution definition "c" exceeds the line-length-limit.
-""".format(b, c)],
+"""],
 ])
 
 

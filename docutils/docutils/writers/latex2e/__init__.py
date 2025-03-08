@@ -2065,7 +2065,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         # \author
         # author name(s) and optional affiliation and contact info
         # cf. https://tex.stackexchange.com/a/377030/288060.
-        authors = ['\\\\\n'.join((field for field in author_entry if field))
+        authors = ['\\\\\n'.join(filter(None, author_entry))
                    for author_entry in self.author_stack]
         self.titledata.append(r'\author{%s}' % ' \\and\n'.join(authors))
         # \date

@@ -7,9 +7,9 @@ preview = true
 select = [
     "A",    # flake8-builtins
     "C4",   # flake8-comprehensions
+    "DTZ",  # flake8-datetimez
     "E",    # pycodestyle
     "EXE",  # flake8-executable
-    "DTZ",  # flake8-datetimez
     "F",    # pyflakes
     "FA",   # flake8-future-annotations
     "FURB", # refurb
@@ -27,6 +27,7 @@ select = [
     "T10",  # flake8-debugger
     "TCH",  # flake8-type-checking
     "TID",  # flake8-tidy-imports
+    "UP",   # pyupgrade
     "W",    # pycodestyle
     "YTT",  # flake8-2020
 ]
@@ -49,6 +50,8 @@ ignore = [
     "PT009",  # Use a regular assert instead of unittest-style
     "PT027",  # Use pytest.raises instead of unittest-style
     # We still use unittest.
+
+    "UP031",  # Use format specifiers instead of percent format
 ]
 
 [lint.per-file-ignores]
