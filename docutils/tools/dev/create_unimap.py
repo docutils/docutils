@@ -75,6 +75,6 @@ print('# <https://www.w3.org/2003/entities/xml/unicode.xml>, written by')
 print('# David Carlisle and Sebastian Rahtz.')
 print('#')
 print('# The extraction has been done by the "create_unimap.py" script')
-print('# located at <https://docutils.sourceforge.io/tools/dev/create_unimap.py>.')  # noqa:501
+print('# located at <https://docutils.sourceforge.io/tools/dev/create_unimap.py>.')  # noqa: E501
 print()
 print('unicode_map = %s' % pprint.pformat(unicode_map, indent=0))
