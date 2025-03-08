@@ -3,7 +3,7 @@
 # Use flit as a build backend (https://flit.pypa.io/)
 # Build with (https://build.pypa.io/)
 [build-system]
-requires = ["flit_core>=3.11.0,<4"]
+requires = ["flit_core>=3.11,<4"]
 build-backend = "flit_core.buildapi"
 
 # Project metadata
@@ -11,12 +11,7 @@ build-backend = "flit_core.buildapi"
 [project]
 name = "docutils"
 description = "Docutils -- Python Documentation Utilities"
-readme.text = """
-Docutils is a modular system for processing documentation
-into useful formats, such as HTML, XML, and LaTeX.  For
-input Docutils supports reStructuredText, an easy-to-read,
-what-you-see-is-what-you-get plaintext markup syntax."""  # wrap at col 60
-readme.content-type = "text/plain"
+readme = "README.rst"
 urls.Changelog = "https://docutils.sourceforge.io/HISTORY.html"
 urls.Code = "https://sourceforge.net/p/docutils/code/"
 urls.Documentation = "https://docutils.sourceforge.io/docs/"
