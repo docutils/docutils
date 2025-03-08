@@ -39,6 +39,10 @@ ignore = [
     # whitespace around the operators with the lowest priority(ies).
     # Use your own judgment; …"
 
+    "EXE001",  # shebang is present but file is not executable
+    "EXE002",  # the file is executable but no shebang is present
+    # SVN-Git conversions can drop the executable bit.
+
     "PERF203",  # ``try``-``except`` within a loop incurs performance overhead
     # Needs more thought.
 
