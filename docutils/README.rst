@@ -1,5 +1,3 @@
-.. include:: docs/header0.rst
-
 =============================
  README: Docutils 0.22b.dev
 =============================
