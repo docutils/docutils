@@ -2581,11 +2581,13 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
         Corresponding rST elements: literal block, parsed-literal, code.
         """
-        packages = {'lstlisting':  r'\usepackage{listings}' '\n'  # NoQA: ISC001
-                                   r'\lstset{xleftmargin=\leftmargin}',
-                    'listing': r'\usepackage{moreverb}',
-                    'Verbatim': r'\usepackage{fancyvrb}',
-                    'verbatimtab': r'\usepackage{moreverb}'}
+        packages = {
+            'lstlisting':  r'\usepackage{listings}' '\n'  # NoQA: ISC001
+                           r'\lstset{xleftmargin=\leftmargin}',
+            'listing': r'\usepackage{moreverb}',
+            'Verbatim': r'\usepackage{fancyvrb}',
+            'verbatimtab': r'\usepackage{moreverb}',
+        }
 
         literal_env = self.literal_block_env
 

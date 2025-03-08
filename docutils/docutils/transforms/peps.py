@@ -34,8 +34,10 @@ class Headers(Transform):
     pep_cvs_url = ('http://hg.python.org'
                    '/peps/file/default/pep-%04d.txt')
     rcs_keyword_substitutions = (
-          (re.compile(r'\$' r'RCSfile: (.+),v \$$', re.IGNORECASE), r'\1'),  # NoQA: ISC001
-          (re.compile(r'\$[a-zA-Z]+: (.+) \$$'), r'\1'),)
+        (re.compile(r'\$' r'RCSfile: (.+),v \$$',  # NoQA: ISC001
+                    re.IGNORECASE), r'\1'),
+        (re.compile(r'\$[a-zA-Z]+: (.+) \$$'), r'\1'),
+    )
 
     def apply(self):
         if not len(self.document):
