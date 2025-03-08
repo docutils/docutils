@@ -491,7 +491,7 @@ class Babel:
 # Building blocks for the latex preamble
 # --------------------------------------
 
-class SortableDict(dict):
+class SortableDict(dict):  # NoQA: FURB189
     """Dictionary with additional sorting methods
 
     Deprecated. Will be removed in Docutils 0.24.

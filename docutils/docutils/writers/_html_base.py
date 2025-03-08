@@ -496,8 +496,9 @@ class HTMLTranslator(writers.DoctreeTranslator):
         if 'style' in atts:
             # update style declarations
             clean_atts = {}
-            style_atts = [svg.get('style', '')] + atts['style'].split(';')
-            for att in style_atts:
+            svg_style = svg.get('style', '').split(';')
+            style_atts = atts['style'].split(';')
+            for att in svg_style + style_atts:
                 if not att.strip():
                     continue
                 key, _, value = att.partition(':')

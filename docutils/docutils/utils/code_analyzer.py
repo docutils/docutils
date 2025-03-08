@@ -84,8 +84,7 @@ class Lexer:
             else:
                 yield lasttype, lastval
                 (lasttype, lastval) = (ttype, value)
-        if lastval.endswith('\n'):
-            lastval = lastval[:-1]
+        lastval = lastval.removesuffix('\n')
         if lastval:
             yield lasttype, lastval
 
