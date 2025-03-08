@@ -3,7 +3,7 @@
 # Use flit as a build backend (https://flit.pypa.io/)
 # Build with (https://build.pypa.io/)
 [build-system]
-requires = ["flit_core>=3.4,<4"]
+requires = ["flit_core>=3.11.0,<4"]
 build-backend = "flit_core.buildapi"
 
 # Project metadata
@@ -23,7 +23,11 @@ urls.Documentation = "https://docutils.sourceforge.io/docs/"
 urls.Download = "https://pypi.org/project/docutils/"
 urls.Homepage = "https://docutils.sourceforge.io"
 urls."Issue tracker" = "https://sourceforge.net/p/docutils/bugs/"
-license.file = "COPYING.rst"
+license-files = [
+    "COPYING.rst",
+    "licenses/*.rst",
+    "licenses/*.txt",
+]
 requires-python = ">=3.9"
 
 # Classifiers list: https://pypi.org/classifiers/
