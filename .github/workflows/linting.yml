@@ -33,7 +33,7 @@ jobs:
         version: latest
         enable-cache: false
     - name: Install Ruff
-      run: uv pip install "ruff==0.5.5"
+      run: uv pip install "ruff==0.9.10"
     - name: Lint with Ruff
       run: ruff check docutils --output-format github
 
