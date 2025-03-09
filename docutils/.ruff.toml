@@ -28,7 +28,7 @@ select = [
     "RSE",  # flake8-raise
     "SLOT", # flake8-slots
     "T10",  # flake8-debugger
-    "TCH",  # flake8-type-checking
+    "TC",   # flake8-type-checking
     "TID",  # flake8-tidy-imports
     "UP",   # pyupgrade
     "W",    # pycodestyle
@@ -194,3 +194,7 @@ builtins-ignorelist = [
     "format",
     "id",
 ]
+
+[lint.flake8-type-checking]
+exempt-modules = []
+strict = true
