@@ -99,7 +99,7 @@ Powered by |Python|_.
     https://docutils.sourceforge.io/docs/index.html
 .. _Docutils' Subversion repository:
     https://docutils.sourceforge.io/docs/dev/repository.html
-.. _requirement: https://docutils.sourceforge.io/README.html#requirements
+.. _requirement: https://docutils.sourceforge.io/README.html#dependencies
 .. _release packages: https://pypi.org/project/docutils/#files
 .. _PyPI: https://pypi.org
 .. _release notes: https://docutils.sourceforge.io/RELEASE-NOTES.html

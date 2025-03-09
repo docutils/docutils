@@ -495,16 +495,16 @@ class HTMLTranslator(writers.DoctreeTranslator):
         # Apply image node attributes:
         if 'style' in atts:
             # update style declarations
-            clean_atts = {}
-            svg_style = svg.get('style', '').split(';')
-            style_atts = atts['style'].split(';')
-            for att in svg_style + style_atts:
-                if not att.strip():
+            declaration_dict = {}
+            svg_declarations = svg.get('style', '').split(';')
+            node_declarations = atts['style'].split(';')
+            for declaration in svg_declarations + node_declarations:
+                if not declaration.strip():
                     continue
-                key, _, value = att.partition(':')
-                clean_atts[key.strip()] = value.strip()
-            style_att = ' '.join(f'{k}: {v};' for k, v in clean_atts.items())
-            svg.set('style', style_att)
+                key, _, value = declaration.partition(':')
+                declaration_dict[key.strip()] = value.strip()
+            svg.set('style', ' '.join(f'{k}: {v};'
+                                      for k, v in declaration_dict.items()))
         for dimension in ('width', 'height'):
             if dimension in atts:
                 svg.set(dimension, atts[dimension])
