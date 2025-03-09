@@ -25,6 +25,7 @@ if TYPE_CHECKING:
     _T = TypeVar('_T')
 else:
 
+    # Runtime replacement for ``typing.final``.
     def final(f: _T) -> _T:
         return f
 
