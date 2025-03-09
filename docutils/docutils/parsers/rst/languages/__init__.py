@@ -14,20 +14,20 @@ from __future__ import annotations
 
 __docformat__ = 'reStructuredText'
 
-from typing import overload
-
 from docutils.languages import LanguageImporter
 
 TYPE_CHECKING = False
 if TYPE_CHECKING:
     import types
-    from typing import NoReturn, Protocol
+    from typing import NoReturn, Protocol, overload
 
     class RSTLanguageModule(Protocol):
         __name__: str
 
         directives: dict[str, str]
         roles: dict[str, str]
+else:
+    from docutils.utils._typing import overload
 
 
 class RstLanguageImporter(LanguageImporter):

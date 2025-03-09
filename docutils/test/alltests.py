@@ -33,7 +33,7 @@ if TYPE_CHECKING:
     from typing import TextIO
     from unittest.case import TestCase
 
-    from typing_extensions import TypeAlias
+    from docutils.utils._typing import TypeAlias
 
     ErrorTriple: TypeAlias = tuple[
         type[BaseException],

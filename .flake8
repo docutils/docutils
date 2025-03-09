@@ -27,6 +27,10 @@ ignore =
   # whitespace around the operators with the lowest priority(ies).
   # Use your own judgment; …"
 
+  F811,
+  # F811: "redefinition of unused '…' from line …"
+  # flake8 does not recognise ``@overload`` from any name other than 'typing'.
+
   W503,
   # W503: "line break before binary operator"
   # this is the recommended style (changed on April 16th, 2016)

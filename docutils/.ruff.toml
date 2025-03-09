@@ -4,6 +4,8 @@ output-format = "full"
 
 [lint]
 preview = true
+typing-modules = ["docutils.utils._typing"]
+
 select = [
     "A",    # flake8-builtins
     "C4",   # flake8-comprehensions
