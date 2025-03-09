@@ -11,17 +11,22 @@
 from __future__ import annotations
 
 import sys
-from typing import TYPE_CHECKING, final
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
-    from typing import Final, Self
+    from typing import Final, final
 
-__all__ = (
-    'MIN',
+    from docutils.utils._typing import Self
+else:
+    from docutils.utils._typing import final
+
+
+__all__: Final = (
     'MAX',
-    'RomanNumeral',
-    'OutOfRangeError',
+    'MIN',
     'InvalidRomanNumeralError',
+    'OutOfRangeError',
+    'RomanNumeral',
 )
 
 MIN: Final = 1
@@ -35,14 +40,16 @@ MAX: Final = 4_999
 """The value of the largest well-formed roman numeral."""
 
 
+@final
 class OutOfRangeError(TypeError):
     """Number out of range (must be between 1 and 4,999)."""
 
 
+@final
 class InvalidRomanNumeralError(ValueError):
     """Not a valid Roman numeral."""
 
-    def __init__(self, value, *args):
+    def __init__(self, value: str, *args: object) -> None:
         msg = f'Invalid Roman numeral: {value}'
         super().__init__(msg, *args)
 
@@ -58,53 +65,63 @@ class RomanNumeral:
     >>> print(answer.to_uppercase())
     XLII
     """
+
     __slots__ = ('_value',)
     _value: int
 
     def __init__(self, value: int, /) -> None:
         if not isinstance(value, int):
-            msg = 'RomanNumeral: an integer is required, not %r'
-            raise TypeError(msg % type(value).__qualname__)
+            value_qualname = type(value).__qualname__
+            msg = f'RomanNumeral: an integer is required, not {value_qualname!r}'  # NoQA: E501
+            raise TypeError(msg)
         if value < MIN or value > MAX:
-            msg = 'Number out of range (must be between 1 and 4,999). Got %s.'
-            raise OutOfRangeError(msg % value)
+            msg = f'Number out of range (must be between 1 and 4,999). Got {value}.'  # NoQA: E501
+            raise OutOfRangeError(msg)
         super().__setattr__('_value', value)
 
     def __int__(self) -> int:
+        """Return the integer value of this numeral."""
         return self._value
 
     def __str__(self) -> str:
+        """Return the well-formed (uppercase) string for this numeral."""
         return self.to_uppercase()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Return the string representation of this numeral."""
         return f'{self.__class__.__name__}({self._value!r})'
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        """Return self == other."""
         if isinstance(other, RomanNumeral):
             return self._value == other._value
         return NotImplemented
 
-    def __lt__(self, other):
+    def __lt__(self, other: object) -> bool:
+        """Return self < other."""
         if isinstance(other, RomanNumeral):
             return self._value < other._value
         return NotImplemented
 
-    def __hash__(self):
+    def __hash__(self) -> int:
+        """Return the hashed value of this numeral."""
         return hash(self._value)
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key: str, value: object) -> None:
+        """Implement setattr(self, name, value)."""
         if key == '_value':
-            raise AttributeError('Cannot set the value attribute.')
+            msg = f'Cannot set the {key!r} attribute.'
+            raise AttributeError(msg)
         super().__setattr__(key, value)
 
     def to_uppercase(self) -> str:
-        """Converts a ``RomanNumeral`` to an uppercase string.
+        """Convert a ``RomanNumeral`` to an uppercase string.
 
         >>> answer = RomanNumeral(42)
         >>> assert answer.to_uppercase() == 'XLII'
         """
-        out = []
-        n = int(self)
+        out: list[str] = []
+        n = self._value
         for value, name, _ in _ROMAN_NUMERAL_PREFIXES:
             while n >= value:
                 n -= value
@@ -112,13 +129,13 @@ class RomanNumeral:
         return ''.join(out)
 
     def to_lowercase(self) -> str:
-        """Converts a ``RomanNumeral`` to a lowercase string.
+        """Convert a ``RomanNumeral`` to a lowercase string.
 
         >>> answer = RomanNumeral(42)
         >>> assert answer.to_lowercase() == 'xlii'
         """
-        out = []
-        n = int(self)
+        out: list[str] = []
+        n = self._value
         for value, _, name in _ROMAN_NUMERAL_PREFIXES:
             while n >= value:
                 n -= value
@@ -126,8 +143,8 @@ class RomanNumeral:
         return ''.join(out)
 
     @classmethod
-    def from_string(self, string: str, /) -> Self:
-        """Creates a ``RomanNumeral`` from a well-formed string representation.
+    def from_string(cls, string: str, /) -> Self:
+        """Create a ``RomanNumeral`` from a well-formed string representation.
 
         Returns ``RomanNumeral`` or raises ``InvalidRomanNumeralError``.
 
@@ -162,7 +179,7 @@ class RomanNumeral:
             else:
                 break
         if len(chars) == idx:
-            return RomanNumeral(result)
+            return cls(result)
 
         # Hundreds: 900 ("CM"), 400 ("CD"), 0-300 (0 to 3 "C" chars),
         # or 500-800 ("D", followed by 0 to 3 "C" chars)
@@ -183,7 +200,7 @@ class RomanNumeral:
                 else:
                     break
         if len(chars) == idx:
-            return RomanNumeral(result)
+            return cls(result)
 
         # Tens: 90 ("XC"), 40 ("XL"), 0-30 (0 to 3 "X" chars),
         # or 50-80 ("L", followed by 0 to 3 "X" chars)
@@ -204,7 +221,7 @@ class RomanNumeral:
                 else:
                     break
         if len(chars) == idx:
-            return RomanNumeral(result)
+            return cls(result)
 
         # Ones: 9 ("IX"), 4 ("IV"), 0-3 (0 to 3 "I" chars),
         # or 5-8 ("V", followed by 0 to 3 "I" chars)
@@ -225,7 +242,7 @@ class RomanNumeral:
                 else:
                     break
         if len(chars) == idx:
-            return RomanNumeral(result)
+            return cls(result)
         raise InvalidRomanNumeralError(string)
 
 
