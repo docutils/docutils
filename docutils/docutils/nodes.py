@@ -30,7 +30,7 @@ import sys
 import unicodedata
 import warnings
 from collections import Counter
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING
 # import xml.dom.minidom as dom # -> conditional import in Node.asdom()
 #                                    and document.asdom()
 
@@ -74,8 +74,8 @@ class Node:
     parent: Element | None = None
     """Back-reference to the Node immediately containing this Node."""
 
-    children: Sequence[Node] = ()
-    """Sequence of child nodes.
+    children: Sequence  # defined in subclasses
+    """List of child nodes (Elements or Text).
 
     Override in subclass instances that are not terminal nodes.
     """
@@ -125,14 +125,6 @@ class Node:
         domroot = dom.Document()
         return self._dom_node(domroot)
 
-    def _dom_node(self, domroot: minidom.Document) -> minidom.Text:
-        # Stub. Override in subclasses.
-        return domroot.createElement(self.__class__.__name__)
-
-    def shortrepr(self) -> str:
-        # concise string representation for test and debugging purposes
-        return repr(self)
-
     def pformat(self, indent: str = '    ', level: int = 0) -> str:
         """
         Return an indented pseudo-XML representation, for test purposes.
@@ -153,7 +145,7 @@ class Node:
         """Return a string representation of this Node."""
         raise NotImplementedError
 
-    def setup_child(self, child: Node) -> None:
+    def setup_child(self, child) -> None:
         child.parent = self
         if self.document:
             child.document = self.document
@@ -251,14 +243,14 @@ class Node:
             visitor.dispatch_departure(self)
         return stop
 
-    def _fast_findall(self, cls: type) -> Iterator[Node]:
+    def _fast_findall(self, cls: type) -> Iterator:
         """Return iterator that only supports instance checks."""
         if isinstance(self, cls):
             yield self
         for child in self.children:
             yield from child._fast_findall(cls)
 
-    def _superfast_findall(self) -> Iterator[Node]:
+    def _superfast_findall(self) -> Iterator:
         """Return iterator that doesn't check for a condition."""
         # This is different from ``iter(self)`` implemented via
         # __getitem__() and __len__() in the Element subclass,
@@ -268,12 +260,12 @@ class Node:
             yield from child._superfast_findall()
 
     def findall(self,
-                condition: Callable[[Node], bool] | type | None = None,
+                condition: type | Callable[[Node], bool] | None = None,
                 include_self: bool = True,
                 descend: bool = True,
                 siblings: bool = False,
                 ascend: bool = False,
-                ) -> Iterator[Node]:
+                ) -> Iterator:
         """
         Return an iterator yielding nodes following `self`:
 
@@ -356,12 +348,12 @@ class Node:
                     node = node.parent
 
     def traverse(self,
-                 condition: Callable[[Node], bool] | type | None = None,
+                 condition: type | Callable[[Node], bool] | None = None,
                  include_self: bool = True,
                  descend: bool = True,
                  siblings: bool = False,
                  ascend: bool = False,
-                 ) -> list[Node]:
+                 ) -> list:
         """Return list of nodes following `self`.
 
         For looping, Node.findall() is faster and more memory efficient.
@@ -373,7 +365,7 @@ class Node:
                                  siblings, ascend))
 
     def next_node(self,
-                  condition: Callable[[Node], bool] | type | None = None,
+                  condition: type | Callable[[Node], bool] | None = None,
                   include_self: bool = False,
                   descend: bool = True,
                   siblings: bool = False,
@@ -587,7 +579,7 @@ class Element(Node):
 
     def __init__(self,
                  rawsource: str = '',
-                 *children: Node,
+                 *children,
                  **attributes: Any,
                  ) -> None:
         self.rawsource = rawsource
@@ -600,7 +592,7 @@ class Element(Node):
         if isinstance(rawsource, Element):
             raise TypeError('First argument "rawsource" must be a string.')
 
-        self.children: list[Node] = []
+        self.children: list = []
         """List of child nodes (elements and/or `Text`)."""
 
         self.extend(children)           # maintain parent info
@@ -690,27 +682,13 @@ class Element(Node):
     def __len__(self) -> int:
         return len(self.children)
 
-    def __contains__(self, key: str | Node) -> bool:
+    def __contains__(self, key) -> bool:
         # Test for both, children and attributes with operator ``in``.
         if isinstance(key, str):
             return key in self.attributes
         return key in self.children
 
-    @overload
-    def __getitem__(self, key: str) -> Any:
-        ...
-
-    @overload
-    def __getitem__(self, key: int) -> Node:
-        ...
-
-    @overload
-    def __getitem__(self, key: slice) -> list[Node]:
-        ...
-
-    def __getitem__(self,
-                    key: str | int | slice,
-                    ) -> Node | list[Node] | Any:
+    def __getitem__(self, key: str | int | slice) -> Any:
         if isinstance(key, str):
             return self.attributes[key]
         elif isinstance(key, int):
@@ -721,18 +699,6 @@ class Element(Node):
         else:
             raise TypeError('element index must be an integer, a slice, or '
                             'an attribute name string')
-
-    @overload
-    def __setitem__(self, key: str, item: Any) -> None:
-        ...
-
-    @overload
-    def __setitem__(self, key: int, item: Node) -> None:
-        ...
-
-    @overload
-    def __setitem__(self, key: slice, item: Iterable[Node]) -> None:
-        ...
 
     def __setitem__(self, key, item) -> None:
         if isinstance(key, str):
@@ -761,13 +727,13 @@ class Element(Node):
             raise TypeError('element index must be an integer, a simple '
                             'slice, or an attribute name string')
 
-    def __add__(self, other: list[Node]) -> list[Node]:
+    def __add__(self, other: list) -> list:
         return self.children + other
 
-    def __radd__(self, other: list[Node]) -> list[Node]:
+    def __radd__(self, other: list) -> list:
         return other + self.children
 
-    def __iadd__(self, other: Node | Iterable[Node]) -> Self:
+    def __iadd__(self, other) -> Self:
         """Append a node or a list of nodes to `self.children`."""
         if isinstance(other, Node):
             self.append(other)
@@ -817,38 +783,35 @@ class Element(Node):
         except AttributeError:
             return fallback
 
-    def append(self, item: Node) -> None:
+    def append(self, item) -> None:
         self.setup_child(item)
         self.children.append(item)
 
-    def extend(self, item: Iterable[Node]) -> None:
+    def extend(self, item: Iterable) -> None:
         for node in item:
             self.append(node)
 
-    def insert(self,
-               index: SupportsIndex,
-               item: Node | Iterable[Node],
-               ) -> None:
+    def insert(self, index: SupportsIndex, item) -> None:
         if isinstance(item, Node):
             self.setup_child(item)
             self.children.insert(index, item)
         elif item is not None:
             self[index:index] = item
 
-    def pop(self, i: int = -1) -> Node:
+    def pop(self, i: int = -1):
         return self.children.pop(i)
 
-    def remove(self, item: Node) -> None:
+    def remove(self, item) -> None:
         self.children.remove(item)
 
     def index(self,
-              item: Node,
+              item,
               start: int = 0,
               stop: int = sys.maxsize,
               ) -> int:
         return self.children.index(item, start, stop)
 
-    def previous_sibling(self) -> Node | None:
+    def previous_sibling(self):
         """Return preceding sibling node or ``None``."""
         try:
             i = self.parent.index(self)
@@ -1113,7 +1076,7 @@ class Element(Node):
     def clear(self) -> None:
         self.children = []
 
-    def replace(self, old: Node, new: Node | Iterable[Node]) -> None:
+    def replace(self, old, new) -> None:
         """Replace one child `Node` with another child or children."""
         index = self.index(old)
         if isinstance(new, Node):
@@ -1122,7 +1085,7 @@ class Element(Node):
         elif new is not None:
             self[index:index+1] = new
 
-    def replace_self(self, new: Node | Sequence[Node]) -> None:
+    def replace_self(self, new) -> None:
         """
         Replace `self` node with `new`, where `new` is a node or a
         list of nodes.
@@ -1281,8 +1244,8 @@ class Element(Node):
 
     def validate_content(self,
                          model: _ContentModelTuple | None = None,
-                         elements: Sequence[Node] | None = None,
-                         ) -> list[Node]:
+                         elements: Sequence | None = None,
+                         ) -> list:
         """Test compliance of `elements` with `model`.
 
         :model: content model description, default `self.content_model`,
@@ -1325,7 +1288,7 @@ class Element(Node):
         return [] if child is None else [child, *ichildren]
 
     def _report_child(self,
-                      child: Node | None,
+                      child,
                       category: Element | Iterable[Element],
                       ) -> str:
         # Return a str reporting a missing child or child of wrong category.
@@ -1525,7 +1488,7 @@ class TextElement(Element):
     def __init__(self,
                  rawsource: str = '',
                  text: str = '',
-                 *children: Node,
+                 *children,
                  **attributes: Any,
                  ) -> None:
         if text:
@@ -1544,7 +1507,7 @@ class FixedTextElement(TextElement):
     def __init__(self,
                  rawsource: str = '',
                  text: str = '',
-                 *children: Node,
+                 *children,
                  **attributes: Any,
                  ) -> None:
         super().__init__(rawsource, text, *children, **attributes)
@@ -1728,7 +1691,7 @@ class document(Root, Element):
     def __init__(self,
                  settings: Values,
                  reporter: Reporter,
-                 *args: Node,
+                 *args,
                  **kwargs: Any,
                  ) -> None:
         Element.__init__(self, *args, **kwargs)
@@ -2132,8 +2095,8 @@ class authors(Bibliographic, Element):
 
     def validate_content(self,
                          model: _ContentModelTuple | None = None,
-                         elements: Sequence[Node] | None = None,
-                         ) -> list[Node]:
+                         elements: Sequence | None = None,
+                         ) -> list:
         """Repeatedly test for children matching the content model.
 
         Provisional.
@@ -2485,7 +2448,7 @@ class system_message(Special, BackLinkable, PreBibliographic, Element):
 
     def __init__(self,
                  message: str | None = None,
-                 *children: Node,
+                 *children,
                  **attributes: Any,
                  ) -> None:
         rawsource = attributes.pop('rawsource', '')
@@ -2537,7 +2500,7 @@ class pending(Invisible, Element):
                  transform: Transform,
                  details: Mapping[str, Any] | None = None,
                  rawsource: str = '',
-                 *children: Node,
+                 *children,
                  **attributes: Any,
                  ) -> None:
         Element.__init__(self, rawsource, *children, **attributes)
@@ -2710,7 +2673,7 @@ class NodeVisitor:
     def __init__(self, document: document, /) -> None:
         self.document: document = document
 
-    def dispatch_visit(self, node: Node) -> None:
+    def dispatch_visit(self, node) -> None:
         """
         Call self."``visit_`` + node class name" with `node` as
         parameter.  If the ``visit_...`` method does not exist, call
@@ -2723,7 +2686,7 @@ class NodeVisitor:
             % (method.__name__, node_name))
         return method(node)
 
-    def dispatch_departure(self, node: Node) -> None:
+    def dispatch_departure(self, node) -> None:
         """
         Call self."``depart_`` + node class name" with `node` as
         parameter.  If the ``depart_...`` method does not exist, call
@@ -2736,7 +2699,7 @@ class NodeVisitor:
             % (method.__name__, node_name))
         return method(node)
 
-    def unknown_visit(self, node: Node) -> None:
+    def unknown_visit(self, node) -> None:
         """
         Called when entering unknown `Node` types.
 
@@ -2748,7 +2711,7 @@ class NodeVisitor:
                 '%s visiting unknown node type: %s'
                 % (self.__class__, node.__class__.__name__))
 
-    def unknown_departure(self, node: Node) -> None:
+    def unknown_departure(self, node) -> None:
         """
         Called before exiting unknown `Node` types.
 
@@ -2787,24 +2750,24 @@ class GenericNodeVisitor(NodeVisitor):
     be overridden for default behavior.
     """
 
-    def default_visit(self, node: Node):
+    def default_visit(self, node):
         """Override for generic, uniform traversals."""
         raise NotImplementedError
 
-    def default_departure(self, node: Node):
+    def default_departure(self, node):
         """Override for generic, uniform traversals."""
         raise NotImplementedError
 
 
-def _call_default_visit(self: GenericNodeVisitor, node: Node) -> None:
+def _call_default_visit(self: GenericNodeVisitor, node) -> None:
     self.default_visit(node)
 
 
-def _call_default_departure(self: GenericNodeVisitor, node: Node) -> None:
+def _call_default_departure(self: GenericNodeVisitor, node) -> None:
     self.default_departure(node)
 
 
-def _nop(self: SparseNodeVisitor, node: Node) -> None:
+def _nop(self: SparseNodeVisitor, node) -> None:
     pass
 
 
@@ -2827,20 +2790,20 @@ class TreeCopyVisitor(GenericNodeVisitor):
 
     def __init__(self, document: document) -> None:
         super().__init__(document)
-        self.parent_stack: list[list[Node]] = []
-        self.parent: list[Node] = []
+        self.parent_stack: list[list] = []
+        self.parent: list = []
 
-    def get_tree_copy(self) -> Node:
+    def get_tree_copy(self):
         return self.parent[0]
 
-    def default_visit(self, node: Node) -> None:
+    def default_visit(self, node) -> None:
         """Copy the current node, and make it the new acting parent."""
         newnode = node.copy()
         self.parent.append(newnode)
         self.parent_stack.append(self.parent)
         self.parent = newnode
 
-    def default_departure(self, node: Node) -> None:
+    def default_departure(self, node) -> None:
         """Restore the previous acting parent."""
         self.parent = self.parent_stack.pop()
 

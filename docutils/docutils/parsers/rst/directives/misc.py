@@ -22,7 +22,7 @@ from docutils.parsers.rst.directives.body import CodeBlock, NumberLines
 from docutils.transforms import misc
 
 if TYPE_CHECKING:
-    from docutils.nodes import Node, StrPath
+    from docutils.nodes import StrPath
 
 
 def adapt_path(path: str, source='', root_prefix='') -> str:
@@ -72,7 +72,7 @@ class Include(Directive):
 
     standard_include_path = Path(states.__file__).parent / 'include'
 
-    def run(self) -> list[Node]:
+    def run(self) -> list:
         """Include a file as part of the content of this reST file.
 
         Depending on the options, the file content (or a clipping) is
@@ -204,7 +204,7 @@ class Include(Directive):
                               )
         return codeblock.run()
 
-    def custom_parse(self, text: str) -> list[Node]:
+    def custom_parse(self, text: str) -> list:
         """Parse with custom parser.
 
         Parse with ``self.options['parser']`` into a new (dummy) document,

@@ -33,7 +33,7 @@ if TYPE_CHECKING:
     else:
         from typing_extensions import TypeAlias
 
-    from docutils.nodes import Node, StrPath
+    from docutils.nodes import StrPath
     from docutils.frontend import Values
 
     _ObserverFunc: TypeAlias = Callable[[nodes.system_message], None]
@@ -173,7 +173,7 @@ class Reporter:
     def system_message(self,
                        level: int,
                        message: str,
-                       *children: Node,
+                       *children,
                        **kwargs: Any
                        ) -> nodes.system_message:
         """
@@ -222,7 +222,7 @@ class Reporter:
         self.max_level = max(level, self.max_level)
         return msg
 
-    def debug(self, *args: Node, **kwargs: Any) -> nodes.system_message:
+    def debug(self, *args, **kwargs: Any) -> nodes.system_message:
         """
         Level-0, "DEBUG": an internal reporting issue.
 
@@ -232,7 +232,7 @@ class Reporter:
         if self.debug_flag:
             return self.system_message(self.DEBUG_LEVEL, *args, **kwargs)
 
-    def info(self, *args: Node, **kwargs: Any) -> nodes.system_message:
+    def info(self, *args, **kwargs: Any) -> nodes.system_message:
         """
         Level-1, "INFO": a minor issue that can be ignored.
 
@@ -241,7 +241,7 @@ class Reporter:
         """
         return self.system_message(self.INFO_LEVEL, *args, **kwargs)
 
-    def warning(self, *args: Node, **kwargs: Any) -> nodes.system_message:
+    def warning(self, *args, **kwargs: Any) -> nodes.system_message:
         """
         Level-2, "WARNING": an issue that should be addressed.
 
@@ -249,7 +249,7 @@ class Reporter:
         """
         return self.system_message(self.WARNING_LEVEL, *args, **kwargs)
 
-    def error(self, *args: Node, **kwargs: Any) -> nodes.system_message:
+    def error(self, *args, **kwargs: Any) -> nodes.system_message:
         """
         Level-3, "ERROR": an error that should be addressed.
 
@@ -257,7 +257,7 @@ class Reporter:
         """
         return self.system_message(self.ERROR_LEVEL, *args, **kwargs)
 
-    def severe(self, *args: Node, **kwargs: Any) -> nodes.system_message:
+    def severe(self, *args, **kwargs: Any) -> nodes.system_message:
         """
         Level-4, "SEVERE": a severe error that must be addressed.
 
@@ -497,9 +497,9 @@ def new_document(source_path: StrPath, settings: Values|None = None
 
 
 def clean_rcs_keywords(
-        paragraph: nodes.paragraph,
-        keyword_substitutions: Sequence[tuple[re.Pattern[[str], str]]],
-        ) -> None:
+    paragraph: nodes.paragraph,
+    keyword_substitutions: Sequence[tuple[re.Pattern[[str], str]]],
+) -> None:
     if len(paragraph) == 1 and isinstance(paragraph[0], nodes.Text):
         textnode = paragraph[0]
         for pattern, substitution in keyword_substitutions:
@@ -644,7 +644,7 @@ def get_trim_footnote_ref_space(settings: Values) -> bool:
         return settings.trim_footnote_reference_space
 
 
-def get_source_line(node: Node) -> tuple[StrPath|None, int|None]:
+def get_source_line(node) -> tuple[StrPath|None, int|None]:
     """
     Return the "source" and "line" attributes from the `node` given or from
     its closest ancestor.
