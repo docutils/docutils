@@ -13,10 +13,10 @@ necessary.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
 
 from docutils import core, io
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from typing import Any, Literal
 

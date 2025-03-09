@@ -28,7 +28,6 @@ import re
 import warnings
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import docutils
 from docutils import frontend, languages, nodes, utils, writers
@@ -38,6 +37,7 @@ from docutils.transforms import writer_aux
 from docutils.utils.math import (latex2mathml, math2html, tex2mathml_extern,
                                  unichar2tex, wrap_math_code, MathError)
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from docutils.transforms import Transform
 

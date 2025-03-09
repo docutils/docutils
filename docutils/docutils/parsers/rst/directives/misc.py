@@ -11,7 +11,6 @@ __docformat__ = 'reStructuredText'
 import re
 import time
 from pathlib import Path
-from typing import TYPE_CHECKING
 from urllib.request import urlopen
 from urllib.error import URLError
 
@@ -21,6 +20,7 @@ from docutils.parsers.rst import directives, roles, states
 from docutils.parsers.rst.directives.body import CodeBlock, NumberLines
 from docutils.transforms import misc
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from docutils.nodes import StrPath
 

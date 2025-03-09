@@ -18,13 +18,13 @@ import sys
 import unicodedata
 import warnings
 from pathlib import PurePath, Path
-from typing import TYPE_CHECKING
 
 from docutils import ApplicationError, DataError
 from docutils import io, nodes
 # for backwards compatibility
 from docutils.nodes import unescape  # noqa: F401 (imported but unused)
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence, Iterable
     from typing import Any, Final, Literal, TextIO

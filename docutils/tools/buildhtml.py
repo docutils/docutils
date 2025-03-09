@@ -29,7 +29,6 @@ import sys
 import warnings
 from fnmatch import fnmatch
 from types import SimpleNamespace
-from typing import TYPE_CHECKING
 
 import docutils
 import docutils.io
@@ -39,6 +38,7 @@ from docutils.utils import relative_path
 from docutils.readers import standalone, pep
 from docutils.writers import html4css1, html5_polyglot, pep_html
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from typing import Literal
 

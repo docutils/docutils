@@ -14,10 +14,11 @@ from __future__ import annotations
 __docformat__ = 'reStructuredText'
 
 from importlib import import_module
-from typing import TYPE_CHECKING, overload
+from typing import overload
 
 from docutils.utils import normalize_language_tag
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     import types
     from typing import NoReturn, Protocol, TypeVar

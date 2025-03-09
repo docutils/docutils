@@ -12,11 +12,11 @@ __docformat__ = 'reStructuredText'
 
 import importlib
 import warnings
-from typing import TYPE_CHECKING
 
 from docutils import utils, parsers, Component
 from docutils.transforms import universal
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from typing import Final
 

@@ -14,12 +14,12 @@ import importlib
 import sys
 import urllib
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import docutils
 from docutils import Component, languages, nodes, utils
 from docutils.transforms import universal
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from typing import Any, Final
 

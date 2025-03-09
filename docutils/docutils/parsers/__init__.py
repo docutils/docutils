@@ -11,10 +11,10 @@ from __future__ import annotations
 __docformat__ = 'reStructuredText'
 
 import importlib
-from typing import TYPE_CHECKING
 
 from docutils import Component, frontend, transforms
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from typing import Final
 

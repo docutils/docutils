@@ -64,11 +64,11 @@ import sys
 import warnings
 from optparse import SUPPRESS_HELP
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import docutils
 from docutils import io, utils
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping, Sequence
     from typing import Any, ClassVar, Literal, Protocol

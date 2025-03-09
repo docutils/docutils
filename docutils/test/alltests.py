@@ -19,7 +19,6 @@ import platform
 import time
 import sys
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 # Prepend the "docutils root" to the Python library path
 # so we import the local `docutils` package.
@@ -28,6 +27,7 @@ sys.path.insert(0, str(DOCUTILS_ROOT))
 
 import docutils  # NoQA: E402
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     import types
     from typing import TextIO

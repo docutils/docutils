@@ -17,10 +17,10 @@ import os
 import re
 import sys
 import warnings
-from typing import TYPE_CHECKING
 
 from docutils import TransformSpec
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from typing import Any, BinaryIO, ClassVar, Final, Literal, TextIO
 

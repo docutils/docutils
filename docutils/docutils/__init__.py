@@ -53,8 +53,8 @@ Subpackages:
 from __future__ import annotations
 
 from collections import namedtuple
-from typing import TYPE_CHECKING
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from collections.abc import Sequence
     from typing import Any, ClassVar, Literal, Protocol, Union

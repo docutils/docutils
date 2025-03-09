@@ -36,13 +36,13 @@ except Exception:
 
 import getopt
 import sys
-from typing import TYPE_CHECKING
 
 import docutils
 from docutils import frontend
 from docutils.utils import new_document
 from docutils.parsers.rst import Parser
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from collections.abc import Callable
     from typing import TextIO, TypedDict

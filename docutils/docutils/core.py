@@ -22,13 +22,13 @@ import pprint
 import os
 import sys
 import warnings
-from typing import TYPE_CHECKING
 
 from docutils import (__version__, __version_details__, SettingsSpec,
                       io, utils, readers, parsers, writers)
 from docutils.frontend import OptionParser
 from docutils.readers import doctree
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from typing import TextIO
     from docutils.nodes import StrPath

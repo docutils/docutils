@@ -30,12 +30,12 @@ import sys
 import unicodedata
 import warnings
 from collections import Counter
-from typing import TYPE_CHECKING
 # import xml.dom.minidom as dom # -> conditional import in Node.asdom()
 #                                    and document.asdom()
 
 # import docutils.transforms # -> delayed import in document.__init__()
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from collections.abc import (Callable, Iterable, Iterator,
                                  Mapping, Sequence)

@@ -13,12 +13,12 @@ __docformat__ = 'reStructuredText'
 import re
 import codecs
 from importlib import import_module
-from typing import TYPE_CHECKING
 
 from docutils import nodes, parsers
 from docutils.utils import split_escaped_whitespace, escape2null
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
 
