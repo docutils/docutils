@@ -34,10 +34,8 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" from bugs#497
 .
 Aaaaa ( <aaa@bb.ccc> ),
-Bbb <https://github.com/cc>
- ( <ddd@gmail.com> ),
+Bbb <https://github.com/cc> ( <ddd@gmail.com> ),
 mm <https://github.com/m>
-
  <nn> 
 and  <OooOoooo> \&.
 .\" End of generated man page.

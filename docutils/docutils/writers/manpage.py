@@ -1081,18 +1081,17 @@ class Translator(nodes.NodeVisitor):
 
         # TODO insert_URI_breakpoints in text or refuri
         if 'refuri' in node:
-            # if content has the "email" do not output "mailto:email"
+            # MAYBE check if content is the uri and then text will be duplicated.
             if node['refuri'].endswith(node.astext()):
                 self.body.append(" <")
         # TODO elif 'refid' in node:
 
     def _depart_reference_no_macro(self, node) -> None:
         if 'refuri' in node:
-            # if content has the "email" do not output "mailto:email"
             if node['refuri'].endswith(node.astext()):
                 self.body.append("> ")
             else:
-                self.body.append(" <%s>\n" % node['refuri'])
+                self.body.append(" <%s>" % node['refuri'])
         # TODO elif 'refid' in node:
 
     def _visit_reference_with_macro(self, node) -> None:
