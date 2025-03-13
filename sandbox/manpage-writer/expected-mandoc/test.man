@@ -411,7 +411,6 @@ This is a file.
 .SH SEE ALSO
 .sp
 docutils <http://docutils.sourceforge.net>
-
 .sp
 \fBrst2xml\fP(dummy)
 .sp
