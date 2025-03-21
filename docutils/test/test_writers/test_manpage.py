@@ -302,7 +302,7 @@ Show this help message and exit.
 .UNINDENT
 .SH OtHeR SECTION
 .sp
-link to  <http://docutils.sourceforge.io> \n\
+link to <http://docutils.sourceforge.io>\n\
 .sp
 With mixed case.
 .sp
