@@ -63,11 +63,9 @@ labels\(aq \- for instance,
 .IP [3] 5
 a.k.a. 
 third
-
 .IP [4] 5
 a.k.a. 
 fourth
-
 
 .sp
 .ce
@@ -98,8 +96,7 @@ Case is not significant.
 .sp
 Given a citation like [this], one
 can also refer to it like 
-this
-\&.
+this\&.
 .IP [this] 5
 here.
 .SS External Hyperlink Targets
@@ -118,8 +115,7 @@ Python
 .SS Internal Hyperlink Targets
 .sp
 Internal cross\-references, like 
-example
-\&.
+example\&.
 .sp
 This is an example cross\-reference target.
 .SS Indirect Hyperlink Targets
@@ -137,8 +133,7 @@ programming language
 .sp
 Implicit references, like 
 Titles are
-targets, too
-\&.
+targets, too\&.
 .SH and
 .sp
 See the 

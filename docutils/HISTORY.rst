@@ -213,6 +213,7 @@ Release 0.22b.dev (unpublished)
   - Do not output .UR/.UE macros without refuri in node.
   - Use .MT/.ME macros for mailto.uris.
   - macro-references: output refuri always.
+  - macro-references: reduce space around refs.
   - text-references: no line end after refuri, no additional spaces.
   - text-references: Skip references only if content is equal, or only differs
     by "mailto:".

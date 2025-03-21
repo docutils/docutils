@@ -26,9 +26,7 @@
 
        [3]  a.k.a.  third
 
-
        [4]  a.k.a.  fourth
-
 
 
                                            ----
@@ -51,7 +49,7 @@
             Citation  labels  contain  alphanumerics,  underlines, hyphens and
             fullstops.  Case is not significant.
 
-            Given a citation like [this], one can also refer to it like this .
+            Given a citation like [this], one can also refer to it like this.
 
        [this]
             here.
@@ -62,7 +60,7 @@
        embedded External hyperlinks, like ]8;;https://www.python.org/\Python]8;;\ .
 
    [1mInternal Hyperlink Targets[0m
-       Internal cross-references, like example .
+       Internal cross-references, like example.
 
        This is an example cross-reference target.
 
@@ -71,7 +69,7 @@
         is ]8;;https://www.python.org/\my favourite programming language]8;;\ .
 
 [1mTitles are targets, too[0m
-       Implicit references, like Titles are targets, too .
+       Implicit references, like Titles are targets, too.
 
 [1mand[0m
        See the ]8;;https://www.python.org/\Python]8;;\

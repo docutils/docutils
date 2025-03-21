@@ -1111,8 +1111,10 @@ class Translator(nodes.NodeVisitor):
             self.context.append('')
 
     def _depart_reference_with_macro(self, node) -> None:
-        self.ensure_eol()
-        self.body.append(self.context.pop())
+        macro_end = self.context.pop()
+        if macro_end:
+            self.ensure_eol()
+            self.body.append(macro_end)
     # ----
 
     def visit_revision(self, node) -> None:
