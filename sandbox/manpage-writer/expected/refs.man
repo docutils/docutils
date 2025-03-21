@@ -123,11 +123,11 @@ Write to me <mailto:jdoe@example.com> with your questions.
 .
 .SS URIs with known schemes
 .sp
- <tel:+48\-816\-555\-1212> 
- <urn:isbn:0\-486\-27557\-4> 
- <news:comp.infosystems.www.servers.unix> 
- <https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top> 
+<tel:+48-816-555-1212>
+<urn:isbn:0-486-27557-4>
+<news:comp.infosystems.www.servers.unix>
+<https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top>
 .SS Standalone email addresses
 .sp
-like  <someone@somewhere.com> 
+like <someone@somewhere.com>
 .\" End of generated man page.

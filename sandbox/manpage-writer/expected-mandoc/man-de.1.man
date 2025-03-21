@@ -635,18 +635,18 @@ werden diese Seiten als fehlerhaft zurueckgewiesen.
 .SH GESCHICHTE
 .sp
 1990, 1991 \- Originale geschrieben von John W. Eaton
-( <jwe@che.utexas.edu> ).
+(<jwe@che.utexas.edu>).
 .sp
-23. Dez. 1992: Fehlerbereinigung  durch Rik Faith ( <faith@cs.unc.edu> )
-unterstützt durch Willem Kasdorp ( <wkasdo@nikhefk.nikef.nl> ).
+23. Dez. 1992: Fehlerbereinigung  durch Rik Faith (<faith@cs.unc.edu>)
+unterstützt durch Willem Kasdorp (<wkasdo@nikhefk.nikef.nl>).
 .sp
 Zwischen dem 30. April 1994 und dem 23. Februar 2000 hat Wilf
-( <G.Wilford@ee.surrey.ac.uk> ) unter Mithilfe von einigen wenigen
+(<G.Wilford@ee.surrey.ac.uk>) unter Mithilfe von einigen wenigen
 engagierten Menschen dieses Paket entwickelt und weitergeführt.
 .sp
 Die deutsche Übersetzung wurde von Anke Steuernagel
-( <a_steuer@informatik.uni\-kl.de> ) und Nils Magnus
-( <magnus@informatik.uni\-kl.de> ) angefertigt.
+(<a_steuer@informatik.uni-kl.de>) und Nils Magnus
+(<magnus@informatik.uni-kl.de>) angefertigt.
 .sp
 Für persönliche Würdigungen und Zusätze siehe Quelltexte.
 .\" End of generated man page.

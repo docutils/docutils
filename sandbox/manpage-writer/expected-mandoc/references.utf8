@@ -35,8 +35,8 @@ tteesstt ffoorr rreeffeerreenncceess iinn mmaann ppaagg
 
 tteessttss
        See
-       <https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit-markup>
-       for more
+       <https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit-
+       markup> for more
 
        See the Python home page <https://www.python.org> for info.
 
@@ -60,7 +60,7 @@ tteessttss
        The one-liner <https://docutils.sourceforge.io/rst.html> and
        starts-on-this-line <https://docutils.sourceforge.net/rst.html> or
        entirely-below <https://docutils.sourceforge.net/rst.html> point to
-       <https://docutils.sourceforge.io/rst.html>  and in man are ... ?
+       <https://docutils.sourceforge.io/rst.html> and in man are ... ?
 
        Escaped whitespace is preserved as intentional spaces, e.g.:
 
