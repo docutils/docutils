@@ -1098,8 +1098,8 @@ class Translator(nodes.NodeVisitor):
     def _visit_reference_with_macro(self, node) -> None:
         # use UR/UE or MT/ME
         # TODO insert_URI_breakpoints in text or refuri
-        self.ensure_eol()
         if 'refuri' in node:
+            self.ensure_eol()
             if node['refuri'].startswith('mailto:'):
                 self.body.append(".MT ")
                 self.context.append('.ME\n')
