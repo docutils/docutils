@@ -1096,7 +1096,7 @@ class Translator(nodes.NodeVisitor):
         # TODO elif 'refid' in node:
 
     def _visit_reference_with_macro(self, node) -> None:
-        # use UR/UE or MT/ME not yet
+        # use UR/UE or MT/ME
         # TODO insert_URI_breakpoints in text or refuri
         self.ensure_eol()
         if 'refuri' in node:
