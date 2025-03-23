@@ -1088,16 +1088,17 @@ class Translator(nodes.NodeVisitor):
                 # without mailto:
                 self.body.append("<%s>" % node.astext())
                 raise nodes.SkipNode
-        # TODO elif 'refid' in node:
+        # elif 'refid' in node:
 
     def _depart_reference_no_macro(self, node) -> None:
         if 'refuri' in node:
             self.body.append(" <%s>" % node['refuri'])
-        # TODO elif 'refid' in node:
+        # elif 'refid' in node:
 
     def _visit_reference_with_macro(self, node) -> None:
         # use UR/UE or MT/ME
         # TODO insert_URI_breakpoints in text or refuri
+        # TODO the is a space before and after the content ? 
         if 'refuri' in node:
             self.ensure_eol()
             if node['refuri'].startswith('mailto:'):
@@ -1115,6 +1116,8 @@ class Translator(nodes.NodeVisitor):
         if macro_end:
             self.ensure_eol()
             self.body.append(macro_end)
+        # TODO problem if the ref is at end of line
+        # we get a blank line following which we dont want.
     # ----
 
     def visit_revision(self, node) -> None:
