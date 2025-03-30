@@ -189,7 +189,7 @@ Release 0.22b.dev (unpublished)
     and`LaTeXTranslator.fallbacks`.
   - Use <document> "title" attribute in pdfinfo.
   - Encode <meta> element content in pdfinfo.
-  - Improve docinfo handling with "use_latex_docinfo".
+  - Improve formatting of docinfo fields.
   - `LaTeXTranslator.pop_output_collector()` now returns the popped list.
 
   .. _reference-label: docs/user/config.html#reference-label

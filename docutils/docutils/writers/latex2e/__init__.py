@@ -1728,17 +1728,24 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def visit_author(self, node) -> None:
         self.pdfauthor.append(self.attval(node.astext()))
-        self.visit_docinfo_item(node)
+        if isinstance(node.parent, nodes.authors):
+            # ensure output is one item per <author> element (see depart…)
+            self.push_output_collector([])
+        else:
+            self.visit_docinfo_item(node)
 
     def depart_author(self, node) -> None:
-        self.depart_docinfo_item(node)
+        if isinstance(node.parent, nodes.authors):
+            author_name = self.pop_output_collector()
+            self.out.append(''.join(author_name))
+        else:
+            self.depart_docinfo_item(node)
 
     def visit_authors(self, node) -> None:
-        # not used: visit_author is called anyway for each author.
-        pass
+        self.visit_docinfo_item(node)
 
     def depart_authors(self, node) -> None:
-        pass
+        self.depart_docinfo_item(node)
 
     def visit_block_quote(self, node) -> None:
         self.duclass_open(node)
@@ -1973,16 +1980,33 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                 self.out.append('\n  ')
             else:
                 self.out.append(' ')
+            if isinstance(node, nodes.authors):
+                self.push_output_collector([])  # collect author names
 
     def depart_docinfo_item(self, node) -> None:
         if self.use_latex_docinfo and isinstance(node, self.TITLEDATA_NODES):
-            # Collect date and author info for use in `self.make_title()`:
-            text = ''.join(self.pop_output_collector())
+            # Prepare data for use in `self.make_title()`
+            if isinstance(node, nodes.authors):
+                # join author names with "\and" or,
+                # if there is shared author info, with "\quad"
+                # (cf. https://tex.stackexchange.com/a/11656/288060)
+                s = r' \and '
+                for nn in node.findall(include_self=False, descend=False,
+                                       siblings=True):
+                    if isinstance(nn, (nodes.author, nodes.authors)):
+                        break
+                    if isinstance(nn, (nodes.address, nodes.contact,
+                                       nodes.organization)):
+                        s = r' \quad '
+            else:
+                s = ''
+            text = s.join(self.pop_output_collector())
+
             if isinstance(node, nodes.date):
                 self.date.append(text)
-            elif isinstance(node, nodes.author):
-                # Insert author name as first item of an "author info" list.
-                # If author name already set, start a new list.
+            elif isinstance(node, (nodes.author, nodes.authors)):
+                # Insert author name(s) as first item of an "author info" list,
+                # starting a new list if author name already set:
                 if self.author_stack[-1][0]:
                     self.author_stack.append([text])
                 else:
@@ -1993,6 +2017,13 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         else:
             if isinstance(node, nodes.address):
                 self.out.append('}')
+            elif isinstance(node, nodes.authors):
+                author_names = self.pop_output_collector()
+                # get last "author separator" that is not in any author name
+                for sep in reversed(self.language_module.author_separators):
+                    if not any(sep in name for name in author_names):
+                        break
+                self.out.append((sep+' ').join(author_names))
             self.out.append(' \\\\\n')
 
     def visit_doctest_block(self, node) -> None:

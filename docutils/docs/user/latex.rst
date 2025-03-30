@@ -662,6 +662,32 @@ and "book" classes use a separate title page.
 See section Templates_ and the `TeX FAQ`_ on how to customize the
 `style of document titles`_.
 
+Example:
+  With `use-latex-docinfo`_, author information and date are typeset
+  as part of the document title instead of the `document info`_ table.
+
+  Paper by three authors, two of them from the same organisation::
+
+    Shop Sketches
+    =============
+
+    :authors: * Mr. Mousebender
+              * Mr. Arthur Wensleydale
+    :organization: Ye National Cheese Emporium
+
+    :author: Hr. Hallmackenreuther
+    :organization: Bettengeschäft
+
+  With ``--use-latex-docinfo``, authors and their affiliations are
+  typeset below the title using the standard LaTeX command ``\author``
+  with a `simple hack for the common affiliation`__. [#]_
+
+.. [#] Unfortunately, author names don't wrap if there are more
+   authors than fit on one line in one "authors" field.
+
+__ https://tex.stackexchange.com/a/11656/288060from
+
+
 .. _section structure: rst/quickref.html#section-structure
 .. _doctitle_xform: config.html#doctitle-xform
 .. _TeX FAQ: https://texfaq.org/

@@ -733,6 +733,41 @@ Milky Way 23 b} \\
 \end{center}
 """,
   }],
+["""
+:authors: * \\A. *Smith*
+          * \\B. Miller
+:organization: Example & Cie.
+:author: C. Baker
+:organization: Another Example
+""",
+ {'requirements': '\\usepackage[T1]{fontenc}\n'
+                  '\\usepackage{tabularx}\n',
+  'fallbacks': r"""
+% Provide a length variable and set default, if it is new
+\providecommand*{\DUprovidelength}[2]{%
+  \ifdefined#1
+  \else
+    \newlength{#1}\setlength{#1}{#2}%
+  \fi
+}
+
+% width of docinfo table
+\DUprovidelength{\DUdocinfowidth}{0.9\linewidth}
+""",
+  'pdfsetup': DEFAULT_PARTS['pdfsetup']
+  + '\\hypersetup{\n  pdfauthor={A. Smith; B. Miller; C. Baker}\n}\n',
+  'docinfo': r"""
+% Docinfo
+\begin{center}
+\begin{tabularx}{\DUdocinfowidth}{lX}
+\textbf{Authors}: & A. \emph{Smith}, B. Miller \\
+\textbf{Organization}: & Example \& Cie. \\
+\textbf{Author}: & C. Baker \\
+\textbf{Organization}: & Another Example \\
+\end{tabularx}
+\end{center}
+""",
+  }],
 ])
 
 samples['book'] = ({'documentclass': 'book'}, [
@@ -1002,7 +1037,24 @@ Milky Way 23 b}
 """,
   'body_pre_docinfo': '\\maketitle\n',
   }],
-# bibliographic fields
+["""
+:authors: * \\A. *Smith*
+          * \\B. Miller
+:organization: Example & Cie.
+:author: C. Baker
+:organization: Another Example
+""",
+ {'pdfsetup': DEFAULT_PARTS['pdfsetup']
+  + '\\hypersetup{\n  pdfauthor={A. Smith; B. Miller; C. Baker}\n}\n',
+  'titledata': r"""\title{}
+\author{A. \emph{Smith} \quad B. Miller\\
+Example \& Cie. \and
+C. Baker\\
+Another Example}
+\date{}
+""",
+  'body_pre_docinfo': '\\maketitle\n',
+  }],
 ["""
 :keywords: custom, docinfo, field
 """,
