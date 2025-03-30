@@ -558,7 +558,7 @@ The <author> element holds the name of the author (or one of the authors)
 of the document.
 
 :Category:   `Bibliographic Elements`_
-:Analogues:  <author> is analogous to the DocBook_ <author> element.
+:Analogues:  <author> is analogous to the DocBook_ <personname> element.
 :Processing: see `\<docinfo>`_
 :Parents:    `\<docinfo>`_, `\<authors>`_
 :Children:   text data plus `inline elements`_ (`%text.model`_)

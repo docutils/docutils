@@ -1020,23 +1020,22 @@ Parser Specific Defaults
 
 docinfo_xform
 ~~~~~~~~~~~~~
-Enable the `bibliographic field list`_ transform
-(docutils.transforms.frontmatter.DocInfo).
+Enable the DocInfo_ transform for `bibliographic fields`_.
 
 *Default*: True.  *Options*: ``--no-doc-info``.
 
 doctitle_xform
 ~~~~~~~~~~~~~~
 Enable the promotion of a lone top-level section title
-to `document title`_ (and subsequent section title to document
-subtitle promotion; docutils.transforms.frontmatter.DocTitle).
+to the `document title`_ (and subsequent section title
+to document subtitle) by the DocTitle_ transform.
 
 *Default*: True.  *Options*: ``--no-doc-title``.
 
 sectsubtitle_xform
 ~~~~~~~~~~~~~~~~~~
 Enable the promotion of the title of a lone subsection
-to a subtitle (docutils.transforms.frontmatter.SectSubTitle).
+to a subtitle by the SectSubTitle_ transform.
 
 :Default: False.
 :Options: ``--section-subtitles``, ``--no-section-subtitles``.
@@ -1999,7 +1998,9 @@ Use ``\cite`` for citations_.
 
 use_latex_docinfo
 ~~~~~~~~~~~~~~~~~
-Attach date and author information to the `document title`__.
+Attach the content of the `bibliographic fields`_ "Author", "Authors",
+"Address", "Contact", "Organization", and "Date" to the `document
+title`__.
 
 :Default: False (keep date and author info in the `document info`__ table).
 :Options: ``--use-latex-docinfo``, ``--use-docutils-docinfo``.
@@ -2330,8 +2331,8 @@ __ https://github.com/python/cpython/issues/106747
 [docutils application]
 --------------------------
 
-Docutils' `generic front end`_ tool allows combining “reader”, “parser”,
-and “writer” components from the Docutils package or 3rd party plug-ins.
+Docutils' `generic front end`_ tool allows combining "reader", "parser",
+and "writer" components from the Docutils package or 3rd party plug-ins.
 
 | New in 0.17. Config file support added in 0.18. Renamed in 0.19
   (the old section name "docutils-cli application" is kept as alias).
@@ -2590,6 +2591,9 @@ If the first line matches the second line is ignored.
 .. _publish_from_doctree(): ../api/publisher.html#publish-from-doctree
 
 .. _transform: ../api/transforms.html
+.. _DocInfo:  ../api/transforms.html#docinfo
+.. _DocTitle:  ../api/transforms.html#doctitle
+.. _SectSubTitle:  ../api/transforms.html#sectsubtitle
 
 .. _severity level: ../peps/pep-0258.html#error-handling
 

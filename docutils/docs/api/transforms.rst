@@ -545,8 +545,6 @@ is parsed and transformed to::
 .. _doctitle_xform: ../user/config.html#doctitle-xform
 .. _sectsubtitle_xform: ../user/config.html#sectsubtitle-xform
 
-.. _directive:
-.. _directives: ../ref/rst/directives.html
 .. _"class": ../ref/rst/directives.html#class
 .. _"contents": ../ref/rst/directives.html#table-of-contents
 .. _"default-role": ../ref/rst/directives.html#default-role
@@ -577,10 +575,11 @@ is parsed and transformed to::
 
 .. reStructuredText Markup Specification
 .. _bibliographic field:
-.. _bibliographic fields:
-    ../ref/rst/restructuredtext.html#bibliographic-fields
+.. _bibliographic fields: ../ref/rst/restructuredtext.html#bibliographic-fields
 .. _comments: ../ref/rst/restructuredtext.html#comments
-.. _document title:   ../ref/rst/restructuredtext.html#document-title
+.. _directive:
+.. _directives: ../ref/rst/restructuredtext.html#directives
+.. _document title: ../ref/rst/restructuredtext.html#document-title
 .. _hyperlink targets: ../ref/rst/restructuredtext.html#hyperlink-targets
 .. _interpreted text: ../ref/rst/restructuredtext.html#interpreted-text
 .. _registered bibliographic field names:

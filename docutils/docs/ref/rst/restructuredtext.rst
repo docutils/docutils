@@ -381,10 +381,9 @@ to double up. [#caveat]_
 
      r"""This is a raw docstring.  Backslashes (\) are not touched."""
 
-.. [#uri-context] In contexts where Docutils expects a `URI-reference`_
+.. [#uri-context] In contexts where the parser expects a `URI-reference`_
    (the link block of `external hyperlink targets`_ or the argument of an
-   `"image"`_
-   or `"figure"`_ directive), whitespace is ignored by default.
+   `"image"`_ or `"figure"`_ directive), whitespace is ignored by default.
 
 .. [#literal-context]
    In *literal context* (`literal blocks`_, `inline literals`_,
@@ -650,6 +649,8 @@ would be an obvious choice.
 Body Elements
 =============
 
+.. _paragraph:
+
 Paragraphs
 ----------
 
@@ -672,6 +673,8 @@ Syntax diagram::
     |                              |
     +------------------------------+
 
+
+.. _bullet list:
 
 Bullet Lists
 ------------
@@ -959,7 +962,8 @@ Bibliographic Fields
                    `\<status>`_, `\<topic>`_, `\<version>`_
 
 When a field list is the document body's first element [#PreBibliographic]_,
-it may have its fields transformed__ to bibliographic data.
+it may have its fields transformed to bibliographic data
+by the `DocInfo transform`_.
 This bibliographic data corresponds to the front matter of a book,
 such as the title page and copyright page.
 
@@ -967,8 +971,6 @@ such as the title page and copyright page.
    A `document title`_, header and footer as well as elements that
    do not show up in the output before the bibliographic fields don't
    count. See `PreBibliographic Elements`_ for details.
-
-__ `DocInfo transform`_
 
 Certain registered field names (listed below) are recognized and
 transformed to the corresponding doctree elements, most becoming child
@@ -986,7 +988,7 @@ The registered bibliographic field names and their corresponding
 doctree elements are as follows:
 
   ===================  ================
-  Field name [#i18n]_  doctree element
+  field name [#i18n]_  doctree element
   ===================  ================
   Abstract             `\<topic>`_
   Address              `\<address>`_
@@ -1003,37 +1005,48 @@ doctree elements are as follows:
   ===================  ================
 
 .. compound::
-   The "_`Authors`" field may contain
+   :name: authors
 
-   * a single paragraph consisting of a list of authors, separated by
-     ``;`` or ``,`` (``;`` is checked first, so ``Doe, Jane; Doe,
-     John`` will work), [#i18n]_
-   * multiple paragraphs (one per author), or
-   * a bullet list whose elements each contain a single paragraph per author.
+   The **Authors** field may contain
+
+   * a single paragraph_ consisting of a list of authors, separated by
+     ``;`` or ``,`` [#i18n]_ (the semicolon is checked first, so
+     ``Doe, Jane; Doe, John`` will work),
+   * multiple paragraphs_ (one per author), or
+   * a `bullet list`_ whose elements each contain a single paragraph
+     per author.
+
+   .. attention:: Extracting author names from a single paragraph drops
+      inline markup!  To keep, e.g., footnotes or emphasized name parts,
+      use multiple paragraphs or a bullet list.
+
+   As a convention, use an "Authors" field for authors with common
+   affiliation and separate "Author" fields (each followed by the
+   respective "Organization", "Address", and/or "Contact" fields) for
+   authors with distinct affiliations.
+   There is currently no way to represent the organization or
+   contact info of an individual author in an "Authors" field.
 
    In some languages (e.g. Swedish), there is no singular/plural distinction
    between "Author" and "Authors", so only an "Authors" field is provided,
    and a single name is interpreted as an "Author".  If a single name
-   contains a comma, end it with a semicolon to disambiguate:
-   ``:Författare: Doe, Jane;``.
+   contains a comma, end it with a semicolon or use a one-item
+   `bullet list`_ to disambiguate::
 
-   There is currently no way to represent an individual author's
-   organization or contact info in a reStructuredText "Authors" field.
-   However, you may use an "Author" field followed by
-   "Organization", "Address", and/or "Contact" for each author.
+     :Författare: * Larsson, Lars
 
-The "Address" field is for a multi-line surface mailing address.
-Newlines and whitespace will be preserved.
+The **Address** field is for a multi-line surface mailing address.
+Newlines will be preserved.
 
-The "Dedication" and "Abstract" fields may contain arbitrary body
-elements.  Only one of each is allowed.  They become topic elements
-with "Dedication" or "Abstract" titles (or language equivalents)
-immediately following the docinfo element.
+The **Dedication** and **Abstract** fields may contain arbitrary body
+elements.  Only one of each is allowed.  They become `\<topic>`_ elements
+with "Dedication" or "Abstract" titles (or language equivalents) [#i18n]_
+immediately following the `\<docinfo>`_ element.
 
-Unregistered/generic fields may contain one or more paragraphs or
+**Unregistered/generic fields** may contain one or more paragraphs or
 arbitrary body elements. To support custom styling, the field name is
-also added to the `"classes" attribute`_ value after being converted
-into a valid identifier form.
+also added to the `"classes" attribute`_ value after an `identifier
+normalization`_.
 
 .. [#i18n] Docutils supports localised bibliographic field names and
    author separators.  See the language_code_ setting and, for details,
@@ -2470,7 +2483,7 @@ System messages are inserted where target links have been removed.
 See "Error Handling" in `PEP 258`_.
 
 The parser must return a set of *unique* hyperlink targets.  The
-calling software (such as the Docutils_) can warn of unresolvable
+calling software (such as Docutils_) can warn of unresolvable
 links, giving reasons for the messages.
 
 
@@ -3200,6 +3213,7 @@ Markup errors are handled according to the specification in
 .. _"date": directives.html#date
 .. _"default-role": directives.html#default-role
 .. _"figure": directives.html#figure
+.. _identifier normalization: directives.html#identifier-normalization
 .. _"image": directives.html#image
 .. _"list-table": directives.html#list-table
 .. _"math": directives.html#math

@@ -46,7 +46,7 @@ LaTeX document classes and packages (similar to Python modules or C
 libraries) provide means to extend or modify the LaTeX language by
 redefining macros or providing new ones.
 
-Using the `document class`_ and `style sheet`_ configuration options, you
+Using the `document class`_ and `style sheet`_ configuration settings, you
 can select from a *huge* selection of classes and packages (standard as well
 as user contributed) coming with your TeX distribution or available at
 CTAN_ as well as custom style sheets.
@@ -151,7 +151,6 @@ _`xelatex` or _`lualatex`
 You may need to call the respective command two or three times
 to get internal references correct.
 
-.. _documentoptions: config.html#documentoptions
 .. _xetex: https://tug.org/xetex/
 .. _luatex: https://www.luatex.org/
 .. _rst2latex: tools.html#rst2latex
@@ -172,11 +171,13 @@ Configuration
 .. contents:: :local:
 
 .. _option:
+.. _setting:
+.. _settings:
 
 Options/Settings
 ----------------
 
-Options can be specified as
+Docutils configuration settings can be specified as
 
 * command-line options, or
 
@@ -302,7 +303,7 @@ sheets, either as simple files with LaTeX code snippets or as home-made
 `LaTeX packages`_ (see the clsguide_ for an introduction on LaTeX
 package writing).
 
-Options:
+Setting:
   stylesheet_
 
   It is possible to specify multiple style sheets and mix `LaTeX
@@ -351,7 +352,7 @@ without a separate stylesheet. This way, packages can be loaded with
 options or commands re-defined without the need to create a separate
 file (new in Docutils 0.7).
 
-Option:
+Setting:
   latex-preamble_
 
 Default:
@@ -379,7 +380,7 @@ document. This can be done via a custom template. See the `publisher
 documentation`_ for a description of the `document parts`_ available in a
 template file.
 
-Option:
+Setting:
   template_
 
 In addition to the 'default.tex' template, the latex writer directory
@@ -590,17 +591,20 @@ __ ../ref/rst/restructuredtext.html#definition-lists
 document class
 --------------
 
-There are hundreds of LaTeX document classes installed by modern
+There are hundreds of `LaTeX document classes`_ installed by modern
 LaTeX distributions, provided by publishers, or available at CTAN_.
 
-Popular document classes:
-  * article, report, book: standard document classes
-  * scrartcl, scrrprt, scrbook: KOMA-script_ classes
-  * memoir_: highly configurable class for larger documents
-
-Option:
+Setting:
   documentclass_
 
+Popular document classes:
+  * `Standard document classes`_: article, report, book
+  * KOMA-script_ classes: scrartcl, scrrprt, scrbook
+  * memoir_: a highly configurable document class for larger documents
+
+.. _LaTeX document classes: https://texfaq.org/FAQ-clsvpkg
+.. _standard document classes:
+    http://mirrors.ctan.org/macros/latex/base/classes.pdf
 .. _KOMA-script: https://ctan.org/pkg/koma-script
 .. _memoir: https://ctan.org/pkg/memoir
 .. _documentclass: config.html#documentclass
@@ -609,22 +613,28 @@ Option:
 document info
 -------------
 
-Content of the `bibliographic fields`_ at the top of a document.
-By default, docinfo items are typeset as a table.
-If use-latex-docinfo_ is True, the "Author/s", "Address", "Contact",
-"Organization", and "Date" fields are attached to the `document title`_.
+The `bibliographic fields`_ at the top of a document specify
+document information like author name(s) and copyright info.
+By default, they are typeset as a table.
 
-Options:
+Settings:
   use-latex-docinfo_, use-latex-abstract_
 
-Length:
-  ``\DUdocinfowidth``: the width for the `docinfo` table.
+  If use-latex-docinfo_ is True, the content of the "Author", "Authors",
+  "Address", "Contact", "Organization", and "Date" fields is attached to
+  the `document title`_ (see below).
 
-Default:
-  90 % of text width: ``0.9\textwidth``
+  If use-latex-abstract_ is True, the "Abstract" field content is placed
+  in an "abstract" environment. The "abstract" environment can be
+  customized or `set up`__ (for the "book" documentclass) with the
+  "abstract_" LaTeX package.
+
+Length:
+  | ``\DUdocinfowidth`` (width of the `docinfo` table).
+  | Default: ``0.9\textwidth`` (90 % of text width)
 
 Example:
-  set to 70 % of text width::
+  Change the width of the docinfo table to 70 % of text width::
 
     \newlength{\DUdocinfowidth}
     \setlength{\DUdocinfowidth}{0.7\textwidth}
@@ -632,6 +642,8 @@ Example:
 .. _bibliographic fields: ../ref/rst/restructuredtext.html#bibliographic-fields
 .. _use-latex-docinfo: config.html#use-latex-docinfo
 .. _use-latex-abstract: config.html#use-latex-abstract
+__ https://tex.stackexchange.com/a/539606/288060
+.. _abstract: https://ctan.org/pkg/abstract
 
 
 document title
@@ -640,23 +652,21 @@ document title
 A lone top-level section title is (usually) transformed to the document title
 (see `section structure`_).
 
-The format of the document title is defined by the `document class`_. The
-"article" document class uses an in-page title and the "report" and "book"
-classes write a separate title page. See the `TeX FAQ`_ on how to customize
-the `style of document titles`_.
+Settings:
+  doctitle_xform_, documentclass_, use-latex-docinfo_, template_
 
-The default title page shows only title and subtitle, date and author
-are shown in the `document info`_ table.
-
-Options:
-  use-latex-docinfo_
-
-  ``--template=titlepage.tex`` Put docinfo and abstract into the title page.
-  A separate title page is used also with the "abstract" document class.
+The format of the document title is defined by the `document class`_
+and can be modified by `latex packages`_.
+The "article" document class uses an in-page title while the "report"
+and "book" classes use a separate title page.
+See section Templates_ and the `TeX FAQ`_ on how to customize the
+`style of document titles`_.
 
 .. _section structure: rst/quickref.html#section-structure
+.. _doctitle_xform: config.html#doctitle-xform
 .. _TeX FAQ: https://texfaq.org/
 .. _style of document titles: https://texfaq.org/FAQ-titlsty
+
 
 field lists
 -----------
@@ -783,7 +793,7 @@ Alternative fonts can be selected by
 
 pdflatex_
   a) specifying the corresponding LaTeX package(s) as argument to the
-     stylesheet_ option_ or with the ``\usepackage`` LaTeX command.
+     stylesheet_ setting or with the ``\usepackage`` LaTeX command.
 
      * packages can be combined,
      * passing options to a package is only possible in a `style sheet`_
@@ -811,7 +821,7 @@ pdflatex_
       \usepackage{courier}             % Courier for teletype (mono-space)
 
     Since Docutils 0.7, this is the default value of the
-    `latex-preamble`_ option.
+    `latex-preamble`_ setting.
 
   .. [#] When generating PDF-files from LaTeX, the `PDF standard
      fonts`_ do not need to be embedded in the document. While this
@@ -992,7 +1002,7 @@ font encoding
 LaTeX font encodings are described in detail in the encguide_ which is
 part of the LaTeX base documentation.
 
-Option:
+Setting:
   font-encoding_
 
 Default:
@@ -1115,7 +1125,7 @@ Example:
 hyperlinks
 ----------
 
-Options:
+Settings:
   hyperlink-color_, hyperref-options_
 
 Hyperlinks are realized using the hyperref_ package. As it re-defines many
@@ -1160,8 +1170,8 @@ avoid clashes with other packages), set hyperref-options_ to "draft"
 or load the "nohyperref" package that comes with the "hyperref"
 bundle.
 
-Option:
-  ``--hyperref-options=draft``
+Setting:
+  hyperref-options_
 
 `LaTeX code`_::
 
@@ -1231,7 +1241,7 @@ literal blocks
 No markup processing is done within a `literal block`__. It is left as-is,
 and is typically rendered in a monospaced typeface
 
-Option:
+Setting:
   literal-block-env_
 
 Example:
@@ -1449,7 +1459,7 @@ Example:
 paper size
 ----------
 
-Paper geometry can be changed using ``--documentoptions`` or with the
+Paper geometry can be changed using documentoptions_ or with the
 `geometry`_ package.
 
 `LaTeX code`_::
@@ -1535,7 +1545,7 @@ __ ../ref/rst/directives.html#rubric
 section headings
 ----------------
 
-Options: documentclass_, use-part-section_
+Settings: documentclass_, use-part-section_
 
 Section headings are converted into LaTeX macros according to their level,
 the document class and the value of the use-part-section_ setting:
@@ -1563,8 +1573,7 @@ section numbering
 
 Sections are numbered if there is a `sectnum directive`_ in the document.
 
-Option: sectnum_xform_
-  ``--section-numbering``, ``--no-section-numbering``
+Setting: sectnum_xform_
 
 If sectnum_xform_ is False, section numbers are generated by LaTeX. In this
 case the "prefix" and "suffix" arguments of the `sectnum directive`_ are
@@ -1678,8 +1687,7 @@ table of contents
 
 A `contents directive`_ is replaced by a table of contents (ToC).
 
-Option: use-latex-toc_
-  ``--use-latex-toc``, ``--use-docutils-toc``
+Setting:: use-latex-toc_
 
 With use-latex-toc (default since release 0.6):
 
@@ -1778,8 +1786,7 @@ text encoding
 The encoding of the LaTeX source file is Docutils' *output* encoding
 but LaTeX' *input* encoding.
 
-Option: output_encoding_
-    ``--output-encoding=OUTPUT-ENCODING``
+Setting: output_encoding_
 
 Default:
   "utf-8" (LaTeX's default input encoding)
@@ -1791,7 +1798,7 @@ Example:
     --output-encoding=latin-1
 
 Note:
-  8-bit LaTeX comes with two options for UTF-8 support,
+  8-bit LaTeX comes with two packages for UTF-8 support,
 
   .. class:: field-indent-4em
 
@@ -1891,7 +1898,7 @@ Make sure the default font is not a bitmap font.
 
 There is `Latin Modern`_ if you like the look of the standard font on paper,
 but want nice pdf. Or select something else like Times, Palatino, ... via
-configuration `options/settings`_. See font_ and font-encoding_.
+configuration settings_. See font_ and font-encoding_.
 
 
 footnote mark and text at different pages
@@ -2114,7 +2121,7 @@ This results in footnotes, citations, and figures possibly being mixed at
 page foot.
 
 Workaround:
-  Select citation handling with the use_latex_citations_ option.
+  Select citation handling with the use_latex_citations_ setting.
 
 If ``use-latex-citations`` is used, a bibliography is inserted right at
 the end of the document. *This should be customizable*.
@@ -2132,7 +2139,7 @@ Tables
 
 * Too wide tables (cf. `bug #422`_):
 
-  Try the new_column_widths_ algorithm or use the `"widths" option`_ to
+  Try the new_column_widths_ setting or use the `"widths" option`_ to
   manually set the table column widths.
 
 * Table cells with both multirow and multicolumn are currently not possible.
@@ -2161,8 +2168,3 @@ Miscellaneous
 
 * Hyperlinks are not hyphenated; this leads to bad spacing. See
   docs/user/rst/demo.rst 2.14 directives.
-
-* Pagestyle headings does not work, when sections are starred. Use LaTeX for
-  the section numbering with the `options/settings`_
-  ``--no-section-numbers`` (command line) or ``sectnum_xform: False``
-  (config file).
