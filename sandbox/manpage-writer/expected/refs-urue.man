@@ -98,13 +98,13 @@ can also refer to it like this\&.
 here.
 .SS External Hyperlink Targets
 .sp
-External hyperlinks, like 
+External hyperlinks, like \c
 .UR https://www.python.org/
 Python
 .UE
 \&.
 .sp
-embedded External hyperlinks, like 
+embedded External hyperlinks, like \c
 .UR https://www.python.org/
 Python
 .UE
@@ -119,7 +119,7 @@ This is an example cross\-reference target.
 .UR https://www.python.org/
 Python
 .UE
- is 
+ is \c
 .UR https://www.python.org/
 my favourite
 programming language
@@ -131,7 +131,7 @@ Implicit references, like Titles are
 targets, too\&.
 .SH and
 .sp
-See the 
+See the \c
 .UR https://www.python.org/
 Python
 .UE
@@ -163,7 +163,7 @@ https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newes
 
 .SS Standalone email addresses
 .sp
-like 
+like \c
 .MT mailto:someone@somewhere.com
 someone@somewhere.com
 .ME

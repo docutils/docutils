@@ -323,6 +323,11 @@ class Translator(nodes.NodeVisitor):
         if len(self.body) > 0 and self.body[-1][-1] != '\n':
             self.body.append('\n')
 
+    def ensure_c_eol(self) -> None:
+        """Ensure the last line in body is terminated by new line."""
+        if len(self.body) > 0 and self.body[-1][-1] != '\n':
+            self.body.append('\\c\n')
+
     def astext(self):
         """Return the final formatted document as a string."""
         if not self.header_written:
@@ -1100,7 +1105,7 @@ class Translator(nodes.NodeVisitor):
         # TODO insert_URI_breakpoints in text or refuri
         # TODO the is a space before and after the content ? 
         if 'refuri' in node:
-            self.ensure_eol()
+            self.ensure_c_eol() # c_eol avoids space before the refuri
             if node['refuri'].startswith('mailto:'):
                 self.body.append(".MT ")
                 self.context.append('.ME\n')
