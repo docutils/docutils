@@ -1193,9 +1193,9 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     literal = False                     # literal text (block or inline)
     alltt = False                       # inside `alltt` environment
 
-    # Nodes affected by "use_latex_docinfo" setting:
-    LATEX_DOCINFO_NODES = (nodes.address, nodes.author, nodes.contact,
-                           nodes.date, nodes.organization)
+    # Nodes to be stored in the "titledata" part if "use_latex_docinfo" is true
+    TITLEDATA_NODES = (nodes.address, nodes.author, nodes.authors,
+                       nodes.contact, nodes.date, nodes.organization)
 
     def __init__(self, document, babel_class=Babel) -> None:
         super().__init__(document)
@@ -1695,10 +1695,12 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.depart_inline(node)
 
     def visit_address(self, node) -> None:
+        self.insert_newline = True  # preserve newlines
         self.visit_docinfo_item(node)
 
     def depart_address(self, node) -> None:
         self.depart_docinfo_item(node)
+        self.insert_newline = False
 
     def visit_admonition(self, node) -> None:
         # strip the generic 'admonition' from the list of classes
@@ -1960,10 +1962,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             warnings.warn('visit_docinfo_item(): argument "name" is obsolete'
                           ' and will be removed in Docutils 0.24',
                           DeprecationWarning, stacklevel=2)
-        if isinstance(node, nodes.address):
-            self.insert_newline = True  # preserve newlines
-        if self.use_latex_docinfo and isinstance(node,
-                                                 self.LATEX_DOCINFO_NODES):
+        if self.use_latex_docinfo and isinstance(node, self.TITLEDATA_NODES):
             self.push_output_collector([])  # see depart_docinfo_item()
         else:
             label = self.language_label(node.tagname)
@@ -1976,9 +1975,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                 self.out.append(' ')
 
     def depart_docinfo_item(self, node) -> None:
-        self.insert_newline = False  # reset change with <address> node
-        if self.use_latex_docinfo and isinstance(node,
-                                                 self.LATEX_DOCINFO_NODES):
+        if self.use_latex_docinfo and isinstance(node, self.TITLEDATA_NODES):
             # Collect date and author info for use in `self.make_title()`:
             text = ''.join(self.pop_output_collector())
             if isinstance(node, nodes.date):
@@ -1991,7 +1988,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                 else:
                     self.author_stack[-1][0] = text
             else:
-                # Append affiliation/contact info to current "author info".
+                # Append affiliation & contact info to current "author info".
                 self.author_stack[-1].append(text)
         else:
             if isinstance(node, nodes.address):
@@ -2024,7 +2021,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.pdfinfo.insert(0, '  pdftitle={%s},' %
                                 self.encode(self.document.get('title', '')))
         if self.pdfauthor:
-            authors = self.author_separator.join(self.pdfauthor)
+            authors = (self.author_separator + ' ').join(self.pdfauthor)
             self.pdfinfo.append('  pdfauthor={%s}' % authors)
         if self.pdfinfo:
             self.pdfsetup += [r'\hypersetup{'] + self.pdfinfo + ['}']
