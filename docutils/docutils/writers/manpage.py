@@ -349,6 +349,10 @@ class Translator(nodes.NodeVisitor):
                            or self.body[i - 3][:4] == '\n.B ')
                       ):
                     self.body[i] = '.\n'
+            elif self.body[i][:4] in ('.UE\n', '.ME\n'):
+                # TODO open("XXX.txt","a").write("---\n"+str(self.body[i-1:i+2])+"\n---\n")
+                if self.body[i+1][0] in ('\n', '\r'):
+                    self.body[i+1] = '.' + self.body[i+1]
         return ''.join(self.head + self.body + self.foot)
 
     def deunicode(self, text):
