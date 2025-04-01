@@ -1116,13 +1116,16 @@ class Translator(nodes.NodeVisitor):
         else:
             self.context.append('')
 
+    # TODO INWORK
     def _depart_reference_with_macro(self, node) -> None:
         macro_end = self.context.pop()
         if macro_end:
             self.ensure_eol()
             self.body.append(macro_end)
-        # TODO problem if the ref is at end of line
-        # we get a blank line following which we dont want.
+        # TODO problems 
+        # * if the ref is at end of line
+        #   we get a blank line following which we dont want.
+        # * if ref is followed by )., there will be a space separating
     # ----
 
     def visit_revision(self, node) -> None:
