@@ -136,7 +136,7 @@ totest_refs['ext hyperlink'] = [
          document_start + indend_macros + """.TH "" "" "" ""
 .SH Name
  \\- \n\
-External hyperlinks, like \n\
+External hyperlinks, like \c\n\
 .UR https://www.python.org/
 Python
 .UE
@@ -152,7 +152,7 @@ totest_refs['emb hyperlink'] = [
          document_start + indend_macros + """.TH "" "" "" ""
 .SH Name
  \\- \n\
-embedded External hyperlinks, like \n\
+embedded External hyperlinks, like \c\n\
 .UR https://www.python.org/
 Python
 .UE
