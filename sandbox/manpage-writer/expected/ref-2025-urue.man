@@ -36,16 +36,16 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 Aaaaa (\c
 .MT mailto:aaa@bb.ccc
 aaa@bb.ccc
-.ME )\c
-,
+.ME \c
+),
 .UR https://github.com/cc
 Bbb
-.UE
+.UE \c
  (\c
 .MT mailto:ddd@gmail.com
 ddd@gmail.com
-.ME )\c
-\&.
+.ME \c
+).
 .UR https://github.com/m
 mm
 .UE
@@ -57,6 +57,6 @@ nn
 and \c
 .UR https://github.com/OooOoooo
 OooOoooo
-.UE .\c
-
+.UE \c
+\&.
 .\" End of generated man page.

@@ -65,18 +65,15 @@
        This is an example cross-reference target.
 
    [1mIndirect Hyperlink Targets[0m
-       ]8;;https://www.python.org/\Python]8;;\
-        is ]8;;https://www.python.org/\my favourite programming language]8;;\.
+       ]8;;https://www.python.org/\Python]8;;\ is ]8;;https://www.python.org/\my favourite programming language]8;;\.
 
 [1mTitles are targets, too[0m
        Implicit references, like Titles are targets, too.
 
 [1mand[0m
-       See the ]8;;https://www.python.org/\Python]8;;\
-        home page for info.
+       See the ]8;;https://www.python.org/\Python]8;;\ home page for info.
 
-       ]8;;mailto:mailto:jdoe@example.com\Write to me]8;;\
-        with your questions.
+       ]8;;mailto:mailto:jdoe@example.com\Write to me]8;;\ with your questions.
 
    [1mURIs with known schemes[0m
        ]8;;tel:+48-816-555-1212\tel:+48-816-555-1212]8;;\     ]8;;urn:isbn:0-486-27557-4\urn:isbn:0-486-27557-4]8;;\      ]8;;news:comp.infosystems.www.servers.unix\news:comp.infosys‐

@@ -67,18 +67,16 @@ EExxpplliicciitt MMaarrkkuupp
        This is an example cross-reference target.
 
    IInnddiirreecctt HHyyppeerrlliinnkk TTaarrggeettss
-       Python <https://www.python.org/>
-        is my favourite programming language <https://www.python.org/>.
+       Python <https://www.python.org/> is my favourite programming language
+       <https://www.python.org/>.
 
 TTiittlleess aarree ttaarrggeettss,, ttoooo
        Implicit references, like Titles are targets, too.
 
 aanndd
-       See the Python <https://www.python.org/>
-        home page for info.
+       See the Python <https://www.python.org/> home page for info.
 
-       Write to me <mailto:jdoe@example.com>
-        with your questions.
+       Write to me <mailto:jdoe@example.com> with your questions.
 
    UURRIIss wwiitthh kknnoowwnn sscchheemmeess
        tel:+48-816-555-1212 <tel:+48-816-555-1212> urn:isbn:0-486-27557-4
