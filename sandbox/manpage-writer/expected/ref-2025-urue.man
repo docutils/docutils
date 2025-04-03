@@ -36,16 +36,16 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 Aaaaa (\c
 .MT mailto:aaa@bb.ccc
 aaa@bb.ccc
-.ME
-),
+.ME )\c
+,
 .UR https://github.com/cc
 Bbb
 .UE
  (\c
 .MT mailto:ddd@gmail.com
 ddd@gmail.com
-.ME
-),
+.ME )\c
+\&.
 .UR https://github.com/m
 mm
 .UE

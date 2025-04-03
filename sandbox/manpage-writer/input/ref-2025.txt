@@ -1,7 +1,7 @@
 .. from bugs#497
 
 Aaaaa (aaa@bb.ccc),
-`Bbb <https://github.com/cc>`_ (ddd@gmail.com),
+`Bbb <https://github.com/cc>`_ (ddd@gmail.com).
 `mm <https://github.com/m>`_
 `nn <https://github.com/nn>`_
 and `OooOoooo <https://github.com/OooOoooo>`_.

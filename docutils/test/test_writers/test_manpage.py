@@ -190,8 +190,8 @@ no spaces before and after the email.""",
 email: (\\c
 .MT mailto:eee@mmm.al
 eee@mmm.al
-.ME
-).
+.ME )\\c
+\\&.
 .sp
 no spaces before and after the email.
 .\\" End of generated man page.

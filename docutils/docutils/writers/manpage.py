@@ -351,8 +351,17 @@ class Translator(nodes.NodeVisitor):
                     self.body[i] = '.\n'
             elif self.body[i][:4] in ('.UE\n', '.ME\n'):
                 # TODO INWORK
+                # if next item starts with 
+                # a) a line end, disable it
                 if self.body[i+1][0] in ('\n', '\r'):
                     self.body[i+1] = '.' + self.body[i+1]
+                # b) with a separator: move the 1st char to current item
+                elif self.body[i+1][0] in ')]}>,':
+                    self.body[i] = "%s %s\\c\n" % (
+                            self.body[i][:3], self.body[i+1][0])
+                    self.body[i+1] = self.body[i+1][1:]
+                    if self.body[i+1][0] == '.':
+                        self.body[i+1] = '\\&' + self.body[i+1]
         return ''.join(self.head + self.body + self.foot)
 
     def deunicode(self, text):
@@ -1126,7 +1135,7 @@ class Translator(nodes.NodeVisitor):
         if macro_end:
             self.ensure_eol()
             self.body.append(macro_end)
-        # TODO problems 
+        # problems to handle in astext looking ahead.
         # * if the ref is at end of line
         #   we get a blank line following which we dont want.
         # * if ref is followed by )., there will be a space separating
