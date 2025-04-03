@@ -136,7 +136,7 @@ totest_refs['ext hyperlink'] = [
          document_start + indend_macros + """.TH "" "" "" ""
 .SH Name
  \\- \n\
-External hyperlinks, like \c\n\
+External hyperlinks, like \\c\n\
 .UR https://www.python.org/
 Python
 .UE
@@ -152,7 +152,7 @@ totest_refs['emb hyperlink'] = [
          document_start + indend_macros + """.TH "" "" "" ""
 .SH Name
  \\- \n\
-embedded External hyperlinks, like \c\n\
+embedded External hyperlinks, like \\c\n\
 .UR https://www.python.org/
 Python
 .UE
@@ -187,7 +187,7 @@ no spaces before and after the email.""",
          document_start + indend_macros + """.TH "" "" "" ""
 .SH Name
  \\- \n\
-email: (\c
+email: (\\c
 .MT mailto:eee@mmm.al
 eee@mmm.al
 .ME
