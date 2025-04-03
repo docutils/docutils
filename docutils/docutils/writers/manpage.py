@@ -350,7 +350,6 @@ class Translator(nodes.NodeVisitor):
                       ):
                     self.body[i] = '.\n'
             elif self.body[i][:4] in ('.UE\n', '.ME\n'):
-                # TODO INWORK
                 # if next item starts with 
                 # a) a line end, disable it
                 if self.body[i+1][0] in ('\n', '\r'):
@@ -1116,7 +1115,6 @@ class Translator(nodes.NodeVisitor):
     def _visit_reference_with_macro(self, node) -> None:
         # use UR/UE or MT/ME
         # TODO insert_URI_breakpoints in text or refuri
-        # TODO the is a space before and after the content ? 
         if 'refuri' in node:
             self.ensure_c_eol() # c_eol avoids space before the refuri
             if node['refuri'].startswith('mailto:'):
@@ -1129,7 +1127,6 @@ class Translator(nodes.NodeVisitor):
         else:
             self.context.append('')
 
-    # TODO INWORK
     def _depart_reference_with_macro(self, node) -> None:
         macro_end = self.context.pop()
         if macro_end:
