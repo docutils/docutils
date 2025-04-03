@@ -359,8 +359,14 @@ class Translator(nodes.NodeVisitor):
                     self.body[i] = "%s %s\\c\n" % (
                             self.body[i][:3], self.body[i+1][0])
                     self.body[i+1] = self.body[i+1][1:]
-                    if self.body[i+1][0] == '.':
+                    if self.body[i+1].startswith('.'):
                         self.body[i+1] = '\\&' + self.body[i+1]
+                    # TODO blank line to ".\n" see a)
+                    # INWORK next line starts with escaped "."
+                elif self.body[i+1][:3] == r'\&.':
+                    self.body[i] = "%s .\\c\n" % ( self.body[i][:3])
+                    self.body[i+1] = self.body[i+1][3:]
+                    # TODO blank line to ".\n" see a)
         return ''.join(self.head + self.body + self.foot)
 
     def deunicode(self, text):

@@ -57,9 +57,9 @@ EExxpplliicciitt MMaarrkkuupp
             here.
 
    EExxtteerrnnaall HHyyppeerrlliinnkk TTaarrggeettss
-       External hyperlinks, like Python <https://www.python.org/> .
+       External hyperlinks, like Python <https://www.python.org/>.
 
-       embedded External hyperlinks, like Python <https://www.python.org/> .
+       embedded External hyperlinks, like Python <https://www.python.org/>.
 
    IInntteerrnnaall HHyyppeerrlliinnkk TTaarrggeettss
        Internal cross-references, like example.
@@ -68,7 +68,7 @@ EExxpplliicciitt MMaarrkkuupp
 
    IInnddiirreecctt HHyyppeerrlliinnkk TTaarrggeettss
        Python <https://www.python.org/>
-        is my favourite programming language <https://www.python.org/> .
+        is my favourite programming language <https://www.python.org/>.
 
 TTiittlleess aarree ttaarrggeettss,, ttoooo
        Implicit references, like Titles are targets, too.

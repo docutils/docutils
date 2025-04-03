@@ -55,9 +55,9 @@
             here.
 
    [1mExternal Hyperlink Targets[0m
-       External hyperlinks, like ]8;;https://www.python.org/\Python]8;;\ .
+       External hyperlinks, like ]8;;https://www.python.org/\Python]8;;\.
 
-       embedded External hyperlinks, like ]8;;https://www.python.org/\Python]8;;\ .
+       embedded External hyperlinks, like ]8;;https://www.python.org/\Python]8;;\.
 
    [1mInternal Hyperlink Targets[0m
        Internal cross-references, like example.
@@ -66,7 +66,7 @@
 
    [1mIndirect Hyperlink Targets[0m
        ]8;;https://www.python.org/\Python]8;;\
-        is ]8;;https://www.python.org/\my favourite programming language]8;;\ .
+        is ]8;;https://www.python.org/\my favourite programming language]8;;\.
 
 [1mTitles are targets, too[0m
        Implicit references, like Titles are targets, too.

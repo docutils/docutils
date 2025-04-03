@@ -57,6 +57,6 @@ nn
 and \c
 .UR https://github.com/OooOoooo
 OooOoooo
-.UE
-\&.
+.UE .\c
+
 .\" End of generated man page.

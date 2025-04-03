@@ -101,14 +101,14 @@ here.
 External hyperlinks, like \c
 .UR https://www.python.org/
 Python
-.UE
-\&.
+.UE .\c
+
 .sp
 embedded External hyperlinks, like \c
 .UR https://www.python.org/
 Python
-.UE
-\&.
+.UE .\c
+
 .SS Internal Hyperlink Targets
 .sp
 Internal cross\-references, like example\&.
@@ -123,8 +123,8 @@ Python
 .UR https://www.python.org/
 my favourite
 programming language
-.UE
-\&.
+.UE .\c
+
 .SH Titles are targets, too
 .sp
 Implicit references, like Titles are
