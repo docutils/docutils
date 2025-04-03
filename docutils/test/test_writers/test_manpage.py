@@ -139,7 +139,7 @@ totest_refs['ext hyperlink'] = [
 External hyperlinks, like \\c\n\
 .UR https://www.python.org/
 Python
-.UE
+.UE \\c
 \\&.
 .\\" End of generated man page.
 """],
@@ -155,7 +155,7 @@ totest_refs['emb hyperlink'] = [
 embedded External hyperlinks, like \\c\n\
 .UR https://www.python.org/
 Python
-.UE
+.UE \\c
 \\&.
 .\\" End of generated man page.
 """],
@@ -172,7 +172,7 @@ whatever.""",
  \\- \n\
 .MT mailto:jdoe@example.com
 Write to me
-.ME
+.ME \\c
  with your questions.
 .sp
 whatever.
@@ -190,8 +190,8 @@ no spaces before and after the email.""",
 email: (\\c
 .MT mailto:eee@mmm.al
 eee@mmm.al
-.ME )\\c
-\\&.
+.ME \\c
+).
 .sp
 no spaces before and after the email.
 .\\" End of generated man page.
