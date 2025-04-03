@@ -180,6 +180,24 @@ whatever.
 """],
         ]
 
+totest_refs['email trailings'] = [
+        [r"""email: (eee@mmm.al).
+
+no spaces before and after the email.""",
+         document_start + indend_macros + """.TH "" "" "" ""
+.SH Name
+ \\- \n\
+email: (\c
+.MT mailto:eee@mmm.al
+eee@mmm.al
+.ME
+).
+.sp
+no spaces before and after the email.
+.\\" End of generated man page.
+"""],
+        ]
+
 totest = {}
 
 totest['blank'] = [
