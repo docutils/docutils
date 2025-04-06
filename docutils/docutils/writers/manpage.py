@@ -1113,13 +1113,15 @@ class Translator(nodes.NodeVisitor):
         # TODO insert_URI_breakpoints in text or refuri
         if 'refuri' in node:
             self.ensure_c_eol() # c_eol avoids space before the refuri
-            if node['refuri'].startswith('mailto:'):
+            _uri = node['refuri']
+            if _uri.startswith('mailto:'):
+                _uri = _uri[7:] # remove "mailto:"
                 self.body.append(".MT ")
                 self.context.append('.ME\n')
             else:
                 self.body.append(".UR ")
                 self.context.append('.UE\n')
-            self.body.append("%s\n" % node['refuri'])
+            self.body.append("%s\n" % _uri)
         else:
             self.context.append('')
 

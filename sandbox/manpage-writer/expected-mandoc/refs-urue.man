@@ -137,7 +137,7 @@ Python
 .UE \c
  home page for info.
 .sp
-.MT mailto:jdoe@example.com
+.MT jdoe@example.com
 Write to me
 .ME \c
  with your questions.
@@ -164,7 +164,7 @@ https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newes
 .SS Standalone email addresses
 .sp
 like \c
-.MT mailto:someone@somewhere.com
+.MT someone@somewhere.com
 someone@somewhere.com
 .ME
 .

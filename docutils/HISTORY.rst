@@ -217,6 +217,8 @@ Release 0.22b.dev (unpublished)
   - text-references: no line end after refuri, no additional spaces.
   - text-references: Skip references only if content is equal, or only differs
     by "mailto:".
+  - macro-references: remove "mailto:" from refuris in the .MT line.
+    man/groff adds one ... but mandoc does not :-/
 
 * docutils/writers/null.py
 

@@ -170,7 +170,7 @@ whatever.""",
          document_start + indend_macros + """.TH "" "" "" ""
 .SH Name
  \\- \n\
-.MT mailto:jdoe@example.com
+.MT jdoe@example.com
 Write to me
 .ME \\c
  with your questions.
@@ -188,7 +188,7 @@ no spaces before and after the email.""",
 .SH Name
  \\- \n\
 email: (\\c
-.MT mailto:eee@mmm.al
+.MT eee@mmm.al
 eee@mmm.al
 .ME \\c
 ).
