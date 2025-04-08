@@ -1115,7 +1115,9 @@ class Translator(nodes.NodeVisitor):
             self.ensure_c_eol() # c_eol avoids space before the refuri
             _uri = node['refuri']
             if _uri.startswith('mailto:'):
-                _uri = _uri[7:] # remove "mailto:"
+                _uri = _uri[7:] # remove "mailto:" 
+                # groff macro in an.tmac adds "mailto:"
+                # mandoc does not.
                 self.body.append(".MT ")
                 self.context.append('.ME\n')
             else:
