@@ -107,6 +107,8 @@ Release 0.22b.dev (unpublished)
 * docutils/parsers/rst/states.py
 
   - Raise warning for empty footnotes and citations.
+  - Add source and line info to <enumerated-list> elements.
+    Fix line number of "start value not ordinal-1" INFO message.
 
 * docutils/readers/__init__.py:
 
