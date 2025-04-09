@@ -417,7 +417,7 @@ def set_classes(options) -> None:
     """Deprecated. Obsoleted by ``normalize_options()``."""
     warnings.warn('The auxiliary function roles.set_classes() is obsoleted'
                   ' by roles.normalize_options() and will be removed'
-                  ' in Docutils 1.0', DeprecationWarning, stacklevel=2)
+                  ' in Docutils 2.0', PendingDeprecationWarning, stacklevel=2)
     if options and 'class' in options:
         assert 'classes' not in options
         options['classes'] = options['class']
@@ -427,7 +427,7 @@ def set_classes(options) -> None:
 def normalized_role_options(options):
     warnings.warn('The auxiliary function roles.normalized_role_options() is '
                   'obsoleted by roles.normalize_options() and will be removed'
-                  ' in Docutils 1.0', DeprecationWarning, stacklevel=2)
+                  ' in Docutils 2.0', PendingDeprecationWarning, stacklevel=2)
     return normalize_options(options)
 
 

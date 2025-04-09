@@ -70,7 +70,7 @@ class Reader(Component):
             warnings.warn('Argument "parser_name" will be removed '
                           'in Docutils 2.0.\n'
                           '  Specify parser name in the "parser" argument.',
-                          DeprecationWarning, stacklevel=2)
+                          PendingDeprecationWarning, stacklevel=2)
             if self.parser is None:
                 self.set_parser(parser_name)
 

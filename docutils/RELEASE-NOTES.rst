@@ -142,6 +142,10 @@ Removals
   Use `parsers.rst.directives.CSS3_LENGTH_UNITS`.  Mind that this
   is a tuple, not a list.
 
+* Remove the "name" argument from
+  `writers.latex2e.LaTeXTranslator.visit_docinfo_item()`
+  (ignored since Docutils 0.22) in Docutils 0.24.
+
 * Remove `parsers.rst.directives.CSVTable.HeaderDialect`
   in Docutils 1.0.
 
@@ -158,13 +162,11 @@ Removals
 * Remove the input encoding auto-detection code in Docutils 1.0.
 
 * Remove `parsers.rst.roles.set_classes()` and
-  `parsers.rst.roles.normalized_role_options()` in Docutils 1.0.
+  `parsers.rst.roles.normalized_role_options()`
+  (obsoleted by `parsers.rst.roles.normalize_options()`) in Docutils 2.0.
 
 * Remove the "rawsource" argument from `nodes.Text.__init__()`
   in Docutils 2.0.
-
-* Remove the "name" argument from
-  `writers.latex2e.LaTeXTranslator.visit_docinfo_item()` in Docutils 0.24
 
 * Remove attributes `nodes.Element.known_attributes`,
   `nodes.Element.basic_attributes`, and `nodes.Element.local_attributes`,
@@ -178,8 +180,9 @@ Removals
 
 * Remove the "reader_name", "parser_name", and "writer_name" arguments of
   `core.Publisher.__init__()` and the `core.publish_*()` convenience
-  functions in Docutils 2.0.  Since Docutils 0.22, you may use "reader",
-  "parser", and "writer" arguments for component names as well as instances.
+  functions as well as the "parser_name" argument of `Reader.__init__()`
+  in Docutils 2.0.  Since Docutils 0.22, you may use "reader", "parser",
+  and "writer" arguments for component names as well as instances.
 
 Misc
 ----

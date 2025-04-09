@@ -38,12 +38,12 @@ class ReaderTests(unittest.TestCase):
         self.assertEqual(reader.parser, parser)
         # # the second argument `parser_name` is deprecated
         with self.assertWarnsRegex(
-            DeprecationWarning,
+            PendingDeprecationWarning,
             'Specify parser name in the "parser" argument.'):
             reader = readers.Reader(parser_name='rst')
         self.assertTrue(isinstance(reader.parser, parsers.rst.Parser))
         # if both arguments are specified, `parser` has precedence:
-        with self.assertWarns(DeprecationWarning):
+        with self.assertWarns(PendingDeprecationWarning):
             reader = readers.Reader(parser, parser_name='null')
         self.assertEqual(reader.parser, parser)
 

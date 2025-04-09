@@ -101,13 +101,13 @@ class PublisherTests(unittest.TestCase):
         # synchronize parser attributes of publisher and reader:
         self.assertEqual(publisher.reader.parser, publisher.parser)
         # the "parser_name" argument is deprecated;
-        with self.assertWarnsRegex(DeprecationWarning,
+        with self.assertWarnsRegex(PendingDeprecationWarning,
                                    'Argument "parser_name" will be removed'):
             publisher.set_reader('standalone', parser=None, parser_name='rst')
         self.assertTrue(isinstance(publisher.parser, parsers.rst.Parser))
         self.assertEqual(publisher.reader.parser, publisher.parser)
         # "parser" takes precedence
-        with self.assertWarns(DeprecationWarning):
+        with self.assertWarns(PendingDeprecationWarning):
             publisher.set_reader('standalone', parser, parser_name='rst')
         self.assertEqual(publisher.parser, parser)
         self.assertEqual(publisher.reader.parser, publisher.parser)

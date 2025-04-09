@@ -687,7 +687,8 @@ Release 0.19 (2022-07-05)
 
 * docutils/parsers/rst/directives/__init__.py
 
-  - `parser_name()` keeps details if converting  `ImportError` to  `ValueError`.
+  - `parser_name()` keeps details when converting `ImportError`
+    to  `ValueError`.
 
 * docutils/parsers/rst/roles.py
 
