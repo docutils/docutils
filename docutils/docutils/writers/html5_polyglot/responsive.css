@@ -91,8 +91,7 @@ div.dedication {
   display: none;
 }
 
-blockquote p.attribution,
-.topic p.attribution {
+blockquote p.attribution {
   text-align: right;
 }
 

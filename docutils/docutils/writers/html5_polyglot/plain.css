@@ -157,8 +157,7 @@ pre.math, pre.code {
 
 /* Block Quotes and Topics */
 bockquote { margin: 1em 2em; }
-blockquote p.attribution,
-.topic p.attribution {
+blockquote p.attribution {
   text-align: right;
   margin-left: 20%;
 }

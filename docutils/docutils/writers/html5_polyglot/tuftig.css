@@ -145,8 +145,7 @@ div.dedication p.topic-title {
 }
 
 /* Attribution */
-blockquote p.attribution,
-.topic p.attribution {
+blockquote p.attribution {
   text-align: right;
 }
 
