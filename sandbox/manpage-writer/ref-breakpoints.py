@@ -46,6 +46,10 @@ tests = (
         ("http://abc.de/fg/?q=abc", r"http://\:abc.de/\:fg/?\:q=abc"),
         ("http://abc.de/fg/?q=abc&me#", r"http://\:abc.de/\:fg/?\:q=abc&\:me#"),
         ("me@home.here", r"me@\:home.here"),
+        ("https://docutils.sourceforge.io/docs/ref/rst/directives.html",
+         r"https://\:docutils.sourceforge.io/\:docs/\:ref/\:rst/\:directives.html"),
+        ("docutils-develop@lists.sourceforge.net",
+         r"docutils-develop@\:lists.sourceforge.net"),
         )
 
 # after a slash series of
