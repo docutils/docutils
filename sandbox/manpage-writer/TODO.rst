@@ -132,6 +132,20 @@ Issues
        quences  from  hyperlinks  when supplying device control commands to output dri‐
        vers.
 
+* groff.1 at end of manpage has ::
+
+    .TP
+    \[lq]groff guess\[rq] utility:
+    .MR grog 1 \" #43
+    .
+    .
+    .\" Restore compatibility mode (for, e.g., Solaris 10/11).
+    .cp \n[*groff_groff_1_man_C]
+    .do rr *groff_groff_1_man_C
+    .
+
+  means what ? should we do this too ?
+
 
 Used macros ... to be completed
 -------------------------------
