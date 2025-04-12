@@ -138,7 +138,7 @@ URI-references are typeset in the generated man page.
       Linux Man Page Howto
       .UE
 
-    The the actual typesetting is done by man/roff/mandoc.
+    The actual typesetting is done by man/roff/mandoc.
 
     In groff 1.23 the macros support OSC8 output, to notify terminals that
     some text is a link, similar to html ``<a ref="abc.html">abc</a>``,
