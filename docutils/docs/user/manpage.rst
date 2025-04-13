@@ -199,6 +199,8 @@ Conventions
 
     .B #include <stdio.h>
 
+  which would be */usr/include/stdio.h*, typesetting C-code is probably better
+  passed on to Pygments_.
 
 References
 ==========
@@ -208,5 +210,6 @@ Consult man pages from section 7: *man*, *man-pages*, *groff_man* and
 
 .. [LMHT] `Linux Man Page Howto <https://tldp.org/HOWTO/Man-Page/>`__.
 
+.. _Pygments: https://pygments.org/
 .. _Docutils: https://docutils.sourceforge.io/
 .. _Docutils Document Tree: ../ref/doctree.html
