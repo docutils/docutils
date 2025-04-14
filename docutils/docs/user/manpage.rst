@@ -131,7 +131,7 @@ URI-references are typeset in the generated man page.
       see Linux Man Page Howto <https://tldp.org/HOWTO/Man-Page/>
 
 ``macro-references``: This results in the usage of *man*-macros for
-    URI-references::
+    URI-references similar to::
 
       see
       .UR https://tldp.org/HOWTO/Man-Page/
