@@ -2463,13 +2463,17 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         # alignment defaults:
         if 'align' not in attrs:
             # Set default align of image in a figure to 'center'
-            if isinstance(node.parent, nodes.figure):
+            if (isinstance(node.parent, nodes.figure)
+                or isinstance(node.parent, nodes.reference)
+                    and isinstance(node.parent.parent, nodes.figure)):
                 attrs['align'] = 'center'
             self.set_align_from_classes(node)
         # pre- and postfix (prefix inserted in reverse order)
         pre = []
         post = []
         include_graphics_options = []
+        if isinstance(node.parent, nodes.reference):
+            pre.append(self.out.pop())  # move \href behind alignment code
         align_codes = {
             # inline images: by default latex aligns the bottom.
             'bottom': ('', ''),
@@ -2877,6 +2881,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                          ord('%'): '\\%',
                          ord('\\'): '\\\\',
                          }
+        if not (self.is_inline(node) or isinstance(node.parent, nodes.figure)):
+            self.out.append('\n')
         # external reference (URL)
         if 'refuri' in node:
             href = str(node['refuri']).translate(special_chars)
@@ -2897,8 +2903,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             href = self.document.nameids[node['refname']]
         else:
             raise AssertionError('Unknown reference.')
-        if not self.is_inline(node):
-            self.out.append('\n')
         if self.reference_label:
             self.out.append('\\%s{%s}' %
                             (self.reference_label, href.replace('#', '')))
@@ -2907,7 +2911,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def depart_reference(self, node) -> None:
         self.out.append('}')
-        if not self.is_inline(node):
+        if not (self.is_inline(node) or isinstance(node.parent, nodes.figure)):
             self.out.append('\n')
 
     def visit_revision(self, node) -> None:

@@ -526,6 +526,7 @@ layout.
    :figclass: figclass1 figclass2
    :class: class1 class2
    :alt: reStructuredText, the markup syntax
+   :target: https://docutils.sourceforge.io/rst.html
    :width: 258
 
    Plaintext markup syntax and parser system.

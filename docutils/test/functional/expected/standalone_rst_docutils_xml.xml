@@ -848,7 +848,7 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                     media, figures might float to a different position if this helps the page
                     layout.</paragraph>
                 <figure classes="figclass1 figclass2">
-                    <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/title.png" width="258"></image>
+                    <reference refuri="https://docutils.sourceforge.io/rst.html"><image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/title.png" width="258"></image></reference>
                     <caption>Plaintext markup syntax and parser system.</caption>
                     <legend>
                         <table>

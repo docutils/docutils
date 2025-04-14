@@ -1338,7 +1338,8 @@
                     media, figures might float to a different position if this helps the page
                     layout.
                 <figure classes="figclass1 figclass2">
-                    <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/title.png" width="258">
+                    <reference refuri="https://docutils.sourceforge.io/rst.html">
+                        <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/title.png" width="258">
                     <caption>
                         Plaintext markup syntax and parser system.
                     <legend>
@@ -2425,15 +2426,15 @@
         <system_message level="1" line="476" source="functional/input/data/standard.rst" type="INFO">
             <paragraph>
                 Hyperlink target "image-target-3" is not referenced.
-        <system_message level="1" line="643" source="functional/input/data/standard.rst" type="INFO">
-            <paragraph>
-                Hyperlink target "target1" is not referenced.
         <system_message level="1" line="644" source="functional/input/data/standard.rst" type="INFO">
             <paragraph>
+                Hyperlink target "target1" is not referenced.
+        <system_message level="1" line="645" source="functional/input/data/standard.rst" type="INFO">
+            <paragraph>
                 Hyperlink target "target2" is not referenced.
-        <system_message level="1" line="689" source="functional/input/data/standard.rst" type="INFO">
+        <system_message level="1" line="690" source="functional/input/data/standard.rst" type="INFO">
             <paragraph>
                 Hyperlink target "docutils" is not referenced.
-        <system_message level="1" line="855" source="functional/input/data/standard.rst" type="INFO">
+        <system_message level="1" line="856" source="functional/input/data/standard.rst" type="INFO">
             <paragraph>
                 Hyperlink target "hyperlink targets" is not referenced.

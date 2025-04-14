@@ -129,8 +129,28 @@ A paragraph.
 Foo (some raw text)
 same paragraph.
 """],
-])
+# images and figures
+["""
+.. image:: larch-mini.jpg
+   :target: larch.jpg
+   :align: center
+""",
+r"""
+\noindent\makebox[\linewidth][c]{\href{larch.jpg}{\includegraphics{larch-mini.jpg}}}
+"""],
+["""\
+.. figure:: larch-mini.jpg
+   :target: larch.jpg
 
+   The larch
+""",
+r"""
+\begin{figure}
+\noindent\makebox[\linewidth][c]{\href{larch.jpg}{\includegraphics{larch-mini.jpg}}}
+\caption{The larch}
+\end{figure}
+"""],
+])
 
 samples['latex_sectnum'] = ({'sectnum_xform': False}, [
 ["""\
