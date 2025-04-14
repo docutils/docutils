@@ -229,6 +229,8 @@ reStructuredText:
 Document Tree / Docutils DTD
   - Allow multiple <term> elements in a `\<definition_list_item>`__
     (third-party writers may need adaption).
+  - The first element in a <figure> may also be a <reference>
+    (with nested "clickable" <image>).
 
   __ docs/ref/doctree.html#definition-list-item
 
@@ -377,7 +379,7 @@ Release 0.21 (2024-04-09)
   - Use the same CSV format for the ``:header:`` option and the main data
     of the "csv-table_" directive.
 
-  - New option "loading" for the `"image" directive`_.
+  - New option "loading" for the "image_" directive.
     Sets the new attribute loading__ of the <image> doctree element.
 
   __ docs/ref/doctree.html#loading
@@ -443,7 +445,6 @@ Release 0.21 (2024-04-09)
 
 .. _input encoding: docs/api/publisher.html#encodings
 .. _csv-table: docs/ref/rst/directives.html#csv-table
-.. _"image" directive: docs/ref/rst/directives.html#image
 .. _root_prefix: docs/user/config.html#root-prefix
 .. _sources: docs/user/config.html#sources
 
@@ -820,7 +821,7 @@ Release 0.14 (2017-08-03)
 
 * docutils/docs/ref/docutils.dtd:
 
-  - Enable validation of Docutils XML documents against the DTD:
+  - Enable validation of Docutils XML documents against the DTD.
 
 * docutils/parsers/rst/:
 

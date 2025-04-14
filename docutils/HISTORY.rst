@@ -33,6 +33,8 @@ Release 0.22b.dev (unpublished)
 
   - Allow multiple <term> elements in a <definition_list_item>.
     Fixes feature-request #60
+  - The first element in a <figure> may also be a <reference>
+    (with nested "clickable" <image>).
 
 * docutils/core.py
 

@@ -561,7 +561,7 @@ class Element(Node):
                  '+' (one or more), '*' (zero or more).
 
     NOTE: The default describes the empty element. Derived classes should
-    update this value to match teir content model.
+    update this value to match their content model.
 
     Provisional.
     """
@@ -2135,6 +2135,11 @@ class block_quote(General, Element):
     # ((%body.elements;)+, attribution?)
 
 
+class reference(General, Inline, Referential, TextElement):
+    valid_attributes: Final = Element.valid_attributes + (
+        'anonymous', 'name', 'refid', 'refname', 'refuri')
+
+
 # Lists
 # -----
 #
@@ -2340,7 +2345,7 @@ class legend(Part, Element):
 class figure(General, Element):
     """A formal figure, generally an illustration, with a title."""
     valid_attributes: Final = Element.valid_attributes + ('align', 'width')
-    content_model: Final = ((image, '.'),
+    content_model: Final = (((image, reference), '.'),
                             (caption, '?'),
                             (legend, '?'),
                             )
@@ -2566,11 +2571,6 @@ class strong(Inline, TextElement): pass
 class subscript(Inline, TextElement): pass
 class superscript(Inline, TextElement): pass
 class title_reference(Inline, TextElement): pass
-
-
-class reference(General, Inline, Referential, TextElement):
-    valid_attributes: Final = Element.valid_attributes + (
-        'anonymous', 'name', 'refid', 'refname', 'refuri')
 
 
 class footnote_reference(Inline, Referential, PureTextElement):

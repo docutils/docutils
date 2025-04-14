@@ -552,7 +552,7 @@ that is typeset as mathematical notation (display formula).
 <!ELEMENT pending EMPTY>
 <!ATTLIST pending %basic.atts;>
 
-<!ELEMENT figure (image, ((caption, legend?) | legend)) >
+<!ELEMENT figure ((image|reference), ((caption, legend?) | legend)) >
 <!ATTLIST figure
     %basic.atts;
     %align-h.att;
