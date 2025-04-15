@@ -3,7 +3,10 @@ TODOs
 
 :Date: $Date$
 
-* render references like mandoc does with the URUE macros.
+* references in text: ``Aaaaa \%(aaa@\:bb\:.ccc)``.
+
+  protect from hyphenation at usual points
+  AFTER setting good points with ``\:``.
 
 Issues
 ------
@@ -97,7 +100,11 @@ Issues
      You will not need to generate the arguments to the MR macro with a leading
      \% escape sequence. ... see feature request #107
 
-* groff_man_style on 
+     \% Control hyphenation.  The location of this escape
+        sequence within a word marks a hyphenation point,
+        supplementing groff’s automatic hyphenation patterns.  At
+        the beginning of a word, it suppresses any hyphenation
+        breaks within except those specified with \%.* groff_man_style on 
 
    Hyperlink macros
        Man  page  cross references like ls(1) are best presented with .MR.  Text may be
