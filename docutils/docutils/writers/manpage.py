@@ -91,11 +91,11 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 NONPRINTING_BREAKPOINT = r'\:'
 
 # after a slash series of
-# after?before at sign
+# after an at sign
 # after question marks
-# after question ampersands
-# after question number signs
-# (?=.) avoids matching the of string
+# after ampersands
+# after number signs
+# (?=.) avoids matching the end of string, requires something
 # TODO before each dot or a series of
 NONBREAKING_INSERT_RE = re.compile(r'([/@?&#]+)(?=.)')
 
