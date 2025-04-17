@@ -70,11 +70,6 @@ Document Tree / Docutils DTD
   The rST parser will handle a `doctest block`_ similar to a "code" directive
   with language "pycon" (Python console) and generate a <literal_block>.
 
-.. _"refname" attribute: docs/ref/doctree.html#refname
-.. _"colwidth" attribute: docs/ref/doctree.html#colwidth
-.. _<doctest_block>: docs/ref/doctree.html#doctest-block
-.. _doctest block: docs/ref/rst/restructuredtext.html#doctest-blocks
-
 Writers
 -------
 
@@ -159,7 +154,7 @@ Removals
   .. _recommonmark parser: docs/user/config.html#recommonmark-parser
   .. _MyST parser: docs/user/config.html#myst-parser
 
-* Remove the input encoding auto-detection code in Docutils 1.0.
+* Remove the input_encoding_ auto-detection code in Docutils 1.0.
 
 * Remove `parsers.rst.roles.set_classes()` and
   `parsers.rst.roles.normalized_role_options()`
@@ -198,22 +193,19 @@ Misc
 
   __ docs/ref/transforms.html
 
-.. _front end tools: docs/user/tools.html
-.. _input_encoding: docs/user/config.html#input-encoding
-.. _math_output: docs/user/config.html#math-output
-.. _UTF-8 mode: https://docs.python.org/3/library/os.html#utf8-mode
-.. _image_loading: docs/user/config.html#image-loading
-.. _old-format configuration files:
-   docs/user/config.html#old-format-configuration-files
-.. _rst2html.py:
-.. _rst2html: docs/user/tools.html#rst2html
-.. _rst2html4: docs/user/tools.html#rst2html4
-.. _rst2html5: docs/user/tools.html#rst2html5
-.. _reference name: docs/ref/rst/restructuredtext.html#reference-names
-.. _literal_block_env: docs/user/config.html#literal-block-env
-.. _use_latex_citations: docs/user/config.html#use-latex-citations
-.. _buildhtml.py: docs/user/tools.html#buildhtml-py
+* If the environment variable `SOURCE_DATE_EPOCH`_ is set, the `"date"`_
+  directive and the timestamp inserted by the "datestamp_"
+  configuration setting will use its value instead of the current time to
+  support `reproducible builds`_ in Docutils 1.0. [#]_
 
+  .. _SOURCE_DATE_EPOCH:
+      https://reproducible-builds.org/docs/source-date-epoch/
+  .. _reproducible builds: https://reproducible-builds.org/
+
+.. [#] The `Debian package`__ python-docutils (0.21.2+dfsg-2)
+   contains a patch to implement this behaviour since May 2023.
+
+   __ https://packages.debian.org/source/trixie/python-docutils
 
 Release 0.22b.dev (unpublished)
 ===============================
@@ -237,7 +229,7 @@ Document Tree / Docutils DTD
 Configuration changes
   - Make MathML the default math_output_ for the "html5" writer.
 
-  - Change the default input encoding from ``None`` (auto-detect) to "utf-8".
+  - Change the default input_encoding_ from ``None`` (auto-detect) to "utf-8".
 
   - Drop short options ``-i`` and ``-o``.
     Use the long equivalents ``--input-encoding`` and ``--output-encoding``.
@@ -253,8 +245,6 @@ Output changes
 
      Stop requiring "ifthen.sty". Replace use of
      ``\ifthenelse{\isundefined...`` with the eTeX primitive ``\ifdefined``.
-
-     .. _reference-label: docs/user/config.html#reference-label
 
   HTML5:
      Unitless image_ size measures__ are written as <img> "width" and
@@ -279,7 +269,7 @@ New objects
      Provisional.
 
      Try ``docutils --parser=xml test/data/multiple-term-definitions.xml``
-     or use the :parser: option of the `"include" directive`_ to include
+     or use the :parser: option of the `"include"`_ directive to include
      an XML file in a rST document.
 
   `nodes.Element.validate()`
@@ -325,10 +315,6 @@ Removed files
      Obsoleted by ``docutils/utils/_roman_numerals.py``
 
 Bugfixes and improvements (see HISTORY_).
-
-.. _Docutils Document Model:
-.. _Docutils XML: docs/ref/doctree.html
-.. _output_path: docs/user/config.html#output
 
 
 Release 0.21.2 (2024-04-23)
@@ -391,7 +377,7 @@ Release 0.21 (2024-04-09)
 
   - New configuration setting sources_ for the "buildhtml.py" application.
 
-  - Simpler and more secure `input encoding`_ default behaviour:
+  - Simpler and more secure `input_encoding`_ default behaviour:
 
     Do not use the locale encoding as fallback if Python is started in
     `UTF-8 mode`_. Stop using "latin1" as second fallback.
@@ -399,6 +385,8 @@ Release 0.21 (2024-04-09)
     Remove BOM (U+FEFF ZWNBSP at start of data) only if the `input_encoding`_
     configuration setting is None, '', 'utf-8-sig', 'utf-16', or 'utf-32'.
     Do not remove other ZWNBSPs.
+
+    .. _UTF-8 mode: https://docs.python.org/3/library/os.html#utf8-mode
 
 * Output changes:
 
@@ -442,11 +430,6 @@ Release 0.21 (2024-04-09)
   __ README.html#installation
 
 * Bugfixes and improvements (see HISTORY_).
-
-.. _input encoding: docs/api/publisher.html#encodings
-.. _csv-table: docs/ref/rst/directives.html#csv-table
-.. _root_prefix: docs/user/config.html#root-prefix
-.. _sources: docs/user/config.html#sources
 
 
 Release 0.20.1 (2023-05-17)
@@ -500,15 +483,13 @@ Release 0.20 (2023-05-04)
   - Removed. Use the coverage.py_ project instead,
     ``coverage run test/alltests.py`` and ``coverage report``.
 
+    .. _coverage.py: https://pypi.org/project/coverage/
+
 * tools/
 
   - Moved ``quicktest.py`` to ``tools/dev/``.
 
 * Bugfixes and improvements (see HISTORY_).
-
-.. _[latex writers]: docs/user/config.html#latex-writers
-.. _output: docs/user/config.html#output
-.. _coverage.py: https://pypi.org/project/coverage/
 
 
 Release 0.19 (2022-07-05)
@@ -537,12 +518,9 @@ Release 0.19 (2022-07-05)
 
 * Various bugfixes and improvements (see HISTORY_).
 
-.. _generic command line front end tool:
-    docs/user/tools.html#generic-command-line-front-end
 .. _myst: https://pypi.org/project/myst-docutils
 .. _pycmark: https://pypi.org/project/pycmark/
 .. _recommonmark: https://pypi.org/project/recommonmark/
-.. _configuration settings: docs/user/config.html
 
 
 Release 0.18.1 (2021-12-23)
@@ -556,9 +534,9 @@ Release 0.18.1 (2021-12-23)
   compatibility (fixes bug #431).
   Use ``nodes.Node.findall()`` to get an iterator.
 
-* re-add module ``parsers.rst.directives.html``
-  (stub, emits deprecation warning and loads
-  "Meta" directive from its new place at ``parsers.rst.directives.misc``.)
+* re-add module `parsers.rst.directives.html`
+  (stub, emits deprecation warning and loads "Meta" directive
+  from its new place at `parsers.rst.directives.misc`.)
 
 * Small bugfixes (see HISTORY_).
 
@@ -593,12 +571,15 @@ Release 0.18 (2021-10-26)
       __ docs/user/config.html#table-style
 
     - Items of a definition list with class argument "details" are
-      converted to `details disclosure elements`_. Example::
+      converted to `details disclosure elements`__. Example::
 
         ..class:: details
 
         Summary
           This additional information should be hidden.
+
+      __ https://www.w3.org/TR/html52/interactive-elements.html
+         #the-details-element
 
     - Do not add "compound-first", "compound-middle", or "compound-last" to
       elements nested in a compound. Use child selector and ":first-child",
@@ -613,7 +594,7 @@ Release 0.18 (2021-10-26)
     - Move space character between section number and heading into
       "sectnum" span.
 
-  `math-output`_: html
+  `math_output`_: html
     - Support more commands, fix mapping of commands to Unicode characters.
     - Scale variable sized operators and big delimiters with CSS.
     - Don't use <tt> element (deprecated in HTML5).
@@ -636,16 +617,15 @@ Release 0.18 (2021-10-26)
   ``iepngfix.htc`` and ``blank.gif`` (IE 6 workaround for `s5_html`).
 
 * Removed sub-module:
-  ``parsers.rst.directives.html``
-  (reversed in release 0.18.1).
+  `parsers.rst.directives.html` (reversed in release 0.18.1).
 
-* Removed function: utils.unique_combinations()
-  (obsoleted by itertools.combinations()).
+* Removed function: `utils.unique_combinations()`
+  (obsoleted by `itertools.combinations()`).
 
 * Removed attributes:
 
-  - ``HTMLTranslator.topic_classes``: check ``node.parent.classes`` instead.
-  - ``nodes.Text.rawsource``: we store the null-escaped text in Text
+  - `HTMLTranslator.topic_classes`: check `node.parent.classes` instead.
+  - `nodes.Text.rawsource`: we store the null-escaped text in Text
     nodes since 0.16 so there is no additional information in the
     rawsource.
 
@@ -661,16 +641,6 @@ Release 0.18 (2021-10-26)
 
   Fix spelling errors in documentation and docstrings.
   Thanks to Dimitri Papadopoulos.
-
-.. _"widths" option: __ docs/ref/rst/directives.html#table
-.. _identifier normalization:
-    docs/ref/rst/directives.html#identifier-normalization
-.. _id_prefix: docs/user/config.html#id-prefix
-.. _auto_id_prefix: docs/user/config.html#auto-id-prefix
-.. _details disclosure elements:
-    https://www.w3.org/TR/html52/interactive-elements.html#the-details-element
-.. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
-.. _legacy_column_widths: docs/user/config.html#legacy-column-widths
 
 
 Release 0.17.1 (2021-04-16)
@@ -707,6 +677,9 @@ Release 0.17 (2021-04-03)
   - Change the `initial_header_level`_ setting's default to "2", as browsers
     use the `same style for <h1> and <h2> when nested in a section`__.
 
+    __ https://stackoverflow.com/questions/39547412/
+       same-font-size-for-h1-and-h2-in-article
+
   - New optional style ``responsive.css``, adapts to different screen
     sizes.
 
@@ -715,10 +688,6 @@ Release 0.17 (2021-04-03)
 
   - Show code line numbers as pseudo-elements so they are skipped when
     copying the code block from the page.
-
-  .. _initial_header_level: docs/user/config.html#initial-header-level
-  __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article
-  .. _embed_images: docs/user/config.html#embed-images
 
 * LaTeX writer:
 
@@ -742,9 +711,6 @@ Release 0.17 (2021-04-03)
 
 .. _setuptools: https://pypi.org/project/setuptools/
 .. _pip: https://pypi.org/project/pip/
-.. _docutils-cli.py: docs/user/tools.html#docutils-cli-py
-.. _legacy_class_functions: docs/user/config.html#legacy-class-functions
-.. _graphicx_option: docs/user/config.html#graphicx-option
 .. _docutils.sty: https://ctan.org/pkg/docutils
 
 
@@ -787,9 +753,6 @@ without the use of the ``2to3`` tool.
   - If `auto_id_prefix`_ ends with "%", this is replaced with the tag name.
 
 * Various bugfixes and improvements (see HISTORY_).
-
-.. _"writer" setting: docs/user/config.html#writer-buildhtml-application
-.. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 
 
 Release 0.15 (2019-07-20)
@@ -842,8 +805,8 @@ Release 0.14 (2017-08-03)
   - Provide default title in metadata.
   - The MathJax CDN shut down on April 30, 2017. For security reasons, we
     don't use a third party public installation as default but warn
-    if `math-output` is set to MathJax without specifying a URL.
-    See math-output_ for details.
+    if `math_output` is set to MathJax without specifying a URL.
+    See math_output_ for details.
 
 * docutils/writers/html4css1:
 
@@ -922,7 +885,7 @@ Release 0.11 (2013-07-22)
       process at launch, it is used instead of the one provided by Docutils
       in the writer source directory.
 
-  - New default for math-output_: ``HTML math.css``.
+  - New default for math_output_: ``HTML math.css``.
   - Avoid repeated class declarations in html4css1 writer
     (modified version of patch [ 104 ]).
 
@@ -939,9 +902,6 @@ Release 0.11 (2013-07-22)
 
   - Fix [3607063] handle lines starting with a period.
   - Fix option separating comma was bold (thanks to Bill Morris).
-
-.. _math-output: docs/user/config.html#math-output
-.. _SmartQuotes: docs/user/config.html#smart-quotes
 
 
 Release 0.10 (2012-12-16)
@@ -1184,7 +1144,7 @@ and convertible to 3.1 code.
     (allows setting the alignment of an image in a figure).
   - Hard tabs **in literal inclusions** are replaced by spaces.
     This is configurable via the new ``:tab-width:`` option of the
-    `"include" directive`_ (a negative tab-width prevents tab expansion).
+    `"include"`_ directive (a negative tab-width prevents tab expansion).
 
 * HTML writer:
 
@@ -1223,9 +1183,6 @@ and convertible to 3.1 code.
 * manpage writer:
 
   - moved from sandbox to Doctutils core.
-
-.. _"include" directive:
-    docs/ref/rst/directives.html#including-an-external-document-fragment
 
 
 Release 0.5 (2008-06-25)
@@ -1313,17 +1270,14 @@ reStructuredText:
 
 * Added directives: "container__" (generic block-level container),
   "default-role__" (role used for \`backtick\` syntax), "title__"
-  (document title metadata), and "date__" (generate the current local
+  (document title metadata), and `"date"`_ (generate the current local
   date, for substitution definitions).
 
   __ docs/ref/rst/directives.html#container
   __ docs/ref/rst/directives.html#default-role
   __ docs/ref/rst/directives.html#title
-  __ docs/ref/rst/directives.html#date
 
 * Length units are now supported for image_ sizes.
-
-  .. _image: docs/ref/rst/directives.html#image
 
 * Added `standard definition files`__ for special characters etc.
 
@@ -1431,9 +1385,65 @@ Release 0.3.5 (2004-07-29)
 
   __ docs/index.html
 
-* Added "csv-table__" directive.
+* Added "csv-table_" directive.
 
-  __ docs/ref/rst/directives.html#csv-table
+
+.. References
+   ==========
 
 .. _HISTORY: HISTORY.html
 .. _Python 3 compatibility: README.html#python-3-compatibility
+
+.. _Docutils Document Model:
+.. _Docutils XML: docs/ref/doctree.html
+.. _"refname" attribute: docs/ref/doctree.html#refname
+.. _"colwidth" attribute: docs/ref/doctree.html#colwidth
+.. _<doctest_block>: docs/ref/doctree.html#doctest-block
+
+.. _csv-table: docs/ref/rst/directives.html#csv-table
+.. _"date": docs/ref/rst/directives.html#date
+.. _doctest block: docs/ref/rst/restructuredtext.html#doctest-blocks
+.. _identifier normalization:
+    docs/ref/rst/directives.html#identifier-normalization
+.. _image: docs/ref/rst/directives.html#image
+.. _"include":
+    docs/ref/rst/directives.html#including-an-external-document-fragment
+.. _"widths" option: docs/ref/rst/directives.html#table
+
+.. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
+
+.. _configuration settings: docs/user/config.html
+.. _auto_id_prefix: docs/user/config.html#auto-id-prefix
+.. _datestamp: docs/user/config.html#datestamp
+.. _embed_images: docs/user/config.html#embed-images
+.. _graphicx_option: docs/user/config.html#graphicx-option
+.. _legacy_class_functions: docs/user/config.html#legacy-class-functions
+.. _literal_block_env: docs/user/config.html#literal-block-env
+.. _id_prefix: docs/user/config.html#id-prefix
+.. _image_loading: docs/user/config.html#image-loading
+.. _initial_header_level: docs/user/config.html#initial-header-level
+.. _input_encoding: docs/user/config.html#input-encoding
+.. _[latex writers]: docs/user/config.html#latex-writers
+.. _legacy_column_widths: docs/user/config.html#legacy-column-widths
+.. _math_output: docs/user/config.html#math-output
+.. _old-format configuration files:
+    docs/user/config.html#old-format-configuration-files
+.. _output:
+.. _output_path: docs/user/config.html#output
+.. _reference-label: docs/user/config.html#reference-label
+.. _root_prefix: docs/user/config.html#root-prefix
+.. _SmartQuotes: docs/user/config.html#smart-quotes
+.. _sources: docs/user/config.html#sources
+.. _use_latex_citations: docs/user/config.html#use-latex-citations
+.. _"writer" setting: docs/user/config.html#writer-buildhtml-application
+
+.. _front end tools: docs/user/tools.html
+.. _docutils-cli.py:
+.. _generic command line front end tool:
+    docs/user/tools.html#generic-command-line-front-end
+.. _rst2html.py:
+.. _rst2html: docs/user/tools.html#rst2html
+.. _rst2html4: docs/user/tools.html#rst2html4
+.. _rst2html5: docs/user/tools.html#rst2html5
+.. _reference name: docs/ref/rst/restructuredtext.html#reference-names
+.. _buildhtml.py: docs/user/tools.html#buildhtml-py
