@@ -111,6 +111,9 @@ Release 0.22b.dev (unpublished)
   - Raise warning for empty footnotes and citations.
   - Add source and line info to <enumerated-list> elements.
     Fix line number of "start value not ordinal-1" INFO message.
+  - Change section handling to not rely on exceptions and reparsing.
+    Based on patch #213 by Arne Skjærholt.
+    Fixes bug #346 (duplicate System Messages).
 
 * docutils/readers/__init__.py:
 

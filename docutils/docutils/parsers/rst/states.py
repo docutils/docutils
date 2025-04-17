@@ -163,8 +163,9 @@ class RSTStateMachine(StateMachineWS):
                            reporter=document.reporter,
                            language=self.language,
                            title_styles=[],
-                           section_level=0,
-                           section_bubble_up_kludge=False,
+                           section_parents=[],
+                           section_level=0,  # will be removed in Docutils 2.0
+                           section_bubble_up_kludge=False,  # will be removed
                            inliner=inliner)
         self.document = document
         self.attach_observer(document.note_source)
@@ -330,46 +331,42 @@ class RSTState(StateWS):
 
     def check_subsection(self, source, style, lineno) -> bool:
         """
-        Check for a valid subsection header.  Return True or False.
+        Check for a valid subsection header.  Update section data in `memo`.
 
         When a new section is reached that isn't a subsection of the current
-        section, back up the line count (use ``previous_line(-x)``), then
-        ``raise EOFError``.  The current StateMachine will finish, then the
-        calling StateMachine can re-examine the title.  This will work its way
-        back up the calling chain until the correct section level isreached.
-
-        @@@ Alternative: Evaluate the title, store the title info & level, and
-        back up the chain until that level is reached.  Store in memo? Or
-        return in results?
-
-        :Exception: `EOFError` when a sibling or supersection encountered.
+        section, set `self.parent` to the new section's parent section.
         """
         memo = self.memo
         title_styles = memo.title_styles
-        mylevel = memo.section_level
+        mylevel = len(memo.section_parents)
+        # Determine the level of the new section:
         try:                            # check for existing title style
             level = title_styles.index(style) + 1
         except ValueError:              # new title style
-            if len(title_styles) == memo.section_level:  # new subsection
-                title_styles.append(style)
-                return True
-            else:                       # not at lowest level
-                self.parent += self.title_inconsistent(source, lineno)
-                return False
-        if level <= mylevel:            # sibling or supersection
-            memo.section_level = level   # bubble up to parent section
-            if len(style) == 2:
-                memo.section_bubble_up_kludge = True
-            # back up 2 lines for underline title, 3 for overline title
-            self.state_machine.previous_line(len(style) + 1)
-            raise EOFError              # let parent section re-evaluate
-        if level == mylevel + 1:        # immediate subsection
-            return True
-        else:                           # invalid subsection
-            self.parent += self.title_inconsistent(source, lineno)
+            title_styles.append(style)
+            level = len(title_styles)
+        # The new level must not be deeper than an immediate child
+        # of the current level:
+        if level > mylevel + 1:
+            self.parent += self.reporter.severe(
+                               'Title level inconsistent:',
+                               nodes.literal_block('', source),
+                               line=lineno)
             return False
+        # Update parent state:
+        if level > mylevel:
+            # new section is subsection of current section
+            memo.section_parents.append(self.parent)
+            memo.section_level += 1
+        else:
+            # new section is sibling or higher up in the section hierarchy
+            memo.section_parents[level:] = []
+            self.parent = memo.section_parents[-1]
+            memo.section_level = len(memo.section_parents)
+        return True
 
     def title_inconsistent(self, sourcetext, lineno):
+        # Ignored. Will be removed in Docutils 2.0.
         error = self.reporter.severe(
             'Title level inconsistent:', nodes.literal_block('', sourcetext),
             line=lineno)
@@ -377,9 +374,6 @@ class RSTState(StateWS):
 
     def new_subsection(self, title, lineno, messages):
         """Append new subsection to document tree. On return, check level."""
-        memo = self.memo
-        mylevel = memo.section_level
-        memo.section_level += 1
         section_node = nodes.section()
         self.parent += section_node
         textnodes, title_messages = self.inline_text(title, lineno)
@@ -390,16 +384,16 @@ class RSTState(StateWS):
         section_node += messages
         section_node += title_messages
         self.document.note_implicit_target(section_node, section_node)
-        offset = self.state_machine.line_offset + 1
-        absoffset = self.state_machine.abs_line_offset() + 1
-        newabsoffset = self.nested_parse(
-              self.state_machine.input_lines[offset:], input_offset=absoffset,
-              node=section_node, match_titles=True)
-        self.goto_line(newabsoffset)
-        if memo.section_level <= mylevel:  # can't handle next section?
-            raise EOFError                 # bubble up to supersection
-        # reset section_level; next pass will detect it properly
-        memo.section_level = mylevel
+        # Update state:
+        self.state_machine.node = section_node
+        # Also update the ".parent" attribute in all states.
+        # This is a bit violent, but the state classes copy their .parent from
+        # state_machine.node on creation, so we need to update them. We could
+        # also remove RSTState.parent entirely and replace references to it
+        # with statemachine.node, but that might break code downstream of
+        # docutils.
+        for s in self.state_machine.states.values():
+            s.parent = section_node
 
     def paragraph(self, lines, lineno):
         """
@@ -2950,25 +2944,20 @@ class Line(SpecializedText):
     Second line of over- & underlined section title or transition marker.
     """
 
-    eofcheck = 1                        # @@@ ???
-    """Set to 0 while parsing sections, so that we don't catch the EOF."""
+    eofcheck = 1  # will be removed in Docutils 2.0.
 
     def eof(self, context):
         """Transition marker at end of section or document."""
         marker = context[0].strip()
-        if self.memo.section_bubble_up_kludge:
-            self.memo.section_bubble_up_kludge = False
-        elif len(marker) < 4:
+        if len(marker) < 4:
             self.state_correction(context)
-        if self.eofcheck:               # ignore EOFError with sections
-            src, srcline = self.state_machine.get_source_and_line()
-            # lineno = self.state_machine.abs_line_number() - 1
-            transition = nodes.transition(rawsource=context[0])
-            transition.source = src
-            transition.line = srcline - 1
-            # transition.line = lineno
-            self.parent += transition
-        self.eofcheck = 1
+        src, srcline = self.state_machine.get_source_and_line()
+        # lineno = self.state_machine.abs_line_number() - 1
+        transition = nodes.transition(rawsource=context[0])
+        transition.source = src
+        transition.line = srcline - 1
+        # transition.line = lineno
+        self.parent += transition
         return []
 
     def blank(self, match, context, next_state):
@@ -3040,9 +3029,7 @@ class Line(SpecializedText):
                       line=lineno)
                 messages.append(msg)
         style = (overline[0], underline[0])
-        self.eofcheck = 0               # @@@ not sure this is correct
         self.section(title.lstrip(), source, style, lineno + 1, messages)
-        self.eofcheck = 1
         return [], 'Body', []
 
     indent = text                       # indented title

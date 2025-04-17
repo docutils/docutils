@@ -129,7 +129,6 @@ Writers
 __ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
    #the-blockquote-element
 
-
 Removals
 --------
 
@@ -184,6 +183,11 @@ Removals
   in Docutils 2.0.  Since Docutils 0.22, you may use "reader", "parser",
   and "writer" arguments for component names as well as instances.
 
+* Remove `states.RSTStateMachine.memo.section_bubble_up_kludge`,
+  `states.RSTStateMachine.memo.section_level`,
+  `states.RSTState.title_inconsistent()`, and `states.Line.eofcheck`
+  in Docutils 2.0. Ignored since Docutils 0.22.
+
 Misc
 ----
 
@@ -211,6 +215,7 @@ Misc
    contains a patch to implement this behaviour since May 2023.
 
    __ https://packages.debian.org/source/trixie/python-docutils
+
 
 Release 0.22b.dev (unpublished)
 ===============================
@@ -286,7 +291,6 @@ New objects
      Generic Docutils document tree translator base class with
      `uri2path()` auxiliary method.
      Provisional.
-
 
 Removed objects
   `docutils.core.Publisher.setup_option_parser()`

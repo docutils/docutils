@@ -840,10 +840,6 @@ Paragraph
                 <paragraph>
                     Possible incomplete section title.
                     Treating the overline as ordinary text because it's so short.
-    <system_message level="1" line="7" source="test data" type="INFO">
-        <paragraph>
-            Possible incomplete section title.
-            Treating the overline as ordinary text because it's so short.
     <section dupnames="..." ids="section-3">
         <title>
             ...

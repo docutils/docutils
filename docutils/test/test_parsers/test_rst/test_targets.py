@@ -23,6 +23,9 @@ from docutils.utils import new_document
 
 
 class ParserTestCase(unittest.TestCase):
+
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -290,7 +293,7 @@ Title
         <title>
             Title
         <pending ids="title-1" names="title">
-            <system_message backrefs="title-1" level="1" line="4" source="test data" type="INFO">
+            <system_message backrefs="title-1" level="1" line="7" source="test data" type="INFO">
                 <paragraph>
                     Duplicate implicit target name: "title".
             .. internal attributes:
@@ -412,7 +415,7 @@ Explicit internal target.
         <target dupnames="target" ids="target-4" refuri="Explicit_external_target">
         <rubric dupnames="target" ids="target-5">
             directive with target
-            <system_message backrefs="target-5" level="2" line="4" source="test data" type="WARNING">
+            <system_message backrefs="target-5" level="2" line="19" source="test data" type="WARNING">
                 <paragraph>
                     Duplicate explicit target name: "target".
 """],
