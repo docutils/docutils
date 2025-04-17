@@ -345,7 +345,7 @@ Figure
 
 A "figure" consists of image_ data (including `image options`_), an optional
 caption (a single paragraph), and an optional legend (arbitrary body
-elements). For page-based output media, figures might float to a different
+elements). On paged output media, figures may float to a different
 position if this helps the page layout.
 ::
 

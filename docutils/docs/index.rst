@@ -39,12 +39,12 @@ can be categorized in several groups:
   Client-developers
     developers using Docutils as a library,
     programmers developing *with* Docutils.
-  Component-developers:
+  Component-developers
     those who implement application-specific components,
     directives, and/or roles, separately from Docutils.
   Core-developers
-    developers of the Docutils codebase and participants
-    in the Docutils project community.
+    contributors to the Docutils codebase and
+    participants in the Docutils project community.
   Re-implementers
     developers of alternate implementations of Docutils.
 
@@ -213,24 +213,26 @@ Development Notes and Plans for Core-Developers
 ===============================================
 
 Docutils-general:
-  * `Docutils Hacker's Guide <dev/hacking.html>`__
-  * `Docutils Distributor's Guide <dev/distributing.html>`__
-  * `Docutils To Do List <dev/todo.html>`__
   * `Docutils Project Policies <dev/policies.html>`__
+  * `Docutils Testing <dev/testing.html>`__
+  * `Docutils Hacker's Guide <dev/hacking.html>`__
+  * `Docutils To Do List <dev/todo.html>`__
+  * `Docutils Version Repository <dev/repository.html>`__
   * `Docutils Web Site <dev/website.html>`__
   * `Docutils Release Procedure <dev/release.html>`__
-  * `The Docutils Subversion Repository <dev/repository.html>`__
-  * `Docutils Testing <dev/testing.html>`__
-  * `Docstring Semantics <dev/semantics.html>`__ (incomplete)
-  * `Python Source Reader <dev/pysource.html>`_ (incomplete)
-  * `Docutils Python DTD <dev/pysource.dtd>`_
-  * `Plan for Enthought API Documentation Tool <dev/enthought-plan.html>`_
-  * `Enthought API Documentation Tool RFP <dev/enthought-rfp.html>`_
+  * `Docutils Distributor's Guide <dev/distributing.html>`__
 
 reStructuredText_:
   * `A Record of reStructuredText Syntax Alternatives
     <dev/rst/alternatives.html>`__
   * `Problems With StructuredText <dev/rst/problems.html>`__
+
+Suspended projects and plans:
+  * `Docstring Semantics <dev/semantics.html>`__ (incomplete)
+  * `Python Source Reader <dev/pysource.html>`_ (incomplete)
+  * `Docutils Python DTD <dev/pysource.dtd>`_
+  * `Plan for Enthought API Documentation Tool <dev/enthought-plan.html>`_
+  * `Enthought API Documentation Tool RFP <dev/enthought-rfp.html>`_
 
 .. Emacs settings
 

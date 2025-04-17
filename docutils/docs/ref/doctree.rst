@@ -548,7 +548,23 @@ Pseudo-XML_ fragment from simple parsing::
 <attribution>
 =============
 
-`To be completed`_.
+The <attribution> element identifies the source of a `\<block_quote>`_.
+
+:Category:   `Body Subelements`_ (simple)
+:Analogues:  <attribution> is analogous to the DocBook_ <attribution> element.
+:Processing: Placed below the block quote, usually be preceded by a dash,
+             right aligned, or otherwise set apart from the quotation.
+:Parent:     `\<block_quote>`_
+:Children:   text data plus `inline elements`_ (`%text.model`_)
+:Attributes: only the `common attributes`_.
+
+The Docutils HTML and LaTeX writers provide the `"attribution"`_ setting
+to configure the formatting of the `\<attribution>`_.
+
+Examples
+--------
+
+See `\<block_quote>`_.
 
 
 <author>
@@ -676,6 +692,9 @@ Pseudo-XML_ fragment from simple parsing::
         <attribution>
             Anne Elk (Miss)
 
+The `"epigraph"`_ and `"pull-quote"`_ directives produce <block_quote>
+elements, too.
+
 
 <bullet_list>
 =============
@@ -729,7 +748,27 @@ See `\<list_item>`_ for another example.
 <caption>
 =========
 
-`To be completed`_.
+The <caption> element represents the title/caption of a `\<figure>`_. [#]_
+
+:Category:   `Body Subelements`_ (simple)
+:Analogues:  The <caption> element is analogous to the DocBook_
+             <title> element (but specific to a `\<figure>`_).
+             The HTML_ <figcaption> element combines <caption>
+             and `\<legend>`_.
+:Processing: Placed above, below, or besides the image it
+             describes. Often preceded by a figure number.
+             May be repeated in a generated "list of figures".
+:Parent:     `\<figure>`_
+:Children:   text data plus `inline elements`_ (`%text.model`_)
+:Attributes: only the `common attributes`_.
+
+Examples
+--------
+
+See `\<figure>`_.
+
+.. [#] The title/caption of a `\<table>`_ is represented by
+       a `\<title>`_ element.
 
 
 <caution>
@@ -765,14 +804,101 @@ Pseudo-XML_ fragment from simple parsing::
 <citation>
 ==========
 
-`To be completed`_.
+The <citation> element contains a description of an external
+bibliographic source.  It is usually paired with one or more
+`\<citation_reference>`_ elements that represent corresponding
+reference marks in the running text.
+
+:Category:   `Compound Body Elements`_
+
+:Analogues:  <citation> is analogous to the DocBook_ <bibliomixed>
+             element. [#]_
+
+             The "doc-biblioentry" `DPub ARIA`_ role
+             (deprecated in version 1.1) can be used
+             to mark a `conforming HTML emulation`_.
+             The corresponding type in the
+             `EPUB 3 Structural Semantics Vocabulary`_ is "biblioentry".
+
+:Processing: Formatted as entry in a bibliography
+             or similar to a `\<footnote>`_.
+
+:Parents:    all elements employing `%body.elements`_ or
+             `%structure.model`_ in their content models
+
+:Children:   <citation> elements begin with a `\<label>`_
+             and contain `body elements`_::
+
+                 (label, (%body.elements;)+)
+
+:Attributes: the `common attributes`_ and backrefs_.
+
+.. [#] The DocBook_ <citation> element resembles a `\<citation_reference>`_.
+
+Example
+-------
+See `\<citation_reference>`_.
 
 
 <citation_reference>
 ====================
 
-`To be completed`_.
+The <citation_reference> element represents a cross reference
+to a `\<citation>`_.
 
+:Category:   `Inline Elements`_
+:Analogues:  The <citation_reference> element is analogous
+             to the DocBook_ <citation> element.
+             There is no equivalent in HTML. The <a> element can be used
+             to provide a link to the corresponding citation.
+:Processing: Typically enclosed in square brackets.
+:Parents:    all elements employing `%text.model`_ in their content models
+:Children:   only text data
+:Attributes: refid_, refname_, and the `common attributes`_.
+
+Example
+-------
+
+reStructuredText syntax for `citation references`_ is similar to a
+`footnote reference`_ except for the use of a `simple reference name`_
+instead of a numerical or symbolic label::
+
+    For details on brontosauruses, see [Elk:70]_.
+
+    .. [Elk:70] `My Theory on Brontosauruses`,
+                Anne Elk, London, 1972.
+
+Pseudo-XML_ fragment simple parsing::
+
+    <paragraph>
+        For details on brontosauruses, see
+        <citation_reference ids="citation-reference-1" refname="elk:70">
+            Elk:70
+        .
+    <citation ids="elk-70" names="elk:70">
+        <label>
+            Elk:70
+        <paragraph>
+            <title_reference>
+                My Theory on Brontosauruses
+            ,
+            Anne Elk, London, 1972.
+
+The ``references.Footnotes`` Docutils transform_ resolves this to::
+
+    <paragraph>
+        For details on brontosauruses, see
+        <citation_reference ids="citation-reference-1" refid="elk-70">
+            Elk:70
+        .
+    <citation backrefs="citation-reference-1" ids="elk-70" names="elk:70">
+        <label>
+            Elk:70
+        <paragraph>
+            <title_reference>
+                My Theory on Brontosauruses
+            ,
+            Anne Elk, London, 1972.
 
 <classifier>
 ============
@@ -826,7 +952,7 @@ Pseudo-XML_ fragment from simple parsing::
 The <colspec> element contains specifications for a column in a `\<table>`_.
 It is  defined in the `Exchange Table Model`_.
 
-:Category:   `Body Subelements`_
+:Category:   `Body Subelements`_ (empty)
 :Analogues:  <colspec> is analogous to the DocBook_ <colspec> element.
              The HTML_ <col> element is related but has different semantics.
 :Processing: See `colspec`__ in the `Exchange Table Model`.
@@ -851,8 +977,49 @@ See `\<table>`_.
 <comment>
 =========
 
-`To be completed`_.
+The <comment> element is used for explanatory notes that should not be
+visible in the document rendering.
 
+:Category:   `Simple Body Elements`_
+:Analogues:  While most markup languages provide a syntax for comments,
+             the <comment> element has no direct analogues in HTML or DocBook.
+:Processing: Included as comment or skipped in translations to other markup
+             languages. [#]_  Hidden from the document rendering.
+:Parents:    all elements employing `%body.elements`_, `%structure.model`_,
+             or `%text.model`_ in their content models
+:Children:   only text data
+:Attributes: `xml:space`_ and the `common attributes`_.
+
+Examples
+--------
+
+In reStructuredText, a comment_ block [#]_ is started by two full stops.
+No processing is done on the content but beware of a misinterpretation as
+`explicit markup construct`_::
+
+    .. This is a *comment*.
+    .. [This] is a *citation*.
+    ..
+       [This] is another *comment*.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <comment xml:space="preserve">
+        This is a *comment*.
+    <citation ids="this" names="this">
+        <label>
+            This
+        <paragraph>
+            is a
+            <emphasis>
+                citation
+            .
+    <comment xml:space="preserve">
+        [This] is another *comment*.
+
+.. [#] In Docutils, the `"strip_comments"`_ configuration setting
+       triggers the removal of comment elements from the document tree.
+.. [#] There is no syntax for inline comments in reStructuredText.
 
 <compound>
 ==========
@@ -1266,7 +1433,7 @@ See `\<definition_list>`_ and `\<classifier>`_ for further examples.
 The <description> element is the part of an `\<option_list>`_ item that
 contains the description of a command-line option or group of options.
 
-:Category:   `Body Subelements`_
+:Category:   `Body Subelements`_ (compound)
 :Analogues:  <description> has no direct analogues in common DTDs.
 :Processing: see `\<option_list>`_
 :Parent:     `\<option_list_item>`_
@@ -1275,7 +1442,7 @@ contains the description of a command-line option or group of options.
 
 Examples
 --------
-See the examples for the `\<option_list>`_ element.
+See `\<option_list>`_.
 
 
 <docinfo>
@@ -1527,9 +1694,9 @@ Pseudo-XML_ fragment from simple parsing::
 The <entry> element represents one cell of a `\<table>`_.
 It is defined in the `Exchange Table Model`_.
 
-:Category:   `Body Subelements`_
+:Category:   `Body Subelements`_ (compound)
 :Analogues:  <entry> is analogous to the DocBook_ <entry> element.
-             HTML_ differentiates between header entries <td>
+             HTML_ differentiates between header entries <th>
              and data entries <td>.
 :Processing: Render content in a table cell.  The morecols_ and morerows_
              attributes may be used to define an entry spanning several
@@ -1643,7 +1810,7 @@ Pseudo-XML_ fragment from simple parsing::
 The <field> element contains one item of a `\<field_list>`_,
 a pair of `\<field_name>`_ and `\<field_body>`_ elements.
 
-:Category:   `Body Subelements`_, `Bibliographic Elements`_
+:Category:   `Body Subelements`_ (compound), `Bibliographic Elements`_
 :Analogues:  <field> has no direct analogues in common DTDs.
              HTML_ uses <div> elements inside <dl> lists for
              grouping <dt>/<dd> pairs.
@@ -1662,7 +1829,7 @@ See the examples for the `\<field_list>`_ and `\<docinfo>`_ elements.
 
 The <field_body> element is analogous to a database field's data.
 
-:Category:   `Body Subelements`_
+:Category:   `Body Subelements`_ (compound)
 :Analogues:  <field_body> is analogous to the HTML_ <dd> element.
 :Processing: see `\<field_list>`_
 :Parent:     `\<field>`_
@@ -1756,7 +1923,48 @@ See the examples for the `\<field_list>`_ and `\<docinfo>`_ elements.
 <figure>
 ========
 
-`To be completed`_.
+The <figure> element groups an `\<image>`_ with a `\<caption>`_
+and/or `\<legend>`_.
+
+:Category:   `Compound Body Elements`_
+:Analogues:  The <figure> element is analogous to the HTML_ <figure>
+             element and the DocBook_ <figure> and <informalfigure>
+             elements but limited to images (while HTML and DocBook
+             allow also other main content).
+:Processing: On paged media, figures may float to a different
+             position if this helps the page layout.
+:Parents:    all elements employing `%body.elements`_ or
+             `%structure.model`_ in their content models
+:Children:   `\<image>`_ or `\<reference>`_ (with nested <image>)
+             followed by `\<caption>`_ or `\<legend>`_ or both.
+:Attributes: align_ (via `%align-h.att`_) , width_,
+             and the `common attributes`_.
+
+Examples
+--------
+
+The reStructuredText `"figure" directive`_ creates a <figure> element::
+
+    .. figure:: larch-mini.jpg
+       :alt: a larch
+       :target: larch.jpg
+       :class: thumbnail
+       :figclass: numbered
+
+       The larch.
+
+       Larix decidua in Aletschwald.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <figure classes="numbered">
+        <reference refuri="larch.jpg">
+            <image alt="a larch" classes="thumbnail" uri="larch-mini.jpg">
+        <caption>
+            The larch.
+        <legend>
+            <paragraph>
+                Larix decidua in Aletschwald.
 
 
 <footer>
@@ -1788,8 +1996,8 @@ reStructuredText `"footer" directive`_::
     A paragraph.
 
 Complete pseudo-XML_ result after parsing and applying transforms_,
-assuming that the datestamp_ command-line option or configuration
-setting has been supplied::
+assuming that the ``--date`` command-line option or `"datestamp"`_
+configuration setting has been supplied::
 
     <document>
         <decoration>
@@ -1817,23 +2025,13 @@ The corresponding footnote mark in running text is set by the
              The `DocBook \<footnote>`_ element combines features of
              <footnote> and `\<footnote_reference>`_.
 
-             The DPub ARIA role `"doc-footnote"`__ may be used to mark a
-             (conforming__) `HTML emulation`__ as "ancillary information,
-             such as a citation or commentary, that provides additional
-             context to a referenced passage of text".
-
-             For collections of notes that occur at the end of a section,
-             the DPub ARIA role `"doc-endnotes"`__ is more appropriate.
-
+             The HTML standard lists suggestions to `emulate footnotes`_.
+             The `DPub ARIA`_ role "doc-footnote" may be used to mark a
+             `conforming HTML emulation`_ (for collections of notes that
+             occur at the end of a section, "doc-endnotes" is more
+             appropriate).
              The corresponding types in the `EPUB 3 Structural Semantics
-             Vocabulary`__ are "footnote" and "endnote".
-
-             __ https://www.w3.org/TR/dpub-aria-1.0/#doc-footnote
-             __ https://www.w3.org/TR/html-aria/#docconformance
-             __ https://www.w3.org/TR/html51/
-                common-idioms-without-dedicated-elements.html#footnotes
-             __ https://www.w3.org/TR/dpub-aria-1.0/#doc-endnotes
-             __ https://www.w3.org/TR/epub-ssv-11/#notes
+             Vocabulary`_ are "footnote" and "endnote".
 
 :Processing: A <footnote> element should be set off from the rest of the
              document, e.g. with a border or using a smaller font size.
@@ -1845,7 +2043,7 @@ The corresponding footnote mark in running text is set by the
              `%structure.model`_ in their content models
 
 :Children:   <footnote> elements begin with an optional [#]_ `\<label>`_
-             and contain `body elements`_. ::
+             and contain `body elements`_::
 
                  (label?, (%body.elements;)+)
 
@@ -1887,7 +2085,7 @@ cross reference to a `\<footnote>`_ (a footnote mark).
              brackets.
 :Parents:    all elements employing `%text.model`_ in their content models
 :Children:   only text data
-:Attributes: auto_, refid_, refname, and _the `common attributes`_.
+:Attributes: auto_, refid_, refname_, and the `common attributes`_.
 
 Examples
 --------
@@ -1923,11 +2121,34 @@ The ``references.Footnotes`` Docutils transform_ resolves this to::
 <generated>
 ===========
 
-Docutils wraps <generated> elements around text that is inserted
-(generated) by Docutils; i.e., text that was not in the document,
-like section numbers inserted by the "sectnum" directive.
+The <generated> element represents text that is not present in the
+document source but inserted by the processing system.
 
-`To be completed`_.
+:Category:   `Inline Elements`_
+:Analogues:  There are no analogies to <generated> in HTML_ or DocBook_.
+:Processing: No special handling required.
+:Parents:    all elements employing `%text.model`_ in their content models
+:Children:   text data plus `inline elements`_ (`%text.model`_)
+:Attributes: only the `common attributes`_.
+
+Examples
+--------
+
+The reStructuredText `"sectnum" directive`_ automatically numbers
+sections and subsections in a document::
+
+    .. section-numbering::
+
+    Anagram quiz
+    ============
+
+Docutils wraps the generated section numbers in <generated> elements::
+
+    <section ids="anagram-quiz" names="anagram\ quiz">
+        <title auto="1">
+            <generated classes="sectnum">
+                1   
+            Anagram quiz
 
 
 <header>
@@ -2122,13 +2343,45 @@ Pseudo-XML_ fragment from simple parsing::
 <label>
 =======
 
-`To be completed`_.
+The <label> element represents the reference label of
+a `\<footnote>`_ or `\<citation>`_.
+
+:Category:   `Body Subelements`_ (simple)
+:Analogues:  The <label> element has no direct analogues in HTML.
+             In DocBook_, the label of a footnote is stored as attribute
+             of the <footnote> element and the label of a bibliographic entry
+             is represented by an <abbrev> element.
+:Processing: Rendered prominently, as first token of the footnote or
+             citation. Often enclosed in square brackets.
+:Parents:    `\<footnote>`_, `\<citation>`_
+:Children:   only text data
+:Attributes: only the `common attributes`_.
+
+Examples
+--------
+
+See `\<footnote>`_, `\<footnote_reference>`_, and `\<citation_reference>`_.
 
 
 <legend>
 ========
 
-`To be completed`_.
+The <legend> element contains an extended description of a `\<figure>`_.
+It may complement or replace the figure `\<caption>`_.
+
+:Category:   `Body Subelements`_ (compound)
+:Analogues:  The <legend> element is analogous to the DocBook_
+             <caption> element (but specific to a `\<figure>`_).
+             The HTML_ <figcaption> element combines `\<caption>`_
+             and <legend>.
+:Processing: Formatted as a displayed block.
+:Parent:     `\<figure>`_
+:Children:   `body elements`_
+:Attributes: only the `common attributes`_.
+
+Examples
+--------
+See `\<figure>`_.
 
 
 <line>
@@ -2282,7 +2535,50 @@ See `\<bullet_list>`_ or `\<enumerated_list>`_ for further examples.
 <literal>
 =========
 
-`To be completed`_.
+The <literal> element represents inline text that is some literal value.
+
+:Category:   `Inline Elements`_
+:Analogues:  <literal> is analogous to the DocBook_ <literal> element.
+             HTML_ uses the specific elements <code>, <kbd>, and <samp>
+             for code, input, and output.
+:Processing: Typically rendered in a monospace font.
+             Preservation of line breaks and sequences of
+             whitespace characters is not guaranteed.
+:Parents:    all elements employing `%text.model`_ in their content models
+:Children:   text data plus `inline elements`_ (`%text.model`_)
+:Attributes: only the `common attributes`_.
+
+Examples
+--------
+
+In reStructuredText, `inline literals`_, the `"literal" role`_,
+and the `"code" role`_ create <literal> elements.
+So do `custom roles`_ derived from "literal" or "code"::
+
+    .. role:: python(code)
+       :language: python
+
+    The statement :python:`print("hello world")`
+    writes ``"hello world"`` to standard output.
+
+Pseudo-XML_ fragment after parsing and applying the transform_::
+
+    <paragraph>
+        The statement
+        <literal classes="code python">
+            <inline classes="name builtin">
+                print
+            <inline classes="punctuation">
+                (
+            <inline classes="literal string double">
+                "hello world"
+            <inline classes="punctuation">
+                )
+
+        writes
+        <literal>
+            "hello world"
+         to standard output.
 
 
 <literal_block>
@@ -2341,7 +2637,7 @@ the `"code" directive`_, e.g. ::
 
            print(8/2)
 
-Pseudo-XML_ fragment from simple parsing (with the syntax_highlight_
+Pseudo-XML_ fragment from simple parsing (with the `"syntax_highlight"`_
 setting at its default value "long")::
 
     <literal_block classes="code python" xml:space="preserve">
@@ -2517,7 +2813,7 @@ Pseudo-XML_ fragment from simple parsing::
 The <option> element groups an option string together with zero or
 more option argument placeholders.
 
-:Category:   `Body Subelements`_
+:Category:   `Body Subelements`_ (compound)
 :Analogues:  <option> has no direct analogues in common DTDs.
 :Processing: See `\<option_list>`_.
 :Parent:     `\<option_group>`_
@@ -2542,7 +2838,7 @@ See the examples for the `\<option_list>`_ element.
 The <option_argument> element contains placeholder text for option
 arguments.
 
-:Category:   `Body Subelements`_
+:Category:   `Body Subelements`_ (simple)
 :Analogues:  <option_argument> has no direct analogues in common DTDs.
 :Processing: The value of the "delimiter" attribute is prefixed to the
              <option_argument>, separating it from its
@@ -2565,12 +2861,12 @@ See the examples for the `\<option_list>`_ element.
 The <option_group> element groups together one or more `\<option>`_
 elements, all synonyms.
 
-:Category:   `Body Subelements`_
+:Category:   `Body Subelements`_ (compound)
 :Analogues:  <option_group> has no direct analogues in common DTDs.
 :Processing: Typically `\<option>`_ elements within an <option_group> are
              joined together in a comma-separated list.
 :Parent:     `\<option_list_item>`_
-:Children:   one or more `\<option>`_ elements.
+:Children:   one or more `\<option>`_ elements
 :Attributes: only the `common attributes`_.
 
 Examples
@@ -2592,7 +2888,7 @@ options and descriptions, documenting a program's options.
              arguments, and the second column contains descriptions.
 :Parents:    all elements employing `%body.elements`_ or
              `%structure.model`_ in their content models
-:Children:   one or more `\<option_list_item>`_ elements.
+:Children:   one or more `\<option_list_item>`_ elements
 :Attributes: only the `common attributes`_.
 
 Examples
@@ -2643,7 +2939,7 @@ Pseudo-XML_ fragment from simple parsing::
 The <option_list_item> element is a container for a pair of
 `\<option_group>`_ and `\<description>`_ elements.
 
-:Category:   `Body Subelements`_
+:Category:   `Body Subelements`_ (compound)
 :Analogues:  <option_list_item> has no direct analogues in common DTDs.
 :Processing: see `\<option_list>`_
 :Parent:     `\<option_list>`_
@@ -2660,7 +2956,7 @@ See the examples for the `\<option_list>`_ element.
 
 The <option_string> element contains the text of a command-line option.
 
-:Category:   `Body Subelements`_
+:Category:   `Body Subelements`_ (simple)
 :Analogues:  <option_string> has no direct analogues in common DTDs.
 :Processing: The <option_string> text is typically rendered in a
              monospaced typeface.
@@ -2767,7 +3063,7 @@ Examples
 
 The reStructuredText parser marks ambiguous or invalid inline syntax as
 <problematic> and adds a reference to the associated `\<system_message>`_.
-The behaviour can be configured with the `report_level`_ setting.
+The behaviour can be configured with the `"report_level"`_ setting.
 
 The following paragraph contains unbalanced `inline markup`_::
 
@@ -2875,7 +3171,7 @@ context.
 The <row> element represents one row of a `\<table>`_.
 It is defined in the `Exchange Table Model`_.
 
-:Category:   `Body Subelements`_
+:Category:   `Body Subelements`_ (compound)
 :Analogues:  <row> is analogous to the HTML_ <tr> element
              and the DocBook_ <row> element.
 :Processing: Render content as a table row.
@@ -3269,7 +3565,7 @@ system.
 :Attributes: backrefs_, level_, line_, type_, and the `common attributes`_.
 
 In Docutils, the generation of system messages can be configured with the
-`report_level`_ setting.
+`"report_level"`_ setting.
 
 Examples
 --------
@@ -3364,7 +3660,7 @@ The <tbody> element identifies the rows that form the *body* of a
 `\<table>`_ (as distinct from the header rows).
 It is defined in the `Exchange Table Model`_.
 
-:Category:   `Body Subelements`_
+:Category:   `Body Subelements`_ (compound)
 :Analogues:  <tbody> is analogous to the <tbody> element in HTML_ and DocBook_.
 :Processing: Render content as table body.
 :Parent:     `\<tgroup>`_
@@ -3404,7 +3700,7 @@ See the examples for the `\<definition_list>`_,
 The <tgroup> element identifies a logically complete portion of a `\<table>`_.
 It is defined in the `Exchange Table Model`_.
 
-:Category:   `Body Subelements`_
+:Category:   `Body Subelements`_ (compound)
 :Analogues:  <tgroup> is analogous to the DocBook_ <tgroup> element.
              There is no corresponding HTML element (the <colgroup>
              element has a different purpose and semantics).
@@ -3442,7 +3738,7 @@ The <thead> element identifies the row(s) that form the *head* of a
 `\<table>`_ (as distinct from the body rows).
 It is defined in the `Exchange Table Model`_.
 
-:Category:   `Body Subelements`_
+:Category:   `Body Subelements`_ (compound)
 :Analogues:  <thead> is analogous to the <thead> element in HTML_ and DocBook_.
 :Processing: Header rows are always rendered at the beginning of the
              table and often presented in an alternate typographic style,
@@ -3500,7 +3796,7 @@ The <title> element stores the heading of a `\<document>`_, `structural
 elements`_, or a generic `\<admonition>`_.  It is also used for the
 caption of a `\<table>`_.
 
-:Category:   `Structural Subelements`_, `Body Subelements`_
+:Category:   `Structural Subelements`_, `Body Subelements`_ (simple)
 
 :Analogues:  <title> is analogous to the DocBook_ <title> element.
              In difference to the HTML_ section heading elements
@@ -4194,7 +4490,7 @@ Default value: none.
 
 The ``loading`` attribute is used in the `\<image>`_ and `\<figure>`_
 elements to indicate the preferred handling by the Docutils writer_. [#]_
-The default depends on the writer and the image_loading_
+The default depends on the writer and the `"image_loading"`_
 configuration setting.
 
 New in Docutils 0.21
@@ -4488,8 +4784,8 @@ Attribute type: `CDATA`_.  Default value: none.
 The ``uri`` attribute is used in the `\<image>`_ and `\<figure>`_
 elements to refer to the image via a `URI Reference`_ [#]_. [rfc3986]_
 
-The `root_prefix`_ configuration setting is applied when a URI Reference
-starting with "/" is converted to a local filesystem path.
+Docutils applies the `"root_prefix"`_ configuration setting when a
+URI Reference starting with "/" is converted to a local filesystem path.
 
 .. [#] Examples are a full URI, an *absolute-path reference* (begins with
    a single slash character) or a *relative-path reference* (does not
@@ -5065,8 +5361,8 @@ _`Identifiers`
 
   Identifiers cannot be specified directly in reStructuredText.
   Docutils generates them from `reference names`_ or from the
-  auto_id_prefix_ (prepending the id_prefix_ and appending numbers
-  for disambiguation if required).
+  `"auto_id_prefix"`_ (prepending the `"id_prefix"`_ and
+  appending numbers for disambiguation if required).
 
   .. [#id-vc] The `Docutils Generic DTD`_ cannot use the ID, IDREF,
      and IDREFS standard types because elements do not adhere
@@ -5145,6 +5441,12 @@ Bibliography
                   David Goodger,
                   https://docutils.sourceforge.io/docs/ref/docutils.dtd.
 
+.. [dpub-aria]    `Digital Publishing WAI-ARIA Module 1.0`,
+                  W3C Recommendation, https://www.w3.org/TR/dpub-aria-1.0/.
+
+.. [epub-ssv]   `EPUB 3 Structural Semantics Vocabulary`,
+                W3C Group Note, https://www.w3.org/TR/epub-ssv-11/.
+
 .. [html.spec]  `HTML Living Standard`,
                 WHATWG (Apple, Google, Mozilla, Microsoft),
                 https://html.spec.whatwg.org.
@@ -5178,7 +5480,16 @@ Bibliography
 .. _DocBook <tip>: https://tdg.docbook.org/tdg/5.1/tip.html
 .. _DocBook <warning>: https://tdg.docbook.org/tdg/5.1/warning.html
 
+.. _DPub ARIA: https://www.w3.org/TR/dpub-aria-1.0/
+.. _conforming HTML emulation: https://www.w3.org/TR/html-aria/#docconformance
+
+.. _EPUB 3 Structural Semantics Vocabulary:
+    https://www.w3.org/TR/epub-ssv-11/
+
 .. _HTML: https://html.spec.whatwg.org/multipage/#toc-semantics
+.. _emulate footnotes:
+    https://html.spec.whatwg.org/multipage/semantics-other.html#footnotes
+
 .. _Python: https://www.python.org/
 
 .. _XML: https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction
@@ -5194,21 +5505,23 @@ Bibliography
 .. _docutils.nodes:
 .. _nodes.py: ../../docutils/nodes.py
 
-.. _auto_id_prefix:   ../user/config.html#auto-id-prefix
-.. _datestamp:        ../user/config.html#datestamp
-.. _id_prefix:        ../user/config.html#id-prefix
-.. _image_loading:    ../user/config.html#image-loading
-.. _report_level:     ../user/config.html#report-level
-.. _root_prefix:     ../user/config.html#root-prefix
-.. _stylesheet:       ../user/config.html#stylesheet
-.. _syntax_highlight: ../user/config.html#syntax-highlight
+.. _"attribution":      ../user/config.html#attribution
+.. _"auto_id_prefix":   ../user/config.html#auto-id-prefix
+.. _"datestamp":        ../user/config.html#datestamp
+.. _"id_prefix":        ../user/config.html#id-prefix
+.. _"image_loading":    ../user/config.html#image-loading
+.. _"report_level":     ../user/config.html#report-level
+.. _"root_prefix":      ../user/config.html#root-prefix
+.. _stylesheet:         ../user/config.html#stylesheet
+.. _"strip_comments":   ../user/config.html#strip-comments
+.. _"syntax_highlight": ../user/config.html#syntax-highlight
 
 .. _transform:
 .. _transforms:         ../api/transforms.html
 .. _DocInfo transform:  ../api/transforms.html#docinfo
 .. _DocTitle transform: ../api/transforms.html#doctitle
 
-.. _severity level: ../peps/pep-0258.html#error-handling
+.. _severity level:     ../peps/pep-0258.html#error-handling
 
 .. _reStructuredText:          rst/introduction.html
 .. _A ReStructuredText Primer: ../user/rst/quickstart.html
@@ -5224,15 +5537,19 @@ Bibliography
 .. _bullet list:            rst/restructuredtext.html#bullet-lists
 .. _CSS3 length units:      rst/restructuredtext.html#length-units
 .. _citations:              rst/restructuredtext.html#citations
+.. _citation references:    rst/restructuredtext.html#citation-references
+.. _comment:                rst/restructuredtext.html#comments
 .. _definition list:        rst/restructuredtext.html#definition-lists
 .. _directive:              rst/restructuredtext.html#directives
 .. _doctest block:          rst/restructuredtext.html#doctest-blocks
 .. _emphasis markup:        rst/restructuredtext.html#emphasis
 .. _enumerated list:        rst/restructuredtext.html#enumerated-lists
+.. _explicit markup construct:
 .. _explicit markup blocks: rst/restructuredtext.html#explicit-markup-blocks
 .. _footnote reference:     rst/restructuredtext.html#footnote-references
 .. _grid table:             rst/restructuredtext.html#grid-tables
 .. _indirect target:        rst/restructuredtext.html#indirect-hyperlink-targets
+.. _inline literals:        rst/restructuredtext.html#inline-literals
 .. _inline markup:          rst/restructuredtext.html#inline-markup
 .. _implicit hyperlink targets:
                             rst/restructuredtext.html#implicit-hyperlink-targets
@@ -5251,6 +5568,7 @@ Bibliography
 .. _rST reference names:    rst/restructuredtext.html#reference-names
 .. _rST tables:             rst/restructuredtext.html#tables
 .. _section:                rst/restructuredtext.html#sections
+.. _simple reference name:  rst/restructuredtext.html#simple-reference-names
 .. _simple table:           rst/restructuredtext.html#simple-tables
 .. _strong emphasis:        rst/restructuredtext.html#strong-emphasis
 .. _substitution definition:
@@ -5260,6 +5578,8 @@ Bibliography
 .. _standard role:              rst/roles.html
 .. _"abbreviation" role:        rst/roles.html#abbreviation
 .. _"acronym" role:             rst/roles.html#acronym
+.. _"code" role:                rst/roles.html#code
+.. _"literal" role:             rst/roles.html#literal
 .. _"raw" role:                 rst/roles.html#raw
 .. _"subscript" role:           rst/roles.html#subscript
 .. _"superscript" role:         rst/roles.html#superscript
@@ -5273,11 +5593,14 @@ Bibliography
 .. _"code" directive:           rst/directives.html#code
 .. _"compound" directive:       rst/directives.html#compound-paragraph
 .. _"container" directive:      rst/directives.html#container
-.. _"contents" directive:
-.. _table of contents:          rst/directives.html#table-of-contents
+.. _custom roles:               rst/directives.html#role
+.. _table of contents:
+.. _"contents" directive:       rst/directives.html#table-of-contents
 .. _"csv-table":                rst/directives.html#csv-table
 .. _"danger" directive:         rst/directives.html#danger
+.. _"epigraph":                 rst/directives.html#epigraph
 .. _"error" directive:          rst/directives.html#error
+.. _"figure" directive:         rst/directives.html#figure
 .. _"footer" directive:         rst/directives.html#footer
 .. _"header" directive:         rst/directives.html#header
 .. _"hint" directive:           rst/directives.html#hint
@@ -5291,13 +5614,15 @@ Bibliography
 .. _name option:                rst/directives.html#name
 .. _"note" directive:           rst/directives.html#note
 .. _"parsed-literal" directive: rst/directives.html#parsed-literal
+.. _"pull-quote":               rst/directives.html#pull-quote
 .. _"raw" directive:            rst/directives.html#raw
+.. _"sectnum" directive:        rst/directives.html#sectnum
 .. _"sidebar" directive:        rst/directives.html#sidebar
 .. _"table" directive:          rst/directives.html#table
 .. _"tip" directive:            rst/directives.html#tip
 .. _"topic" directive:          rst/directives.html#topic
 .. _"title" directive:          rst/directives.html#title
-.. _"warning" directive:        rst/directives.html#admonition
+.. _"warning" directive:        rst/directives.html#warning
 .. _custom interpreted text roles:
     rst/directives.html#custom-interpreted-text-roles
 .. _table of compatible image formats: rst/directives.html#image-formats

@@ -90,12 +90,10 @@ Writers
 * "html5" writer:
 
   - Move attribution behind the blockquote to comply with the
-    `"HTML living standard"`__.  (The now retired HTML5__ W3C recommendation
-    allows <cite> elements inside a blockquote.)
+    `"HTML living standard"`__ [#]_ and adapt CSS stylesheets
+    in Docutils 1.0.
 
     __ https://html.spec.whatwg.org/#the-blockquote-element
-    __ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
-       #the-blockquote-element
 
   - Change the default value of the initial_header_level_ setting to None
     (<h2> if there is a document title, else <h1>) in Docutils 1.0.
@@ -124,6 +122,13 @@ Writers
   - Align adjustment of relative image paths with the behaviour of HTML
     and LaTeX writers: assume them relative to the *output* directory (as
     required for image references in HTML), not the *source* directory.
+
+.. [#] The now retired `HTML5 W3C recommendation`__ allows <cite> elements
+   inside a blockquote.
+
+__ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
+   #the-blockquote-element
+
 
 Removals
 --------
