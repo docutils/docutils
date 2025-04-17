@@ -818,8 +818,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           ['--output-encoding-error-handler'],
           {'default': 'strict', 'validator': validate_encoding_error_handler}),
          ('Specify text encoding and optionally error handler '
-          'for error output.  Default: %s:%s.'
-          % (default_error_encoding, default_error_encoding_error_handler),
+          'for error output.  Default: %s.' % default_error_encoding,
           ['--error-encoding', '-e'],
           {'metavar': '<name[:handler]>', 'default': default_error_encoding,
            'validator': validate_encoding_and_error_handler}),

@@ -75,8 +75,9 @@ class CliTests(unittest.TestCase):
                         output, flags=re.DOTALL)
         # normalise error encoding default
         output = output.replace(
-            f'{core.OptionParser.default_error_encoding}:backslashreplace',
-            'utf-8:backslashreplace')
+            'error output.  Default: '
+            f'{core.OptionParser.default_error_encoding}',
+            'error output.  Default: utf-8')
         return output
 
     def test_main_help(self):

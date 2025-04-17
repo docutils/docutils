@@ -73,7 +73,7 @@ General Docutils Options
                         "xmlcharrefreplace", "backslashreplace".
 --error-encoding=<name[:handler]>, -e <name[:handler]>
                         Specify text encoding and optionally error handler for
-                        error output.  Default: utf-8:backslashreplace.
+                        error output.  Default: utf-8.
 --error-encoding-error-handler=ERROR_ENCODING_ERROR_HANDLER
                         Specify the error handler for unencodable characters
                         in error output.  Default: backslashreplace.
