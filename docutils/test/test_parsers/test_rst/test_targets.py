@@ -271,7 +271,7 @@ Paragraph.
             Title
         <system_message backrefs="title-1" level="1" line="6" source="test data" type="INFO">
             <paragraph>
-                Duplicate implicit target name: "title".
+                Target name overrides implicit target name "title".
         <target ids="title-1" names="title">
         <paragraph>
             Paragraph.
@@ -295,7 +295,7 @@ Title
         <pending ids="title-1" names="title">
             <system_message backrefs="title-1" level="1" line="7" source="test data" type="INFO">
                 <paragraph>
-                    Duplicate implicit target name: "title".
+                    Target name overrides implicit target name "title".
             .. internal attributes:
                  .transform: docutils.transforms.references.TargetNotes
                  .details:
@@ -394,7 +394,7 @@ Explicit internal target.
                 TARGET
             <system_message backrefs="target-1" level="1" line="8" source="test data" type="INFO">
                 <paragraph>
-                    Duplicate implicit target name: "target".
+                    Target name overrides implicit target name "target".
             <paragraph>
                 Citation target.
         <footnote auto="1" dupnames="target" ids="target-2">

@@ -1904,18 +1904,18 @@ class document(Root, Element):
                               ) -> None:
         old_id = self.nameids[name]
         old_explicit = self.nametypes[name]
+        old_node = self.ids.get(old_id)
         self.nametypes[name] = old_explicit or explicit
         if explicit:
             if old_explicit:
                 level = 2
                 if old_id is not None:
-                    old_node = self.ids[old_id]
                     if 'refuri' in node:
                         refuri = node['refuri']
                         if (old_node['names']
                             and 'refuri' in old_node
                             and old_node['refuri'] == refuri):
-                            level = 1   # just inform if refuri's identical
+                            level = 1  # just inform if refuri is identical
                     if level > 1:
                         dupname(old_node, name)
                         self.nameids[name] = None
@@ -1925,21 +1925,21 @@ class document(Root, Element):
                 if msgnode is not None:
                     msgnode += msg
                 dupname(node, name)
-            else:
+            else:  # new explicit, old implicit -> silently overwrite
                 self.nameids[name] = id
                 if old_id is not None:
-                    old_node = self.ids[old_id]
                     dupname(old_node, name)
-        else:
+        else:  # new name is implicit
             if old_id is not None and not old_explicit:
                 self.nameids[name] = None
-                old_node = self.ids[old_id]
                 dupname(old_node, name)
             dupname(node, name)
         if not explicit or (not old_explicit and old_id is not None):
-            msg = self.reporter.info(
-                'Duplicate implicit target name: "%s".' % name,
-                backrefs=[id], base_node=node)
+            if explicit:
+                s = f'Target name overrides implicit target name "{name}".'
+            else:
+                s = f'Duplicate implicit target name: "{name}".'
+            msg = self.reporter.info(s, backrefs=[id], base_node=node)
             if msgnode is not None:
                 msgnode += msg
 
