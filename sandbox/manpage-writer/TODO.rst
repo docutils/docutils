@@ -5,7 +5,7 @@ TODOs
 
 * references in text: ``Aaaaa \%(aaa@\:bb\:.ccc)``.
 
-  protect from hyphenation at usual points
+  protect from hyphenation at usual points with ``\%``
   AFTER setting good points with ``\:``.
 
 Issues

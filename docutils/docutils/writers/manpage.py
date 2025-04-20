@@ -97,9 +97,9 @@ NONPRINTING_BREAKPOINT = r'\:'
 # after number signs
 # (?=.) avoids matching the end of string, requires something
 # MAYBE require 5 after the break point
-NONBREAKING_INSERT_RE = re.compile(r'([/@?&#]+)(?=.)')
+NONBREAKING_INSERT_RE = re.compile(r'([/@?&#]+)(?=.{3,})')
 # before each dot or a series of
-NONBREAKING_INSERT_RE2 = re.compile(r'([^\.]+)(?=\.+)(?=.)')
+NONBREAKING_INSERT_RE2 = re.compile(r'([^\.]+)(?=\.+)(?=.{3,})')
 
 
 def insert_URI_breakpoints(s):
