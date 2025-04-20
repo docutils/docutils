@@ -21,14 +21,15 @@ from docutils.core import publish_string
 from docutils.writers import manpage
 
 URI_tests = (
-        ("///abc.de", r"///\:abc.de"),
-        ("/abc.de/", r"/\:abc.de/"),
-        ("http://abc.de", r"http://\:abc.de"),
-        ("http://abc.de/fg", r"http://\:abc.de/\:fg"),
-        ("http://abc.de/fg?q=abc", r"http://\:abc.de/\:fg?\:q=abc"),
-        ("http://abc.de/fg/?q=abc", r"http://\:abc.de/\:fg/?\:q=abc"),
-        ("http://abc.de/fg/?q=abc&me#", r"http://\:abc.de/\:fg/?\:q=abc&\:me#"),
-        ("me@home.here", r"me@\:home.here"),
+        ("///abc.de", r"///\:abc\:.de"),
+        ("/abc.de/", r"/\:abc\:.de/"),
+        ("http://abc.de", r"http://\:abc\:.de"),
+        ("http://abc.de/fg", r"http://\:abc\:.de/\:fg"),
+        ("http://abc.de/fg?q=abc", r"http://\:abc\:.de/\:fg?\:q=abc"),
+        ("http://abc.de/fg/?q=abc", r"http://\:abc\:.de/\:fg/?\:q=abc"),
+        ("http://abc.de/fg/?q=abc&me#", r"http://\:abc\:.de/\:fg/?\:q=abc&\:me#"),
+        ("me@home.here", r"me@\:home\:.here"),
+        ("me..dot@home.here..", r"me\:..dot@\:home\:.here\:.."),
         )
 
 

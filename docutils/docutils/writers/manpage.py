@@ -96,13 +96,16 @@ NONPRINTING_BREAKPOINT = r'\:'
 # after ampersands
 # after number signs
 # (?=.) avoids matching the end of string, requires something
-# TODO before each dot or a series of
+# MAYBE require 5 after the break point
 NONBREAKING_INSERT_RE = re.compile(r'([/@?&#]+)(?=.)')
+# before each dot or a series of
+NONBREAKING_INSERT_RE2 = re.compile(r'([^\.]+)(?=\.+)(?=.)')
 
 
 def insert_URI_breakpoints(s):
     # TODO only for long URIs ?
-    return NONBREAKING_INSERT_RE.sub(r'\1' + NONPRINTING_BREAKPOINT, s)
+    return NONBREAKING_INSERT_RE2.sub(r'\1' + NONPRINTING_BREAKPOINT, 
+               NONBREAKING_INSERT_RE.sub(r'\1' + NONPRINTING_BREAKPOINT, s))
 
 
 class Writer(writers.Writer):
