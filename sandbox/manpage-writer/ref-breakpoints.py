@@ -38,22 +38,23 @@
 from docutils.writers.manpage import insert_URI_breakpoints
 
 tests = (
-        ("///abc.de", r"///\:abc.de"),
-        ("/abc.de/", r"/\:abc.de/"),
-        ("http://abc.de", r"http://\:abc.de"),
-        ("http://abc.de/fg", r"http://\:abc.de/\:fg"),
-        ("http://abc.de/fg?q=abc", r"http://\:abc.de/\:fg?\:q=abc"),
-        ("http://abc.de/fg/?q=abc", r"http://\:abc.de/\:fg/?\:q=abc"),
-        ("http://abc.de/fg/?q=abc&me#", r"http://\:abc.de/\:fg/?\:q=abc&\:me#"),
-        ("me@home.here", r"me@\:home.here"),
+        ("Aaa (aaa@bbb.ccc)", r'Aaa (aaa@\:bbb\:.ccc)'),
+        ("///abc.de", r"///\:abc\:.de"),
+        ("/abc.de/", r"/\:abc\:.de/"),
+        ("http://abc.de", r"http://\:abc\:.de"),
+        ("http://abc.de/fg", r"http://\:abc\:.de/\:fg"),
+        ("http://abc.de/fg?q=abc", r"http://\:abc\:.de/\:fg?\:q=abc"),
+        ("http://abc.de/fg/?q=abc", r"http://\:abc\:.de/\:fg/?\:q=abc"),
+        ("http://abc.de/fg/?q=abc&me#", r"http://\:abc\:.de/\:fg/?\:q=abc&\:me#"),
+        ("me@home.here", r"me@\:home\:.here"),
         ("https://docutils.sourceforge.io/docs/ref/rst/directives.html",
-         r"https://\:docutils.sourceforge.io/\:docs/\:ref/\:rst/\:directives.html"),
+         r"https://\:docutils\:.sourceforge\:.io/\:docs/\:ref/\:rst/\:directives\:.html"),
         ("docutils-develop@lists.sourceforge.net",
-         r"docutils-develop@\:lists.sourceforge.net"),
+         r"docutils-develop@\:lists\:.sourceforge\:.net"),
         )
 
 # after a slash series of
-# after?before at sign
+# after an at sign
 # after question marks
 # after question ampersands
 # after question number signs
