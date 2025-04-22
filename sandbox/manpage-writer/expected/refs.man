@@ -98,9 +98,9 @@ can also refer to it like this\&.
 here.
 .SS External Hyperlink Targets
 .sp
-External hyperlinks, like Python <https://www.python.org/>\&.
+External hyperlinks, like Python \%<https://\:www\:.python\:.org/>\&.
 .sp
-embedded External hyperlinks, like Python <https://www.python.org/>\&.
+embedded External hyperlinks, like Python \%<https://\:www\:.python\:.org/>\&.
 .SS Internal Hyperlink Targets
 .sp
 Internal cross\-references, like example\&.
@@ -108,26 +108,26 @@ Internal cross\-references, like example\&.
 This is an example cross\-reference target.
 .SS Indirect Hyperlink Targets
 .sp
-Python <https://www.python.org/> is my favourite
-programming language <https://www.python.org/>\&.
+Python \%<https://\:www\:.python\:.org/> is my favourite
+programming language \%<https://\:www\:.python\:.org/>\&.
 .SH Titles are targets, too
 .sp
 Implicit references, like Titles are
 targets, too\&.
 .SH and
 .sp
-See the Python <https://www.python.org/> home page for info.
+See the Python \%<https://\:www\:.python\:.org/> home page for info.
 .sp
-Write to me <mailto:jdoe@example.com> with your questions.
+Write to me \%<mailto:jdoe@\:example\:.com> with your questions.
 .\" deduplicate _Python: https://www.python.org
 .
 .SS URIs with known schemes
 .sp
-<tel:+48-816-555-1212>
-<urn:isbn:0-486-27557-4>
-<news:comp.infosystems.www.servers.unix>
-<https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top>
+\%<tel:+48-816-555-1212>
+\%<urn:isbn:0-486-27557-4>
+\%<news:comp\:.infosystems\:.www\:.servers\:.unix>
+\%<https://\:john\:.doe@\:www\:.example\:.com:123/\:forum/\:questions/?\:tag=networking&\:order=newest#\:top>
 .SS Standalone email addresses
 .sp
-like <someone@somewhere.com>
+like \%<someone@\:somewhere\:.com>
 .\" End of generated man page.

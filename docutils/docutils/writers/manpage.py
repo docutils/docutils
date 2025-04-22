@@ -1103,13 +1103,14 @@ class Translator(nodes.NodeVisitor):
             if (node['refuri'] == node.astext()
                 or node['refuri'] == "mailto:"+node.astext()):
                 # without mailto:
-                self.body.append("<%s>" % node.astext())
+                self.body.append(r"\%%<%s>"
+                                 % insert_URI_breakpoints(node.astext()))
                 raise nodes.SkipNode
         # elif 'refid' in node:
 
     def _depart_reference_no_macro(self, node) -> None:
         if 'refuri' in node:
-            self.body.append(" <%s>" % node['refuri'])
+            self.body.append(r" \%%<%s>" % insert_URI_breakpoints(node['refuri']))
         # elif 'refid' in node:
 
     def _visit_reference_with_macro(self, node) -> None:

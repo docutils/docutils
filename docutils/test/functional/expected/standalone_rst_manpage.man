@@ -81,8 +81,8 @@ And a lot more standard docutils options.
 None yet.
 .SH SEE ALSO
 .sp
-docutils <https://docutils.sourceforge.io>
-linux man page howto <http://tldp.org/HOWTO/Man-Page/>
+docutils \%<https://\:docutils\:.sourceforge\:.io>
+linux man page howto \%<http://\:tldp\:.org/\:HOWTO/\:Man-Page/>
 .sp
 and \fBman man\fP also \fBman 7 man\fP
 .SH BUGS
