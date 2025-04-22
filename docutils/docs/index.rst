@@ -191,6 +191,12 @@ The `Docutils Design Specification`_ (PEP 258) is a must-read for any
 Docutils developer.
 
 
+Docutils Enhancement Proposals
+==============================
+
+* `Enhancement Proposal Index <eps/index.html>`__
+
+
 .. _howto:
 
 Instructions for Developers

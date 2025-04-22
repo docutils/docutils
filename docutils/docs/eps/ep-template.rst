@@ -1,21 +1,29 @@
-==================================
-:Title: <REQUIRED: proposal title>
-==================================
+.. include:: header.rst
 
-:Author: <REQUIRED: list of authors' real names and optionally, email addrs>
-:Discussions-To: docutils-develop@lists.sf.net, <enhancement ticket URL>
-:Status: <REQUIRED: Draft | Active | Accepted | Provisional | Deferred | Rejected | Withdrawn | Final | Superseded>
-:Type: <REQUIRED: API | Informational | Process>
-:Created: <date created on, in dd-mmm-yyyy format>
-:Docutils-Version: <version number>
-:Replaces: current policy/API document
-:Resolution: <url>
+==========================
+<EP number> — <title>
+==========================
 
+:Author:  <name and optional e-mail; use ``:Authors:`` for a list>
+:Discussions-To: <current discussion thread and/or enhancement ticket URL>
+:Status:  <Draft | Active | Accepted | Provisional | Deferred |
+          Rejected | Withdrawn | Final | Superseded>
+:Created: <yyyy-mm-dd>
 
-Abstract
-========
+  .. optional
+:Docutils-Version: <first release including the new feature>
+:Post-History: <past discussion threads and/or issue tickets>
+:Type:    <Standard (default) | Informational | Process>
+:Topic:   <API | reStructuredText | DocTree | HTML output | ...>
+:Requires: <EP number(s)>
+:Replaces: <current EP, policy or API document>
+:Superseded-By: <EP number>
+:Resolution: <`yyyy-mm-dd <link to decision>`__>
 
-.. A short (<~200 word) description of the technical issue being addressed.
+:Abstract:
+  .. A short (<~200 word) description of the technical issue being addressed.
+
+.. contents::
 
 
 Motivation
@@ -79,7 +87,7 @@ Open Issues
 References
 ==========
 
-.. A collection of URLs used as references through the proposal.
+.. A collection of footnotes and references.
 
 
 Copyright
@@ -87,14 +95,3 @@ Copyright
 
 This document is placed in the public domain or under the
 CC0-1.0-Universal license, whichever is more permissive.
-
-
-
-..
-    Local Variables:
-    mode: indented-text
-    indent-tabs-mode: nil
-    sentence-end-double-space: t
-    fill-column: 70
-    coding: utf-8
-    End:

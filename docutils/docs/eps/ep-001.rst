@@ -1,0 +1,455 @@
+.. include:: header.rst
+
+=========================================
+EP 1 — Docutils EP Purpose and Guidelines
+=========================================
+
+:Author:  Günter Milde
+:Discussions-To: `feature-requests 111`_
+:Status:  Draft
+:Type:    Process
+:Created: 2025-04-22
+:Docutils-Version: 0.22
+
+:Abstract:
+  `Docutils Enhancement Proposals` are a mechanism for
+  proposing major new features, collecting community input,
+  and documenting important design decisions.
+  This document describes their purpose and structure.
+  It borrows heavily from `Python Enhancement Proposals`_. [PEP1]_
+
+  The document is still a draft -- suggestions and contributions are welcome.
+
+.. contents::
+
+
+Motivation
+==========
+
+.. Explain why the existing specification is inadequate
+
+`Issue tickets`_ on the project page and the `Docutils To Do List`_ are
+established channels for suggesting changes to Docutils and
+reStructuredText.
+They work fine for small changes or issues with one obvious solution.
+However, we are missing a framework for complex cases with competing
+alternative approaches and for documenting the internal processes at the
+Docutils project.
+
+
+Rationale
+=========
+
+.. Describe why particular design decisions were made.
+
+*Enhancement Proposals* are used by a wide range of projects
+of different size (see References_).
+David Goodger suggested using enhancement proposals in a
+lightweight formal process for the Docutils project.
+
+
+Specification
+=============
+
+.. Describe the syntax and semantics of any new feature.
+
+.. note::
+   The key words "*must*", "*must not*", "*required*", "*shall*",
+   "*shall not*", *should*", "*should not*", "*recommended*", "*may*",
+   and "*optional*" are to be interpreted as described in :RFC:`2119`.
+
+A `Docutils Enhancement Proposal` (EP) [#dep]_ is a reStructuredText_
+document with a preamble_ and a standard set of sections_.
+
+.. [#dep] Deciding on an abbreviation for `Docutils Enhancement Proposals`
+   is one of the `open issues`_.
+
+
+Preamble
+--------
+
+The preamble *should* contain the following `Bibliographic Fields`_:
+
+
+.. class:: field-indent-8em
+
+:Author [#]_: Author name and, optionally, email address (in angle brackets).
+:Discussions-To: URL of the current discussion thread and/or issue ticket.
+:Status:   One of "Draft", "Active", "Accepted", "Provisional", "Deferred",
+           "Rejected", "Withdrawn", "Final", or "Superseded"
+           (cf. `PEP Review & Resolution`_).
+:Created:  Date [#iso8601]_ that the proposal was assigned a number.
+:Abstract: A short description of the technical issue being addressed.
+
+As appropriate, it *may* contain
+
+.. class:: field-indent-8em
+
+:Docutils-Version: Number of the first release including the new feature.
+:Post-History: List of past discussion threads and/or issue tickets.
+:Type:     One of "Standard" (default), "Informational", "Process".
+:Topic:    Special topic (affected component or part), e.g.
+           "reStructuredText", "Document Model", "HTML output", …
+:Requires: Number(s) of EP(s) this proposal depends on.
+:Replaces: Current policy, API document, or EP.
+:Superseded-By: Number of EP obsoleting this proposal.
+:Resolution: Date [#iso8601]_ with link to the acceptance/rejection post.
+
+.. [#] Use "Authors_" if there is more than one author.
+.. [#iso8601] in ISO 8601 format (yyyy-mm-dd)
+
+
+Sections
+--------
+
+Each standard EP *should* have the following sections:
+
+.. class:: description
+
+Motivation:
+  Clearly explain why the existing specification is inadequate to address
+  the problem that the proposal solves.
+
+  The motivation is critical for proposals that want to change the
+  reStructuredText_ language or the Docutils `document model`_, library,
+  or ecosystem. Proposals without sufficient motivation may be rejected.
+
+  .. _`sec: rationale`:
+
+Rationale:
+  Describe why particular design decisions were made.
+
+  The rationale should describe alternate designs that were considered and
+  related work, e.g. how the feature is supported in other languages.
+
+  The rationale should provide evidence of consensus within the community
+  and discuss important objections or concerns raised during
+  discussion (see also `rejected Ideas <sec: rejected ideas_>`__ below).
+
+Specification:
+  Describe the syntax and semantics of any new feature.
+
+  The specification should be detailed enough to allow competing,
+  interoperable implementations.
+
+Backwards Compatibility:
+  Describe potential impact and severity on pre-existing code.
+
+  The proposal must explain how the author attempts to deal with these
+  incompatibilities. Proposal submissions without a sufficient backwards
+  compatibility treatise may be rejected outright.
+
+Security Implications:
+  How could a malicious user take advantage of this new feature?
+
+  If there are security concerns in relation to the PEP, those concerns
+  should be explicitly written out to make sure reviewers of the PEP are
+  aware of them.
+  If applicable, include a suggestion how to update the
+  `security documentation`_.
+
+How to Teach This:
+  How to teach users, new and experienced, how to apply the proposal to
+  their work.
+
+  This section may include key points and recommended documentation
+  changes that would help users adopt a new feature or migrate their code
+  to make use of the new feature.
+
+Reference Implementation:
+  Link to any existing implementation and details about its state, e.g.
+  proof-of-concept.
+
+  The reference implementation must be completed before any PEP is given
+  status “Final”, but it need not be completed before the PEP is
+  accepted. The final implementation must include test code and
+  documentation.
+
+  .. _`sec: rejected ideas`:
+
+Rejected Ideas:
+  Why certain ideas that were brought while discussing this proposal
+  were not ultimately pursued.
+
+  Those rejected ideas should be recorded along with the reasoning as to
+  why they were rejected. This both helps record the thought process
+  behind the final version of the PEP as well as preventing people from
+  bringing up the same rejected idea again in subsequent discussions.
+
+  A brief discussion of rejected ideas should be included in the
+  `Rationale <sec: rationale_>`__.
+
+Open Issues:
+  Any points that are still being decided/discussed.
+
+  Those ideas should be recorded so people know that they are being
+  thought about but do not have a concrete resolution. This helps make
+  sure all issues required for the PEP to be ready for consideration are
+  complete and reduces people duplicating prior discussion.
+
+References:
+  A collection of footnotes and references.
+
+Copyright:
+  The copyright notice.
+
+  See the copyright_ of this document for a suggestion.
+
+
+Backwards Compatibility
+=======================
+
+.. Describe potential impact and severity on pre-existing code.
+
+`Enhancement Proposals` will supplement rather than replace existing
+communication channels.
+
+`Issue tickets`_ with a long list of comments will gain from a
+consolidation into a related EP.
+Some sections of the `Docutils To Do List`_ may be moved to an EP.
+
+
+Security Implications
+=====================
+
+.. How could a malicious user take advantage of this new feature?
+
+A structured discussion of proposed changes including their security
+implications will help `deploying Docutils securely`_.
+
+
+How to Teach This
+=================
+
+.. How to teach users, new and experienced, how to apply the proposal to
+   their work.
+
+Enhancement proposals will be included in the `Docutils documentation`__.
+
+In the FAQ entry "`How can I get a new feature into Docutils?`_",
+we should add a paragraph like
+
+   If discussion of a bug, patch, or feature request ticket_ spans more
+   than one page, it may be time to consider turning it into an
+   `enhancement proposal`.
+   (The existing ticket should be referenced in the "Discussions-To" or
+   "Post-History" preamble_ field.)
+
+__ ../index.html#enhancement-proposals
+
+
+Reference Implementation
+========================
+
+.. Link to any existing implementation and details about its state, e.g.
+   proof-of-concept.
+
+The sandbox_ contains a directory for
+`enhancement proposals in "pre-draft" stage`_.
+
+
+Rejected Ideas
+==============
+
+.. Why certain ideas that were brought while discussing this proposal
+   were not ultimately pursued.
+
+
+Open Issues
+===========
+
+.. Any points that are still being decided/discussed.
+
+* How to abbreviate `Docutils Enhancement Proposal`?
+
+  David Goodger proposed "DocutilsEP" or "DEP" or just "EP".
+  Alternatively we may use an unambiguous abbreviation like "DuEP" or
+  "DUEP" for `Documentation Utilities Enhancement Proposal`.
+
+  See also the abbreviations used by `other projects`_.
+
+* Put the EP number in
+
+  - the title, preceding the topic,
+  - a sub-title,
+  - the title with the topic as sub-title,
+  - an "EP" preamble_ field,
+
+
+References
+==========
+
+.. A collection of URLs used as references through the proposal.
+
+.. [PEP1] `PEP Purpose and Guidelines`,
+       Barry Warsaw, Jeremy Hylton, David Goodger, Alyssa Coghlan,
+       13-Jun-2000, https://peps.python.org/pep-0001/
+
+Enhancement Proposals in _`other projects`
+------------------------------------------
+
+.. class:: field-indent-3em
+
+:EPs:  used by
+
+:AEP__:  AiiDA__ workflow manager for computational science
+
+  __ https://github.com/aiidateam/AEP
+  __ https://www.aiida.net/
+
+:CEP__:  Cassandra__ distributed database
+
+  __ https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=95652201
+  __ https://cwiki.apache.org/confluence/display/CASSANDRA/
+
+:DEP__: Debian__ Linux distribution
+
+  __ https://dep-team.pages.debian.net/
+  __ https://www.debian.org
+
+:DEP__: Django__ Web framework
+
+  __ https://github.com/django/deps
+  __ http://www.djangoproject.com/
+
+:DEP__: Dylan__ programming language
+
+  __ https://opendylan.org/proposals/index.html
+  __ https://opendylan.org/
+
+:IEP__: `International Standard Content Code`__ content-based identifier
+
+  __ https://ieps.iscc.codes/
+  __ https://iscc.codes/
+
+
+:JEP__: OpenJDK__ Java Platform
+
+  __ https://openjdk.org/jeps/0
+  __ https://openjdk.org/
+
+:JEP__: Jenkins__ automation server
+
+  __ https://github.com/jenkinsci/jep
+  __ https://www.jenkins.io/
+
+:JEP__: Project Jupyter__ interactive computing
+
+  __ https://github.com/jupyter/enhancement-proposals
+  __ https://jupyter.org/
+
+:Julep__: Julia__ programming language
+
+  __ https://github.com/JuliaLang/Juleps
+  __ https://julialang.org/
+
+:KEEP__: Kotline__ programming language
+
+  __ https://github.com/Kotlin/KEEP
+  __ https://kotlinlang.org/
+
+:KEP__: Kubernetes__ container orchestration system
+
+  __ https://www.kubernetes.dev/resources/keps/
+  __ https://kubernetes.io/
+
+:MEP__: Matplotlib__ data visualisation library
+
+  __ https://matplotlib.org/3.10.0/devel/MEP/index.html
+  __ https://matplotlib.org
+
+:MEP__: MyST__ markup language and abstract syntax tree
+
+  __ https://mep.myst-tools.org/en/latest/
+  __ https://mystmd.org/
+
+:NEP__: NEAR__  proof-of-stake blockchain
+
+  __ https://github.com/near/NEPs
+  __ https://docs.near.org/
+
+:NEP__: NumPy__ package for scientific computing with Python
+
+  __ https://numpy.org/neps/
+  __ https://numpy.org/
+
+:PEP_: Python__ programming language
+
+  __ https://www.python.org/
+
+:PLEP__: PlasmaPy__ package for plasma research and education
+
+  __ https://github.com/PlasmaPy/PlasmaPy-PLEPs
+  __ https://docs.plasmapy.org
+
+:REP__: ROS__ Robot Operating System
+
+  __ https://www.ros.org/reps/rep-0000.html
+  __ https://www.ros.org/
+
+:REP__: Ray__ unified Python framework for machine learning
+
+  __ https://github.com/ray-project/enhancements
+  __ https://docs.ray.io/
+
+:SEP__: Salt__ event-driven automation engine (EPs deprecated__!)
+
+  __ https://github.com/saltstack/salt-enhancement-proposals
+  __ https://docs.saltproject.io
+  __ https://github.com/saltstack/salt-enhancement-proposals
+     #deprecation-of-sep-process
+
+:SLEP__: scikit-learn__ Machine Learning in Python
+
+  __ https://github.com/scikit-learn/enhancement_proposals
+  __ https://scikit-learn.org
+
+:STEP__: sktime__ time series analysis in Python
+
+  __ https://github.com/sktime/enhancement-proposals
+  __ https://www.sktime.net
+
+:ZEP__: Zarr__ specifications and software for storage of large tensors
+
+  __ https://zarr.dev/zeps/active/ZEP0000.html
+  __ https://zarr.dev/
+
+
+.. URI references
+   --------------
+
+.. _Python Enhancement Proposals:
+.. _PEP:
+.. _PEPs: https://peps.python.org/
+.. _PEP review & resolution:
+    https://peps.python.org/pep-0001/#pep-review-resolution
+
+.. _feature-requests 111:
+    https://sourceforge.net/p/docutils/feature-requests/111/
+.. _sandbox: https://docutils.sourceforge.io/sandbox/README.html
+.. _enhancement proposals in "pre-draft" stage:
+    https://docutils.sourceforge.io/sandbox/enhancement-proposals/
+.. _ticket:
+.. _issue tickets: https://sourceforge.net/p/docutils/_list/tickets
+
+.. _Docutils To Do List: ../dev/todo.html
+.. _security documentation:
+.. _Deploying Docutils Securely:
+    ../howto/security.html
+.. _document model:
+    ../ref/doctree.html
+.. _reStructuredText:
+    ../ref/rst/restructuredtext.html
+.. _bibliographic fields:
+    ../ref/rst/restructuredtext.html#bibliographic-fields
+.. _Authors:
+    ../ref/rst/restructuredtext.html#authors
+.. _How can I get a new feature into Docutils?:
+    ../../FAQ.html#how-can-i-get-a-new-feature-into-docutils
+
+
+Copyright
+=========
+
+This document is placed in the public domain or under the
+CC0-1.0-Universal license, whichever is more permissive.

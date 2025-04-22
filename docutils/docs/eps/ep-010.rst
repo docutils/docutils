@@ -1,22 +1,20 @@
-=============================================
-Public API and Backwards Compatibility Policy
-=============================================
+.. include:: header.rst
 
-:Author: Günter Milde, Adam Turner, open to all Docutils developers
-:Discussions-To: docutils-develop@lists.sf.net, https://sourceforge.net/p/docutils/feature-requests/89/
+=====================================================
+EP 10 — Public API and Backwards Compatibility Policy
+=====================================================
+
+:Authors: Günter Milde, Adam Turner
+:Discussions-To: https://sourceforge.net/p/docutils/feature-requests/89/
 :Status: Draft
 :Type: Process
-:Created: 2022-01-21
-:Docutils-Version: 0.19
+:Created: 2025-04-22
+:Docutils-Version: 1.0
+:Abstract:
+  This document suggests a definition of the public APIs provided by the
+  Docutils project and the backwards compatibility policy.
 
-
-Abstract
-========
-
-.. A short (<~200 word) description of the technical issue being addressed.
-
-This document suggests a definition of the public APIs provided by the
-Docutils project and the backwards compatibility policy.
+.. contents::
 
 
 Motivation
@@ -35,22 +33,17 @@ identifcation`_ concentrates on the formal definition of the version
 specifier but leaves open what consists a "major change in the design
 or API".
 
-The current `backwards compatibility policy`__ is only a stub referencing
+The current `backwards compatibility policy`_ is a stub referencing
 :PEP:`387`.
-
-Clearly defining how we will balance evolution with stability is
-important to both users and project developers.
-
-.. _version specifier:
-.. _version identifcation:
-   ../../docutils/docs/dev/policies.html#version-identification
-__ ../../docutils/docs/dev/policies.html#backwards-compatibility-policy
 
 
 Rationale
 =========
 
 .. Describe why particular design decisions were made.
+
+Clearly defining how we will balance evolution with stability is
+important to both users and project developers.
 
 People affected by changes in Docutils include:
 
@@ -66,7 +59,7 @@ End-Users
   (build systems, Makefiles, scripts in other languages).
 
 Developers
-  authors and maintainers of
+  i.e. authors and maintainers of
 
   - projects that use Docutils as a library (Sphinx_, rsted_, Leo_,
     Pelican_, ebookmaker_, MyST_, readthedocs_, rinohtype_, …),
@@ -75,13 +68,13 @@ Developers
   - custom stylesheets (CSS style sheets, LaTeX styles, ODT styles),
     or
   - re-implementations of the `reStructuredText specification`_,
-    e.g. PanDoc_ or Text-Restructured_ (prest).
+    e.g. Pandoc_ or Text-Restructured_ (prest).
 
 A person may belong to more than one of these catgories.
 
 .. _Sphinx: https://www.sphinx-doc.org/
 .. _rsted: https://github.com/anru/rsted
-.. _Leo: https://leoeditor.com
+.. _Leo: https://leo-editor.github.io/leo-editor/
 .. _Pelican: https://docs.getpelican.com/en/latest/
 .. _MyST: https://myst-parser.readthedocs.io/
 .. _readthedocs: https://readthedocs.org/
@@ -112,9 +105,9 @@ Docutils public APIs are:
 
   - the `Docutils Publisher`_ interface for programmatic use,
 
-  - component interfaces as defined by the base
+  - component interfaces as defined by the abstract base classes
     `docutils.reader.Reader`, `docutils.writer.Writer`, and
-    `docutils.transform.Transform` classes,
+    `docutils.transform.Transform`,
 
 * behaviour and names of all *documented Python objects*, [#]_
 
@@ -166,7 +159,7 @@ How to Teach This
 * Move the API specification_ and the backwards compatibility declaration
   to the `Docutils Project Policies`_.
 
-* Complete the `api/`_ documentation and keep it up to date.
+* Complete the API documentation and keep it up to date.
 
 * Generate "docutils" package API documentation from the docstrings:
 
@@ -180,7 +173,7 @@ How to Teach This
 * Put the following text at a suitable place in the documentation:
 
      To find out if an object from the "docutils" package is safe to use,
-     look up its docstring and the docstring of its parent [#]_.
+     look up its docstring and the docstring of its parent(s) [#]_.
 
      If there is no documentation or the documentation says "provisional" or
      "internal", the name, behaviour, and existence of the object is not
@@ -280,23 +273,26 @@ References
 
 .. A collection of URLs used as references through the proposal.
 
-.. _api/:
 .. _API Reference Material for Client-Developers:
-    ../../docutils/docs/index.html
-    #api-reference-material-for-client-developers
+    ../index.html#api-reference-material-for-client-developers
 .. _doctree:
-.. _Docutils document structure: ../../docutils/docs/ref/doctree.html
-.. _docutils.dtd: ../../docutils/docs/ref/docutils.dtd
-.. _Docutils Design Specification: ../../docutils/docs/peps/pep-0258.html
-.. _Docutils Project Policies: ../../docutils/docs/dev/policies.html
+.. _Docutils document structure: ../ref/doctree.html
+.. _docutils.dtd: ../ref/docutils.dtd
+.. _Docutils Design Specification: ../peps/pep-0258.html
+.. _Docutils Project Policies: ../dev/policies.html
+.. _version specifier:
+.. _version identifcation:
+    ../dev/policies.html#version-identification
+.. _backwards compatibility policy:
+    ../dev/policies.html#backwards-compatibility-policy
 .. _"console_scripts" entry points:
-.. _front-end tools: ../../docutils/docs/user/tools.html
-.. _Docutils Publisher: ../../docutils/docs/api/publisher.html
-.. _Docutils Transforms: ../../docutils/docs/ref/transforms.html
-.. _HISTORY: ../../docutils/HISTORY.html
-.. _RELEASE-NOTES: ../../docutils/RELEASE-NOTES.html
+.. _front-end tools: ../user/tools.html
+.. _Docutils Publisher: ../api/publisher.html
+.. _Docutils Transforms: ../ref/transforms.html
+.. _HISTORY: ../docutils/HISTORY.html
+.. _RELEASE-NOTES: ../docutils/RELEASE-NOTES.html
 .. _reStructuredText specification:
-    ../../docutils/docs/ref/rst/restructuredtext.html
+    ../ref/rst/restructuredtext.html
 
 .. _`PEP 387: backwards compatibility rules`:
     https://peps.python.org/pep-0387/#backwards-compatibility-rules
@@ -305,19 +301,9 @@ References
 .. _provisional: https://docs.python.org/3/glossary.html#term-provisional-API
 .. _Semantic Versioning: https://semver.org/
 
+
 Copyright
 =========
 
 This document is placed in the public domain or under the
 CC0-1.0-Universal license, whichever is more permissive.
-
-
-
-..
-    Local Variables:
-    mode: indented-text
-    indent-tabs-mode: nil
-    sentence-end-double-space: t
-    fill-column: 70
-    coding: utf-8
-    End:
