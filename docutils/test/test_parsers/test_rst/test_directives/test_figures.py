@@ -146,22 +146,23 @@ totest['figures'] = [
 """],
 ["""\
 .. Figure:: picture.png
-   :height: 100
    :alt: alternate text
+   :name: img:picture
+   :height: 100
    :width: 200
    :scale: 50
    :loading: lazy
    :class: image-class
    :figwidth: 300
    :figclass: class1 class2
-   :name: fig:pix
+   :figname: Fig:  pix
 
    A figure with options and this caption.
 """,
 """\
 <document source="test data">
-    <figure classes="class1 class2" width="300px">
-        <image alt="alternate text" classes="image-class" height="100" ids="fig-pix" loading="lazy" names="fig:pix" scale="50" uri="picture.png" width="200">
+    <figure classes="class1 class2" ids="fig-pix" names="fig:\\ pix" width="300px">
+        <image alt="alternate text" classes="image-class" height="100" ids="img-picture" loading="lazy" names="img:picture" scale="50" uri="picture.png" width="200">
         <caption>
             A figure with options and this caption.
 """],

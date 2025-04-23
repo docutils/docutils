@@ -326,6 +326,7 @@ because the unit &quot;uf&quot; is invalid.</p>
 ],
 ["""\
 .. figure:: dummy.png
+   :figname: fig:dummy
 
    The figure's caption.
 
@@ -334,7 +335,7 @@ because the unit &quot;uf&quot; is invalid.</p>
    The legend's second paragraph.
 """,
 """\
-<figure>
+<figure id="fig-dummy">
 <img alt="dummy.png" src="dummy.png" />
 <figcaption>
 <p>The figure's caption.</p>

@@ -306,6 +306,7 @@ because the unit &quot;uf&quot; is invalid.</td>
 ],
 ["""\
 .. figure:: dummy.png
+   :figname: fig:dummy
 
    The figure's caption.
 
@@ -314,7 +315,7 @@ because the unit &quot;uf&quot; is invalid.</td>
    The legend's second paragraph.
 """,
 """\
-<div class="figure">
+<div class="figure" id="fig-dummy">
 <img alt="dummy.png" src="dummy.png" />
 <p class="caption">The figure's caption.</p>
 <div class="legend">

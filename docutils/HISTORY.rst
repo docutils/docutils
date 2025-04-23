@@ -90,6 +90,11 @@ Release 0.22b.dev (unpublished)
 
   - Support CSS3 `length units`_. Fixes feature-request #57.
 
+* docutils/parsers/rst/directives/images.py
+
+  - New option "figname" for the "figure" directive.
+    Fixes feature-request #44.
+
 * docutils/parsers/rst/directives/misc.py
 
   - Pass the included file's path to the parser when the

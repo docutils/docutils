@@ -33,11 +33,11 @@ section in the `reStructuredText Markup Specification`_ for syntax
 details.
 
 Descriptions below list "doctree elements" (document tree element
-names; XML DTD generic identifiers) corresponding to individual
-directives.  For details on the hierarchy of elements, please see `The
-Docutils Document Tree`_ and the `Docutils Generic DTD`_ XML document
-type definition.  For directive implementation details, see `Creating
-reStructuredText Directives`_.
+names; XML DTD generic identifiers) corresponding to individual directives.
+For details on the hierarchy of elements, please see `The Docutils
+Document Tree`_ and the `Docutils Generic DTD`_ XML document type definition.
+For directive implementation details, see `Creating reStructuredText
+Directives`_ and the `source <../../../docutils/parsers/rst/directives>`__.
 
 .. _Docutils Generic DTD: ../docutils.dtd
 .. _Creating reStructuredText Directives:
@@ -375,16 +375,26 @@ legend.  To specify a legend without a caption, use an empty comment
 
 .. _figure options:
 
-The "figure" directive supports all `options of the "image" directive
-<image options_>`__. These options (except ``align``) are passed on
-to the contained image.
+The "figure" directive supports the `common options`_ and all
+`options of the "image" directive <image options_>`__.
+These options (except ``align``) are passed on to the contained image.
 
 ``align`` : "left", "center", or "right"
-    The horizontal alignment of the figure, allowing the image to
-    float and have the text flow around it.  The specific behaviour
-    depends upon the browser or rendering software used.
+    The horizontal alignment of the figure.  The specific behaviour
+    depends upon the browser or rendering software used. In HTML, the
+    values "left" and "right" allow text to flow around the figure.
 
 In addition, the following options are recognized:
+
+``figclass`` : space separated list of `class names`_
+    Set a `classes attribute`_ value on the <figure> element
+    (the "class__" option is applied to the nested <image>).
+
+    __ `class option`_
+
+``figname`` : text_
+    Add *text* to the `names attribute`_ of the <figure> element
+    (the "name_" option is applied to the nested <image>).
 
 ``figwidth`` : "image", length_, or percentage_ of current line width
     The width of the figure.
@@ -394,7 +404,7 @@ In addition, the following options are recognized:
     Library`_). If the image file is not found or the required software is
     unavailable, this option is ignored.
 
-    Sets the `width attribute`_ of the <figure> doctree element.
+    Sets the `width attribute`_ of the `\<figure>`_ doctree element.
 
     This option does not scale the included image; use the ``width``
     `image option <image options_>`__ for that. ::
@@ -413,10 +423,6 @@ In addition, the following options are recognized:
         |The figure's caption should|
         |wrap at this width.        |
         +---------------------------+
-
-``figclass`` : space separated list of `class names`_
-    Set a `classes attribute`_ value on the figure element.  See the
-    `class directive`_ below.
 
 .. _Python Imaging Library:
 .. _Pillow: https://pypi.org/project/Pillow/
@@ -1768,7 +1774,7 @@ Examples::
 
        Second paragraph.
 
-The text above is parsed and transformed into this doctree fragment::
+The text above is parsed and transformed into this doctree_ fragment::
 
     <paragraph classes="special">
         This is a "special" paragraph.
@@ -2290,7 +2296,8 @@ Common Option Value Types
 
 .. _reStructuredText Standard Definition Files: definitions.html
 
-.. _The Docutils Document Tree: ../doctree.html
+.. _The Docutils Document Tree:
+.. _doctree: ../doctree.html
 .. _identifiers: ../doctree.html#identifiers
 .. _inline elements: ../doctree.html#inline-elements
 .. _class names: ../doctree.html#class-names

@@ -57,7 +57,7 @@ Document Tree / Docutils DTD
 * The <footnote> element's first child (<label>) will become mandatory
   in Docutils 1.0.
 
-* The "rst" parser will warn if a "figure" directive is missing both
+* The "rst" parser will warn if a `"figure"`_ directive is missing both
   caption and legend in Docutils 1.0.
 
 * To match the definition in the "Exchange Table Model", the
@@ -221,9 +221,11 @@ Release 0.22b.dev (unpublished)
 ===============================
 
 reStructuredText:
-  Support `CSS3 units`_. This adds "ch", "rem", "vw", "vh", "vmin",
-  "vmax", and "Q" to the `supported length units`__.
-  Note that some output formats don't support all units.
+  - Support `CSS3 units`_. This adds "ch", "rem", "vw", "vh", "vmin",
+    "vmax", and "Q" to the `supported length units`__. Note that some
+    output formats don't support all units.
+
+  - New option "figname" for the `"figure"`_ directive.
 
   .. _CSS3 units: https://www.w3.org/TR/css-values-3/#lengths
   __ docs/ref/rst/restructuredtext.html#length-units
@@ -1050,14 +1052,14 @@ Release 0.8 (2011-07-07)
   - most directives now support a "name" option that attaches a
     reference name. So you can write ::
 
-      .. figure:: image.png
-         :name: figure name
+      .. image:: image.png
+         :name: image name
 
     as a short form of ::
 
-      .. _figure name:
+      .. _image name:
 
-      .. figure:: image.png
+      .. image:: image.png
 
 Internationalization:
 
@@ -1146,9 +1148,7 @@ and convertible to 3.1 code.
 * reStructuredText:
 
   - Allow length units for all length specifications.
-  - Allow percent sign in "scale" argument of "figure" and "image" directives.
-  - Bugfix: The "figalign" argument of a figure now works as intended
-    (aligning the figure not its contents).
+  - Allow percent sign in "scale" option of "figure" and "image_" directives.
   - Align images with class "align-[right|center|left]"
     (allows setting the alignment of an image in a figure).
   - Hard tabs **in literal inclusions** are replaced by spaces.
@@ -1184,6 +1184,8 @@ and convertible to 3.1 code.
   - Typeset generic topic as "quote with title".
   - Use template (file and configuration option).
   - Render doctest blocks as literal blocks (indented).
+  - Bugfix: The "align" argument of a figure now works as documented
+    (aligning the figure, not its contents).
 
 * ODT writer:
 
@@ -1412,6 +1414,7 @@ Release 0.3.5 (2004-07-29)
 .. _csv-table: docs/ref/rst/directives.html#csv-table
 .. _"date": docs/ref/rst/directives.html#date
 .. _doctest block: docs/ref/rst/restructuredtext.html#doctest-blocks
+.. _"figure": docs/ref/rst/directives.html#figure
 .. _identifier normalization:
     docs/ref/rst/directives.html#identifier-normalization
 .. _image: docs/ref/rst/directives.html#image

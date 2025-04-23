@@ -119,14 +119,17 @@ class Figure(Image):
             return directives.length_or_percentage_or_unitless(argument, 'px')
 
     option_spec = Image.option_spec.copy()
+
     option_spec['figwidth'] = figwidth_value
     option_spec['figclass'] = directives.class_option
+    option_spec['figname'] = directives.unchanged
     option_spec['align'] = align
     has_content = True
 
     def run(self):
         figwidth = self.options.pop('figwidth', None)
         figclasses = self.options.pop('figclass', None)
+        figname = self.options.pop('figname', None)
         align = self.options.pop('align', None)
         (image_node,) = Image.run(self)
         if isinstance(image_node, nodes.system_message):
@@ -149,6 +152,9 @@ class Figure(Image):
             figure_node['width'] = figwidth
         if figclasses:
             figure_node['classes'] += figclasses
+        if figname:
+            figure_node['names'].append(nodes.fully_normalize_name(figname))
+            self.state.document.note_explicit_target(figure_node, figure_node)
         if align:
             figure_node['align'] = align
         if self.content:
