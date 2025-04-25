@@ -1857,31 +1857,29 @@ class document(Root, Element):
                         ) -> None:
         """
         `self.nameids` maps names to IDs, while `self.nametypes` maps names to
-        booleans representing hyperlink type (True==explicit,
+        booleans representing hyperlink target type (True==explicit,
         False==implicit).  This method updates the mappings.
 
         The following state transition table shows how `self.nameids` items
         ("id") and `self.nametypes` items ("type") change with new input
-        (a call to this method), and what actions are performed
-        ("implicit"-type system messages are INFO/1, and
-        "explicit"-type system messages are ERROR/3):
+        (a call to this method), and what actions are performed:
 
-        ====  =====  ========  ========  =======  ====  =====  =====
-         Old State    Input          Action        New State   Notes
-        -----------  --------  -----------------  -----------  -----
-        id    type   new type  sys.msg.  dupname  id    type
-        ====  =====  ========  ========  =======  ====  =====  =====
-        -     -      explicit  -         -        new   True
-        -     -      implicit  -         -        new   False
-        -     False  explicit  -         -        new   True
-        old   False  explicit  implicit  old      new   True
-        -     True   explicit  explicit  new      -     True
-        old   True   explicit  explicit  new,old  -     True   [#]_
-        -     False  implicit  implicit  new      -     False
-        old   False  implicit  implicit  new,old  -     False
-        -     True   implicit  implicit  new      -     True
-        old   True   implicit  implicit  new      old   True
-        ====  =====  ========  ========  =======  ====  =====  =====
+        ====  ========  ========  ========  =======  ====  ========  =====
+          Old State      Input          Action        New State      Notes
+        --------------  --------  -----------------  --------------  -----
+        id    type      new type  sys.msg.  dupname  id    type
+        ====  ========  ========  ========  =======  ====  ========  =====
+        -     -         explicit  -         -        new   explicit
+        -     -         implicit  -         -        new   implicit
+        -     implicit  explicit  -         -        new   explicit
+        old   implicit  explicit  INFO      old      new   explicit
+        -     explicit  explicit  ERROR     new      -     explicit
+        old   explicit  explicit  ERROR     new,old  -     explicit  [#]_
+        -     implicit  implicit  INFO      new      -     implicit
+        old   implicit  implicit  INFO      new,old  -     implicit
+        -     explicit  implicit  INFO      new      -     explicit
+        old   explicit  implicit  INFO      new      old   explicit
+        ====  ========  ========  ========  =======  ====  ========  =====
 
         .. [#] Do not clear the name-to-id map or invalidate the old target if
            both old and new targets are external and refer to identical URIs.

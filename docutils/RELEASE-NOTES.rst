@@ -295,21 +295,21 @@ New objects
      Provisional.
 
 Removed objects
-  `docutils.core.Publisher.setup_option_parser()`
+  `core.Publisher.setup_option_parser()`
      internal, obsolete,
-  `docutils.frontend.OptionParser.set_defaults_from_dict()`
+  `frontend.OptionParser.set_defaults_from_dict()`
      obsolete,
-  `docutils.nodes.Element.set_class()`
+  `nodes.Element.set_class()`
      obsolete, append to Element['classes'] directly,
-  `docutils.parsers.rst.directives.tables.CSVTable.decode_from_csv()`
+  `parsers.rst.directives.tables.CSVTable.decode_from_csv()`
      not required with Python 3,
-  `docutils.parsers.rst.directives.tables.CSVTable.encode_from_csv()`
+  `parsers.rst.directives.tables.CSVTable.encode_from_csv()`
      not required with Python 3,
-  `docutils.transforms.writer_aux.Compound`
+  `transforms.writer_aux.Compound`
      not used since Dec 2010,
-  `docutils.utils.error_reporting`
+  `utils.error_reporting`
      obsolete in Python 3,
-  `docutils.utils.Reporter.set_conditions()`
+  `utils.Reporter.set_conditions()`
      obsolete, set attributes via configuration settings or directly.
 
 Removed localisations:
@@ -321,7 +321,7 @@ Removed localisations:
 
 Removed files
   ``tools/rst2odt_prepstyles.py``
-     Obsoleted by `docutils.writers.odf_odt.prepstyles`.
+     Obsoleted by `writers.odf_odt.prepstyles`.
   ``docutils/utils/roman.py``
      Obsoleted by ``docutils/utils/_roman_numerals.py``
 
@@ -419,9 +419,9 @@ Release 0.21 (2024-04-09)
 
 * Removed objects:
 
-  `docutils.nodes.reprunicode`, `docutils.nodes.ensure_str()`
+  `nodes.reprunicode`, `nodes.ensure_str()`
     Python 2 compatibility hacks
-  `docutils.utils.Reporter.set_conditions()`
+  `utils.Reporter.set_conditions()`
     obsolete
   `writers.latex2e.Table.get_caption`
     obsolete
