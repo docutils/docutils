@@ -297,6 +297,8 @@ New objects
 Removed objects
   `core.Publisher.setup_option_parser()`
      internal, obsolete,
+  `frontend.ConfigParser.get_section()`
+     obsoleted by the configparser's "Mapping Protocol Access",
   `frontend.OptionParser.set_defaults_from_dict()`
      obsolete,
   `nodes.Element.set_class()`

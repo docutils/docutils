@@ -1107,7 +1107,10 @@ Skipping "%s" configuration file.
     def handle_old_config(self, filename: str) -> None:
         warnings.warn_explicit(self.old_warning, ConfigDeprecationWarning,
                                filename, 0)
-        options = self.get_section('options')
+        try:
+            options = dict(self['options'])
+        except KeyError:
+            options = {}
         if not self.has_section('general'):
             self.add_section('general')
         for key, value in options.items():
@@ -1156,23 +1159,6 @@ Skipping "%s" configuration file.
         So the cmdline form of option names can be used in config files.
         """
         return optionstr.lower().replace('-', '_')
-
-    def get_section(self, section: str) -> dict[str, str]:
-        """
-        Return a given section as a dictionary.
-
-        Return empty dictionary if the section doesn't exist.
-
-        Deprecated. Use the configparser "Mapping Protocol Access" and
-        catch KeyError.
-        """
-        warnings.warn('frontend.OptionParser.get_section() '
-                      'will be removed in Docutils 0.21 or later.',
-                      DeprecationWarning, stacklevel=2)
-        try:
-            return dict(self[section])
-        except KeyError:
-            return {}
 
 
 class ConfigDeprecationWarning(FutureWarning):
