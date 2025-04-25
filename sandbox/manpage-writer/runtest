@@ -53,6 +53,7 @@ for IN_F in $IN_DIR/$FILES ; do
     if [ $? -ne 0 ] ; then
       inc_ERROR_CNT
     fi
+    export SOURCE_DATE_EPOCH=$(stat -c %Y $IN_F)
     for ENC in $ENCS ; do
       if [ -e $EXP_DIR/$F_BASE.$ENC ] ; then
         man -T$ENC $OUT_DIR/$F_BASE.man > $OUT_DIR/$F_BASE.$ENC

@@ -48,6 +48,7 @@ for CMD in man mandoc ; do
   for IN_F in $IN_DIR/$FILES ; do
     BASE=`basename $IN_F`
     F_BASE=${BASE%.man}
+    export SOURCE_DATE_EPOCH=$(stat -c %Y $IN_F)
 
     for ENC in $ENCS ; do
       if [ -e $EXP_DIR/$F_BASE.$ENC ] ; then
