@@ -228,6 +228,9 @@ Release 0.22b.dev (unpublished)
   - Use .MT/.ME macros for mailto.uris.
   - macro-references: output refuri always.
   - macro-references: reduce space around refs.
+  - macro-references: insert breakpoints and hyphenation-off.
+  - macro-references: Skip content if content is equal, or only differs
+    by "mailto:".
   - text-references: insert breakpoints and hyphenation-off.
   - text-references: no line end after refuri, no additional spaces.
   - text-references: Skip references only if content is equal, or only differs

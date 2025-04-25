@@ -76,9 +76,9 @@
        ]8;;mailto:jdoe@example.com\Write to me]8;;\ with your questions.
 
    [1mURIs with known schemes[0m
-       ]8;;tel:+48-816-555-1212\tel:+48-816-555-1212]8;;\     ]8;;urn:isbn:0-486-27557-4\urn:isbn:0-486-27557-4]8;;\      ]8;;news:comp.infosystems.www.servers.unix\news:comp.infosys‐
-       tems.www.servers.unix]8;;\  ]8;;https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top\https://john.doe@www.example.com:123/forum/ques‐
-       tions/?tag=network‐ ing&order=newest#top]8;;\
+       ]8;;tel:+48-816-555-1212\tel:+48-816-555-1212]8;;\  ]8;;urn:isbn:0-486-27557-4\urn:isbn:0-486-27557-4]8;;\  ]8;;news:comp.infosystems.www.servers.unix\news:comp.infosystems.www
+       .servers.unix]8;;\    ]8;;https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top\https://john.doe@www.example.com:123/forum/questions/?
+       tag=networking&order=newest#top]8;;\
 
    [1mStandalone email addresses[0m
        like ]8;;mailto:someone@somewhere.com\someone@somewhere.com]8;;\

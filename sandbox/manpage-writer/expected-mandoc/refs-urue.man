@@ -99,13 +99,13 @@ here.
 .SS External Hyperlink Targets
 .sp
 External hyperlinks, like \c
-.UR https://www.python.org/
+.UR \%https://\:www\:.python\:.org/
 Python
 .UE \c
 \&.
 .sp
 embedded External hyperlinks, like \c
-.UR https://www.python.org/
+.UR \%https://\:www\:.python\:.org/
 Python
 .UE \c
 \&.
@@ -116,11 +116,11 @@ Internal cross\-references, like example\&.
 This is an example cross\-reference target.
 .SS Indirect Hyperlink Targets
 .sp
-.UR https://www.python.org/
+.UR \%https://\:www\:.python\:.org/
 Python
 .UE \c
  is \c
-.UR https://www.python.org/
+.UR \%https://\:www\:.python\:.org/
 my favourite
 programming language
 .UE \c
@@ -132,12 +132,12 @@ targets, too\&.
 .SH and
 .sp
 See the \c
-.UR https://www.python.org/
+.UR \%https://\:www\:.python\:.org/
 Python
 .UE \c
  home page for info.
 .sp
-.MT jdoe@example.com
+.MT \%jdoe@\:example\:.com
 Write to me
 .ME \c
  with your questions.
@@ -145,27 +145,22 @@ Write to me
 .
 .SS URIs with known schemes
 .sp
-.UR tel:+48-816-555-1212
-tel:+48\-816\-555\-1212
+.UR \%tel:+48-816-555-1212
 .UE
 .
-.UR urn:isbn:0-486-27557-4
-urn:isbn:0\-486\-27557\-4
+.UR \%urn:isbn:0-486-27557-4
 .UE
 .
-.UR news:comp.infosystems.www.servers.unix
-news:comp.infosystems.www.servers.unix
+.UR \%news:comp\:.infosystems\:.www\:.servers\:.unix
 .UE
 .
-.UR https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top
-https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top
+.UR \%https://\:john\:.doe@\:www\:.example\:.com:123/\:forum/\:questions/?\:tag=networking&\:order=newest#\:top
 .UE
 .
 .SS Standalone email addresses
 .sp
 like \c
-.MT someone@somewhere.com
-someone@somewhere.com
+.MT \%someone@\:somewhere\:.com
 .ME
 .
 .\" End of generated man page.

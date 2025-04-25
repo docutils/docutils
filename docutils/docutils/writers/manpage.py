@@ -1114,7 +1114,6 @@ class Translator(nodes.NodeVisitor):
 
     def _visit_reference_with_macro(self, node) -> None:
         # use UR/UE or MT/ME
-        # TODO insert_URI_breakpoints in text or refuri
         if 'refuri' in node:
             self.ensure_c_eol() # c_eol avoids space before the refuri
             _uri = node['refuri']
@@ -1127,10 +1126,14 @@ class Translator(nodes.NodeVisitor):
             else:
                 self.body.append(".UR ")
                 self.context.append('.UE\n')
-            self.body.append("%s\n" % _uri)
+            self.body.append("\\%%%s\n" % insert_URI_breakpoints(_uri))
+            if (node['refuri'] == node.astext()
+                or node['refuri'] == "mailto:"+node.astext()):
+                self.body.append(self.context.pop())
+                # if content is uri skip content
+                raise nodes.SkipNode
         else:
             self.context.append('')
-        # TODO if content is uri skip content
 
     def _depart_reference_with_macro(self, node) -> None:
         macro_end = self.context.pop()

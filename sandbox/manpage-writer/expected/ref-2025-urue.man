@@ -34,28 +34,26 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" from bugs#497
 .
 Aaaaa (\c
-.MT aaa@bb.ccc
-aaa@bb.ccc
+.MT \%aaa@\:bb\:.ccc
 .ME \c
 ),
-.UR https://github.com/cc
+.UR \%https://\:github\:.com/cc
 Bbb
 .UE \c
  (\c
-.MT ddd@gmail.com
-ddd@gmail.com
+.MT \%ddd@\:gmail\:.com
 .ME \c
 ).
-.UR https://github.com/m
+.UR \%https://\:github\:.com/m
 mm
 .UE
 .
-.UR https://github.com/nn
+.UR \%https://\:github\:.com/nn
 nn
 .UE
 .
 and \c
-.UR https://github.com/OooOoooo
+.UR \%https://\:github\:.com/\:OooOoooo
 OooOoooo
 .UE \c
 \&.
