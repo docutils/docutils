@@ -73,6 +73,8 @@ Release 0.22b.dev (unpublished)
   - Removed `Element.set_class()`.
   - Downgrade "duplicate ID" message level from SERIOUS to ERROR.
   - Fix recursion in `Element.get_language_code()`.
+  - Do not insert <system_message> elements for duplicate explicit targets
+    if this results in an invalid doctree (cf. bug #489).
 
 * docutils/parsers/docutils_xml.py
 

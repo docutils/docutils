@@ -1636,7 +1636,7 @@ class Body(RSTState):
 
     def nest_line_block_lines(self, block) -> None:
         for index in range(1, len(block)):
-            if getattr(block[index], 'indent', None) is None:
+            if block[index].indent is None:
                 block[index].indent = block[index - 1].indent
         self.nest_line_block_segment(block)
 

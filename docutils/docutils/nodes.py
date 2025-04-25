@@ -1923,7 +1923,13 @@ class document(Root, Element):
                     level, 'Duplicate explicit target name: "%s".' % name,
                     backrefs=[id], base_node=node)
                 if msgnode is not None:
+                    # append <system_message> if valid at this place
                     msgnode += msg
+                    try:
+                        msgnode.validate(recursive=False)
+                    except ValidationError:
+                        msgnode.pop()
+                        msg.parent = None
                 dupname(node, name)
             else:  # new explicit, old implicit -> silently overwrite
                 self.nameids[name] = id

@@ -322,7 +322,7 @@ This is not
             * is not recognized.
 """],
 ["""\
-System messages can appear in place of lines:
+System messages are no longer inserted between <line>s:
 
 | `uff <test1>`_
 | `uff <test2>`_
@@ -330,15 +330,12 @@ System messages can appear in place of lines:
 """\
 <document source="test data">
     <paragraph>
-        System messages can appear in place of lines:
+        System messages are no longer inserted between <line>s:
     <line_block>
         <line>
             <reference name="uff" refuri="test1">
                 uff
             <target dupnames="uff" ids="uff" refuri="test1">
-        <system_message backrefs="uff-1" level="2" line="3" source="test data" type="WARNING">
-            <paragraph>
-                Duplicate explicit target name: "uff".
         <line>
             <reference name="uff" refuri="test2">
                 uff

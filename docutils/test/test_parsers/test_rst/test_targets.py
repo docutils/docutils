@@ -345,6 +345,8 @@ First.
 .. rubric:: this is a title too
    :name: title
 
+The system message is left dangling
+(to be handled by the "universal.Messages" transform).
 """,
 """\
 <document source="test data">
@@ -355,9 +357,9 @@ First.
         First.
     <rubric dupnames="title" ids="title-1">
         this is a title too
-        <system_message backrefs="title-1" level="2" line="9" source="test data" type="WARNING">
-            <paragraph>
-                Duplicate explicit target name: "title".
+    <paragraph>
+        The system message is left dangling
+        (to be handled by the "universal.Messages" transform).
 """],
 ["""\
 Duplicate targets:
@@ -377,8 +379,14 @@ Explicit internal target.
 
 .. _target: Explicit_external_target
 
+| Do not insert <system_message> element for duplicate
+| _`target`, if this results in an invalid doctree.
+
 .. rubric:: directive with target
    :name: Target
+
+:field list: with
+:_`target`: in a field name
 """,
 """\
 <document source="test data">
@@ -413,11 +421,29 @@ Explicit internal target.
             <paragraph>
                 Duplicate explicit target name: "target".
         <target dupnames="target" ids="target-4" refuri="Explicit_external_target">
-        <rubric dupnames="target" ids="target-5">
+        <line_block>
+            <line>
+                Do not insert <system_message> element for duplicate
+            <line>
+                <target dupnames="target" ids="target-5">
+                    target
+                , if this results in an invalid doctree.
+        <rubric dupnames="target" ids="target-6">
             directive with target
-            <system_message backrefs="target-5" level="2" line="19" source="test data" type="WARNING">
-                <paragraph>
-                    Duplicate explicit target name: "target".
+        <field_list>
+            <field>
+                <field_name>
+                    field list
+                <field_body>
+                    <paragraph>
+                        with
+            <field>
+                <field_name>
+                    <target dupnames="target" ids="target-7">
+                        target
+                <field_body>
+                    <paragraph>
+                        in a field name
 """],
 ["""\
 .. _unescaped colon at end:: no good
