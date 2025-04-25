@@ -1130,6 +1130,7 @@ class Translator(nodes.NodeVisitor):
             self.body.append("%s\n" % _uri)
         else:
             self.context.append('')
+        # TODO if content is uri skip content
 
     def _depart_reference_with_macro(self, node) -> None:
         macro_end = self.context.pop()
