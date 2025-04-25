@@ -3,10 +3,18 @@ TODOs
 
 :Date: $Date$
 
-* references in text: ``Aaaaa \%(aaa@\:bb\:.ccc)``.
+special chars
+-------------
 
-  protect from hyphenation at usual points with ``\%``
-  AFTER setting good points with ``\:``.
+from roff(7)::
+
+  A few characters commonly seen on keyboards are treated specially by the roff
+  language and may not look correct in output if  used  unthinkingly;  they are
+  the  (double)  quotation mark ("), the neutral apostrophe ('), the minus sign
+  (-), the backslash (\), the caret or circumflex accent (^), the grave accent
+  (`), and  the  tilde (~).  All of these and more can be produced with special
+  character escape sequences; see groff_char(7).
+
 
 Issues
 ------
