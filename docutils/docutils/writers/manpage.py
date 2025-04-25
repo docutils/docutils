@@ -1095,8 +1095,7 @@ class Translator(nodes.NodeVisitor):
         # which are not supported everywhere yet
         # therefore make the markup ourself
 
-        # TODO insert_URI_breakpoints in text or refuri
-        # TODO precede with backslash-% to disable standard hyphenation
+        # precede with backslash-% to disable standard hyphenation
         if 'refuri' in node:
             # check if content is the uri and only output reference.
             # MAYBE if only content is ouput hyphens "-" get a backslash.
