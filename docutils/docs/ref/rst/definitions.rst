@@ -1,4 +1,5 @@
 .. include:: ../../header2.rst
+.. include:: <html-roles.txt>
 
 ============================================
  reStructuredText Standard Definition Files
@@ -161,8 +162,66 @@ reference (defined in both ``isonum.txt`` and ``xhtml1-lat1.txt``) is
 .. _xhtml1-symbol.txt:  ../../../docutils/parsers/rst/include/xhtml1-symbol.txt
 
 
+Role Definitions
+================
+
+Role definitions use the `"role" directive`_ to provide additional
+`reStructuredText interpreted text roles`_.
+
+.. _"role" directive: directives.html#role
+.. _reStructuredText interpreted text roles: roles.html
+
+
+Additional roles for HTML
+-------------------------
+
+The "html-roles.txt_" standard definitions file provides role
+definitions for semantic `HTML inline markup elements`__ and
+`tags for representation of edits to the document`__ that
+do not have a corresponding standard rST role
+(except for elements requiring an additional attribute).
+
+The additional roles work out of the box with the `"html5" writer`_
+that selects the corresponding HTML element.
+LaTeX styling definitions are included. For best results add
+the LaTeX packages soul_ and xcolor_ to the `stylesheet setting`__.
+
+.. _html-roles.txt: ../../../docutils/parsers/rst/include/html-roles.txt
+__ https://html.spec.whatwg.org/multipage/text-level-semantics.html
+__ https://html.spec.whatwg.org/multipage/edits.html
+__ ../../user/config.html#stylesheet-2
+.. _soul: https://ctan.org/pkg/soul
+.. _xcolor: https://ctan.org/pkg/xcolor
+
+.. class:: field-indent-4em
+
+:b:    highlight :b:`key words` without marking them up as important
+:bdi:  text :bdi:`directionality` isolation [#attribute-optional]_
+:del:  :del:`represents` removed content [#attribute-optional]_
+:dfn:  :dfn:`dfn` represents the defining instance of a term
+       [#attribute-optional]_
+:i:    :i:`voix alternative`
+:ins:  :ins:`editional` additions [#attribute-optional]_
+:kbd:  user input like :kbd:`Ctrl X`
+:mark: :mark:`highlight` a run of text
+:q:    represents :q:`phrasing content quoted from another source`
+       [#attribute-optional]_
+:s:    text that is no longer accurate, :s:`or no longer relevant`
+:samp: computer output like :samp:`hello world!`
+:small: side comments :small:`like this`
+:u:    unarticulated annotations of, e.g, :u:`mispellings`
+:var:  variables (or constants like :var:`c`)
+
+.. [#attribute-optional] Would gain from support for attributes/arguments
+   to inline roles (see TODO_).
+
+.. _TODO: https://docutils.sourceforge.io/docs/dev/todo.html
+          #acronym-and-abbreviation
+.. _"html5" writer: ../../user/html.html#html5
+
+
 S5/HTML Definitions
-===================
+-------------------
 
 The "s5defs.txt_" standard definition file contains interpreted text
 roles (classes) and other definitions for documents destined to become

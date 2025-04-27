@@ -1994,6 +1994,9 @@ any knowledge of the Python-Reader origin of these elements.
            .. |reST| acronym:: reST
               :text: reStructuredText
 
+    5. Use square brackets for positional and named options like AsciiDoc
+       (cf. https://sourceforge.net/p/docutils/feature-requests/68/).
+
     What do we do for other formats than HTML which do not support
     tool tips?  Put the full text in parentheses?
 
