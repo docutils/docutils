@@ -40,8 +40,6 @@ Command line interface
 
   For the rationale, see https://clig.dev/#arguments-and-flags.
 
-.. _entry points:
-    https://packaging.python.org/en/latest/specifications/entry-points/
 
 Document Tree / Docutils DTD
 ----------------------------
@@ -314,12 +312,16 @@ Removed objects
   `utils.Reporter.set_conditions()`
      obsolete, set attributes via configuration settings or directly.
 
-Removed localisations:
+Removed localisations
   Mistranslations of the "admonition" directive name:
      Use "advies" (af), "varsel" (da), "warnhinweis" (de), "aviso" (es),
      "sciigo" (eo), "annonce" (fr), "avviso" (it), "advies" (nl),
      "zauważenie" (pl) (introduced in Docutils 0.21)
      or the English name "admonition".
+
+New files
+  ``docutils/parsers/rst/include/html-roles.txt``
+     `Standard definition file`_ for additional roles matching HTML tags.
 
 Removed files
   ``tools/rst2odt_prepstyles.py``
@@ -367,11 +369,13 @@ Release 0.21 (2024-04-09)
     - Use ``python -m docutils.writers.odf_odt.prepstyles``
       to `strip the page size`__ from an ODT writer stylesheet.
 
-    __ docs/user/odt.html#page-size
-
   .. [#] Some Linux distributions already use the short names.
   .. [#] The final rendering is done by a Sphinx-based build system
          (cf. :PEP:`676`).
+
+  .. _entry points:
+      https://packaging.python.org/en/latest/specifications/entry-points/
+  __ docs/user/odt.html#page-size
 
 * reStructuredText:
 
@@ -1424,6 +1428,7 @@ Release 0.3.5 (2004-07-29)
     docs/ref/rst/directives.html#including-an-external-document-fragment
 .. _"widths" option: docs/ref/rst/directives.html#table
 
+.. _Standard definition file: docs/ref/rst/definitions.html
 .. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
 
 .. _configuration settings: docs/user/config.html

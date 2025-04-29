@@ -1,4 +1,4 @@
-.. Standard definition file for additonal roles matching HTML tags.
+.. Standard definition file for additional roles matching HTML tags.
 
   :Copyright: © 2025 Günter Milde.
   :License: Released under the terms of the

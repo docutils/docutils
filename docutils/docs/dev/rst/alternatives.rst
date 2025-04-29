@@ -254,6 +254,25 @@ Interpreted text is enclosed in single backquotes (`).
 Syntax #3 was chosen for reStructuredText.
 
 
+``term`` Role
+=============
+
+Add a "term" role for unfamiliar or specialized terminology?
+Probably not as a standard role; there is no real use case, and emphasis
+is enough for most cases.
+For semantic markup, authors may define a `custom role`_ or include the
+"html-roles.txt" `standard definition file`_ that defines (`amongst
+others`__) the "dfn" role (the "html5" writer selects the corresponding
+`HTML <dfn> element`_).
+
+.. _custom role: ../../ref/rst/directives.html#role
+.. _standard definition file: ../../ref/rst/definitions.html
+__ ../../ref/rst/definitions.html#additional-roles-for-html
+.. _HTML <dfn> element:
+    https://html.spec.whatwg.org/multipage/text-level-semantics.html
+    #the-dfn-element
+
+
 Comments
 ========
 
@@ -2740,6 +2759,9 @@ Problem? ::
        Literal block?
 
 Hmm...  Non-strict indentation isn't such a good idea.
+Except for `field lists`_.
+
+.. _field lists: ../../ref/rst/restructuredtext.html#field-lists
 
 
 Lazy Indentation of List Items
@@ -3010,14 +3032,8 @@ of substitution definitions can be devised.
 
 A "unicode" directive has been implemented to allow direct
 specification of esoteric characters.  In combination with the
-substitution construct, "include" files defining common sets of
-character entities can be defined and used.  `A set of character
-entity set definition files have been defined`__ (`tarball`__).
-There's also `a description and instructions for use`__.
-
-__ https://docutils.sourceforge.io/tmp/charents/
-__ https://docutils.sourceforge.io/tmp/charents.tgz
-__ https://docutils.sourceforge.io/tmp/charents/README.html
+substitution construct, `standard definition files`_ for common
+sets of character entities are provided for inclusion.
 
 To allow for `character-level inline markup`_, a limited form of
 character processing has been added to the spec and parser: escaped
@@ -3025,6 +3041,7 @@ whitespace characters are removed from the processed document.  Any
 further character processing will be of this functional type, rather
 than of the character-encoding type.
 
+.. _standard definition files: ../../ref/rst/definitions.html
 .. _character-level inline markup:
    ../../ref/rst/restructuredtext.html#character-level-inline-markup
 
@@ -3109,7 +3126,7 @@ ought to be literal text anyhow (e.g. "``^C`` to cancel").
 
 However, superscripts are seldom needed, and new syntax would break
 existing documents.  When it's needed, the ``:superscript:``
-(``:sup:``) role can we used as well.
+(``:sup:``) role can be used as well.
 
 
 Code Execution
@@ -3164,16 +3181,18 @@ pointer hovers over the main text.  A corresponding directive would be
 required to associate annotations with the original text (by name, or
 positionally as in anonymous targets?).
 
-There have not been many requests for such feature, though.  Also,
+There have not been many requests for such feature, though. [#]_  Also,
 cluttering WYSIWYG plaintext with annotations may not seem like a good
-idea, and there is no "tool tip" in formats other than HTML.
+idea, and there is no "tool tip" in formats other than HTML. [#]_
 
+.. [#] But see the `feature-request ticket #108`__.
 
-``term`` Role
-=============
+.. [#] As of 2025, there are also annotations in the output formats
+   OpenDocument and PDF/LaTeX (the LaTeX package "pdfcomment" provides a
+   \pdftooltip macro that creates pop-ups in PDF output).
 
-Add a "term" role for unfamiliar or specialized terminology?  Probably
-not; there is no real use case, and emphasis is enough for most cases.
+   __ https://sourceforge.net/p/docutils/feature-requests/108/
+
 
 
 Object references

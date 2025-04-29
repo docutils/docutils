@@ -65,10 +65,10 @@ Repository
 
 Move to a Git repository.
 
-* This is a long standing `feature request`__
-  (with pointers to Sphinx issues and discussion).
+See `feature requests #58`__
+(with pointers to Sphinx issues and discussion).
 
-  __ https://sourceforge.net/p/docutils/feature-requests/58/
+__ https://sourceforge.net/p/docutils/feature-requests/58/
 
 * From a `post by David Goodger`__
 
@@ -111,8 +111,8 @@ finally to Git, splitting sandbox, prest, and web from docutils.
 
 Sourceforge supports multiple Git repositories per project, so we can
 switch the version control system independent of the decision on an
-eventual switch of the host.
-Cf. https://sourceforge.net/p/forge/documentation/Git/
+eventual switch of the host
+(cf. https://sourceforge.net/p/forge/documentation/Git/).
 
 
 General
@@ -516,11 +516,6 @@ Miscellaneous
   .. _traits: http://code.enthought.com/traits/
   .. _SciPy: http://www.scipy.org/
 
-* tools/buildhtml.py: Extend the --prune option ("prune" config
-  setting) to accept file names (generic path) in addition to
-  directories (e.g. --prune=docs/user/rst/cheatsheet.rst, which should
-  *not* be converted to HTML).
-
 * Add support for _`plugins`.
 
 * _`Config directories`: Currently, ~/.docutils, ./docutils.conf/, &
@@ -673,7 +668,7 @@ Developer Docs
   they do.
 
 * Document the transforms_ (perhaps in docstrings?): how they're used,
-  what they do, dependencies & order considerations.
+  what they do, dependencies & order considerations.  In progress.
 
 * Document the HTML classes used by html4css1.py.
 
@@ -833,16 +828,11 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
-Bugs
-----
-
-* A container directive with ``:class:`` option gets the spurious
-  class value "class".
 
 Misc
 ----
 
-* Another list problem::
+* A list problem::
 
       * foo
             * bar
@@ -1146,38 +1136,15 @@ Misc
     (explicitly), just implicitly/automatically.  See rev. 1.74 of
     docutils/parsers/rst/states.py for an example of how to set.
 
-  - The line numbers of definition list items are wrong::
+  - See also `feature requests #41`__
 
-        $ rst2pseudoxml --expose-internal-attribute line
-        1
-          2
-          3
+    __ https://sourceforge.net/p/docutils/feature-requests/41/
 
-        5
-          6
-          7
-
-        <document source="<stdin>">
-            <definition_list>
-                <definition_list_item internal:line="3">
-                    <term>
-                        1
-                    <definition>
-                        <paragraph internal:line="2">
-                            2
-                            3
-                <definition_list_item internal:line="6">
-                    <term>
-                        5
-                    <definition>
-                        <paragraph internal:line="6">
-                            6
-                            7
-
-* .. _none source:
-
-  Quite a few nodes are getting a "None" source attribute as well.  In
-  particular, see the bodies of definition lists.
+* Unprintable characters like NULL in the rST source are in most cases
+  an indication of a problem (corrupt source file, wrong encoding, ...).
+  The same goes for combining characters at the start of a line, etc.
+  It may be helpful, if Docutils issued a Warning for problematic
+  characters in the source (except for literals).
 
 
 Adaptable file extensions
@@ -1337,14 +1304,10 @@ __ https://sourceforge.net/p/docutils/patches/169/
 Math Markup
 -----------
 
-Since Docutils 0.8, a "math" role and directive using LaTeX math
-syntax as input format is part of reStructuredText.
+* Use a "Transform" for math format conversions as extensively discussed
+  in the `math directive issues`__ thread in May 2008?
 
-Open issues:
-
-* Use a "Transform" for math format conversions as extensively discussed in
-  the "math directive issues" thread in May 2008
-  (http://osdir.com/ml/text.docutils.devel/2008-05/threads.html)?
+  __ http://osdir.com/ml/text.docutils.devel/2008-05/threads.html
 
 * Generic `math-output setting`_ (currently specific to HTML).
   (List of math-output preferences?)
@@ -1501,14 +1464,6 @@ HTML/CSS
   .. _Hevea: http://para.inria.fr/~maranget/hevea/
   .. _KaTeX: https://katex.org
 
-client side JavaScript conversion
-  Use TeX notation in the web page and JavaScript in the displaying browser.
-  (implemented as `math-output setting`_ "mathjax").
-
-  * jqMath_ (faster and lighter than MathJax_)
-
-  .. _MathJax: http://www.mathjax.org/
-  .. _jqMath: http://mathscribe.com/author/jqmath.html
 
 OpenOffice output
 `````````````````
@@ -2034,15 +1989,6 @@ nodes. This makes the document model and the writers somewhat simpler.
 
   [DG 2017-01-02:] +0.
 
-  Discussion
-    The syntax could be left in reST (for a set period of time?).
-
-    [DG 2017-01-02:] The syntax must be left in reST, practically
-    forever. Removing it would introduce a huge backwards
-    incompatibility. Any syntax removal must be preceded by a thorough
-    review and planning, including a deprecation warning process. My
-    opinion: it's not worth it.
-
 * "Normalize" special admonitions (note, hint, warning, ...) during parsing
   (similar to _`transforms.writer_aux.Admonitions`). There is no need to
   keep them as distinct elements in the doctree specification.
@@ -2059,8 +2005,8 @@ nodes. This makes the document model and the writers somewhat simpler.
   +1 reduce the complexity of the doctree
      (there is no 1:1 rST syntax element <-> doctree node mapping anyway).
 
-  +2 every writer needs 9 visit_*/depart_* method pairs to handle the 9
-     subtypes of an admonition, i.e. we could but also remove 36 redundant
+  +1 every writer needs 9 visit_*/depart_* method pairs to handle the 9
+     subtypes of an admonition, i.e. we could remove 72 redundant
      methods (HTML, LaTeX, Manpage, ODF).
 
   -1 the most unfortunately named of these directives will survive. [#]_
@@ -2234,7 +2180,7 @@ HTML Writer
   omitting ``<p>`` tags.  List compacting would need to be done by
   adjusting CSS margins instead.
 
-  :2015-04-02: The new html writer no longer strips <p> tags but adds the
+  :2015-04-02: The "html5" writer no longer strips <p> tags but adds the
                class value ``simple`` to the list.
                Formatting is done by CSS --- configurable by a custom style
                sheet.
@@ -2250,7 +2196,7 @@ HTML Writer
           If the first item of a field body is not a paragraph,
           it would begin on the following line.
 
-  :2015-04-02: The new html writer writes field-lists as definition lists
+  :2015-04-02: The "html5" writer writes field-lists as definition lists
                with class ``field-list``.
                Formatting is done by CSS --- configurable by a custom style
                sheet. The default style sheet has some examples, including a
@@ -2396,6 +2342,7 @@ __ ../user/latex.html#problems
 .. _latex-variants:
    ../../../sandbox/latex-variants/README.html
 
+
 Bug fixes
 ---------
 
@@ -2430,6 +2377,7 @@ Which packages do we want to use?
 
 + pointers to advanced packages and their use in the `latex writer
   documentation`_.
+
 
 Configurable placement of figure and table floats
 `````````````````````````````````````````````````
@@ -2523,6 +2471,7 @@ Other LaTeX constructs and packages instead of re-implementations
 
 .. _enumitem: https://www.ctan.org/pkg/enumitem
 
+
 Default layout
 --------------
 
@@ -2557,6 +2506,7 @@ Default layout
 
 .. _compound paragraph:
    ../ref/rst/directives.html#compound-paragraph
+
 
 Tables
 ``````
@@ -2613,6 +2563,7 @@ Tables
   table title. In analogy to the 'figure' directive this should map to a
   table float.
 
+
 Image and figure directives
 ```````````````````````````
 
@@ -2645,8 +2596,6 @@ Missing features
   As the 'figwidth' argument is still ignored and the "natural width" of
   a figure in LaTeX is 100 % of the text width, setting the 'align'
   argument has currently no effect on the LaTeX output.
-
-* Multiple author entries in docinfo (same thing as in html).
 
 * Consider supporting the "compact" option and class argument (from
   rst2html) as some lists look better compact and others need the space.
@@ -2757,8 +2706,6 @@ This run will use only the second custom stylesheet:
         --stylesheet-path second.css ...
 
 
-
-
 Front-End Tools
 ===============
 
@@ -2766,19 +2713,11 @@ Front-End Tools
   initialize ``settings_spec`` in ``__init__`` or ``init_options``?
 
 * Disable common options that don't apply?
-  (This should now be easier with ``frontend.filter_settings_spec``.)
 
-* Add ``--section-numbering`` command line option.  The "sectnum"
-  directive should override the ``--no-section-numbering`` command
-  line option then.
-
-* Implement the following suggestions from clig.dev?
+* Implement the following suggestion from clig.dev?
 
      Display output on success, but keep it brief.
      provide a --quiet option to suppress all non-essential output.
-
-     Consider chaining several args as input and use --output
-     (or redirection) for output.
 
      -- https://clig.dev/#help
 

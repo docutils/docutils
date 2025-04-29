@@ -216,7 +216,9 @@ writers.odf_odt.Writer:
 Transforms Reference
 ====================
 
-Incomplete. See also `Transforms Listed in Priority Order`_
+.. Note:: This section is still incomplete.
+
+See also `Transforms Listed in Priority Order`_
 and the sources in `docutils/transforms`__.
 
 __ https://docutils.sourceforge.io/docutils/transforms/

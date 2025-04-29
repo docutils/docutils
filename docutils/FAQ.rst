@@ -690,6 +690,16 @@ options:
        :A: Answer.
 
 
+How can I mark up a TODO list?
+------------------------------
+
+You may use a field list with class argument and some CSS styling.
+For an example see `Docutils TODO lists`_ and its source todo-lists.rst_.
+
+.. _Docutils TODO lists: docs/user/todo-lists.html
+.. _todo-lists.rst: docs/user/todo-lists.rst
+
+
 .. _bidi:
 
 Can I produce documents in right-to-left languages?
@@ -807,16 +817,6 @@ Also see `What's the standard filename extension for a
 reStructuredText file?`_
 
 .. [#] The "x-" prefix means it's an unregistered MIME type.
-
-
-How can I mark up a TODO list?
-------------------------------
-
-You may use a field list with class argument and some CSS styling.
-For an example see `Docutils TODO lists`_ and its source todo-lists.rst_.
-
-.. _Docutils TODO lists: docs/user/todo-lists.html
-.. _todo-lists.rst: docs/user/todo-lists.rst
 
 
 How can I specify an image grid?
