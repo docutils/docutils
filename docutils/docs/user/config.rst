@@ -838,7 +838,7 @@ pep_references
 ~~~~~~~~~~~~~~
 Recognize and link to standalone PEP references (like "PEP 258").
 
-:Default: None (disabled); True in PEP Reader.
+:Default: None (disabled); True in the `PEP Reader`_.
 :Option:  ``--pep-references``.
 
 pep_base_url
@@ -859,7 +859,7 @@ rfc_references
 ~~~~~~~~~~~~~~
 Recognize and link to standalone RFC references (like "RFC 822").
 
-:Default: None (disabled); True in PEP Reader.
+:Default: None (disabled); True in the `PEP Reader`_.
 :Option:  ``--rfc-references``.
 
 rfc_base_url
@@ -959,9 +959,11 @@ Remove spaces before `footnote references`_?
 
 Parser for Markdown (CommonMark_) with rST-compatibility extensions
 provided by the 3rd party package `myst-docutils`_.
-See `MyST with Docutils`_ and MyST's `Sphinx configuration options`_
-(some settings are not applicable with Docutils).
+See `MyST with Docutils`_ and MyST's `Sphinx configuration options`_.
+(Some settings are not applicable with Docutils,
+``docutils --parser=myst --help`` shows available options.)
 
+.. _CommonMark: https://spec.commonmark.org/current/
 .. _myst-docutils: https://pypi.org/project/myst-docutils/
 .. _MyST with Docutils:
    https://myst-parser.readthedocs.io/en/latest/docutils.html
@@ -1041,11 +1043,18 @@ to a subtitle by the SectSubTitle_ transform.
 :Options: ``--section-subtitles``, ``--no-section-subtitles``.
 
 
+.. _PEP Reader:
+
 [pep reader]
 ------------
 
-The `pep_references`_ and `rfc_references`_ settings
-(`[restructuredtext parser]`_) are set on by default.
+Writer Specific Defaults
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. class:: run-in
+
+:`pep_references`_: True
+:`rfc_references`_: True
 
 
 .. [python reader]
@@ -2086,6 +2095,18 @@ Writer Specific Defaults
 __ `template [latex writers]`_
 
 
+[manpage writer]
+----------------
+
+The `manpage writer`_ generates documents in the "roff" format
+for processing into UNIX `manual pages`_ with mandoc_ or groff_.
+
+.. _manpage Writer: manpage.html
+.. _manual pages: https://en.wikipedia.org/wiki/Man_page
+.. _mandoc: http://mandoc.bsd.lv/
+.. _groff: https://gnu.org/software/groff/
+
+
 .. _ODF/ODT Writer:
 
 [odf_odt writer]
@@ -2334,8 +2355,9 @@ __ https://github.com/python/cpython/issues/106747
 Docutils' `generic front end`_ tool allows combining "reader", "parser",
 and "writer" components from the Docutils package or 3rd party plug-ins.
 
-| New in 0.17. Config file support added in 0.18. Renamed in 0.19
-  (the old section name "docutils-cli application" is kept as alias).
+| New in 0.17. Config file support added in 0.18.
+| Renamed in 0.19 (the old section name "docutils-cli application"
+  is kept as alias).
 | Support for reader/parser import names added in 0.19.
 
 .. _generic front end: tools.html#generic-command-line-front-end
@@ -2352,16 +2374,17 @@ parser
 ~~~~~~
 Parser component name.
 Either "`rst <[restructuredtext parser]_>`__", "`xml <[xml parser]_>`__",
-or the import name of a plug-in parser module.
-
-Parsers for CommonMark_ known to work with Docutils include
-"`pycmark <[pycmark parser]_>`__", "`myst <[myst parser]_>`__",
-and "`recommonmark <[recommonmark parser]_>`__".
+or the import name of a plug-in parser module. [#]_
 
 *Default*: "rst".
 *Option*: ``--parser``
 
-.. _CommonMark: https://spec.commonmark.org/current/
+.. [#] Docutils recognizes the aliases
+   "`pycmark <[pycmark parser]_>`__", "`myst <[myst parser]_>`__",
+   and "`recommonmark <[recommonmark parser]_>`__" and selects the
+   corresponding 3rd-party Markdown parser (if it is installed).
+   The aliases "markdown" and "commonmark" select the first available
+   parser from this list.
 
 
 .. _writer [docutils application]:

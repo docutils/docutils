@@ -218,8 +218,7 @@ Release 0.22b.dev (unpublished)
 * docutils/writers/manpage.py
 
   - Remove code for unused emdash bullets.
-  - Feature-request #105 more informative document comments.
-    docutils version in header
+  - Print Docutils version in header comment (feature-request #105).
   - Stop converting text to full capitals (bug #481).
   - Add module function insert_URI_breakpoints.
   - Add command line option ``--macro-references``/``--text-references``
