@@ -223,19 +223,7 @@ Release 0.22b.dev (unpublished)
   - Add module function insert_URI_breakpoints.
   - Add command line option ``--macro-references``/``--text-references``
     to enable/disable usage of *man* macros .UR/.UE.
-  - Do not output .UR/.UE macros without refuri in node.
-  - Use .MT/.ME macros for mailto.uris.
-  - macro-references: output refuri always.
-  - macro-references: reduce space around refs.
-  - macro-references: insert breakpoints and hyphenation-off.
-  - macro-references: Skip content if content is equal, or only differs
-    by "mailto:".
-  - text-references: insert breakpoints and hyphenation-off.
-  - text-references: no line end after refuri, no additional spaces.
-  - text-references: Skip references only if content is equal, or only differs
-    by "mailto:".
-  - macro-references: remove "mailto:" from refuris in the .MT line.
-    man/groff adds one ... but mandoc does not :-/
+  - Proper reference output. 
 
 * docutils/writers/null.py
 
