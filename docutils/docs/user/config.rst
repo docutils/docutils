@@ -2106,6 +2106,20 @@ for processing into UNIX `manual pages`_ with mandoc_ or groff_.
 .. _mandoc: http://mandoc.bsd.lv/
 .. _groff: https://gnu.org/software/groff/
 
+macro-references
+~~~~~~~~~~~~~~~~
+Output man-macros ``.UR``/``.UE`` for uri references 
+and ``.MT``/``.ME`` for email-addresses.
+
+If False rendering of references is done by the manpage writer.
+
+The option exists because 2024 or so, the man macros began to support
+OSC8 terminals, that became more available. But not everyone, every
+system supports OSC8, e.g. mandoc_ macros do not output OSC8.
+
+:Default: False. ... will be True ... soon.
+:Options: ``--macro-references`` to set True, ``--text-references`` to set
+          False.
 
 .. _ODF/ODT Writer:
 
