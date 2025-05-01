@@ -55,6 +55,7 @@ class WriterPublishTestCase(unittest.TestCase):
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
+                            'use_reference_macros': False,
                         }).decode()
                     self.assertEqual(case_expected, output)
 
@@ -68,8 +69,9 @@ class WriterPublishTestCase(unittest.TestCase):
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
-                            'use_reference_macros': True,
-                        }).decode()
+                            'macro_references': True,
+                            'output_encoding': "unicode",
+                        })
                     self.assertEqual(case_expected, output)
 
     def test_system_msgs(self):
@@ -85,7 +87,8 @@ class WriterPublishTestCase(unittest.TestCase):
                             'strict_visitor': True,
                             'report_level': 1,
                             'warning_stream': warnings,
-                        }).decode()
+                            'output_encoding': "unicode",
+                        })
                     self.assertEqual(case_expected, output)
                     warnings.seek(0)
                     self.assertEqual(
@@ -93,8 +96,8 @@ class WriterPublishTestCase(unittest.TestCase):
                             warnings.readlines())
 
 
-document_start = r""".\" Man page generated from reStructuredText by manpage writer
-.\" from docutils 0.22b.dev.
+document_start = r""".\" Man page generated from reStructuredText
+.\" by the Docutils 0.22b.dev manpage writer.
 .
 """
 

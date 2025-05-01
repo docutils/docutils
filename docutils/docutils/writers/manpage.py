@@ -121,12 +121,11 @@ class Writer(writers.Writer):
         None,
         (('Use man macros .UR/.UE and .MT/.ME for references ',
           ['--macro-references'],
-          {'dest': 'use_reference_macros',
-           'default': False, 'action': 'store_true',
+          {'default': False, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Put references in plain text form.',
           ['--text-references'],
-          {'dest': 'use_reference_macros',
+          {'dest': 'macro_references',
            'action': 'store_false',
            'validator': frontend.validate_boolean}),
          ),
@@ -213,14 +212,14 @@ class Translator(nodes.NodeVisitor):
     words_and_spaces = re.compile(r'\S+| +|\n')
     possibly_a_roff_command = re.compile(r'\.\w')
     document_start = (
-        'Man page generated from reStructuredText by manpage writer\n'
-        f'from docutils {docutils.__version__}.'
+        'Man page generated from reStructuredText\n'
+        f'by the Docutils {docutils.__version__} manpage writer.'
     )
 
     def __init__(self, document) -> None:
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
-        if settings.use_reference_macros:
+        if settings.macro_references:
             self.visit_reference = self._visit_reference_with_macro
             self.depart_reference = self._depart_reference_with_macro
         else:
