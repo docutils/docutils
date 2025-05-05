@@ -359,8 +359,11 @@ class Translator(nodes.NodeVisitor):
                 # a) a line end, disable it
                 if self.body[i+1][0] in ('\n', '\r'):
                     self.body[i+1] = '.' + self.body[i+1]
-                # b) with a separator: move the 1st char to current item
+                # b) with a separator: moving the 1st char to current item
+                #    would require to check the second, use \c instead.
                 else:
+                # append \c to end the text line, .ME or .UE without inserting
+                # space or attempting a break.
                     self.body[i] = "%s \\c\n" % (self.body[i][:3])
         return ''.join(self.head + self.body + self.foot)
 
