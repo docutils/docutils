@@ -17,7 +17,7 @@ systems. The pages are grouped in numbered sections:
  7 miscellaneous
  8 system administration
 
-Man pages are written *troff*, a text file formatting system.
+Man pages are written in the *roff* markup language.
 
 See https://www.tldp.org/HOWTO/Man-Page for a start.
 
@@ -104,7 +104,8 @@ NONBREAKING_INSERT_RE2 = re.compile(r'([^\.]+)(?=\.+)(?=.{3,})')
 
 def insert_URI_breakpoints(s):
     # TODO only for long URIs ?
-    return NONBREAKING_INSERT_RE2.sub(r'\1' + NONPRINTING_BREAKPOINT, 
+    return NONBREAKING_INSERT_RE2.sub(
+               r'\1' + NONPRINTING_BREAKPOINT,
                NONBREAKING_INSERT_RE.sub(r'\1' + NONPRINTING_BREAKPOINT, s))
 
 
@@ -117,19 +118,22 @@ class Writer(writers.Writer):
     """Formats this writer supports."""
 
     settings_spec = (
-        'Manpage-Specific Options',
+        'Manpage Writer Options',
         None,
-        (('Use man macros .UR/.UE and .MT/.ME for references ',
-          ['--macro-references'],
-          {'default': False, 'action': 'store_true',
-           'validator': frontend.validate_boolean}),
-         ('Put references in plain text form.',
+        (('Write references in plain text form. (default)',
           ['--text-references'],
-          {'dest': 'macro_references',
+          {'action': 'store_true',
+           'default': True,  # remove in Docutils 1.0
+           'validator': frontend.validate_boolean}),
+         ('Use man macros UR and MT for references.',
+          ['--macro-references'],
+          {'dest': 'text_references',
            'action': 'store_false',
            'validator': frontend.validate_boolean}),
          ),
         )
+
+    config_section_dependencies = ('writers',)
 
     output = None
     """Final translated form of `document`."""
@@ -219,12 +223,12 @@ class Translator(nodes.NodeVisitor):
     def __init__(self, document) -> None:
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
-        if settings.macro_references:
-            self.visit_reference = self._visit_reference_with_macro
-            self.depart_reference = self._depart_reference_with_macro
-        else:
+        if settings.text_references:
             self.visit_reference = self._visit_reference_no_macro
             self.depart_reference = self._depart_reference_no_macro
+        else:
+            self.visit_reference = self._visit_reference_with_macro
+            self.depart_reference = self._depart_reference_with_macro
         lcode = settings.language_code
         self.language = languages.get_language(lcode, document.reporter)
         self.head = []
@@ -238,8 +242,7 @@ class Translator(nodes.NodeVisitor):
         self.compact_simple = None
         # the list style "*" bullet or "#" numbered
         self._list_char = []
-        # writing the header .TH and .SH Name is postboned after
-        # docinfo.
+        # writing the header .TH and .SH Name is postponed after docinfo.
         self._docinfo = {
                 "title": "",
                 "subtitle": "",
@@ -352,13 +355,13 @@ class Translator(nodes.NodeVisitor):
                       ):
                     self.body[i] = '.\n'
             elif self.body[i][:4] in ('.UE\n', '.ME\n'):
-                # if next item starts with 
+                # if next item starts with
                 # a) a line end, disable it
                 if self.body[i+1][0] in ('\n', '\r'):
                     self.body[i+1] = '.' + self.body[i+1]
                 # b) with a separator: move the 1st char to current item
                 else:
-                    self.body[i] = "%s \\c\n" % ( self.body[i][:3])
+                    self.body[i] = "%s \\c\n" % (self.body[i][:3])
         return ''.join(self.head + self.body + self.foot)
 
     def deunicode(self, text):
@@ -1108,16 +1111,17 @@ class Translator(nodes.NodeVisitor):
 
     def _depart_reference_no_macro(self, node) -> None:
         if 'refuri' in node:
-            self.body.append(r" \%%<%s>" % insert_URI_breakpoints(node['refuri']))
+            self.body.append(r" \%%<%s>"
+                             % insert_URI_breakpoints(node['refuri']))
         # elif 'refid' in node:
 
     def _visit_reference_with_macro(self, node) -> None:
         # use UR/UE or MT/ME
         if 'refuri' in node:
-            self.ensure_c_eol() # c_eol avoids space before the refuri
+            self.ensure_c_eol()  # c_eol avoids space before the refuri
             _uri = node['refuri']
             if _uri.startswith('mailto:'):
-                _uri = _uri[7:] # remove "mailto:" 
+                _uri = _uri[7:]  # remove "mailto:"
                 # groff macro in an.tmac adds "mailto:"
                 # mandoc does not.
                 self.body.append(".MT ")

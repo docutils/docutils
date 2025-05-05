@@ -115,6 +115,10 @@ Writers
 
     __ docs/user/latex.html#length-units
 
+* "manpage" writer:
+
+  - Change default of the text_references_ setting to False in Docutils 1.0.
+
 * "odt" writer:
 
   - Align adjustment of relative image paths with the behaviour of HTML
@@ -247,6 +251,9 @@ Configuration changes
 
   - Rename configuration setting "output" to "output_path_".
 
+  - The manpage writer now recognizes the sections [writers] and
+    [manpage writer] with the new setting `text_references`_.
+
 Output changes
   LaTeX:
      Don't wrap references with custom reference-label_ in a ``\hyperref``
@@ -266,6 +273,7 @@ Output changes
 
   manpage:
      Don't UPPERCASE section headings.
+     Handle hyperlink references (see text_references_).
 
   null:
      The "null" writer output changed from None to the empty string.
@@ -1444,6 +1452,7 @@ Release 0.3.5 (2004-07-29)
 .. _input_encoding: docs/user/config.html#input-encoding
 .. _[latex writers]: docs/user/config.html#latex-writers
 .. _legacy_column_widths: docs/user/config.html#legacy-column-widths
+.. _text_references: docs/user/config.html#text-references
 .. _math_output: docs/user/config.html#math-output
 .. _old-format configuration files:
     docs/user/config.html#old-format-configuration-files

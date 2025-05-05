@@ -48,7 +48,7 @@ Release 0.22b.dev (unpublished)
   - Drop short options ``-i`` and ``-o`` for ``--input-encoding``
     and ``--output-encoding``.
   - Change the default input encoding from ``None`` (auto-detect) to "utf-8".
-  - Change the default value of the _root_prefix setting to the empty string
+  - Change the default value of the root_prefix_ setting to the empty string
     (no change to the behaviour).
 
 * docutils/io.py
@@ -86,7 +86,7 @@ Release 0.22b.dev (unpublished)
 
 * docutils/parsers/rst/languages/
 
-  - Removed mistranslations of the "admonition" directive name.
+  - Remove mistranslations of the "admonition" directive name.
 
 * docutils/parsers/rst/directives/__init__.py
 
@@ -156,7 +156,7 @@ Release 0.22b.dev (unpublished)
 * docutils/utils/_roman_numerals.py
 
   - New implementation or Roman numeral support.
-    Replaces the local copy of docutils/utils/roman.py.
+    Replaces the local copy of the roman.py package.
 
 * docutils/utils/error_reporting.py
 
@@ -220,10 +220,11 @@ Release 0.22b.dev (unpublished)
   - Remove code for unused emdash bullets.
   - Print Docutils version in header comment (feature-request #105).
   - Stop converting text to full capitals (bug #481).
-  - Add module function insert_URI_breakpoints.
-  - Add command line option ``--macro-references``/``--text-references``
-    to enable/disable usage of *man* macros .UR/.UE.
-  - Proper reference output. 
+  - Fix reference output (bug #497).
+  - Use macros .UR/.UE for hyperlink references unless the new
+    configuration setting text_references_ is True.
+    The current default is True (text references), it will change
+    to False (macro references) in Docutils 1.0.
 
 * docutils/writers/null.py
 
@@ -4669,6 +4670,7 @@ test/test_rst); and all modifications required to make it all work.
 .. _stylesheet_path: docs/user/config.html#stylesheet-path
 .. _syntax_highlight: docs/user/config.html#syntax-highlight
 .. _table_style: docs/user/config.html#table-style
+.. _text_references: docs/user/config.html#text_references
 .. _theme: docs/user/config.html#theme
 .. _theme_url: docs/user/config.html#theme-url
 .. _toc_backlinks: docs/user/config.html#toc-backlinks

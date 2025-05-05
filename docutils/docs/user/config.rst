@@ -2098,28 +2098,31 @@ __ `template [latex writers]`_
 [manpage writer]
 ----------------
 
-The `manpage writer`_ generates documents in the "roff" format
-for processing into UNIX `manual pages`_ with mandoc_ or groff_.
+The `manpage writer`_ generates documents in the roff_ markup language
+for processing into UNIX `manual pages`_ with, e.g., mandoc_ or groff_.
 
 .. _manpage Writer: manpage.html
+.. _roff: https://en.wikipedia.org/wiki/Roff_(software)
 .. _manual pages: https://en.wikipedia.org/wiki/Man_page
 .. _mandoc: http://mandoc.bsd.lv/
 .. _groff: https://gnu.org/software/groff/
 
-macro-references
+text_references
 ~~~~~~~~~~~~~~~~
-Output man-macros ``.UR``/``.UE`` for uri references 
-and ``.MT``/``.ME`` for email-addresses.
 
-If False rendering of references is done by the manpage writer.
+Use a text rendering instead of the macros ``UR`` and ``MT`` for
+reference targets (URI references and email addresses).
+Some systems (e.g. Solaris troff) do not support these macros.
+Text references also prevent problems when groff_ is used on a
+terminal emulator that does not `support OSC8 sequences`__
+(alternatively, call groff_ with the option `-rU0`__).
 
-The option exists because 2024 or so, the man macros began to support
-OSC8 terminals, that became more available. But not everyone, every
-system supports OSC8, e.g. mandoc_ macros do not output OSC8.
+:Default: True (will change to False in Docutils 1.0).
+:Options: ``--macro-references``, ``--text-references``.
 
-:Default: False. ... will be True ... soon.
-:Options: ``--macro-references`` to set True, ``--text-references`` to set
-          False.
+__ https://github.com/Alhadis/OSC8-Adoption/
+__ https://www.man7.org/linux/man-pages/man7/groff_man.7.html#Options
+
 
 .. _ODF/ODT Writer:
 

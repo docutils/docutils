@@ -55,7 +55,6 @@ class WriterPublishTestCase(unittest.TestCase):
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
-                            'use_reference_macros': False,
                         }).decode()
                     self.assertEqual(case_expected, output)
 
@@ -69,7 +68,7 @@ class WriterPublishTestCase(unittest.TestCase):
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
-                            'macro_references': True,
+                            'text_references': False,
                             'output_encoding': "unicode",
                         })
                     self.assertEqual(case_expected, output)
