@@ -150,7 +150,8 @@ Steps to take and watch
 
     find .cache/pip/wheels -name docutils\*whl -exec rm -v -i {} \;
 
-* Test the sdist::
+* Test the sdist
+  ::
 
     python3 -m venv du3s ; cd du3s
     export PYTHONPATH= ; . bin/activate
@@ -160,7 +161,7 @@ Steps to take and watch
     cp -Lr ../docutils-code/docutils/test .
     python test/alltests.py
 
-  Ignore ``test_find_file_in_dirs`` fails because HISTORY.rst is missing.
+  Ignore ``test_find_file_in_dirs`` fails because HISTORY.rst is missing::
 
     deactivate ; cd .. ; rm -r du3s
 
