@@ -180,7 +180,20 @@ Steps to take and watch
 
 For candidate releases change version to rc#+1dev.
 
-For final releases continue
+* set_version #.rc#+1.dev 
+
+  change docutils/__init__.py 
+
+  test 
+
+* docutils/HISTORY.rst: add section "Release <version> (unpublished)"
+* docutils/RELEASE-Notes.rst: add section "Release <version> (unpublished)"
+
+* test again
+* commit
+* run sandbox/infrastructure/docutils-update.local
+
+For final releases
 
 * upload source and generated html to sf-htdocs/#.# ::
 

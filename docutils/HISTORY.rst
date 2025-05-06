@@ -14,6 +14,11 @@
 .. contents::
 
 
+Release 0.22rc2 (unpublished)
+=============================
+
+Nothing yet.
+
 Release 0.22rc1 (2025-05-06)
 ============================
 
