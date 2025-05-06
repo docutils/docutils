@@ -8,6 +8,15 @@ Releasing
 
 Notes on what happend while releasing.
 
+Release 0.22rc1 (2025-05-06)
+============================
+
+Follow docs/release.rst.
+
+* Change release.rst: TODOs, MAYBEs and new section format.
+
+* test source from test.pypi breaks like before.
+
 Release 0.22b0.dev0 (2024-08-14)
 ================================
 

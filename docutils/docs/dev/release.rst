@@ -24,11 +24,22 @@ Steps to take and watch
 
   Consider **feature freeze** or/and **check-in freeze** .
 
-* Update RELEASE-NOTES.rst add section ``Release <version>``.
+* set_version.sh does not change HISTORY.rst and RELEASE-NOTES.rst.
+  
+  Why ? Maybe because the underline of the section needs to be changed anyway
+  and personally I like to look around.
+
+  Maybe change this.
+
+* Change HISTORY.rst title ``Release <version> (unublished)``:
+
+  Change the version insert date for unpublished.
+
+* Update RELEASE-NOTES.rst add section ``Release <version> (unpublished)``.
+
+  Change the version insert date for unpublished.
 
   Consult HISTORY.rst for important changes.
-
-* Change HISTORY.rst title ``Changes Since <previous release>`` to ``Release <version>``.
 
 * Set new version (replace ``<version>`` with the new version indentifier
   and ``<docutils-repository-root>`` with the dir containing
@@ -68,6 +79,10 @@ Steps to take and watch
 
   check file sizes: the 0.21.2 wheel was 574K the sdist 2,2M.
 
+* TODO: Test the wheel in local environment.
+
+  Uploads to pypi/test.pypi can not be overwritten, require a new version.
+
 * Upload wheel and source to test.pypi.
 
   Set repository and key in ~/.pypirc with a <server-name> and
@@ -83,6 +98,7 @@ Steps to take and watch
 
     pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
 
+    # CAUTION copy test from modified not yet committed source tree.
     cp -Lr ../docutils-code/docutils/test .
     python test/alltests.py
 
