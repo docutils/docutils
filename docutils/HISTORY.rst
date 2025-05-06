@@ -14,8 +14,8 @@
 .. contents::
 
 
-Release 0.22b.dev (unpublished)
-===============================
+Release 0.22rc1 (2025-05-06)
+============================
 
 * General
 

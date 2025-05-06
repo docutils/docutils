@@ -219,8 +219,8 @@ Misc
    __ https://packages.debian.org/source/trixie/python-docutils
 
 
-Release 0.22b.dev (unpublished)
-===============================
+Release 0.22rc1 (2025-05-06)
+============================
 
 reStructuredText:
   - Support `CSS3 units`_. This adds "ch", "rem", "vw", "vh", "vmin",
