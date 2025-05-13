@@ -163,9 +163,8 @@ class RSTStateMachine(StateMachineWS):
                            reporter=document.reporter,
                            language=self.language,
                            title_styles=[],
-                           section_parents=[],
-                           section_level=0,  # will be removed in Docutils 2.0
-                           section_bubble_up_kludge=False,  # will be removed
+                           section_level=0,  # ignored, to be removed in 2.0
+                           section_bubble_up_kludge=False,  # ignored, ""
                            inliner=inliner)
         self.document = document
         self.attach_observer(document.note_source)
@@ -336,13 +335,13 @@ class RSTState(StateWS):
         When a new section is reached that isn't a subsection of the current
         section, set `self.parent` to the new section's parent section.
         """
-        memo = self.memo
-        title_styles = memo.title_styles
-        mylevel = len(memo.section_parents)
+        title_styles = self.memo.title_styles
+        section_parents = get_section_parents(self.parent)
+        mylevel = len(section_parents)
         # Determine the level of the new section:
-        try:                            # check for existing title style
+        try:  # check for existing title style
             level = title_styles.index(style) + 1
-        except ValueError:              # new title style
+        except ValueError:  # new title style
             title_styles.append(style)
             level = len(title_styles)
         # The new level must not be deeper than an immediate child
@@ -354,15 +353,10 @@ class RSTState(StateWS):
                                line=lineno)
             return False
         # Update parent state:
-        if level > mylevel:
-            # new section is subsection of current section
-            memo.section_parents.append(self.parent)
-            memo.section_level += 1
-        else:
+        self.memo.section_level = level
+        if level <= mylevel:
             # new section is sibling or higher up in the section hierarchy
-            memo.section_parents[level:] = []
-            self.parent = memo.section_parents[-1]
-            memo.section_level = len(memo.section_parents)
+            self.parent = section_parents[level-1]
         return True
 
     def title_inconsistent(self, sourcetext, lineno):
@@ -2944,7 +2938,7 @@ class Line(SpecializedText):
     Second line of over- & underlined section title or transition marker.
     """
 
-    eofcheck = 1  # will be removed in Docutils 2.0.
+    eofcheck = 1  # ignored, will be removed in Docutils 2.0.
 
     def eof(self, context):
         """Transition marker at end of section or document."""
@@ -3140,3 +3134,24 @@ state_classes = (Body, BulletList, DefinitionList, EnumeratedList, FieldList,
                  OptionList, LineBlock, ExtensionOptions, Explicit, Text,
                  Definition, Line, SubstitutionDef, RFC2822Body, RFC2822List)
 """Standard set of State classes used to start `RSTStateMachine`."""
+
+
+# Auxiliary functions
+# ===================
+
+def get_section_parents(node: nodes.Element) -> list[nodes.section]:
+    """Return list of the the current node's parent sections.
+
+    List <section> elements that are parents of the current node.
+    The length of this list is the current section level.
+
+    Provisional. May be changed or removed without warning.
+    """
+    section_parents = []
+    parent = node.parent
+    while parent is not None:
+        if isinstance(parent, (nodes.section, nodes.document)):
+            section_parents.append(parent)
+        parent = parent.parent
+    section_parents.reverse()
+    return section_parents
