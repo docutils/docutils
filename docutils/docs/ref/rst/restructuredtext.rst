@@ -2145,7 +2145,7 @@ For example, the `"image"`_ directive is used to include an image::
 
     .. image:: mylogo.jpeg
 
-A graphic with a caption may included with the `"figure"`_ directive::
+A graphic with a caption may be included with the `"figure"`_ directive::
 
     .. figure:: larch.png
 

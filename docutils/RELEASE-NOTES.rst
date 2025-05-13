@@ -44,10 +44,7 @@ Command line interface
 Document Tree / Docutils DTD
 ----------------------------
 
-* Do not lowercase reference names in the `"refname" attribute`_
-  (matching hyperlinks, footnotes, and citations remains case insensitive),
-  and drop the ``name`` attribute from <reference> nodes
-  in Docutils 1.0.
+* Drop the ``name`` attribute from <reference> nodes in Docutils 1.0.
 
 * Use the ``%tbl.table.att`` parameter entity instead of ``%bodyatt``
   to customize the <table> element's attribute list in Docutils 1.0.
@@ -231,7 +228,6 @@ reStructuredText:
   - Support `CSS3 units`_. This adds "ch", "rem", "vw", "vh", "vmin",
     "vmax", and "Q" to the `supported length units`__. Note that some
     output formats don't support all units.
-
   - New option "figname" for the `"figure"`_ directive.
 
   .. _CSS3 units: https://www.w3.org/TR/css-values-3/#lengths
@@ -247,15 +243,12 @@ Document Tree / Docutils DTD
 
 Configuration changes
   - Make MathML the default math_output_ for the "html5" writer.
-
   - Change the default input_encoding_ from ``None`` (auto-detect) to "utf-8".
-
   - Drop short options ``-i`` and ``-o``.
     Use the long equivalents ``--input-encoding`` and ``--output-encoding``.
     (See `command line interface`_ for the rationale.)
-
   - Rename configuration setting "output" to "output_path_".
-
+  - New setting "validate_".
   - The manpage writer now recognizes the sections [writers] and
     [manpage writer] with the new setting `text_references`_.
 
@@ -1462,12 +1455,13 @@ Release 0.3.5 (2004-07-29)
 .. _old-format configuration files:
     docs/user/config.html#old-format-configuration-files
 .. _output:
-.. _output_path: docs/user/config.html#output
+.. _output_path: docs/user/config.html#output-path
 .. _reference-label: docs/user/config.html#reference-label
 .. _root_prefix: docs/user/config.html#root-prefix
 .. _SmartQuotes: docs/user/config.html#smart-quotes
 .. _sources: docs/user/config.html#sources
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
+.. _validate: docs/user/config.html#validate
 .. _"writer" setting: docs/user/config.html#writer-buildhtml-application
 
 .. _front end tools: docs/user/tools.html

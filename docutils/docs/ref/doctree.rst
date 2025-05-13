@@ -50,7 +50,7 @@ The Docutils document model uses strict element content models.
 Below is a *simplified* diagram of the hierarchy of elements in the
 Docutils document tree structure.
 An element may contain elements immediately below it in the diagram.
-Element types in square brackets indicate recursive or one-to-many
+Element types in *square brackets* indicate recursive or one-to-many
 relationships: structural elements (sections) may contain sub-sections,
 some body elements may contain other body elements, etc.
 The `element reference`_ details valid parents and children
@@ -69,42 +69,49 @@ for each element.
      /* structural elements */
      table.e-hierarchy tr:nth-child(2) {background: #e0ece0;}
      table.e-hierarchy tr:nth-child(3) td:first-child {background: #e0ece0;}
+     table.e-hierarchy tr:nth-child(4) td:first-child {background: #e0ece0;}
      /* structural subelements */
      table.e-hierarchy tr:nth-child(3) td:nth-child(2) {background: #9ccfb3}
+     /* bibliograpinc elements */
+     table.e-hierarchy tr:nth-child(4) td:nth-child(2) {background: #accfd5}
+     /* decorative elements */
+     table.e-hierarchy tr:nth-child(4) td:nth-child(3) {background: #8cbfb3}
      /* body elements */
-     table.e-hierarchy tr:nth-child(4) > td {background: #f7adad}
-     table.e-hierarchy tr:nth-child(5) td:nth-child(2){background: #f7adad}
-     table.e-hierarchy tr:nth-child(5) td:nth-child(3){background: #f7adad}
+     table.e-hierarchy tr:nth-child(5) > td {background: #f7adad}
+     table.e-hierarchy tr:nth-child(6) td:nth-child(2){background: #f7adad}
+     table.e-hierarchy tr:nth-child(6) td:nth-child(3){background: #f7adad}
      /* body subelements */
-     table.e-hierarchy tr:nth-child(5) > td {background: thistle}
-     table.e-hierarchy tr:nth-child(6) td:first-child {background: thistle}
+     table.e-hierarchy tr:nth-child(6) > td {background: thistle}
+     table.e-hierarchy tr:nth-child(7) td:first-child {background: thistle}
      /* inline elements */
-     table.e-hierarchy tr:nth-child(6) td:nth-child(2){background: #fffccc}
+     table.e-hierarchy tr:nth-child(7) td:nth-child(2){background: #fffccc}
      /* text */
      table.e-hierarchy tr:last-child  {background: #f9f8eb}
    --></style>
 
 .. table::
    :class: e-hierarchy
-   :width: 65%
-   :widths: 1 2 1 1
+   :width: 90%
+   :widths: 1 1 1 1
    :align: center
 
-   +------------------------------------------+
-   | `root element`_ (`\<document>`_)         |
-   +---+------------------------------+---+---+
-   | [`structural elements`_]         |   |   |
-   +---+------------------------------+---+   +
-   |   | [`structural subelements`_]      |   |
-   +---+----------------------------------+---+
-   | [`body elements`_]                       |
-   +---+------------------------------+---+---+
-   | [`body subelements`_]            |   |   |
-   +---+------------------------------+---+   +
-   |   | [`inline elements`_]             |   |
-   +---+----------------------------------+---+
-   | text                                     |
-   +------------------------------------------+
+   +-----------------------------------------------------------------+
+   | `root element`_ (`\<document>`_)                                |
+   +---+---------------------------------------------------------+---+
+   | [`structural elements`_]                                    |   |
+   +---+---------------------------------------------------------+   +
+   |   | `structural subelements`_                               |   |
+   +---+-----------------------------+---------------------------+   +
+   |   | `bibliographic elements`_   | `decorative elements`_    |   |
+   +---+-----------------------------+---------------------------+---+
+   | [`body elements`_]                                              |
+   +---+-----------------------------+---------------------------+---+
+   | [`body subelements`_]           |                           |   |
+   +---+-----------------------------+---------------------------+   +
+   |   | [`inline elements`_]                                    |   |
+   +---+---------------------------------------------------------+---+
+   | text                                                            |
+   +-----------------------------------------------------------------+
 
 Every element has a unique structure and semantics, but elements may be
 classified into general categories according to their place and role in
@@ -900,6 +907,7 @@ The ``references.Footnotes`` Docutils transform_ resolves this to::
             ,
             Anne Elk, London, 1972.
 
+
 <classifier>
 ============
 
@@ -988,7 +996,7 @@ visible in the document rendering.
 :Parents:    all elements employing `%body.elements`_, `%structure.model`_,
              or `%text.model`_ in their content models
 :Children:   only text data
-:Attributes: `xml:space`_ and the `common attributes`_.
+:Attributes: the `common attributes`_ and `xml:space`_.
 
 Examples
 --------
@@ -2561,7 +2569,7 @@ So do `custom roles`_ derived from "literal" or "code"::
     The statement :python:`print("hello world")`
     writes ``"hello world"`` to standard output.
 
-Pseudo-XML_ fragment after parsing and applying the transform_::
+Pseudo-XML_ fragment from simple parsing::
 
     <paragraph>
         The statement
@@ -3040,7 +3048,71 @@ Pseudo-XML_ fragment from simple parsing::
 <pending>
 =========
 
-`To be completed`_.
+The <pending> element is a placeholder for a pending transform_.
+
+:Category:   `Body Elements`_ (empty)
+:Analogues:  <pending> has no direct analogues in common DTDs.
+:Processing: Usually replaced or removed by the associated transform_.
+             Writers may ignore remaining <pending> elements.
+:Parents:    all elements employing `%body.elements`_ or
+             `%structure.model`_ in their content models
+:Children:   none (empty)
+:Attributes: only the `common attributes`_.
+
+Example
+-------
+
+The reStructuredText `"contents" directive`_ indicates that an auto-generated
+table of contents (ToC) should be inserted at this point::
+
+    .. contents::
+       :depth: 1
+
+    first section
+    =============
+
+    second section
+    ==============
+
+As the ToC can't be generated until the entire document has been parsed,
+simple parsing adds a `\<topic>`_ with a <pending> element as placeholder::
+
+    <topic classes="contents" ids="contents" names="contents">
+        <title>
+            Contents
+        <pending>
+            .. internal attributes:
+                 .transform: docutils.transforms.parts.Contents
+                 .details:
+                   depth: 1
+    <section ids="first-section" names="first\ section">
+        <title>
+            first section
+    <section ids="second-section" names="second\ section">
+        <title>
+            second section
+
+After parsing is completed, the associated `parts.Contents` transform_
+replaces the <pending> node with the table of contents::
+
+    <topic classes="contents" ids="contents" names="contents">
+        <title>
+            Contents
+        <bullet_list>
+            <list_item>
+                <paragraph>
+                    <reference ids="toc-entry-1" refid="first-section">
+                        first section
+            <list_item>
+                <paragraph>
+                    <reference ids="toc-entry-2" refid="second-section">
+                        second section
+    <section ids="first-section" names="first\ section">
+        <title refid="toc-entry-1">
+            first section
+    <section ids="second-section" names="second\ section">
+        <title refid="toc-entry-2">
+            second section
 
 
 <problematic>
@@ -3119,7 +3191,99 @@ Pseudo-XML_ fragment from simple parsing::
 <reference>
 ===========
 
-`To be completed`_.
+The <reference> element represents a cross reference
+to another element of the document or to an external source.
+
+:Category:   `Simple Body Elements`_, `Inline Elements`_
+:Analogues:  The <reference> element is analogous to the DocBook_ <link>
+             element and the HTML_ <a> (anchor) element.
+:Processing: If possible, make the content of the link element an active link.
+             In print media, the target might be ignored, printed after the
+             text of the <reference>, printed as a footnote [#]_, or rendered
+             in some other way.
+:Parents:    all elements employing `%body.elements`_, `%text.model`_,
+             or `%structure.model`_ in their content models
+:Children:   text data plus `inline elements`_ (`%text.model`_)
+:Attributes: anonymous_, name_ (deprecated), refid_, refname_, refuri_, and
+             the `common attributes`_.
+
+.. [#] See the `"target-notes" directive`_.
+
+Examples
+--------
+
+In reStructuredText `hyperlink references`_ are indicated by a trailing
+underscore::
+
+    References may use simple_ reference names,
+    `phrase refs`_, or `no reference name`__.
+
+    Matching targets must exist in the document, e.g., a
+    _`simple` inline target or the explicit targets below.
+
+    .. _phrase refs: doctree.rst
+    __ http://example.org
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        References may use
+        <reference refname="simple">
+            simple
+         reference names,
+        <reference refname="phrase refs">
+            phrase refs
+        , or
+        <reference anonymous="1">
+            no reference name
+        .
+    <paragraph>
+        Matching targets must exist in the document, e.g., a
+        <target ids="simple" names="simple">
+            simple
+         inline target or the explicit targets below.
+    <target ids="phrase-refs" names="phrase\ refs" refuri="doctree.rst">
+    <target anonymous="1" ids="target-1" refuri="http://example.org">
+
+Docutils uses transforms_ to match references and targets and
+replace the refname_ with a refid_ or refuri_::
+
+    <paragraph>
+        References may use
+        <reference refid="simple">
+            simple
+         reference names,
+        <reference refuri="doctree.rst">
+            phrase refs
+        , or
+        <reference anonymous="1" refuri="http://example.org">
+            no reference name
+        .
+    <paragraph>
+        Matching targets must exist in the document, e.g., a
+        <target ids="simple" names="simple">
+            simple
+         inline target or the explicit targets below.
+    <target ids="phrase-refs" names="phrase\ refs" refuri="doctree.rst">
+    <target anonymous="1" ids="target-1" refuri="http://example.org">
+
+`Standalone hyperlinks`_ and `clickable images <rst/directives.html#target>`__
+generate <reference> elements, too::
+
+    Visit https://hamburg.de.
+
+    .. image:: michel.jpg
+       :target: https://hamburg.de
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        Visit
+        <reference refuri="https://hamburg.de">
+            https://hamburg.de
+        .
+    <reference refuri="https://hamburg.de">
+        <image uri="michel.jpg">
 
 
 <revision>
@@ -4267,10 +4431,6 @@ The ``classes`` attribute's contents should be ignorable.  Writers_ that
 are not familiar with the variant expressed should be able to ignore
 the attribute.
 
-.. _reader: ../peps/pep-0258.html#readers
-.. _writer:
-.. _writers: ../peps/pep-0258.html#writers
-
 
 ``char``
 ========
@@ -4563,7 +4723,7 @@ to the `dupnames`_ attribute on the duplicate elements. [#]_
 
 .. [#] An element may have both ``names`` and ``dupnames`` attributes,
    if the ``dupnames`` are from conflicting `implicit hyperlink targets`_
-   and the ``names`` from `internal hyperlink targets`_ or a directive's
+   and the ``names`` from `explicit hyperlink targets`_ or a directive's
    `name option`_.
 
 
@@ -5145,6 +5305,7 @@ Only the `\<docinfo>`_ element directly employs the
 
 The ``%body.elements`` parameter entity contains an OR-list of all
 `Body Elements`_.
+
 The `%additional.body.elements`_ placeholder can be used by
 wrapper DTDs to extend ``%body.elements``.
 
@@ -5495,7 +5656,6 @@ Bibliography
 .. _XML: https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction
 .. _Introducing the Extensible Markup Language (XML):
     http://xml.coverpages.org/xmlIntro.html
-.. _XMLSpec: https://www.w3.org/XML/1998/06/xmlspec-report.htm
 .. _external DTD subset: https://www.w3.org/TR/xml11/#sec-external-ent
 .. _XML attribute types: https://www.w3.org/TR/REC-xml/#sec-attribute-types
 .. _One ID per Element Type: https://www.w3.org/TR/REC-xml/#one-id-per-el
@@ -5521,7 +5681,10 @@ Bibliography
 .. _DocInfo transform:  ../api/transforms.html#docinfo
 .. _DocTitle transform: ../api/transforms.html#doctitle
 
+.. _reader:             ../peps/pep-0258.html#readers
 .. _severity level:     ../peps/pep-0258.html#error-handling
+.. _writer:
+.. _writers:            ../peps/pep-0258.html#writers
 
 .. _reStructuredText:          rst/introduction.html
 .. _A ReStructuredText Primer: ../user/rst/quickstart.html
@@ -5544,17 +5707,17 @@ Bibliography
 .. _doctest block:          rst/restructuredtext.html#doctest-blocks
 .. _emphasis markup:        rst/restructuredtext.html#emphasis
 .. _enumerated list:        rst/restructuredtext.html#enumerated-lists
+.. _explicit hyperlink targets: rst/restructuredtext.html#hyperlink-targets
 .. _explicit markup construct:
 .. _explicit markup blocks: rst/restructuredtext.html#explicit-markup-blocks
 .. _footnote reference:     rst/restructuredtext.html#footnote-references
 .. _grid table:             rst/restructuredtext.html#grid-tables
+.. _hyperlink references:   rst/restructuredtext.html#hyperlink-references
+.. _implicit hyperlink targets: rst/restructuredtext.html#implicit-hyperlink-targets
 .. _indirect target:        rst/restructuredtext.html#indirect-hyperlink-targets
 .. _inline literals:        rst/restructuredtext.html#inline-literals
 .. _inline markup:          rst/restructuredtext.html#inline-markup
-.. _implicit hyperlink targets:
-                            rst/restructuredtext.html#implicit-hyperlink-targets
-.. _internal hyperlink targets:
-                            rst/restructuredtext.html#internal-hyperlink-targets
+.. _internal hyperlink targets: rst/restructuredtext.html#internal-hyperlink-targets
 .. _line block:             rst/restructuredtext.html#line-blocks
 .. _literal block:          rst/restructuredtext.html#literal-blocks
 .. _footnotes:
@@ -5570,9 +5733,11 @@ Bibliography
 .. _section:                rst/restructuredtext.html#sections
 .. _simple reference name:  rst/restructuredtext.html#simple-reference-names
 .. _simple table:           rst/restructuredtext.html#simple-tables
+.. _standalone hyperlinks:  rst/restructuredtext.html#standalone-hyperlinks
 .. _strong emphasis:        rst/restructuredtext.html#strong-emphasis
 .. _substitution definition:
 .. _substitutions:          rst/restructuredtext.html#substitution-definitions
+.. _hyperlink targets:      rst/restructuredtext.html#hyperlink-targets
 .. _transition:             rst/restructuredtext.html#transitions
 
 .. _standard role:              rst/roles.html
@@ -5588,7 +5753,7 @@ Bibliography
 .. _"admonition" directive:     rst/directives.html#admonition
 .. _"attention" directive:      rst/directives.html#attention
 .. _"caution" directive:        rst/directives.html#caution
-.. _"class" directive:          rst/directives.html#class
+.. _"class" directive:          rst/directives.html#class-1
 .. _class option:               rst/directives.html#class-option
 .. _"code" directive:           rst/directives.html#code
 .. _"compound" directive:       rst/directives.html#compound-paragraph
@@ -5619,6 +5784,7 @@ Bibliography
 .. _"sectnum" directive:        rst/directives.html#sectnum
 .. _"sidebar" directive:        rst/directives.html#sidebar
 .. _"table" directive:          rst/directives.html#table
+.. _"target-notes" directive:   rst/directives.html#target-notes
 .. _"tip" directive:            rst/directives.html#tip
 .. _"topic" directive:          rst/directives.html#topic
 .. _"title" directive:          rst/directives.html#title

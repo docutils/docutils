@@ -550,7 +550,7 @@ class Values(optparse.Values):
     Updates list attributes by extension rather than by replacement.
     Works in conjunction with the `OptionParser.lists` instance attribute.
 
-    Deprecated. Will be removed.
+    Deprecated. Will be removed when switching to the "argparse" module.
     """
 
     def __init__(self, defaults: dict[str, Any] | None = None) -> None:

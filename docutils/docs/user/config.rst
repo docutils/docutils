@@ -2398,8 +2398,8 @@ or the import name of a plug-in parser module. [#]_
 
 .. [#] Docutils recognizes the aliases
    "`pycmark <[pycmark parser]_>`__", "`myst <[myst parser]_>`__",
-   and "`recommonmark <[recommonmark parser]_>`__" and selects the
-   corresponding 3rd-party Markdown parser (if it is installed).
+   and "`recommonmark <[recommonmark parser]_>`__" (deprecated) and selects
+   the corresponding 3rd-party Markdown parser (if it is installed).
    The aliases "markdown" and "commonmark" select the first available
    parser from this list.
 

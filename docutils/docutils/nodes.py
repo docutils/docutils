@@ -6,6 +6,9 @@
 """
 Docutils document tree element class library.
 
+The relationships and semantics of elements and attributes is documented in
+`The Docutils Document Tree`__.
+
 Classes in CamelCase are abstract base classes or auxiliary classes. The one
 exception is `Text`, for a text (PCDATA) node; uppercase is used to
 differentiate from element classes.  Classes in lower_case_with_underscores
@@ -17,6 +20,7 @@ is represented by abstract base classes (`Root`, `Structural`, `Body`,
 ``isinstance(node, base_class)`` to determine the position of the node in the
 hierarchy.
 
+__ https://docutils.sourceforge.io/docs/ref/doctree.html
 .. _DTD: https://docutils.sourceforge.io/docs/ref/docutils.dtd
 """
 

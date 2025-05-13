@@ -47,7 +47,7 @@ Standard Roles
 
 .. class:: field-indent-12em
 
-:Aliases:         :ab:
+:Aliases:         \:ab:
 :Doctree Element: `\<abbreviation>`_
 
 An abbreviation used in the document.
