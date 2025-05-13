@@ -937,7 +937,8 @@ class HTMLTranslator(writers.DoctreeTranslator):
         self.body.append('\n</pre>\n')
 
     def visit_document(self, node) -> None:
-        title = (node.get('title') or os.path.basename(node['source'])
+        title = (node.get('title')
+                 or os.path.basename(node.get('source') or '')
                  or 'untitled Docutils document')
         self.head.append(f'<title>{self.encode(title)}</title>\n')
 

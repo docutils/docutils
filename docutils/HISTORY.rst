@@ -17,7 +17,15 @@
 Release 0.22rc2 (unpublished)
 =============================
 
-Nothing yet.
+* docutils/parsers/rst/directives/misc.py
+
+  - Pass default settings to custom parser for included file.
+
+* docutils/writers/_html_base.py
+
+  - Fix error when determining the document metadata title from the
+    source path and the internal `source` attribute is None.
+
 
 Release 0.22rc1 (2025-05-06)
 ============================
