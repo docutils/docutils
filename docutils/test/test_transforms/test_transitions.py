@@ -18,16 +18,19 @@ if __name__ == '__main__':
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from docutils.frontend import get_default_settings
-from docutils.parsers.rst import Parser
+from docutils.parsers import rst, docutils_xml
 from docutils.transforms.misc import Transitions
 from docutils.transforms.universal import TestMessages
 from docutils.utils import new_document
 
 
 class TransformTestCase(unittest.TestCase):
+
+    maxDiff = None
+
     def test_transforms(self):
-        parser = Parser()
-        settings = get_default_settings(Parser)
+        parser = rst.Parser()
+        settings = get_default_settings(rst.Parser)
         settings.warning_stream = ''
         for name, (transforms, cases) in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
@@ -42,8 +45,28 @@ class TransformTestCase(unittest.TestCase):
                     output = document.pformat()
                     self.assertEqual(case_expected, output)
 
+    def test_transfroms_x(self):
+        # test samples given as Docutils XML in `totest_x`
+        # (for document trees that cannot be generated from rST)
+        parser = docutils_xml.Parser()
+        settings = get_default_settings(docutils_xml.Parser)
+        settings.warning_stream = ''
+        for name, (transforms, cases) in totest_x.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'totest[{name!r}][{casenum}]'):
+                    document = new_document('test data', settings.copy())
+                    parser.parse(case_input, document)
+                    # Don't do a ``populate_from_components()`` because that
+                    # would enable the Transformer's default transforms.
+                    document.transformer.add_transforms(transforms)
+                    document.transformer.add_transform(TestMessages)
+                    document.transformer.apply_transforms()
+                    output = document.pformat()
+                    self.assertEqual(case_expected, output)
 
-totest = {}
+
+totest = {}  # rST samples and expected pseudoXML
+totest_x = {}  # XML samples and expected pseudoXML
 
 totest['transitions'] = ((Transitions,), [
 ["""\
@@ -53,7 +76,7 @@ Section 1
 Subsection 1
 ------------
 
-Some text.
+A transition at the end of a section is moved behind the section.
 
 ----------
 
@@ -71,7 +94,7 @@ Some text.
             <title>
                 Subsection 1
             <paragraph>
-                Some text.
+                A transition at the end of a section is moved behind the section.
     <transition>
     <section ids="section-2" names="section\\ 2">
         <title>
@@ -103,17 +126,39 @@ Paragraph.
 ["""\
 --------
 
-A section or document may not begin with a transition.
-
-The DTD specifies that two transitions may not
-be adjacent:
+A system message warns about invalid placement of transitions.
+""",
+"""\
+<document source="test data">
+    <transition>
+    <system_message level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Document or section may not begin with a transition.
+    <paragraph>
+        A system message warns about invalid placement of transitions.
+"""],
+["""\
+The DTD specifies ...
 
 --------
 
 --------
 
---------
-
+... that two transitions may not be adjacent:
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        The DTD specifies ...
+    <transition>
+    <transition>
+    <system_message level="2" line="5" source="test data" type="WARNING">
+        <paragraph>
+            At least one body element must separate transitions; adjacent transitions are not allowed.
+    <paragraph>
+        ... that two transitions may not be adjacent:
+"""],
+["""\
 The DTD also specifies that a section or document
 may not end with a transition.
 
@@ -121,29 +166,11 @@ may not end with a transition.
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Document or section may not begin with a transition.
-    <transition>
-    <paragraph>
-        A section or document may not begin with a transition.
-    <paragraph>
-        The DTD specifies that two transitions may not
-        be adjacent:
-    <transition>
-    <system_message level="3" line="10" source="test data" type="ERROR">
-        <paragraph>
-            At least one body element must separate transitions; adjacent transitions are not allowed.
-    <transition>
-    <system_message level="3" line="12" source="test data" type="ERROR">
-        <paragraph>
-            At least one body element must separate transitions; adjacent transitions are not allowed.
-    <transition>
     <paragraph>
         The DTD also specifies that a section or document
         may not end with a transition.
     <transition>
-    <system_message level="3" line="17" source="test data" type="ERROR">
+    <system_message level="2" line="4" source="test data" type="WARNING">
         <paragraph>
             Document may not end with a transition.
 """],
@@ -155,12 +182,12 @@ Section 1
 
 ----------
 
-The next transition is legal:
-
-----------
+Some text after transition.
 
 Section 2
 =========
+
+Some text before the transition.
 
 ----------
 """,
@@ -171,21 +198,19 @@ Section 2
     <section ids="section-1" names="section\\ 1">
         <title>
             Section 1
-        <system_message level="3" line="6" source="test data" type="ERROR">
+        <transition>
+        <system_message level="2" line="6" source="test data" type="WARNING">
             <paragraph>
                 Document or section may not begin with a transition.
-        <transition>
         <paragraph>
-            The next transition is legal:
-    <transition>
+            Some text after transition.
     <section ids="section-2" names="section\\ 2">
         <title>
             Section 2
-        <system_message level="3" line="15" source="test data" type="ERROR">
-            <paragraph>
-                Document or section may not begin with a transition.
+        <paragraph>
+            Some text before the transition.
         <transition>
-        <system_message level="3" line="15" source="test data" type="ERROR">
+        <system_message level="2" line="15" source="test data" type="WARNING">
             <paragraph>
                 Document may not end with a transition.
 """],
@@ -201,11 +226,11 @@ A paragraph and two transitions.
     <paragraph>
         A paragraph and two transitions.
     <transition>
-    <system_message level="3" line="5" source="test data" type="ERROR">
+    <transition>
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             At least one body element must separate transitions; adjacent transitions are not allowed.
-    <transition>
-    <system_message level="3" line="5" source="test data" type="ERROR">
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Document may not end with a transition.
 """],
@@ -222,11 +247,11 @@ A paragraph, two transitions, and a blank line.
     <paragraph>
         A paragraph, two transitions, and a blank line.
     <transition>
-    <system_message level="3" line="5" source="test data" type="ERROR">
+    <transition>
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             At least one body element must separate transitions; adjacent transitions are not allowed.
-    <transition>
-    <system_message level="3" line="5" source="test data" type="ERROR">
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Document may not end with a transition.
 """],
@@ -237,10 +262,10 @@ Document beginning with a transition.
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
+    <transition>
+    <system_message level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Document or section may not begin with a transition.
-    <transition>
     <paragraph>
         Document beginning with a transition.
 """],
@@ -254,10 +279,10 @@ Document beginning with a transition (meta elements don't count).
 """\
 <document source="test data">
     <meta content="transition test" name="keywords">
-    <system_message level="3" line="3" source="test data" type="ERROR">
+    <transition>
+    <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Document or section may not begin with a transition.
-    <transition>
     <paragraph>
         Document beginning with a transition (meta elements don't count).
 """],
@@ -274,10 +299,10 @@ Document beginning with a transition (decoration elements don't count).
         <header>
             <paragraph>
                 a header
-    <system_message level="3" line="3" source="test data" type="ERROR">
+    <transition>
+    <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Document or section may not begin with a transition.
-    <transition>
     <paragraph>
         Document beginning with a transition (decoration elements don't count).
 """],
@@ -291,33 +316,41 @@ Section 1
 
 ----------
 
-Section 2
-=========
+Implementation Detail
+=====================
 
-Some text.
+If the element containing the transition is invalid after replacing the
+transition with a body element, the system_message is appended at the end
+of the document (by the "universal.Messages" transform).
+This check can lead to overcautious behaviour if there are other
+validity violations (here: several misplaced transitions).
 """,
 """\
 <document source="test data">
     <section ids="section-1" names="section\\ 1">
         <title>
             Section 1
-        <system_message level="3" line="4" source="test data" type="ERROR">
-            <paragraph>
-                Document or section may not begin with a transition.
         <transition>
-        <system_message level="3" line="6" source="test data" type="ERROR">
-            <paragraph>
-                At least one body element must separate transitions; adjacent transitions are not allowed.
         <transition>
-        <system_message level="3" line="8" source="test data" type="ERROR">
-            <paragraph>
-                At least one body element must separate transitions; adjacent transitions are not allowed.
     <transition>
-    <section ids="section-2" names="section\\ 2">
+    <section ids="implementation-detail" names="implementation\\ detail">
         <title>
-            Section 2
+            Implementation Detail
         <paragraph>
-            Some text.
+            If the element containing the transition is invalid after replacing the
+            transition with a body element, the system_message is appended at the end
+            of the document (by the "universal.Messages" transform).
+            This check can lead to overcautious behaviour if there are other
+            validity violations (here: several misplaced transitions).
+    <system_message level="2" line="4" source="test data" type="WARNING">
+        <paragraph>
+            Document or section may not begin with a transition.
+    <system_message level="2" line="6" source="test data" type="WARNING">
+        <paragraph>
+            At least one body element must separate transitions; adjacent transitions are not allowed.
+    <system_message level="2" line="8" source="test data" type="WARNING">
+        <paragraph>
+            At least one body element must separate transitions; adjacent transitions are not allowed.
 """],
 ["""\
 ----------
@@ -326,23 +359,25 @@ Some text.
 
 ----------
 """,
+# The placement of <system_message>s in this sample is an implementation
+# detail, see the remarks in the preceding test nr. 11.
 """\
 <document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Document or section may not begin with a transition.
     <transition>
-    <system_message level="3" line="3" source="test data" type="ERROR">
-        <paragraph>
-            At least one body element must separate transitions; adjacent transitions are not allowed.
     <transition>
-    <system_message level="3" line="5" source="test data" type="ERROR">
-        <paragraph>
-            At least one body element must separate transitions; adjacent transitions are not allowed.
     <transition>
-    <system_message level="3" line="5" source="test data" type="ERROR">
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Document may not end with a transition.
+    <system_message level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Document or section may not begin with a transition.
+    <system_message level="2" line="3" source="test data" type="WARNING">
+        <paragraph>
+            At least one body element must separate transitions; adjacent transitions are not allowed.
+    <system_message level="2" line="5" source="test data" type="WARNING">
+        <paragraph>
+            At least one body element must separate transitions; adjacent transitions are not allowed.
 """],
 ["""\
 A paragraph.
@@ -355,9 +390,51 @@ A paragraph.
     <paragraph>
         A paragraph.
     <transition>
-    <system_message level="3" line="3" source="test data" type="ERROR">
+    <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Document may not end with a transition.
+"""],
+])
+
+
+totest_x['transitions extra'] = ((Transitions,), [
+# currently, a <transition> is only valid inside <document> or <section>
+["""\
+<document>
+  <paragraph>Some text.</paragraph>
+  <transition />
+  <paragraph>Some text.</paragraph>
+  <block_quote>
+    <paragraph>Some text.</paragraph>
+    <transition />
+    <paragraph>Some text.</paragraph>
+  </block_quote>
+  <paragraph>A <transition /> in a paragraph.</paragraph>
+</document>
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Some text.
+    <transition>
+    <paragraph>
+        Some text.
+    <block_quote>
+        <paragraph>
+            Some text.
+        <transition>
+        <system_message level="2" line="7" source="test data" type="WARNING">
+            <paragraph>
+                Transition must be child of <document> or <section>.
+        <paragraph>
+            Some text.
+    <paragraph>
+        A \n\
+        <transition>
+         in a paragraph.
+    <system_message level="2" line="10" source="test data" type="WARNING">
+        <paragraph>
+            Transition must be child of <document> or <section>.
 """],
 ])
 

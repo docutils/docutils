@@ -101,20 +101,30 @@ class Transitions(Transform):
         index = node.parent.index(node)
         previous_sibling = node.previous_sibling()
         msg = ''
-        assert isinstance(node.parent, (nodes.document, nodes.section))
-        if index == 0 or isinstance(previous_sibling, (nodes.title,
-                                                       nodes.subtitle,
-                                                       nodes.meta,
-                                                       nodes.decoration)):
+        if not isinstance(node.parent, (nodes.document, nodes.section)):
+            msg = 'Transition must be child of <document> or <section>.'
+        elif index == 0 or isinstance(previous_sibling, (nodes.title,
+                                                         nodes.subtitle,
+                                                         nodes.meta,
+                                                         nodes.decoration)):
             msg = 'Document or section may not begin with a transition.'
         elif isinstance(previous_sibling, nodes.transition):
             msg = ('At least one body element must separate transitions; '
                    'adjacent transitions are not allowed.')
         if msg:
-            # Insert before node and update index.
-            error = self.document.reporter.error(msg, base_node=node)
-            node.parent.insert(index, error)
-            index += 1
+            warning = self.document.reporter.warning(msg, base_node=node)
+            # Check, if it is valid to insert a body element
+            node.parent[index] = nodes.paragraph()
+            try:
+                node.parent.validate(recursive=False)
+            except nodes.ValidationError:
+                node.parent[index] = node
+            else:
+                node.parent[index] = node
+                node.parent.insert(index+1, warning)
+                index += 1
+        if not isinstance(node.parent, (nodes.document, nodes.section)):
+            return
         assert index < len(node.parent)
         if index != len(node.parent) - 1:
             # No need to move the node.
@@ -124,14 +134,13 @@ class Transitions(Transform):
         # While sibling is the last node of its parent.
         while index == len(sibling.parent) - 1:
             sibling = sibling.parent
-            # If sibling is the whole document (i.e. it has no parent).
-            if sibling.parent is None:
+            if sibling.parent is None:  # sibling is the top node (document)
                 # Transition at the end of document.  Do not move the
-                # transition up, and place an error behind.
-                error = self.document.reporter.error(
-                    'Document may not end with a transition.',
-                    line=node.line)
-                node.parent.insert(node.parent.index(node) + 1, error)
+                # transition up, and place a warning behind.
+                warning = self.document.reporter.warning(
+                              'Document may not end with a transition.',
+                              base_node=node)
+                node.parent.append(warning)
                 return
             index = sibling.parent.index(sibling)
         # Remove the original transition node.
