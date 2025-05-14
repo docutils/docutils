@@ -26,7 +26,7 @@ the reStructuredText parser.  It defines the following:
     - `SpecializedText`: Superclass for continuation lines of Text-variants.
     - `Definition`: Second line of potential definition_list_item.
     - `Line`: Second line of overlined section title or transition marker.
-    - `Struct`: An auxiliary collection class.
+    - `Struct`: obsolete, use `types.SimpleNamespace`.
 
 :Exception classes:
     - `MarkupError`
@@ -105,6 +105,7 @@ __docformat__ = 'reStructuredText'
 
 import re
 from types import FunctionType, MethodType
+from types import SimpleNamespace as Struct
 
 from docutils import nodes, statemachine, utils
 from docutils import ApplicationError, DataError
@@ -127,14 +128,6 @@ class UnknownInterpretedRoleError(DataError): pass
 class InterpretedRoleNotImplementedError(DataError): pass
 class ParserError(ApplicationError): pass
 class MarkupMismatch(Exception): pass
-
-
-class Struct:
-
-    """Stores data attributes for dotted-attribute access."""
-
-    def __init__(self, **keywordargs) -> None:
-        self.__dict__.update(keywordargs)
 
 
 class RSTStateMachine(StateMachineWS):

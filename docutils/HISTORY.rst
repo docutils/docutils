@@ -21,6 +21,14 @@ Release 0.22rc2 (unpublished)
 
   - Pass default settings to custom parser for included file.
 
+* docutils/parsers/rst/states.py
+
+  - Remove the list`states.RSTStateMachine.memo.section_parents`
+    (introduced in Docutils 0.22rc1) that broke 3rd-party applications
+    setting up a "mock memo".
+  - Use `types.SimpleNamespace` instead of a local definition for
+    the auxilliary class `states.Struct`.
+
 * docutils/writers/_html_base.py
 
   - Fix error when determining the document metadata title from the

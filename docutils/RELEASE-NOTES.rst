@@ -219,7 +219,13 @@ Misc
 Release 0.22rc2 (unpublished)
 =============================
 
-Nothing yet.
+Fix backwards-compatibility problem:
+  reStructuredText section parsing no longer requires
+  `parsers.rst.states.RSTStateMachine.memo.section_parents`
+  (a cache introduced in Docutils 0.22rc1).
+
+Deprecate `parsers.rst.states.Struct` (obsoleted by `types.SimpleNamespace`).
+
 
 Release 0.22rc1 (2025-05-06)
 ============================
