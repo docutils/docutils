@@ -821,6 +821,27 @@ class Element(Node):
             return None
         return self.parent[i-1] if i > 0 else None
 
+    def section_hierarchy(self) -> list[section]:
+        """Return the element's section hierarchy.
+
+        Return a list of all <section> elements containing `self`
+        (including `self` if it is a <section>).
+
+        List item ``[i]`` is the parent <section> of level i+1
+        (1: section, 2: subsection, 3: subsubsection, ...).
+        The length of the list is the element's section level.
+
+        Provisional. May be changed or removed without warning.
+        """
+        sections = []
+        node = self
+        while node is not None:
+            if isinstance(node, section):
+                sections.append(node)
+            node = node.parent
+        sections.reverse()
+        return sections
+
     def is_not_default(self, key: str) -> bool:
         if self[key] == [] and key in self.list_attributes:
             return False

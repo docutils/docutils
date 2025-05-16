@@ -326,11 +326,13 @@ class RSTState(StateWS):
         Check for a valid subsection header.  Update section data in `memo`.
 
         When a new section is reached that isn't a subsection of the current
-        section, set `self.parent` to the new section's parent section.
+        section, set `self.parent` to the new section's parent section
+        (or the document if the new section is a top-level section).
         """
         title_styles = self.memo.title_styles
-        section_parents = get_section_parents(self.parent)
-        mylevel = len(section_parents)
+        parent_sections = self.parent.section_hierarchy()
+        # current section level: (0 document, 1 section, 2 subsection, ...)
+        mylevel = len(parent_sections)
         # Determine the level of the new section:
         try:  # check for existing title style
             level = title_styles.index(style) + 1
@@ -349,7 +351,7 @@ class RSTState(StateWS):
         self.memo.section_level = level
         if level <= mylevel:
             # new section is sibling or higher up in the section hierarchy
-            self.parent = section_parents[level-1]
+            self.parent = parent_sections[level-1].parent
         return True
 
     def title_inconsistent(self, sourcetext, lineno):
@@ -360,7 +362,7 @@ class RSTState(StateWS):
         return error
 
     def new_subsection(self, title, lineno, messages):
-        """Append new subsection to document tree. On return, check level."""
+        """Append new subsection to document tree."""
         section_node = nodes.section()
         self.parent += section_node
         textnodes, title_messages = self.inline_text(title, lineno)
@@ -3127,24 +3129,3 @@ state_classes = (Body, BulletList, DefinitionList, EnumeratedList, FieldList,
                  OptionList, LineBlock, ExtensionOptions, Explicit, Text,
                  Definition, Line, SubstitutionDef, RFC2822Body, RFC2822List)
 """Standard set of State classes used to start `RSTStateMachine`."""
-
-
-# Auxiliary functions
-# ===================
-
-def get_section_parents(node: nodes.Element) -> list[nodes.section]:
-    """Return list of the the current node's parent sections.
-
-    List <section> elements that are parents of the current node.
-    The length of this list is the current section level.
-
-    Provisional. May be changed or removed without warning.
-    """
-    section_parents = []
-    parent = node.parent
-    while parent is not None:
-        if isinstance(parent, (nodes.section, nodes.document)):
-            section_parents.append(parent)
-        parent = parent.parent
-    section_parents.reverse()
-    return section_parents
