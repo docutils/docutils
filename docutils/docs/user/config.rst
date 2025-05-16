@@ -2430,17 +2430,23 @@ config
 ~~~~~~
 Path to an additional configuration file.
 The file is processed immediately (if it exists) with
-settings overriding defaults and earlier settings.
+settings overriding defaults and earlier settings. [#config-change]_
 
 Filesystem path settings [#pwd]_ contained within the config file will be
 interpreted relative to the config file's location (*not* relative to the
 current working directory).
 
 Multiple ``--config`` options may be specified;
-each will be processed in turn.
+each will be processed in turn. [#config-change]_
 
 *Default*: None.  *Option*: ``--config``.
 
+.. [#config-change] After the `transition to the "argparse" module`__,
+   files specified with the ``--config`` option will be appended
+   to the list of `configuration files`_ and evaluated before any
+   other command line arguments.
+
+   __ ../../RELEASE-NOTES.html#command-line-interface
 
 Internal Settings
 -----------------

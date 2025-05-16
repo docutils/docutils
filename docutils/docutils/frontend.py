@@ -6,8 +6,8 @@
 Command-line and common processing for Docutils front-end tools.
 
 This module is provisional.
-Major changes will happen with the switch from the deprecated
-"optparse" module to "arparse".
+Major changes will happen with the transition from the
+"optparse" module to "arparse" in Docutils 2.0 or later.
 
 Applications should use the high-level API provided by `docutils.core`.
 See https://docutils.sourceforge.io/docs/api/runtime-settings.html.
@@ -30,7 +30,7 @@ Interface function:
   `get_default_settings()`.  New in 0.19.
 
 Option callbacks:
-  `store_multiple()`, `read_config_file()`. Deprecated.
+  `store_multiple()`, `read_config_file()`. Deprecated. To be removed.
 
 Setting validators:
   `validate_encoding()`, `validate_encoding_error_handler()`,
@@ -101,6 +101,8 @@ def store_multiple(option: optparse.Option,
 
     Store `None` for each attribute named in `args`, and store the value for
     each key (attribute name) in `kwargs`.
+
+    Deprecated. Will be removed with the switch to from optparse to argparse.
     """
     for attribute in args:
         setattr(parser.values, attribute, None)
@@ -115,6 +117,8 @@ def read_config_file(option: optparse.Option,
                      ) -> None:
     """
     Read a configuration file during option processing.  (Option callback.)
+
+    Deprecated. Will be removed with the switch to from optparse to argparse.
     """
     try:
         new_settings = parser.get_config_file_settings(value)
@@ -508,7 +512,8 @@ def make_paths_absolute(pathdict: dict[str, list[StrPath] | StrPath],
 def make_one_path_absolute(base_path: StrPath, path: StrPath) -> str:
     # deprecated, will be removed
     warnings.warn('frontend.make_one_path_absolute() will be removed '
-                  'in Docutils 0.23.', DeprecationWarning, stacklevel=2)
+                  'in Docutils 2.0 or later.',
+                  DeprecationWarning, stacklevel=2)
     return os.path.abspath(os.path.join(base_path, path))
 
 
@@ -555,7 +560,7 @@ class Values(optparse.Values):
 
     def __init__(self, defaults: dict[str, Any] | None = None) -> None:
         warnings.warn('frontend.Values class will be removed '
-                      'in Docutils 0.21 or later.',
+                      'in Docutils 2.0 or later.',
                       DeprecationWarning, stacklevel=2)
         super().__init__(defaults=defaults)
         if getattr(self, 'record_dependencies', None) is None:
@@ -606,7 +611,7 @@ class Option(optparse.Option):
 
     def __init__(self, *args: str | None, **kwargs: Any) -> None:
         warnings.warn('The frontend.Option class will be removed '
-                      'in Docutils 0.21 or later.',
+                      'in Docutils 2.0 or later.',
                       DeprecationWarning, stacklevel=2)
         super().__init__(*args, **kwargs)
 
@@ -903,7 +908,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
         warnings.warn(
             'The frontend.OptionParser class will be replaced by a subclass '
-            'of argparse.ArgumentParser in Docutils 0.21 or later.\n  '
+            'of argparse.ArgumentParser in Docutils 2.0 or later.\n  '
             'To get default settings, use frontend.get_default_settings().',
             DeprecationWarning, stacklevel=2)
         super().__init__(option_class=Option, add_help_option=False,
@@ -1086,7 +1091,7 @@ Skipping "%s" configuration file.
         if option_parser is not None:
             warnings.warn('frontend.ConfigParser.read(): parameter '
                           '"option_parser" will be removed '
-                          'in Docutils 0.21 or later.',
+                          'in Docutils 2.0 or later.',
                           DeprecationWarning, stacklevel=2)
         read_ok = []
         if isinstance(filenames, str):

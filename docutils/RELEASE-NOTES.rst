@@ -40,6 +40,10 @@ Command line interface
 
   For the rationale, see https://clig.dev/#arguments-and-flags.
 
+* The `front end tools`_ will use argparse_ for command line parsing
+  in Docutils 2.0 or later.
+
+  .. _argparse: https://docs.python.org/3/library/argparse.html
 
 Document Tree / Docutils DTD
 ----------------------------
@@ -186,6 +190,10 @@ Removals
   `states.RSTStateMachine.memo.section_level`,
   `states.RSTState.title_inconsistent()`, and `states.Line.eofcheck`
   in Docutils 2.0. Ignored since Docutils 0.22.
+
+* Remove `frontend.OptionParser`, `frontend.Option`, `frontend.Values`,
+  `frontend.store_multiple()`, and `frontend.read_config_file()` when
+  migrating to argparse_ in Docutils 2.0 or later.
 
 Misc
 ----
