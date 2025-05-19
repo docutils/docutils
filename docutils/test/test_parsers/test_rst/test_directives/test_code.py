@@ -43,10 +43,10 @@ class ParserTestCase(unittest.TestCase):
         settings.warning_stream = ''
         settings.report_level = 5
         for name, cases in totest.items():
-            if name == 'code_parsing' and not with_pygments:
-                self.skipTest('syntax highlight requires pygments')
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
+                    if name == 'code_parsing' and not with_pygments:
+                        self.skipTest('syntax highlight requires pygments')
                     document = new_document('test data', settings.copy())
                     parser.parse(case_input, document)
                     output = document.pformat()

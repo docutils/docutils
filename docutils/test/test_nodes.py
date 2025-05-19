@@ -937,7 +937,7 @@ class NodeVisitorTests(unittest.TestCase):
             self.visitor.dispatch_visit(self.element)
 
     def test_dispatch_visit_optional(self):
-        # silently skip nodes of a calss in tuple nodes.NodeVisitor.optional
+        # silently skip nodes of a class in tuple nodes.NodeVisitor.optional
         rv = self.visitor.dispatch_visit(nodes.meta())
         self.assertIsNone(rv)
 

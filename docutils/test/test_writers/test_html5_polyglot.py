@@ -28,7 +28,7 @@ from docutils.writers import html5_polyglot
 if with_pygments:
     import pygments
 
-    if tuple(map(int, pygments.__version__.split('.')[:2])) >= (2, 14):
+    if tuple(map(int, pygments.__version__.split('.')[:2])) < (2, 14):
         # pygments output changed in version 2.14
         with_pygments = False
 
@@ -40,10 +40,12 @@ ROOT_PREFIX = (TEST_ROOT / 'functional/input').as_posix()
 # Pillow/PIL is optional:
 if PIL:
     REQUIRES_PIL = ''
-    ONLY_LOCAL = 'Can only read local images.'
+    ONLY_LOCAL = 'Cannot get file path corresponding to https://dummy.png.'
     DUMMY_PNG_NOT_FOUND = "[Errno 2] No such file or directory: 'dummy.png'"
     # Pillow reports the absolute path since version 10.3.0 (cf. [bugs: 485])
-    if (tuple(int(i) for i in PIL.__version__.split('.')) >= (10, 3)):
+    # Backported to version 9.1 (or does it depend on the Python version)?
+    pil_version = tuple(int(i) for i in PIL.__version__.split('.'))
+    if pil_version >= (10, 3) or pil_version[0] == 9 and pil_version[1] >= 1:
         DUMMY_PNG_NOT_FOUND = ("[Errno 2] No such file or directory: '%s'"
                                % Path('dummy.png').resolve())
     HEIGHT_ATTR = 'height="32" '
@@ -73,10 +75,10 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
 
     def test_publish(self):
         for name, (settings_overrides, cases) in totest.items():
-            if name == 'syntax_highlight' and not with_pygments:
-                self.skipTest('syntax highlight requires pygments')
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
+                    if name == 'syntax_highlight' and not with_pygments:
+                        self.skipTest('syntax highlight requires pygments')
                     parts = docutils.core.publish_parts(
                         source=case_input,
                         writer=html5_polyglot.Writer(),
@@ -519,7 +521,7 @@ totest['syntax_highlight'] = ({'syntax_highlight': 'short',
     EOF
 """,
 """\
-<pre class="code shell literal-block"><code>cat <span class="s">&lt;&lt;EOF
+<pre class="code shell literal-block"><code>cat<span class="w"> </span><span class="s">&lt;&lt;EOF
 Hello World
 EOF</span></code></pre>
 """,
@@ -531,7 +533,7 @@ EOF</span></code></pre>
 :shell:`cat <<EOF Hello World EOF`
 """,
 """\
-<p><code class="shell">cat <span class="s">&lt;&lt;EOF Hello World EOF</span></code></p>
+<p><code class="shell">cat<span class="w"> </span><span class="s">&lt;&lt;EOF Hello World EOF</span></code></p>
 """,
 ],
 ])
@@ -550,7 +552,7 @@ totest['system_messages'] = ({'math_output': 'mathml',
 <p class="system-message-title">System Message: ERROR/3 \
 (<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
 <p>Cannot embed image &quot;https://dummy.png&quot;:
-  Can only read local images.</p>
+  Cannot get file path corresponding to https://dummy.png.</p>
 </aside>
 """,
 ],
@@ -642,7 +644,7 @@ f"""\
 <p class="system-message-title">System Message: ERROR/3 \
 (<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
 <p>Cannot embed image &quot;https://dummy.png&quot;:
-  Can only read local images.</p>
+  Cannot get file path corresponding to https://dummy.png.</p>
 </aside>
 """,
 ],
