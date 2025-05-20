@@ -22,6 +22,9 @@ from docutils.utils import new_document
 
 
 class ParserTestCase(unittest.TestCase):
+
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -494,10 +497,12 @@ Paragraph 4.
             Paragraph 3.
         <system_message level="4" line="15" source="test data" type="SEVERE">
             <paragraph>
-                Title level inconsistent:
+                Inconsistent title style: skip from level 1 to 3.
             <literal_block xml:space="preserve">
                 Title 4
                 ```````
+            <paragraph>
+                Established title styles: = - `
         <paragraph>
             Paragraph 4.
 """],
@@ -545,11 +550,13 @@ Paragraph 4.
             Paragraph 3.
         <system_message level="4" line="19" source="test data" type="SEVERE">
             <paragraph>
-                Title level inconsistent:
+                Inconsistent title style: skip from level 1 to 3.
             <literal_block xml:space="preserve">
                 ```````
                 Title 4
                 ```````
+            <paragraph>
+                Established title styles: =/= -/- `/`
         <paragraph>
             Paragraph 4.
 """],

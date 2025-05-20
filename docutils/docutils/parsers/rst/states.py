@@ -341,10 +341,14 @@ class RSTState(StateWS):
         # The new level must not be deeper than an immediate child
         # of the current level:
         if level > mylevel + 1:
+            styles = " ".join("/".join(s for s in style)
+                              for style in title_styles)
             self.parent += self.reporter.severe(
-                               'Title level inconsistent:',
-                               nodes.literal_block('', source),
-                               line=lineno)
+                'Inconsistent title style:'
+                f' skip from level {mylevel} to {level}.',
+                nodes.literal_block('', source),
+                nodes.paragraph('', f'Established title styles: {styles}'),
+                line=lineno)
             return False
         # Update parent state:
         self.memo.section_level = level
