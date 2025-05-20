@@ -41,13 +41,11 @@ ROOT_PREFIX = (TEST_ROOT / 'functional/input').as_posix()
 if PIL:
     REQUIRES_PIL = ''
     ONLY_LOCAL = 'Cannot get file path corresponding to https://dummy.png.'
-    DUMMY_PNG_NOT_FOUND = "[Errno 2] No such file or directory: 'dummy.png'"
-    # Pillow reports the absolute path since version 10.3.0 (cf. [bugs: 485])
-    # Backported to version 9.1 (or does it depend on the Python version)?
-    pil_version = tuple(int(i) for i in PIL.__version__.split('.'))
-    if pil_version >= (10, 3) or pil_version[0] == 9 and pil_version[1] >= 1:
-        DUMMY_PNG_NOT_FOUND = ("[Errno 2] No such file or directory: '%s'"
-                               % Path('dummy.png').resolve())
+    # Pillow versions vary in their error output (cf. bugs: #485 and #500)
+    try:
+        PIL.Image.open(Path('dummy.png'))
+    except OSError as err:
+        DUMMY_PNG_NOT_FOUND = str(err)
     HEIGHT_ATTR = 'height="32" '
     WIDTH_ATTR = 'width="32" '
     NO_PIL_SYSTEM_MESSAGE = ''
