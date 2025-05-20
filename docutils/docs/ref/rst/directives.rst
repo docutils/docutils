@@ -1983,7 +1983,7 @@ _`format` : space-separated list of output format names (`writer names`_)
 
     Only recognized with the `"raw" <"raw" role_>`__ base role.
 
-_`language` : text
+_`language` : text_ (formal language)
     Name of a formal language, passed to Pygments_ for syntax highlighting.
     See `supported languages and markup formats`_ for recognized values.
 

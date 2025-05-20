@@ -11,6 +11,7 @@ conflicting imports like this one::
     from docutils import writers
     from docutils.transforms import writers
 """
+from __future__ import annotations
 
 __docformat__ = 'reStructuredText'
 

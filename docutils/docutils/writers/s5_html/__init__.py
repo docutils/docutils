@@ -6,6 +6,7 @@
 """
 S5/HTML Slideshow Writer.
 """
+from __future__ import annotations
 
 __docformat__ = 'reStructuredText'
 

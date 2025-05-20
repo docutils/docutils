@@ -6,8 +6,9 @@
 Simple internal document tree Writer, writes indented pseudo-XML.
 """
 
-__docformat__ = 'reStructuredText'
+from __future__ import annotations
 
+__docformat__ = 'reStructuredText'
 
 from docutils import writers, frontend
 

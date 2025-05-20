@@ -6,9 +6,11 @@
 Docutils component-related transforms.
 """
 
-from docutils.transforms import Transform
+from __future__ import annotations
 
 __docformat__ = 'reStructuredText'
+
+from docutils.transforms import Transform
 
 
 class Filter(Transform):

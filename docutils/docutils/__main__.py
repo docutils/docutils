@@ -18,6 +18,10 @@ See also
 https://docs.python.org/3/library/__main__.html#main-py-in-python-packages
 """
 
+from __future__ import annotations
+
+__docformat__ = 'reStructuredText'
+
 import argparse
 import locale
 import sys

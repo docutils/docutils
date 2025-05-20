@@ -17,8 +17,9 @@ and produce a well-formed data structure suitable for building a CALS table.
     `update_dict_of_lists()`: Merge two dictionaries containing list values.
 """
 
-__docformat__ = 'reStructuredText'
+from __future__ import annotations
 
+__docformat__ = 'reStructuredText'
 
 import re
 import sys

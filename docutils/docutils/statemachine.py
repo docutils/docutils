@@ -105,6 +105,8 @@ How To Use This Module
        sm.unlink()
 """
 
+from __future__ import annotations
+
 __docformat__ = 'restructuredtext'
 
 import sys

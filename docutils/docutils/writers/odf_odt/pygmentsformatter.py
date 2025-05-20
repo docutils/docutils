@@ -2,12 +2,9 @@
 # Author: Dave Kuhlman <dkuhlman@rexx.com>
 # Copyright: This module has been placed in the public domain.
 
-"""
+"""Additional support for Pygments formatter."""
 
-Additional support for Pygments formatter.
-
-"""
-
+from __future__ import annotations
 
 import pygments
 import pygments.formatter

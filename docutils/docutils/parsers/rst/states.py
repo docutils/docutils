@@ -100,8 +100,9 @@ Parsing proceeds as follows:
         continues with step 1.
 """
 
-__docformat__ = 'reStructuredText'
+from __future__ import annotations
 
+__docformat__ = 'reStructuredText'
 
 import re
 from types import FunctionType, MethodType
@@ -117,10 +118,8 @@ from docutils.parsers.rst import directives, languages, tableparser, roles
 from docutils.utils import escape2null, column_width
 from docutils.utils import punctuation_chars, urischemes
 from docutils.utils import split_escaped_whitespace
-from docutils.utils._roman_numerals import (
-    InvalidRomanNumeralError,
-    RomanNumeral,
-)
+from docutils.utils._roman_numerals import (InvalidRomanNumeralError,
+                                            RomanNumeral)
 
 
 class MarkupError(DataError): pass

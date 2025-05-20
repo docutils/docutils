@@ -15,6 +15,10 @@ This module is provisional:
 the API is not settled and may change with any minor Docutils version.
 """
 
+from __future__ import annotations
+
+__docformat__ = 'reStructuredText'
+
 import subprocess
 
 from docutils import nodes

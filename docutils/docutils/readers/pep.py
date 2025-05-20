@@ -6,6 +6,8 @@
 Python Enhancement Proposal (PEP) Reader.
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
 from docutils.readers import standalone

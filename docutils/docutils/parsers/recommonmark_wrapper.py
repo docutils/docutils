@@ -24,6 +24,10 @@ __ https://pypi.org/project/recommonmark/
    * The API is not settled and may change with any minor Docutils version.
 """
 
+from __future__ import annotations
+
+__docformat__ = 'reStructuredText'
+
 from docutils import Component
 from docutils import nodes
 

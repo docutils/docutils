@@ -9,8 +9,9 @@ This module is provisional:
 the API is not settled and may change with any minor Docutils version.
 """
 
-__docformat__ = 'reStructuredText'
+from __future__ import annotations
 
+__docformat__ = 'reStructuredText'
 
 from configparser import ConfigParser
 import copy

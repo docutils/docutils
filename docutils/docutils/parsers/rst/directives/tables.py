@@ -6,8 +6,9 @@
 Directives for table elements.
 """
 
-__docformat__ = 'reStructuredText'
+from __future__ import annotations
 
+__docformat__ = 'reStructuredText'
 
 import csv
 from urllib.request import urlopen

@@ -6,8 +6,9 @@
 PEP HTML Writer.
 """
 
-__docformat__ = 'reStructuredText'
+from __future__ import annotations
 
+__docformat__ = 'reStructuredText'
 
 import os
 import os.path

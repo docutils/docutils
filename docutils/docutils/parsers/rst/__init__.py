@@ -67,8 +67,9 @@ inline markup can be customized in a `states.Inliner` subclass via the
 appropriate).
 """
 
-__docformat__ = 'reStructuredText'
+from __future__ import annotations
 
+__docformat__ = 'reStructuredText'
 
 import docutils.parsers
 import docutils.statemachine

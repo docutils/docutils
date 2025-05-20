@@ -74,6 +74,8 @@ Interpreted role functions return a tuple of two values:
   immediately after the end of the current inline block (can also be empty).
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
 import warnings

@@ -24,6 +24,9 @@ The output conforms to the `HTML 5` specification.
 The cascading style sheet "minimal.css" is required for proper viewing,
 the style sheet "plain.css" improves reading experience.
 """
+
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
 from pathlib import Path

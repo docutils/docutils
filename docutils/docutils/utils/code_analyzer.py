@@ -4,7 +4,10 @@
 
 """Lexical analysis of formal languages (i.e. code) using Pygments."""
 
-from docutils import ApplicationError
+from __future__ import annotations
+
+__docformat__ = 'reStructuredText'
+
 try:
     import pygments
     from pygments.lexers import get_lexer_by_name
@@ -12,6 +15,8 @@ try:
     with_pygments = True
 except ImportError:
     with_pygments = False
+
+from docutils import ApplicationError
 
 # Filter the following token types from the list of class arguments:
 unstyled_tokens = ['token',  # Token (base token type)

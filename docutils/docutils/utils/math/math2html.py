@@ -21,12 +21,15 @@
 #                    Support for more math commands from the AMS "math-guide".
 # 2.0    2021-12-31  Drop 2.7 compatibility code.
 
+from __future__ import annotations
+
+__docformat__ = 'reStructuredText'
+
 import pathlib
 import sys
 import unicodedata
 
 from docutils.utils.math import tex2unichar
-
 
 __version__ = '1.3 (2021-06-02)'
 

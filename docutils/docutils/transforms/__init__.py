@@ -21,8 +21,9 @@ Each transform is an optional step that a Docutils component may
 choose to perform on the parsed document.
 """
 
-__docformat__ = 'reStructuredText'
+from __future__ import annotations
 
+__docformat__ = 'reStructuredText'
 
 from docutils import languages, ApplicationError, TransformSpec
 

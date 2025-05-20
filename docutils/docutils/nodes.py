@@ -806,11 +806,7 @@ class Element(Node):
     def remove(self, item) -> None:
         self.children.remove(item)
 
-    def index(self,
-              item,
-              start: int = 0,
-              stop: int = sys.maxsize,
-              ) -> int:
+    def index(self, item, start: int = 0, stop: int = sys.maxsize) -> int:
         return self.children.index(item, start, stop)
 
     def previous_sibling(self):

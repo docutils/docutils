@@ -12,6 +12,8 @@ information.  The cascading style sheet "html4css1.css" is required
 for proper viewing with a modern graphical browser.
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
 import os.path

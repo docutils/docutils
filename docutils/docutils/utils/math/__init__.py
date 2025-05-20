@@ -23,6 +23,10 @@ It contains various modules for conversion between different math formats
 :tex2mathml_extern: Wrapper for 3rd party TeX -> MathML converters
 """
 
+from __future__ import annotations
+
+__docformat__ = 'reStructuredText'
+
 # helpers for Docutils math support
 # =================================
 

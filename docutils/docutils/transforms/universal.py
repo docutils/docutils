@@ -19,6 +19,8 @@ Transforms needed by most or all documents:
 - `Validate`: Validate the document tree, report violations as warning.
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
 import re

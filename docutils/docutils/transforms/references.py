@@ -6,6 +6,8 @@
 Transforms for resolving references.
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
 from docutils import nodes, utils

@@ -8,6 +8,8 @@ Simple document tree Writer, writes Docutils XML according to
 https://docutils.sourceforge.io/docs/ref/docutils.dtd.
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
 from io import StringIO

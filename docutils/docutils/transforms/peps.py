@@ -11,6 +11,8 @@ Transforms for PEP processing.
 - `PEPZero`: Special processing for PEP 0.
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
 import os

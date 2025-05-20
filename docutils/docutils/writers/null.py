@@ -9,6 +9,10 @@ A do-nothing Writer.
 in Docutils 0.22.
 """
 
+from __future__ import annotations
+
+__docformat__ = 'reStructuredText'
+
 from docutils import writers
 
 

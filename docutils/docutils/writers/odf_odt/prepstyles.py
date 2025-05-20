@@ -11,6 +11,8 @@ Drop page size specifications from styles.xml in STYLE_FILE.odt.
 See https://docutils.sourceforge.io/docs/user/odt.html#page-size
 """
 
+from __future__ import annotations
+
 # Author: Michael Schutte <michi@uiae.at>
 
 from xml.etree import ElementTree as ET

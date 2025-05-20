@@ -21,6 +21,8 @@ Transforms_ related to the front matter of a document or a section
 .. _transforms: https://docutils.sourceforge.io/docs/api/transforms.html
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
 import re

@@ -22,6 +22,10 @@ the API is not settled and may change with any minor Docutils version.
 .. _MathML Core: https://www.w3.org/TR/mathml-core/
 """
 
+from __future__ import annotations
+
+__docformat__ = 'reStructuredText'
+
 # Usage:
 #
 # >>> from mathml_elements import *

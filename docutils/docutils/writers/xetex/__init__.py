@@ -20,6 +20,8 @@ suited for processing with the Unicode-aware TeX engines
 LuaTeX and XeTeX.
 """
 
+from __future__ import annotations
+
 __docformat__ = 'reStructuredText'
 
 from docutils import frontend

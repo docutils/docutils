@@ -6,8 +6,9 @@
 Transforms related to document parts.
 """
 
-__docformat__ = 'reStructuredText'
+from __future__ import annotations
 
+__docformat__ = 'reStructuredText'
 
 import sys
 from docutils import nodes

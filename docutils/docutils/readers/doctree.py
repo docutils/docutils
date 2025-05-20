@@ -4,6 +4,10 @@
 
 """Reader for existing document trees."""
 
+from __future__ import annotations
+
+__docformat__ = 'reStructuredText'
+
 from docutils import readers, utils, transforms
 
 

@@ -20,6 +20,10 @@
      in any Docutils release without prior notice.
 """
 
+from __future__ import annotations
+
+__docformat__ = 'reStructuredText'
+
 import re
 import xml.etree.ElementTree as ET
 
