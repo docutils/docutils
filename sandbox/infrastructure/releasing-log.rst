@@ -8,6 +8,18 @@ Releasing
 
 Notes on what happend while releasing.
 
+Release 0.22rc2 (2025-05-22)
+============================
+
+Follow docs/release.rst.
+
+* Change release.rst: 
+
+  - Commit before uploading to test-pypi.
+  - test locally.
+
+* test source from test.pypi breaks like before.
+
 Release 0.22rc1 (2025-05-06)
 ============================
 
