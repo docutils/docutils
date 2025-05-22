@@ -15,10 +15,10 @@
 Steps to take and watch
 -----------------------
 
-* Make a clean checkout of svn.code.sf.net/p/docutils/code/trunk/docutils
-  to avoid having development files in the released packages.
+Make a clean checkout of svn.code.sf.net/p/docutils/code/trunk/docutils
+to avoid having development files in the released packages.
 
-  Test, package and release this checkout.
+Test, package and release this checkout.
 
 * Announce the upcoming release on docutils-develop list.
 
@@ -35,7 +35,7 @@ Steps to take and watch
 
   Change the version insert date for unpublished.
 
-* Update RELEASE-NOTES.rst add section ``Release <version> (unpublished)``.
+* Update RELEASE-NOTES.rst section ``Release <version> (unpublished)``.
 
   Change the version insert date for unpublished.
 
@@ -83,6 +83,10 @@ Steps to take and watch
 
   Uploads to pypi/test.pypi can not be overwritten, require a new version.
 
+* Commit changes ... the changed version number.
+
+* build again and test locally.
+
 * Upload wheel and source to test.pypi.
 
   Set repository and key in ~/.pypirc with a <server-name> and
@@ -124,25 +128,25 @@ Steps to take and watch
     python test/alltests.py
 
   Ignore ``test_find_file_in_dirs`` fails because HISTORY.rst is missing or/and
-  missing pil.
+  missing pil.::
 
     deactivate ; cd .. ; rm -r du3s
 
-* Commit changes ... the changed version number.
+* If final release
+ 
+  - tag #.# (Note: only directory docutils is copied)::
 
-* If final release tag #.# (Note: only directory docutils is copied)::
+      svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
+               svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-#.# \
+               -m "tagging release #.#"
 
-    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
-             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-#.# \
-             -m "tagging release #.#"
+  - Update your source directory.
 
-* Update your source directory.
+  - Rebuild wheel and source-distribution, e.g::
 
-* Rebuild wheel and source-distribution, e.g::
+      python3 -m build
 
-    python3 -m build
-
-* Now upload to pypi::
+* Upload to pypi::
 
     python3 -m twine upload --repository <server-name> dist/docutils-#.#*
 
