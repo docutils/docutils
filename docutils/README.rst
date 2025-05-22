@@ -1,5 +1,5 @@
 ==========================
- README: Docutils 0.22rc2.dev
+ README: Docutils 0.22rc2
 ==========================
 
 :Author: David Goodger

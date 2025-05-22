@@ -224,8 +224,13 @@ Misc
    __ https://packages.debian.org/source/trixie/python-docutils
 
 
-Release 0.22rc2 (unpublished)
+Release 0.22rc3 (unpublished)
 =============================
+
+* nothing yet.
+
+Release 0.22rc2 (2025-05-22)
+============================
 
 Fix backwards-compatibility problem:
   reStructuredText section parsing no longer requires
