@@ -42,7 +42,7 @@ function set_ver()
     echo Determining list of files to be changed...
     # BUG ls lists directories but does not descend
     # (try ls --recursive)
-    files="docutils/__init__.py setup.py README.rst `$svn ls test/functional/expected/ | sed 's|^|test/functional/expected/|'`"
+    files="docutils/__init__.py setup.py README.rst test/test_writers/test_manpage.py `$svn ls test/functional/expected/ | sed 's|^|test/functional/expected/|'`"
     echo "Now I'll change the version identifier to ${2} in the following files:"
     echo $files
     echo 'and update the version_info in docutils/__init__.py.'
