@@ -259,7 +259,7 @@ class IndirectHyperlinks(Transform):
                 return
         if refname is not None:
             del target['refname']
-        target.resolved = 1
+        target.resolved = True
 
     def nonexistent_indirect_target(self, target) -> None:
         if target['refname'] in self.document.nameids:
@@ -292,7 +292,7 @@ class IndirectHyperlinks(Transform):
             prbid = self.document.set_id(prb)
             msg.add_backref(prbid)
             ref.replace_self(prb)
-        target.resolved = 1
+        target.resolved = True
 
     def resolve_indirect_references(self, target) -> None:
         if target.hasattr('refid'):
@@ -315,7 +315,7 @@ class IndirectHyperlinks(Transform):
                 ref[attname] = attval
                 if call_method:
                     call_method(ref)
-                ref.resolved = 1
+                ref.resolved = True
                 if isinstance(ref, nodes.target):
                     self.resolve_indirect_references(ref)
         for id in target['ids']:
@@ -329,7 +329,7 @@ class IndirectHyperlinks(Transform):
                 ref[attname] = attval
                 if call_method:
                     call_method(ref)
-                ref.resolved = 1
+                ref.resolved = True
                 if isinstance(ref, nodes.target):
                     self.resolve_indirect_references(ref)
 
@@ -367,7 +367,7 @@ class ExternalTargets(Transform):
                             continue
                         del ref['refname']
                         ref['refuri'] = refuri
-                        ref.resolved = 1
+                        ref.resolved = True
 
 
 class InternalTargets(Transform):
@@ -407,7 +407,7 @@ class InternalTargets(Transform):
                 if refid:
                     del ref['refname']
                     ref['refid'] = refid
-                ref.resolved = 1
+                ref.resolved = True
 
 
 class Footnotes(Transform):
@@ -523,7 +523,7 @@ class Footnotes(Transform):
                     ref['refid'] = footnote['ids'][0]
                     footnote.add_backref(ref['ids'][0])
                     self.document.note_refid(ref)
-                    ref.resolved = 1
+                    ref.resolved = True
             if not footnote['names'] and not footnote['dupnames']:
                 footnote['names'].append(label)
                 self.document.note_explicit_target(footnote, footnote)
@@ -560,7 +560,7 @@ class Footnotes(Transform):
             self.document.note_refid(ref)
             assert len(ref['ids']) == 1
             footnote.add_backref(ref['ids'][0])
-            ref.resolved = 1
+            ref.resolved = True
             i += 1
 
     def symbolize_footnotes(self) -> None:
@@ -626,8 +626,8 @@ class Footnotes(Transform):
             ref['refid'] = id
             assert len(ref['ids']) == 1
             note.add_backref(ref['ids'][0])
-            ref.resolved = 1
-        note.resolved = 1
+            ref.resolved = True
+        note.resolved = True
 
 
 class CircularSubstitutionDefinitionError(Exception):
