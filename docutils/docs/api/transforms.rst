@@ -110,7 +110,8 @@ universal_.Validate                 parsers_ (p)                  _`835`
 
 universal_.ExposeInternals          readers_ (r)                  _`840`
 
-references_.DanglingReferences      standalone_ (r), pep_ (r)     _`850`
+references_.DanglingReferences      standalone_ (r), pep_ (r),    _`850`
+                                    *deprecated* [#dangling]_
 
 universal_.SmartQuotes              rst_ (p)                      _`855`
 
@@ -135,6 +136,16 @@ Key:
 * (d): Directive
 * (t): Transform
 * (/p): Via a `\<pending>`_ element
+
+.. [#dangling] `references.DanglingReferences` will be split into a
+   transform resolving refnames__ to refids__ and a transform reporting
+   unresolved references to make space for reference-resolving transforms
+   added by extensions or applications
+   (cf. `Release Notes`__).
+
+   __ ../ref/doctree.html#refname
+   __ ../ref/doctree.html#refid
+   __ ../../RELEASE-NOTES.html#removals
 
 
 Transform Priority Range Categories

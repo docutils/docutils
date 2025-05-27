@@ -167,6 +167,12 @@ Removals
   in Docutils 1.0.  Use a transform_,
   see `transforms.references.CitationReferences` for an example.
 
+* Ignore `transforms.references.DanglingReferences` and
+  `transforms.references.DanglingReferencesVisitor` in Docutils 1.0;
+  remove them in Docutils 2.0. [rationale__]
+
+  __ docs/api/transforms.html#dangling
+
 * Remove `parsers.rst.roles.set_classes()` and
   `parsers.rst.roles.normalized_role_options()`
   (obsoleted by `parsers.rst.roles.normalize_options()`) in Docutils 2.0.
@@ -207,6 +213,9 @@ Misc
   (In Python 3, name and behaviour no longer match.)
 
   __ docs/api/publisher.html#string-i-o
+
+* Change the default priority of the `universal.SmartQuotes` transform_
+  from 855 (very late) to 510 (main) in Docutils 1.0.
 
 * Move math format conversion from docutils/utils/math (called from
   docutils/writers/_html_base.py) to a transform_.
