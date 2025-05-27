@@ -25,6 +25,8 @@ from __future__ import annotations
 
 __docformat__ = 'reStructuredText'
 
+import warnings
+
 from docutils import languages, ApplicationError, TransformSpec
 
 
@@ -64,8 +66,8 @@ class Transformer(TransformSpec):
     """
     Store "transforms" and apply them to the document tree.
 
-    Collect lists of `Transform` instances and "unknown_reference_resolvers"
-    from Docutils components (`TransformSpec` instances).
+    Collect lists of `Transform` instances from Docutils
+    components (`TransformSpec` instances).
     Apply collected "transforms" to the document tree.
 
     Also keeps track of components by component type name.
@@ -80,7 +82,10 @@ class Transformer(TransformSpec):
         """
 
         self.unknown_reference_resolvers = []
-        """List of hook functions which assist in resolving references."""
+        """List of hook functions which assist in resolving references.
+
+        Deprecated. Will be removed in Docutils 1.0.
+        """
 
         self.document = document
         """The `nodes.document` object this Transformer is attached to."""
@@ -167,6 +172,11 @@ class Transformer(TransformSpec):
             return f.priority
         resolvers.sort(key=keyfun)
         self.unknown_reference_resolvers += resolvers
+        if self.unknown_reference_resolvers:
+            warnings.warn('The `unknown_reference_resolvers` hook chain '
+                          'will be removed in Docutils 1.0.\n'
+                          'Use a transform to resolve references.',
+                          DeprecationWarning, stacklevel=2)
 
     def apply_transforms(self) -> None:
         """Apply all of the stored transforms, in priority order."""

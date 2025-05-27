@@ -163,6 +163,9 @@ Removals
 
 * Remove the input_encoding_ auto-detection code in Docutils 1.0.
 
+* Remove the "TransformSpec.unknown_reference_resolvers" hook chain
+  in Docutils 1.0.  Use a transform.
+
 * Remove `parsers.rst.roles.set_classes()` and
   `parsers.rst.roles.normalized_role_options()`
   (obsoleted by `parsers.rst.roles.normalize_options()`) in Docutils 2.0.

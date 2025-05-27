@@ -17,6 +17,7 @@ if __name__ == '__main__':
     # so we import the local `docutils` package.
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+import docutils
 from docutils import transforms, utils
 
 
@@ -45,6 +46,22 @@ class KwargsTestCase(unittest.TestCase):
         transform_record = transformer.applied[0]
         self.assertEqual(transform_record[1], TestTransform)
         self.assertEqual(transform_record[3], {'foo': 42})
+
+
+class TransformerWarningsTestCase(unittest.TestCase):
+
+    @staticmethod
+    def dummy_resolver(node):
+        # Cf. `TransformSpec.unknown_reference_resolvers`.
+        return node.resolved
+
+    def test_deprecation_warnings(self):
+        transformer = transforms.Transformer(utils.new_document('test data'))
+        component = docutils.Component()
+        component.unknown_reference_resolvers = [self.dummy_resolver]
+        self.dummy_resolver.priority = 50
+        with self.assertWarnsRegex(DeprecationWarning, 'will be removed'):
+            transformer.populate_from_components([component])
 
 
 if __name__ == '__main__':

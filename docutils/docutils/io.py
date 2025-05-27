@@ -82,9 +82,9 @@ class Input(TransformSpec):
     Docutils input objects must provide a `read()` method that
     returns the source, typically as `str` instance.
 
-    Inheriting `TransformSpec` allows input objects to add
-    "transforms" and "unknown_reference_resolvers" to the "Transformer".
-    (Optional for custom input objects since Docutils 0.19.)
+    Inheriting `TransformSpec` allows input objects to add "transforms" to
+    the "Transformer".  (Since Docutils 0.19, input objects are no longer
+    required to be `TransformSpec` instances.)
     """
 
     component_type: Final = 'input'
@@ -242,9 +242,9 @@ class Output(TransformSpec):
     Docutils output objects must provide a `write()` method that
     expects and handles one argument (the output).
 
-    Inheriting `TransformSpec` allows output objects to add
-    "transforms" and "unknown_reference_resolvers" to the "Transformer".
-    (Optional for custom output objects since Docutils 0.19.)
+    Inheriting `TransformSpec` allows output objects to add "transforms" to
+    the "Transformer".  (Since Docutils 0.19, output objects are no longer
+    required to be `TransformSpec` instances.)
     """
 
     component_type: Final = 'output'

@@ -75,7 +75,8 @@ if TYPE_CHECKING:
         ]
 
     class _UnknownReferenceResolver(Protocol):
-        """See `TransformSpec.unknown_reference_resolvers`."""
+        """Deprecated. Will be removed in Docutils 1.0."""
+        # See `TransformSpec.unknown_reference_resolvers`.
 
         priority: int
 
@@ -284,41 +285,39 @@ class TransformSpec:
     unknown_reference_resolvers: Sequence[_UnknownReferenceResolver] = ()
     """List of hook functions which assist in resolving references.
 
-    Override in subclasses to implement component-specific resolving of
-    unknown references.
-
-    Unknown references have a 'refname' attribute which doesn't correspond
-    to any target in the document.  Called when the transforms in
-    `docutils.transforms.references` are unable to find a correct target.
-
-    The list should contain functions which will try to resolve unknown
-    references, with the following signature::
-
-        def reference_resolver(node: nodes.Element) -> bool:
-            '''Returns boolean: true if resolved, false if not.'''
-
-    If the function is able to resolve the reference, it should also remove
-    the 'refname' attribute and mark the node as resolved::
-
-        del node['refname']
-        node.resolved = True
-
-    Each function must have a "priority" attribute which will affect the order
-    the unknown_reference_resolvers are run
-    cf. ../docs/api/transforms.html#transform-priority-range-categories ::
-
-        reference_resolver.priority = 500
-
-    Examples:
-      `writers.latex2e.Writer` defines a resolver to mark citation references
-      as resolved by BibTeX if the "use_bibtex" configuration setting is set.
-
-      The `MoinMoin ReStructured Text Parser`__ provides a resolver for
-      "WikiWiki links" (currently only in the outdated 1.9 version).
-
-      __ https://github.com/moinwiki/moin-1.9/blob/1.9.11/MoinMoin/parser/
-         text_rst.py
+    Deprecated. Will be removed in Docutils 1.0
     """
+    # Override in subclasses to implement component-specific resolving of
+    # unknown references.
+    #
+    # Unknown references have a 'refname' attribute which doesn't correspond
+    # to any target in the document.  Called when the transforms in
+    # `docutils.transforms.references` are unable to find a correct target.
+    #
+    # The list should contain functions which will try to resolve unknown
+    # references, with the following signature::
+    #
+    #     def reference_resolver(node: nodes.Element) -> bool:
+    #         '''Returns boolean: true if resolved, false if not.'''
+    #
+    # If the function is able to resolve the reference, it should also remove
+    # the 'refname' attribute and mark the node as resolved::
+    #
+    #     del node['refname']
+    #     node.resolved = True
+    #
+    # Each function must have a "priority" attribute which will affect the
+    # order the unknown_reference_resolvers are run
+    # cf. ../docs/api/transforms.html#transform-priority-range-categories ::
+    #
+    #     reference_resolver.priority = 500
+    #
+    # Examples:
+    #   The `MoinMoin ReStructured Text Parser`__ provided a resolver for
+    #   "WikiWiki links" in the 1.9 version.
+    #
+    #   __ https://github.com/moinwiki/moin-1.9/blob/1.9.11/MoinMoin/parser/
+    #      text_rst.py
 
 
 class Component(SettingsSpec, TransformSpec):
