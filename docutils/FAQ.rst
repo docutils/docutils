@@ -382,17 +382,9 @@ __ docs/user/links.html#wikis
 Are there any Weblog (Blog) projects that use reStructuredText syntax?
 ----------------------------------------------------------------------
 
-With no implied endorsement or recommendation, and in no particular
-order:
-
-* `Firedrop <http://www.voidspace.org.uk/python/firedrop2/>`__
-* `PyBloxsom <http://pyblosxom.github.io/>`__
-* `Lino WebMan <http://lino.sourceforge.net/webman.html>`__
-* `Pelican <http://blog.getpelican.com/>`__
-  (also  listed `on PyPi <http://pypi.python.org/pypi/pelican>`__)
+See the `Docutils Links`_.
 
 Please `let us know`_ of any other reStructuredText Blogs.
-
 
 .. _Can lists be indented without generating block quotes?:
 

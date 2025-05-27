@@ -4805,8 +4805,9 @@ It is used by the `\<citation_reference>`_, `\<footnote_reference>`_,
 
 On a `\<target>`_ element, ``refname`` indicates an `indirect target`_
 which may resolve to either an internal or external reference.
-Docutils transforms_ replace the ``refname`` attribute with a refid_
-pointing to the same element.
+Docutils transforms_ replace the ``refname`` attribute with
+a refid_ (refering to the same element) or a refuri_ (refering to an
+external ressource).
 
 
 ``refuri``

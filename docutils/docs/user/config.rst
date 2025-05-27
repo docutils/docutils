@@ -1978,7 +1978,7 @@ __ ../api/publisher.html#parts-provided-by-the-latex-writers
 use_bibtex
 ~~~~~~~~~~
 
-List of style and database(s) for the experimental `BibTeX` support
+List of style and database(s) for the experimental `BibTeX`_ support
 (comma-separated_). Example::
 
   --use-bibtex=unsrt,mydb1,mydb2
@@ -1989,6 +1989,8 @@ List of style and database(s) for the experimental `BibTeX` support
    option may be removed.
 
 *Default*: empty list (don't use BibTeX).  *Option* ``--use-bibtex``.
+
+.. _BibTeX: https://www.ctan.org/pkg/bibtex
 
 use_latex_abstract
 ~~~~~~~~~~~~~~~~~~

@@ -164,8 +164,8 @@ Removals
 * Remove the input_encoding_ auto-detection code in Docutils 1.0.
 
 * Remove the "TransformSpec.unknown_reference_resolvers" hook chain
-  in Docutils 1.0.  Use a transform, see
-  `transforms.references.CitationReferences` for an example.
+  in Docutils 1.0.  Use a transform_,
+  see `transforms.references.CitationReferences` for an example.
 
 * Remove `parsers.rst.roles.set_classes()` and
   `parsers.rst.roles.normalized_role_options()`
@@ -209,9 +209,7 @@ Misc
   __ docs/api/publisher.html#string-i-o
 
 * Move math format conversion from docutils/utils/math (called from
-  docutils/writers/_html_base.py) to a transform__.
-
-  __ docs/ref/transforms.html
+  docutils/writers/_html_base.py) to a transform_.
 
 * If the environment variable `SOURCE_DATE_EPOCH`_ is set, the `"date"`_
   directive and the timestamp inserted by the "datestamp_"
@@ -1441,11 +1439,11 @@ Release 0.3.5 (2004-07-29)
    ==========
 
 .. _HISTORY: HISTORY.html
-.. _Python 3 compatibility: README.html#python-3-compatibility
+
+.. _transform: docs/api/transforms.html
 
 .. _Docutils Document Model:
 .. _Docutils XML: docs/ref/doctree.html
-.. _"refname" attribute: docs/ref/doctree.html#refname
 .. _"colwidth" attribute: docs/ref/doctree.html#colwidth
 .. _<doctest_block>: docs/ref/doctree.html#doctest-block
 
@@ -1494,7 +1492,6 @@ Release 0.3.5 (2004-07-29)
 .. _docutils-cli.py:
 .. _generic command line front end tool:
     docs/user/tools.html#generic-command-line-front-end
-.. _rst2html.py:
 .. _rst2html: docs/user/tools.html#rst2html
 .. _rst2html4: docs/user/tools.html#rst2html4
 .. _rst2html5: docs/user/tools.html#rst2html5

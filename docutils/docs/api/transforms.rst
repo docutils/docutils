@@ -22,29 +22,30 @@ Transforms resolve references and footnote numbers, process
 `interpreted text`_, and do other context-sensitive processing.
 Each transform is a subclass of `docutils.transforms.Transform`.
 
-There are `transforms added by components`_, others (e.g.
-``parts.Contents``) are added by the parser, if a corresponding directive_ is
-found in the document.
+Most transforms are added by components, others (e.g. `parts.Contents`) are
+added by the parser if a corresponding directive_ is found in the document.
 
 To add a transform, components (objects inheriting from
 `docutils.Component` like Readers, Parsers, Writers, Input, Output) overwrite
-the ``get_transforms()`` method of their base class. After the Reader has
+the `get_transforms()` method of their base class. After the Reader has
 finished processing, the Publisher calls
-``Transformer.populate_from_components()`` with a list of components and all
-transforms returned by the component's ``get_transforms()`` method are
-stored in a `transformer object` attached to the document tree.
+`Transformer.populate_from_components()` with a list of components and all
+transforms returned by the component's `get_transforms()` method are
+stored in a `Transformer` object attached to the document tree.
 
 
-For more about transforms and the Transformer object, see also `PEP
-258`_. (The ``default_transforms()`` attribute of component classes mentioned
-there is deprecated. Use the ``get_transforms()`` method instead.)
+For more info about transforms and the `Transformer` object,
+see also `PEP 258`_. [#]_
+
+.. [#] The `default_transforms()` attribute of component classes mentioned
+   in PEP 258 is deprecated. Use the `get_transforms()` method instead.
 
 .. _priority:
 
 Transforms Listed in Priority Order
 ===================================
 
-Transform classes each have a `default priority` attribute which is used by
+Transform classes each have a `default_priority` attribute which is used by
 the Transformer to apply transforms in order (low to high). The default
 priority can be overridden when adding transforms to the Transformer object.
 
@@ -52,79 +53,79 @@ priority can be overridden when adding transforms to the Transformer object.
 ==================================  ============================  ========
 Transform: module.Class             Added By                      Priority
 ==================================  ============================  ========
-misc_.ClassAttribute                `"class"`_ (d/p)              210
+misc_.ClassAttribute                `"class"`_ (d/p)              _`210`
 
-references_.Substitutions           standalone (r), pep (r)       220
+references_.Substitutions           standalone_ (r), pep_ (r)     _`220`
 
-references_.PropagateTargets        standalone (r), pep (r)       260
+references_.PropagateTargets        standalone_ (r), pep_ (r)     _`260`
 
-frontmatter.\ DocTitle_             standalone (r)                320
+frontmatter.\ DocTitle_             standalone_ (r)               _`320`
 
-frontmatter.\ DocInfo_              standalone (r)                340
+frontmatter.\ DocInfo_              standalone_ (r)               _`340`
 
-frontmatter.\ SectSubTitle_         standalone (r)                350
+frontmatter.\ SectSubTitle_         standalone_ (r)               _`350`
 
-peps_.Headers                       pep (r)                       360
+peps_.Headers                       pep_ (r)                      _`360`
 
-peps_.Contents                      pep (r)                       380
+peps_.Contents                      pep_ (r)                      _`380`
 
-universal_.StripClassesAndElements  Writer (w)                    420
+universal_.StripClassesAndElements  writers_ (w)                  _`420`
 
-references_.AnonymousHyperlinks     standalone (r), pep (r)       440
+references_.AnonymousHyperlinks     standalone_ (r), pep_ (r)     _`440`
 
-references_.IndirectHyperlinks      standalone (r), pep (r)       460
+references_.IndirectHyperlinks      standalone_ (r), pep_ (r)     _`460`
 
-peps_.TargetNotes                   pep (r)                       520
+peps_.TargetNotes                   pep_ (r)                      _`520`
 
-references_.TargetNotes             peps.TargetNotes (t/p)        0
+references_.TargetNotes             peps.TargetNotes (t/p)          0
 
-misc_.CallBack                      peps.TargetNotes (t/p)        1
+misc_.CallBack                      peps.TargetNotes (t/p)          1
 
-references_.TargetNotes             `"target-notes"`_ (d/p)       540
+references_.TargetNotes             `"target-notes"`_ (d/p)       _`540`
 
-references_.Footnotes               standalone (r), pep (r)       620
+references_.Footnotes               standalone_ (r), pep_ (r)     _`620`
 
-references_.ExternalTargets         standalone (r), pep (r)       640
+references_.ExternalTargets         standalone_ (r), pep_ (r)     _`640`
 
-references_.InternalTargets         standalone (r), pep (r)       660
+references_.InternalTargets         standalone_ (r), pep_ (r)     _`660`
 
-parts_.SectNum                      `"sectnum"`_ (d/p)            710
+parts_.SectNum                      `"sectnum"`_ (d/p)            _`710`
 
-parts_.Contents                     `"contents"`_ (d/p),          720
+parts_.Contents                     `"contents"`_ (d/p),          _`720`
                                     peps.Contents (t/p)
 
-universal_.StripComments            Reader (r)                    740
+universal_.StripComments            readers_ (r)                  _`740`
 
-peps_.PEPZero                       peps.Headers (t/p)            760
+peps_.PEPZero                       peps.Headers (t/p)            _`760`
 
-references_.CitationReferences      latex2e (w)                   770
+references_.CitationReferences      latex2e_ (w)                  _`770`
 
-components.Filter                   *not used*                    780
+components.Filter                   *not used*                    _`780`
 
-universal_.Decorations              Reader (r)                    820
+universal_.Decorations              readers_ (r)                  _`820`
 
-misc_.Transitions                   standalone (r), pep (r)       830
+misc_.Transitions                   standalone_ (r), pep_ (r)     _`830`
 
-universal_.Validate                 Parser                        835
+universal_.Validate                 parsers_ (p)                  _`835`
 
-universal_.ExposeInternals          Reader (r)                    840
+universal_.ExposeInternals          readers_ (r)                  _`840`
 
-references_.DanglingReferences      standalone (r), pep (r)       850
+references_.DanglingReferences      standalone_ (r), pep_ (r)     _`850`
 
-universal_.SmartQuotes              Parser                        855
+universal_.SmartQuotes              rst_ (p)                      _`855`
 
-universal_.Messages                 Writer (w)                    860
+universal_.Messages                 writers_ (w)                  _`860`
 
-universal_.FilterMessages           Writer (w)                    870
+universal_.FilterMessages           writers_ (w)                  _`870`
 
-universal_.TestMessages             DocutilsTestSupport           880
+universal_.TestMessages             DocutilsTestSupport           _`880`
 
-writer_aux_.Compound                *not used, to be removed*     910
+writer_aux_.Compound                *not used, to be removed*     _`910`
 
-writer_aux_.Admonitions             _html_base (w),               920
-                                    latex2e (w)
+writer_aux_.Admonitions             `_html_base`_ (w),            _`920`
+                                    latex2e_ (w)
 
-misc_.CallBack                      n/a                           990
+misc_.CallBack                      n/a                           _`990`
 ==================================  ============================  ========
 
 Key:
@@ -155,62 +156,81 @@ From   To   Category
 ====  ====  ================================================
 
 
-Transforms added by components
-===============================
+Transforms Added by Components
+==============================
+
+.. _readers:
 
 readers.Reader:
-  | universal.Decorations,
-  | universal.ExposeInternals,
-  | universal.StripComments
+  | universal.StripComments             (740_)
+  | universal.Decorations               (820_)
+  | universal.ExposeInternals           (840_)
 
 readers.ReReader:
   None
 
+  .. _standalone:
+
 readers.standalone.Reader:
-  | references.Substitutions,
-  | references.PropagateTargets,
-  | frontmatter.DocTitle,
-  | frontmatter.SectionSubTitle,
-  | frontmatter.DocInfo,
-  | references.AnonymousHyperlinks,
-  | references.IndirectHyperlinks,
-  | references.Footnotes,
-  | references.ExternalTargets,
-  | references.InternalTargets,
-  | references.DanglingReferences,
-  | misc.Transitions
+  | references.Substitutions            (220_)
+  | references.PropagateTargets         (260_)
+  | frontmatter.\ DocTitle_             (320_)
+  | frontmatter.\ DocInfo_              (340_)
+  | frontmatter.\ SectSubTitle_         (350_)
+  | references.AnonymousHyperlinks      (440_)
+  | references.IndirectHyperlinks       (460_)
+  | references.Footnotes                (620_)
+  | references.ExternalTargets          (640_)
+  | references.InternalTargets          (660_)
+  | misc.Transitions                    (830_)
+  | references.DanglingReferences       (850_)
+
+  .. _pep:
 
 readers.pep.Reader:
-  | references.Substitutions,
-  | references.PropagateTargets,
-  | references.AnonymousHyperlinks,
-  | references.IndirectHyperlinks,
-  | references.Footnotes,
-  | references.ExternalTargets,
-  | references.InternalTargets,
-  | references.DanglingReferences,
-  | misc.Transitions,
-  | peps.Headers,
-  | peps.Contents,
-  | peps.TargetNotes
+  | references.Substitutions            (220_)
+  | references.PropagateTargets         (260_)
+  | peps.Headers                        (360_)
+  | peps.Contents                       (380_)
+  | references.AnonymousHyperlinks      (440_)
+  | references.IndirectHyperlinks       (460_)
+  | peps.TargetNotes                    (520_)
+  | references.Footnotes                (620_)
+  | references.ExternalTargets          (640_)
+  | references.InternalTargets          (660_)
+  | misc.Transitions                    (830_)
+  | references.DanglingReferences       (850_)
+
+  .. _parsers:
+
+parsers.Parser
+  universal_.Validate                   (835_)
+
+  .. _rst:
 
 parsers.rst.Parser
-  universal.SmartQuotes
+  universal.SmartQuotes                 (855_)
+
+  .. _writers:
 
 writers.Writer:
-  | universal.Messages,
-  | universal.FilterMessages,
-  | universal.StripClassesAndElements
+  | universal.StripClassesAndElements   (420_)
+  | universal.Messages                  (860_)
+  | universal.FilterMessages            (870_)
 
 writers.UnfilteredWriter
   None
 
+  .. _latex2e:
+
 writers.latex2e.Writer
-  writer_aux.Admonitions
-  references.CitationReferences
+  | writer_aux.Admonitions              (920_)
+  | references.CitationReferences       (770_)
+
+  .. _`_html_base`:
 
 writers._html_base.Writer:
-  writer_aux.Admonitions
+  writer_aux.Admonitions                (920_)
 
 writers.odf_odt.Writer:
   removes references.DanglingReferences
@@ -233,8 +253,8 @@ DocInfo
 .. class:: field-indent-12em
 
 :Module: frontmatter_
-:Added by:  standalone Reader
-:Default priority_: 340
+:Added by:  standalone_ Reader
+:Default priority_: 340_
 :Configuration_ setting: docinfo_xform_ (default: True)
 
 Given a document starting [#pre-docinfo]_ with a field list, the DocInfo
@@ -288,8 +308,8 @@ DocTitle
 .. class:: field-indent-12em
 
 :Module: frontmatter_
-:Added by:  standalone Reader
-:Default priority_: 320
+:Added by:  standalone_ Reader
+:Default priority_: 320_
 :Configuration_ setting: doctitle_xform_ (default: True)
 
 Under the conditions explained below, the DocTitle transform converts
@@ -433,8 +453,8 @@ SectSubTitle
 .. class:: field-indent-12em
 
 :Module: frontmatter_
-:Added by:  standalone Reader
-:Default priority_: 350
+:Added by:  standalone_ Reader
+:Default priority_: 350_
 :Configuration_ setting: sectsubtitle_xform_ (default: False)
 
 The SectSubTitle transform works like `step 2`_ of the DocTitle_
