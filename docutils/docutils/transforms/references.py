@@ -842,6 +842,31 @@ class TargetNotes(Transform):
         return footnote
 
 
+class CitationReferences(Transform):
+    """Resolve <citation_references>.
+
+    The 'use_bibtex'__ configuration setting indicates that citation entries
+    are fetched from a BibTeX database by the backend (LaTeX).
+
+    __ https://docutils.sourceforge.io/docs/user/config.html#use-bibtex
+    """
+    # TODO: Bibliography database support for other output formats.
+
+    default_priority = 770
+    # Apply between `InternalTargets` (660) and `DanglingReferences` (850)
+
+    def apply(self) -> None:
+        if not getattr(self.document.settings, 'use_bibtex', []):
+            return
+        for node in self.document.findall(nodes.citation_reference):
+            # Skip nodes that are resolved or have a matching target:
+            if node.resolved or self.document.nameids.get(node.get('refname')):
+                continue
+            if node.astext():  # ensure text content (becomes the BibTeX key)
+                node.delattr('refname')
+                node.resolved = True
+
+
 class DanglingReferences(Transform):
 
     """

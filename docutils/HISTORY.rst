@@ -17,7 +17,15 @@
 Release 0.22rc3 (unpublished)
 =============================
 
-* nothing yet.
+* docutils/writers/latex2e/__init__.py
+
+  - Replace `Writer.bibtex_reference_resolver()` with a transform.
+
+* docutils/transforms/references.py
+
+  - New transform `CitationReferences`. Marks citation_references
+    as resolved if BibTeX is used by the backend (LaTeX).
+
 
 Release 0.22rc2 (2025-05-22)
 ============================

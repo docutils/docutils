@@ -20,7 +20,7 @@ import warnings
 from pathlib import Path
 
 from docutils import frontend, nodes, languages, writers, utils
-from docutils.transforms import writer_aux
+from docutils.transforms import references, writer_aux
 from docutils.utils._roman_numerals import RomanNumeral
 from docutils.utils.math import pick_math_environment, unichar2tex
 
@@ -254,29 +254,13 @@ class Writer(writers.Writer):
     def __init__(self) -> None:
         writers.Writer.__init__(self)
         self.translator_class = LaTeXTranslator
-        self.unknown_reference_resolvers = [self.bibtex_reference_resolver]
-        self.bibtex_reference_resolver.priority = 400
-
-    @staticmethod
-    def bibtex_reference_resolver(node: nodes.Element) -> bool:
-        """Mark citation references as resolved if BibTeX is used.
-
-        Cf. `TransformSpec.unknown_reference_resolvers`.
-        """
-        if (isinstance(node, nodes.citation_reference)
-            and node.document.settings.use_bibtex):
-            del node['refname']
-            node.resolved = True
-            return True
-        else:
-            return False
 
     def get_transforms(self):
         # Override parent method to add latex-specific transforms
         return super().get_transforms() + [
                    # Convert specific admonitions to generic one
                    writer_aux.Admonitions,
-                   # TODO: footnote collection transform
+                   references.CitationReferences,
                    ]
 
     def translate(self) -> None:

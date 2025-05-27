@@ -164,7 +164,8 @@ Removals
 * Remove the input_encoding_ auto-detection code in Docutils 1.0.
 
 * Remove the "TransformSpec.unknown_reference_resolvers" hook chain
-  in Docutils 1.0.  Use a transform.
+  in Docutils 1.0.  Use a transform, see
+  `transforms.references.CitationReferences` for an example.
 
 * Remove `parsers.rst.roles.set_classes()` and
   `parsers.rst.roles.normalized_role_options()`
@@ -230,7 +231,10 @@ Misc
 Release 0.22rc3 (unpublished)
 =============================
 
-* nothing yet.
+New objects
+  `transforms.references.`CitationReferences`
+     Mark citation_references as resolved if the backend (LaTeX)
+     uses a BibTeX database.
 
 Release 0.22rc2 (2025-05-22)
 ============================

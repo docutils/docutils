@@ -97,6 +97,8 @@ universal_.StripComments            Reader (r)                    740
 
 peps_.PEPZero                       peps.Headers (t/p)            760
 
+references_.CitationReferences      latex2e (w)                   770
+
 components.Filter                   *not used*                    780
 
 universal_.Decorations              Reader (r)                    820
@@ -205,6 +207,7 @@ writers.UnfilteredWriter
 
 writers.latex2e.Writer
   writer_aux.Admonitions
+  references.CitationReferences
 
 writers._html_base.Writer:
   writer_aux.Admonitions
