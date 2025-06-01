@@ -23,6 +23,8 @@ from docutils.utils import new_document
 
 
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -1152,6 +1154,33 @@ Escape other char in URIs:
         <reference name="anonymouscall" refuri="anonymouscall">
             anonymouscall
 """],
+["""\
+Report duplicate refnames. First use: _`named.txt` vs. _`anonymous.html`.
+
+Embedded targets: `<named.txt>`_, `<anonymous.html>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Report duplicate refnames. First use: \n\
+        <target dupnames="named.txt" ids="named-txt">
+            named.txt
+         vs. \n\
+        <target ids="anonymous-html" names="anonymous.html">
+            anonymous.html
+        .
+    <system_message backrefs="named-txt-1" level="2" line="4" source="test data" type="WARNING">
+        <paragraph>
+            Duplicate explicit target name: "named.txt".
+    <paragraph>
+        Embedded targets: \n\
+        <reference name="named.txt" refuri="named.txt">
+            named.txt
+        <target dupnames="named.txt" ids="named-txt-1" refuri="named.txt">
+        , \n\
+        <reference name="anonymous.html" refuri="anonymous.html">
+            anonymous.html
+"""],
 ]
 
 totest['embedded_aliases'] = [
@@ -1163,7 +1192,7 @@ totest['embedded_aliases'] = [
     <paragraph>
         <reference name="phrase reference" refname="alias">
             phrase reference
-        <target names="phrase\\ reference" refname="alias">
+        <target ids="phrase-reference" names="phrase\\ reference" refname="alias">
 """],
 ["""\
 `anonymous reference <alias_>`__
@@ -1244,6 +1273,33 @@ long  phrase_>`__
     <paragraph>
         <reference name="anonymous reference" refname="aliaswith\\ escaped :characters">
             anonymous reference
+"""],
+["""\
+Report duplicate refnames: First use: _`named` vs. _`anonymous`.
+
+Embedded alias: `named <anonymous_>`_, `ano <anonymous_>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Report duplicate refnames: First use: \n\
+        <target dupnames="named" ids="named">
+            named
+         vs. \n\
+        <target ids="anonymous" names="anonymous">
+            anonymous
+        .
+    <system_message backrefs="named-1" level="2" line="4" source="test data" type="WARNING">
+        <paragraph>
+            Duplicate explicit target name: "named".
+    <paragraph>
+        Embedded alias: \n\
+        <reference name="named" refname="anonymous">
+            named
+        <target dupnames="named" ids="named-1" refname="anonymous">
+        , \n\
+        <reference name="ano" refname="anonymous">
+            ano
 """],
 ]
 

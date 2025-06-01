@@ -27,6 +27,8 @@ from docutils.utils import new_document
 
 
 class TransformTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_transforms(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -373,7 +375,7 @@ Another reference to the same `embedded alias`_.
         An \n\
         <reference name="embedded alias" refuri="ham.py">
             embedded alias
-        <target names="embedded\\ alias" refuri="ham.py">
+        <target ids="embedded-alias" names="embedded\\ alias" refuri="ham.py">
         .
     <paragraph>
         Another reference to the same \n\
@@ -405,11 +407,11 @@ An `embedded alias <alias_>`_ with unknown reference.
         An \n\
         <problematic ids="problematic-1" refid="system-message-2">
             `embedded alias <alias_>`_
-        <target names="embedded\\ alias" refname="alias">
+        <target ids="embedded-alias" names="embedded\\ alias" refname="alias">
          with unknown reference.
     <system_message ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Indirect hyperlink target "embedded alias"  refers to target "alias", which does not exist.
+            Indirect hyperlink target "embedded alias" (id="embedded-alias") refers to target "alias", which does not exist.
     <system_message backrefs="problematic-1" ids="system-message-2" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Unknown target name: "alias".

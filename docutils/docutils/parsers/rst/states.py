@@ -857,8 +857,8 @@ class Inliner:
                     self.document.note_refname(reference)
                 else:
                     reference['refuri'] = alias
-                    self.document.note_explicit_target(target, self.parent)
                 # target.note_referenced_by(name=refname)
+                self.document.note_explicit_target(target, self.parent)
                 node_list.append(target)
             else:
                 reference['refname'] = refname
