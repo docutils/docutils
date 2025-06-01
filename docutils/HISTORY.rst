@@ -256,6 +256,7 @@ Release 0.22rc1 (2025-05-06)
   - Print Docutils version in header comment (feature-request #105).
   - Stop converting text to full capitals (bug #481).
   - Fix reference output (bug #497).
+  - Do not drop text of internal targets.
   - Use macros .UR/.UE for hyperlink references unless the new
     configuration setting text_references_ is True.
     The current default is True (text references), it will change

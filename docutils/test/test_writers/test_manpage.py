@@ -358,6 +358,22 @@ Arbitrary field: some text
 public domain
 .\\" End of generated man page.
 """],
+["""\
+Internal hyperlinks_ and targets_ are ignored.
+
+.. _hyperlinks:
+
+(Text content of hyperlinks and _`targets` is printed as normal text.)
+""",
+f"""{document_start}{indend_macros}.TH "" "" "" ""
+.SH Name
+ \\- \n\
+Internal hyperlinks and targets are ignored.
+.sp
+(Text content of hyperlinks and targets is printed as normal text.)
+.\\" End of generated man page.
+"""],
+
 ]
 
 totest['table'] = [

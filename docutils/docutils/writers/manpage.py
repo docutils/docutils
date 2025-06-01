@@ -1113,6 +1113,7 @@ class Translator(nodes.NodeVisitor):
                                  % insert_URI_breakpoints(node.astext()))
                 raise nodes.SkipNode
         # elif 'refid' in node:
+        #     internal cross references are ignored (just print the text)
 
     def _depart_reference_no_macro(self, node) -> None:
         if 'refuri' in node:
@@ -1233,8 +1234,12 @@ class Translator(nodes.NodeVisitor):
         self._active_table = None
 
     def visit_target(self, node):
-        # targets are in-document hyper targets, without any use for man-pages.
-        raise nodes.SkipNode
+        # <target> elements are anchors of internal hyperlinks (not used
+        # in man-pages). Just print content (inline targets may contain text):
+        pass
+
+    def depart_target(self, node):
+        pass
 
     def visit_tbody(self, node) -> None:
         pass
