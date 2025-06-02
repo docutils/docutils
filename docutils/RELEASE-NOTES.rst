@@ -59,6 +59,12 @@ Document Tree / Docutils DTD
 * The "rst" parser will warn if a `"figure"`_ directive is missing both
   caption and legend in Docutils 1.0.
 
+* The "rst" parser will use <inline> elements for inline targets
+  in Docutils 1.0.
+
+* <target> elements with content will be deprecated in Docutils 1.0
+  and invalid in Docutils 2.0.
+
 * To match the definition in the "Exchange Table Model", the
   `"colwidth" attribute`_ will be stored as a `str` (instead of
   numerical) value in Python element instances in Docutils 1.0.

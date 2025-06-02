@@ -1765,7 +1765,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def visit_caption(self, node) -> None:
         self.out.append('\n\\caption{')
-        self.out += self.ids_to_labels(node, set_anchor=False)
         self.visit_inline(node)
 
     def depart_caption(self, node) -> None:
@@ -2334,7 +2333,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                 num = '[%s]' % num
             self.out.append('%%\n\\DUfootnotetext{%s}{%s}{%s}{' %
                             (node['ids'][0], backref, self.encode(num)))
-            if node['ids'] == node['names']:
+            if node['ids'] == [nodes.make_id(n) for n in node['names']]:
+                # autonumber-label: create anchor
                 self.out += self.ids_to_labels(node)
             # prevent spurious whitespace if footnote starts with paragraph:
             if len(node) > 1 and isinstance(node[1], nodes.paragraph):
@@ -2505,7 +2505,17 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def depart_image(self, node) -> None:
         self.out += self.ids_to_labels(node, newline=True)
 
-    def visit_inline(self, node) -> None:  # <span>, i.e. custom roles
+    def visit_inline(self, node) -> None:
+        # This function is also called by the visiting functions for
+        # specific inline elements, <caption>, and <paragraph>.
+
+        # Handle "ids" attribute:
+        # do we need a \phantomsection?
+        set_anchor = not (isinstance(node.parent, (nodes.caption, nodes.title))
+                          or isinstance(node, nodes.caption))
+        add_newline = isinstance(node, nodes.paragraph)
+        self.out += self.ids_to_labels(node, set_anchor, newline=add_newline)
+        # Handle "classes" attribute:
         for cls in node['classes']:
             if cls.startswith('language-'):
                 language = self.babel.language_name(cls[9:])
@@ -2705,15 +2715,19 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def visit_math(self, node, math_env='$'):
         """math role"""
-        self.visit_inline(node)
         self.requirements['amsmath'] = r'\usepackage{amsmath}'
         math_code = node.astext().translate(unichar2tex.uni2tex_table)
         if math_env == '$':
+            self.visit_inline(node)
             if self.alltt:
                 wrapper = ['\\(', '\\)']
             else:
                 wrapper = ['$', '$']
         else:
+            for cls in node['classes']:
+                if not self.fallback_stylesheet:
+                    self.fallbacks['inline'] = PreambleCmds.inline
+                self.out.append(r'\DUrole{%s}{' % cls)
             labels = self.ids_to_labels(node, set_anchor=False, newline=True)
             wrapper = ['%%\n\\begin{%s}\n' % math_env,
                        '\n',
@@ -2814,7 +2828,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                 self.out.append('\n')
         else:
             self.out.append('\n')
-        self.out += self.ids_to_labels(node, newline=True)
         self.visit_inline(node)
 
     def depart_paragraph(self, node) -> None:
@@ -3111,13 +3124,10 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             ## self.out.append('%% %s\n' % node)   # for debugging
             return
         self.out.append('%\n')
-        # do we need an anchor (\phantomsection)?
-        set_anchor = not isinstance(node.parent, (nodes.caption, nodes.title))
-        # TODO: where else can/must we omit the \phantomsection?
-        self.out += self.ids_to_labels(node, set_anchor)
+        self.visit_inline(node)
 
     def depart_target(self, node) -> None:
-        pass
+        self.depart_inline(node)
 
     def visit_tbody(self, node) -> None:
         # BUG write preamble if not yet done (colspecs not [])

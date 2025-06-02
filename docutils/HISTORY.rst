@@ -20,6 +20,8 @@ Release 0.22rc3 (unpublished)
 * docutils/writers/latex2e/__init__.py
 
   - Replace `Writer.bibtex_reference_resolver()` with a transform.
+  - `LaTeXTranslator.visit_inline()` now inserts labels for the
+    node's IDs.
 
 * docutils/transforms/references.py
 
