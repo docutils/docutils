@@ -2713,38 +2713,38 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def depart_meta(self, node) -> None:
         pass
 
-    def visit_math(self, node, math_env='$'):
-        """math role"""
+    def visit_math(self, node, math_env='$') -> None:
+        """
+        Provisional: the `math_env` argument will be dropped in Docutils 2.0.
+        """
         self.requirements['amsmath'] = r'\usepackage{amsmath}'
+        self.visit_inline(node)
         math_code = node.astext().translate(unichar2tex.uni2tex_table)
-        if math_env == '$':
-            self.visit_inline(node)
-            if self.alltt:
-                wrapper = ['\\(', '\\)']
-            else:
-                wrapper = ['$', '$']
+        if self.alltt:
+            self.out += ['\\(', math_code, '\\)']
         else:
-            for cls in node['classes']:
-                if not self.fallback_stylesheet:
-                    self.fallbacks['inline'] = PreambleCmds.inline
-                self.out.append(r'\DUrole{%s}{' % cls)
-            labels = self.ids_to_labels(node, set_anchor=False, newline=True)
-            wrapper = ['%%\n\\begin{%s}\n' % math_env,
-                       '\n',
-                       ''.join(labels),
-                       '\\end{%s}' % math_env]
-        wrapper.insert(1, math_code)
-        self.out.extend(wrapper)
+            self.out += ['$', math_code, '$']
         self.depart_inline(node)
-        # Content already processed:
-        raise nodes.SkipNode
+        raise nodes.SkipNode  # content already processed
 
     def depart_math(self, node) -> None:
         pass  # never reached
 
     def visit_math_block(self, node) -> None:
+        self.requirements['amsmath'] = r'\usepackage{amsmath}'
+        for cls in node['classes']:
+            if not self.fallback_stylesheet:
+                self.fallbacks['inline'] = PreambleCmds.inline
+            self.out.append(r'\DUrole{%s}{' % cls)
         math_env = pick_math_environment(node.astext())
-        self.visit_math(node, math_env=math_env)
+        labels = self.ids_to_labels(node, set_anchor=False, newline=True)
+        self.out += [f'%\n\\begin{{{math_env}}}\n',
+                     node.astext().translate(unichar2tex.uni2tex_table),
+                     '\n',
+                     *labels,
+                     f'\\end{{{math_env}}}']
+        self.out.append('}' * len(node['classes']))
+        raise nodes.SkipNode  # content already processed
 
     def depart_math_block(self, node) -> None:
         pass  # never reached
