@@ -79,6 +79,9 @@ class PropagateTargets(Transform):
             next_node.expect_referenced_by_id.update(
                 getattr(target, 'expect_referenced_by_id', {}))
             # Remove target node from places where it is invalid.
+            # TODO: always remove target?
+            # +1 It did complete its mission and is currently ignored.
+            # -1 It may help a future rST writer.
             if isinstance(target.parent, nodes.figure) and isinstance(
                     next_node, nodes.caption):
                 target.parent.remove(target)

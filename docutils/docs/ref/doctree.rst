@@ -3192,7 +3192,7 @@ Pseudo-XML_ fragment from simple parsing::
 ===========
 
 The <reference> element represents a cross reference
-to another element of the document or to an external source.
+to another element of the document or to an external ressource.
 
 :Category:   `Simple Body Elements`_, `Inline Elements`_
 :Analogues:  The <reference> element is analogous to the DocBook_ <link>
@@ -3216,12 +3216,12 @@ In reStructuredText `hyperlink references`_ are indicated by a trailing
 underscore::
 
     References may use simple_ reference names,
-    `phrase refs`_, or `no reference name`__.
+    `phrase references`_, or `no reference name`__.
 
     Matching targets must exist in the document, e.g., a
     _`simple` inline target or the explicit targets below.
 
-    .. _phrase refs: doctree.rst
+    .. _phrase references: doctree.rst
     __ http://example.org
 
 Pseudo-XML_ fragment from simple parsing::
@@ -3231,8 +3231,8 @@ Pseudo-XML_ fragment from simple parsing::
         <reference refname="simple">
             simple
          reference names,
-        <reference refname="phrase refs">
-            phrase refs
+        <reference refname="phrase references">
+            phrase references
         , or
         <reference anonymous="1">
             no reference name
@@ -3254,7 +3254,7 @@ replace the refname_ with a refid_ or refuri_::
             simple
          reference names,
         <reference refuri="doctree.rst">
-            phrase refs
+            phrase references
         , or
         <reference anonymous="1" refuri="http://example.org">
             no reference name

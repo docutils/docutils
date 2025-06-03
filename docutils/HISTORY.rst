@@ -17,20 +17,21 @@
 Release 0.22rc3 (unpublished)
 =============================
 
-* docutils/writers/latex2e/__init__.py
+* docutils/parsers/rst/states.py
 
-  - Replace `Writer.bibtex_reference_resolver()` with a transform.
-  - `LaTeXTranslator.visit_inline()` now inserts labels for the
-    node's IDs.
+  - Warn about duplicate name in references with embedded internal targets.
+    Fixes bug #502.
 
 * docutils/transforms/references.py
 
   - New transform `CitationReferences`. Marks citation_references
     as resolved if BibTeX is used by the backend (LaTeX).
 
-* docutils/parsers/rst/states.py
+* docutils/writers/latex2e/__init__.py
 
-  - Warn about duplicate name in references with embedded internal targets.
+  - Replace `Writer.bibtex_reference_resolver()` with a transform.
+  - `LaTeXTranslator.visit_inline()` now inserts labels for the
+    node's IDs.
 
 * docutils/writers/manpage.py
 
