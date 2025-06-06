@@ -1365,14 +1365,17 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                            for path in stylesheet_list]
 
         # PDF setup
-        if self.hyperlink_color.lower() in ('0', 'false', ''):
-            self.hyperref_options = ''
-        else:
-            self.hyperref_options = ('colorlinks=true,'
-                                     f'linkcolor={self.hyperlink_color},'
-                                     f'urlcolor={self.hyperlink_color}')
+        # avoid warnings about empty anchors with \DUfootnotetext:
+        self.hyperref_options = ['hyperfootnotes=false']
+        # link color (default is "blue"):
+        if self.hyperlink_color.lower() not in ('0', 'off', 'no', 'false', ''):
+            self.hyperref_options.append('colorlinks=true,'
+                                         f'linkcolor={self.hyperlink_color},'
+                                         f'urlcolor={self.hyperlink_color}')
         if settings.hyperref_options:
-            self.hyperref_options += ',' + settings.hyperref_options
+            self.hyperref_options.append(settings.hyperref_options)
+        # wrap and align (cf. PreambleCmds.linking):
+        self.hyperref_options = ',\n              '.join(self.hyperref_options)
 
     # Auxiliary Methods
     # -----------------
