@@ -1593,6 +1593,13 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         elif align == 'right':
             self.out.append('\\raggedleft\n')
 
+    def provide_fallback(self, feature, key=None) -> None:
+        if key is None:
+            key = feature
+        if self.fallback_stylesheet:
+            return  # provided by the included style sheet
+        self.fallbacks[key] = getattr(PreambleCmds, feature)
+
     def duclass_open(self, node) -> None:
         """Open a group and insert declarations for class values."""
         if not isinstance(node.parent, nodes.compound):
@@ -1607,8 +1614,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                   and cls in Writer.table_style_values + ['colwidths-given']):
                 pass
             else:
-                if not self.fallback_stylesheet:
-                    self.fallbacks['DUclass'] = PreambleCmds.duclass
+                self.provide_fallback('duclass', 'DUclass')
                 self.out.append('\\begin{DUclass}{%s}\n' % cls)
 
     def duclass_close(self, node) -> None:
@@ -1622,8 +1628,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                   and cls in Writer.table_style_values + ['colwidths-given']):
                 pass
             else:
-                if not self.fallback_stylesheet:
-                    self.fallbacks['DUclass'] = PreambleCmds.duclass
+                self.provide_fallback('duclass', 'DUclass')
                 self.out.append('\\end{DUclass}\n')
 
     def push_output_collector(self, new_out: list) -> None:
@@ -1699,10 +1704,9 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                 self.fallbacks['error'] = PreambleCmds.error_legacy
             self.out.append('\n\\DUadmonition[%s]{'%','.join(node['classes']))
             return
-        if not self.fallback_stylesheet:
-            self.fallbacks['admonition'] = PreambleCmds.admonition
-        if 'error' in node['classes'] and not self.fallback_stylesheet:
-            self.fallbacks['error'] = PreambleCmds.error
+        self.provide_fallback('admonition')
+        if 'error' in node['classes']:
+            self.provide_fallback('error')
         self.duclass_open(node)
         self.out.append('\\begin{DUadmonition}')
 
@@ -1775,8 +1779,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.out.append('}\n')
 
     def visit_title_reference(self, node) -> None:
-        if not self.fallback_stylesheet:
-            self.fallbacks['titlereference'] = PreambleCmds.titlereference
+        self.provide_fallback('titlereference')
         self.out.append(r'\DUroletitlereference{')
         self.visit_inline(node)
 
@@ -1939,9 +1942,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         if self.docinfo:
             # tabularx: automatic width of columns, no page breaks allowed.
             self.requirements['tabularx'] = r'\usepackage{tabularx}'
-            if not self.fallback_stylesheet:
-                self.fallbacks['_providelength'] = PreambleCmds.providelength
-                self.fallbacks['docinfo'] = PreambleCmds.docinfo
+            self.provide_fallback('providelength', '_providelength')
+            self.provide_fallback('docinfo')
             #
             self.docinfo.insert(0, '\n% Docinfo\n'
                                 '\\begin{center}\n'
@@ -2272,8 +2274,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def visit_field_list(self, node) -> None:
         self.duclass_open(node)
         if self.out is not self.docinfo:
-            if not self.fallback_stylesheet:
-                self.fallbacks['fieldlist'] = PreambleCmds.fieldlist
+            self.provide_fallback('fieldlist')
             self.out.append('\\begin{DUfieldlist}')
 
     def depart_field_list(self, node) -> None:
@@ -2329,8 +2330,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         except IndexError:
             backref = node['ids'][0]  # no backref, use self-ref instead
         if self.docutils_footnotes:
-            if not self.fallback_stylesheet:
-                self.fallbacks['footnotes'] = PreambleCmds.footnotes
+            self.provide_fallback('footnotes')
             num = node[0].astext()
             if self.settings.footnote_references == 'brackets':
                 num = '[%s]' % num
@@ -2368,8 +2368,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.out.append('\\hyperlink{%s}{[' % href)
             self.context.append(']}')
         else:
-            if not self.fallback_stylesheet:
-                self.fallbacks['footnotes'] = PreambleCmds.footnotes
+            self.provide_fallback('footnotes')
             self.out.append(r'\DUfootnotemark{%s}{%s}{' %
                             (node['ids'][0], href))
             self.context.append('}')
@@ -2437,9 +2436,9 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                       base_node=node)
         elif unit == 'ch':
             self.fallbacks['ch'] = PreambleCmds.ch
-        elif not self.fallback_stylesheet:
-            self.fallbacks['_providelength'] = PreambleCmds.providelength
-            self.fallbacks[unit] = getattr(PreambleCmds, unit)
+        else:
+            self.provide_fallback('providelength', '_providelength')
+            self.provide_fallback(unit)
         return f'{value}\\DU{unit}dimen'
 
     def visit_image(self, node) -> None:
@@ -2526,16 +2525,14 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                     self.babel.otherlanguages[language] = True
                     self.out.append(r'\foreignlanguage{%s}{' % language)
             else:
-                if not self.fallback_stylesheet:
-                    self.fallbacks['inline'] = PreambleCmds.inline
+                self.provide_fallback('inline')
                 self.out.append(r'\DUrole{%s}{' % cls)
 
     def depart_inline(self, node) -> None:
         self.out.append('}' * len(node['classes']))
 
     def visit_legend(self, node) -> None:
-        if not self.fallback_stylesheet:
-            self.fallbacks['legend'] = PreambleCmds.legend
+        self.provide_fallback('legend')
         self.out.append('\\begin{DUlegend}')
 
     def depart_legend(self, node) -> None:
@@ -2548,9 +2545,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.out.append('\n')
 
     def visit_line_block(self, node) -> None:
-        if not self.fallback_stylesheet:
-            self.fallbacks['_providelength'] = PreambleCmds.providelength
-            self.fallbacks['lineblock'] = PreambleCmds.lineblock
+        self.provide_fallback('providelength', '_providelength')
+        self.provide_fallback('lineblock')
         self.set_align_from_classes(node)
         if isinstance(node.parent, nodes.line_block):
             self.out.append('\\item[]\n'
@@ -2576,8 +2572,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         if ('code' in node['classes']
             and self.settings.syntax_highlight != 'none'):
             self.requirements['color'] = PreambleCmds.color
-            if not self.fallback_stylesheet:
-                self.fallbacks['code'] = PreambleCmds.highlight_rules
+            self.provide_fallback('highlight_rules', 'code')
         self.out.append('\\texttt{')
         self.visit_inline(node)
 
@@ -2639,8 +2634,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             and 'code' in node['classes']
             and self.settings.syntax_highlight != 'none'):
             self.requirements['color'] = PreambleCmds.color
-            if not self.fallback_stylesheet:
-                self.fallbacks['code'] = PreambleCmds.highlight_rules
+            self.provide_fallback('highlight_rules', 'code')
         # Wrap?
         if _in_table and _use_env and not _autowidth_table:
             # Wrap in minipage to prevent extra vertical space
@@ -2736,8 +2730,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def visit_math_block(self, node) -> None:
         self.requirements['amsmath'] = r'\usepackage{amsmath}'
         for cls in node['classes']:
-            if not self.fallback_stylesheet:
-                self.fallbacks['inline'] = PreambleCmds.inline
+            self.provide_fallback('inline')
             self.out.append(r'\DUrole{%s}{' % cls)
         math_env = pick_math_environment(node.astext())
         labels = self.ids_to_labels(node, set_anchor=False, newline=True)
@@ -2778,9 +2771,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.out.append('] ')
 
     def visit_option_list(self, node) -> None:
-        if not self.fallback_stylesheet:
-            self.fallbacks['_providelength'] = PreambleCmds.providelength
-            self.fallbacks['optionlist'] = PreambleCmds.optionlist
+        self.provide_fallback('providelength', '_providelength')
+        self.provide_fallback('optionlist')
         self.duclass_open(node)
         self.out.append('\\begin{DUoptionlist}\n')
 
@@ -2921,8 +2913,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.depart_docinfo_item(node)
 
     def visit_rubric(self, node) -> None:
-        if not self.fallback_stylesheet:
-            self.fallbacks['rubric'] = PreambleCmds.rubric
+        self.provide_fallback('rubric')
         # class wrapper would interfere with ``\section*"`` type commands
         # (spacing/indent of first paragraph)
         self.out.append('\n\\DUrubric{')
@@ -2972,8 +2963,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def visit_sidebar(self, node) -> None:
         self.duclass_open(node)
         self.requirements['color'] = PreambleCmds.color
-        if not self.fallback_stylesheet:
-            self.fallbacks['sidebar'] = PreambleCmds.sidebar
+        self.provide_fallback('sidebar')
         self.out.append('\\DUsidebar{')
 
     def depart_sidebar(self, node) -> None:
@@ -3017,8 +3007,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def visit_subtitle(self, node) -> None:
         if isinstance(node.parent, nodes.document):
             self.push_output_collector(self.subtitle)
-            if not self.fallback_stylesheet:
-                self.fallbacks['documentsubtitle'] = PreambleCmds.documentsubtitle  # noqa:E501
+            self.provide_fallback('documentsubtitle')
             protect = (self.settings.documentclass == 'memoir')
             self.subtitle_labels += self.ids_to_labels(node, set_anchor=False,
                                                        protect=protect)
@@ -3027,8 +3016,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.out.append(r'\%s*{' %
                             self.d_class.section(self.section_level + 1))
         else:
-            if not self.fallback_stylesheet:
-                self.fallbacks['subtitle'] = PreambleCmds.subtitle
+            self.provide_fallback('subtitle')
             self.out.append('\n\\DUsubtitle{')
 
     def depart_subtitle(self, node) -> None:
@@ -3039,8 +3027,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def visit_system_message(self, node) -> None:
         self.requirements['color'] = PreambleCmds.color
-        if not self.fallback_stylesheet:
-            self.fallbacks['title'] = PreambleCmds.title
+        self.provide_fallback('title')
         if self.settings.legacy_class_functions:
             self.fallbacks['title'] = PreambleCmds.title_legacy
         node['classes'] = ['system-message']
@@ -3206,8 +3193,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                 self.fallbacks['title'] = PreambleCmds.title_legacy
                 self.out.append('\n\\DUtitle[%s]{' % ','.join(classes))
             else:
-                if not self.fallback_stylesheet:
-                    self.fallbacks['title'] = PreambleCmds.title
+                self.provide_fallback('title')
                 self.out.append('\n\\DUtitle{')
             self.context.append('}\n')
         # Table caption
@@ -3225,9 +3211,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                     self.fallbacks['title'] = PreambleCmds.title_legacy
                     section_name += '[section%s]' % RomanNumeral(level)
                 else:
-                    if not self.fallback_stylesheet:
-                        self.fallbacks['title'] = PreambleCmds.title
-                        self.fallbacks['DUclass'] = PreambleCmds.duclass
+                    self.provide_fallback('title')
+                    self.provide_fallback('duclass', 'DUclass')
                     self.out.append('\\begin{DUclass}{section%s}\n'
                                     % RomanNumeral(level))
 
@@ -3356,14 +3341,12 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         else:
             # special topics:
             if 'abstract' in node['classes']:
-                if not self.fallback_stylesheet:
-                    self.fallbacks['abstract'] = PreambleCmds.abstract
+                self.provide_fallback('abstract')
                 if self.settings.legacy_class_functions:
                     self.fallbacks['abstract'] = PreambleCmds.abstract_legacy
                 self.push_output_collector(self.abstract)
             elif 'dedication' in node['classes']:
-                if not self.fallback_stylesheet:
-                    self.fallbacks['dedication'] = PreambleCmds.dedication
+                self.provide_fallback('dedication')
                 self.push_output_collector(self.dedication)
             else:
                 node['classes'].insert(0, 'topic')
@@ -3382,8 +3365,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.pop_output_collector()
 
     def visit_transition(self, node) -> None:
-        if not self.fallback_stylesheet:
-            self.fallbacks['transition'] = PreambleCmds.transition
+        self.provide_fallback('transition')
         self.out.append('\n%' + '_' * 75 + '\n')
         self.out.append('\\DUtransition\n')
 
