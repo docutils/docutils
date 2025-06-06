@@ -32,6 +32,7 @@ Release 0.22rc3 (unpublished)
   - Replace `Writer.bibtex_reference_resolver()` with a transform.
   - `LaTeXTranslator.visit_inline()` now inserts labels for the
     node's IDs.
+  - Disable "hyperref" footnote handling to avoid "empty anchor" warnings.
 
 * docutils/writers/manpage.py
 

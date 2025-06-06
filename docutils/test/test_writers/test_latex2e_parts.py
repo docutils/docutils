@@ -61,7 +61,8 @@ DEFAULT_PARTS = {
     'pdfsetup': r"""% hyperlinks:
 \ifdefined\hypersetup
 \else
-  \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+  \usepackage[hyperfootnotes=false,
+              colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
   \usepackage{bookmark}
   \urlstyle{same} % normal text font (alternatives: tt, rm, sf)
 \fi
