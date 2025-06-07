@@ -150,6 +150,187 @@ r"""
 \caption{The larch}
 \end{figure}
 """],
+# tables
+# ======
+# borderless table
+["""\
+.. table::
+   :class: borderless
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+   |  3  |  4  |
+   +-----+-----+
+""",
+"""
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{p{0.075\\DUtablewidth}p{0.075\\DUtablewidth}}
+
+1
+ & \n\
+2
+ \\\\
+
+3
+ & \n\
+4
+ \\\\
+\\end{longtable*}
+"""],
+# collumn widths determined by LaTeX (via class argument)
+["""\
+.. table::
+   :class: colwidths-auto
+
+   +-----+-+
+   |  1  |2|
+   +-----+-+
+""",
+r"""
+\begin{longtable*}{|l|l|}
+\hline
+1 & 2 \\
+\hline
+\end{longtable*}
+"""],
+# collumn widths determined by LaTeX (via "width" option)
+["""\
+.. table::
+   :widths: auto
+
+   +-----+-+
+   |  1  |2|
+   +-----+-+
+""",
+r"""
+\begin{longtable*}{|l|l|}
+\hline
+1 & 2 \\
+\hline
+\end{longtable*}
+"""],
+# collumn widths specified via "width" option
+["""\
+.. table::
+   :widths: 15, 30
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+""",
+"""
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{|p{0.191\\DUtablewidth}|p{0.365\\DUtablewidth}|}
+\\hline
+
+1
+ & \n\
+2
+ \\\\
+\\hline
+\\end{longtable*}
+"""],
+# table alignment
+["""\
+.. table::
+   :align: right
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+""",
+"""
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}[r]{|p{0.075\\DUtablewidth}|p{0.075\\DUtablewidth}|}
+\\hline
+
+1
+ & \n\
+2
+ \\\\
+\\hline
+\\end{longtable*}
+"""],
+# table with title row and empty cell
+["""\
+===== ======
+Title
+===== ======
+entry value1
+===== ======
+""",
+"""
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{|p{0.075\\DUtablewidth}|p{0.086\\DUtablewidth}|}
+\\hline
+\\textbf{%
+Title
+} &  \\\\
+\\hline
+\\endfirsthead
+\\hline
+\\textbf{%
+Title
+} &  \\\\
+\\hline
+\\endhead
+\\multicolumn{2}{p{0.16\\DUtablewidth}}{\\raggedleft\\ldots continued on next page}\\\\
+\\endfoot
+\\endlastfoot
+
+entry
+ & \n\
+value1
+ \\\\
+\\hline
+\\end{longtable*}
+"""],
+# table with emtpy rowspanning cell
+["""\
++----+----+
+| c3 | c4 |
++----+----+
+|         |
++---------+
+""",
+"""
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{|p{0.063\\DUtablewidth}|p{0.063\\DUtablewidth}|}
+\\hline
+
+c3
+ & \n\
+c4
+ \\\\
+\\hline
+\\multicolumn{2}{|p{0.13\\DUtablewidth}|}{} \\\\
+\\hline
+\\end{longtable*}
+"""],
+# table with IDs and custom + special class values
+["""\
+.. class:: cls1
+.. _label1:
+.. table::
+   :name: label2
+   :class: cls2 borderless
+   :widths: auto
+
+   = =
+   Y N
+   = =
+""",
+r"""
+\begin{DUclass}{cls2}
+\begin{DUclass}{cls1}
+\phantomsection\label{label2}\label{label1}
+\begin{longtable*}{ll}
+Y & N \\
+\end{longtable*}
+\end{DUclass}
+\end{DUclass}
+"""],
 ])
 
 samples['latex_sectnum'] = ({'sectnum_xform': False}, [
@@ -218,6 +399,65 @@ not.
 important.
 }
 \end{thebibliography}
+"""],
+])
+
+
+samples['colwidths_auto'] = ({'table_style': ['colwidths-auto']}, [
+# Requires longtable, etc. and setup --- see "test_latex2e_parts".
+# borderless table with auto-width columns
+["""\
+.. table::
+   :class: borderless
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+   |  3  |  4  |
+   +-----+-----+
+""",
+r"""
+\begin{longtable*}{ll}
+1 & 2 \\
+3 & 4 \\
+\end{longtable*}
+"""],
+# booktabs style table with auto-width columns
+["""\
+.. table::
+   :class: booktabs
+
+   +-----+-+
+   |  1  |2|
+   +-----+-+
+""",
+r"""
+\begin{longtable*}{ll}
+\toprule
+1 & 2 \\
+\bottomrule
+\end{longtable*}
+"""],
+# given width overrides "colwidth-auto"
+["""\
+.. table::
+   :widths: 15, 30
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+""",
+"""
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{|p{0.191\\DUtablewidth}|p{0.365\\DUtablewidth}|}
+\\hline
+
+1
+ & \n\
+2
+ \\\\
+\\hline
+\\end{longtable*}
 """],
 ])
 
