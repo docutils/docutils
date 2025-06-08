@@ -3029,24 +3029,25 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         if self.settings.legacy_class_functions:
             self.fallbacks['title'] = PreambleCmds.title_legacy
         node['classes'] = ['system-message']
+        self.out.append('\n')
+        self.append_hypertargets(node)
         self.visit_admonition(node)
         if self.settings.legacy_class_functions:
-            self.out.append('\n\\DUtitle[system-message]{system-message\n')
+            self.out.append('\n\\DUtitle[system-message]'
+                            '{\\color{red}System Message}\n')
         else:
-            self.out.append('\n\\DUtitle{system-message\n')
-        self.append_hypertargets(node)
+            self.out.append('\n\\DUtitle{\\color{red}System Message}\n')
         try:
-            line = ', line~%s' % node['line']
+            line = f", line~{node['line']}"
         except KeyError:
             line = ''
-        self.out.append('}\n\n{\\color{red}%s/%s} in \\texttt{%s}%s\n' %
-                        (node['type'], node['level'],
-                         self.encode(node['source']), line))
+        self.out.append(f"\n{node['type']}/{node['level']} in "
+                        f"\\texttt{{{self.encode(node['source'])}}}{line}\n")
         if len(node['backrefs']) == 1:
-            self.out.append('\n\\hyperlink{%s}{' % node['backrefs'][0])
-            self.context.append('}')
+            self.out.append(f"\n\\hyperlink{{{node['backrefs'][0]}}}{{")
+            self.context.append('}\n')
         else:
-            backrefs = ['\\hyperlink{%s}{%d}' % (href, i+1)
+            backrefs = [f'\\hyperlink{{{href}}}{{{i+1}}}\n'
                         for (i, href) in enumerate(node['backrefs'])]
             self.context.append('backrefs: ' + ' '.join(backrefs))
 
