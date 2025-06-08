@@ -1560,8 +1560,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                                    id for id in node['ids']))
 
     def ids_to_labels(self, node, set_anchor=True, protect=False,
-                      newline=False):
-        """Return list of label definitions for all ids of `node`
+                      newline=False) -> list[str]:
+        """Return label definitions for all ids of `node`.
 
         If `set_anchor` is True, an anchor is set with \\phantomsection.
         If `protect` is True, the \\label cmd is made robust.
@@ -2022,8 +2022,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def visit_document(self, node) -> None:
         # titled document?
-        if (self.use_latex_docinfo or len(node)
-            and isinstance(node[0], nodes.title)):
+        if self.use_latex_docinfo or isinstance(node.next_node(), nodes.title):
             protect = (self.settings.documentclass == 'memoir')
             self.title_labels += self.ids_to_labels(node, set_anchor=False,
                                                     protect=protect)
@@ -2551,7 +2550,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         if isinstance(node.parent, nodes.line_block):
             self.out.append('\\item[]\n'
                             '\\begin{DUlineblock}{\\DUlineblockindent}\n')
-            # nested line-blocks cannot be given class arguments
+            # In rST, nested line-blocks cannot be given class arguments
         else:
             self.duclass_open(node)
             self.out.append('\\begin{DUlineblock}{0em}\n')
@@ -2733,11 +2732,10 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.provide_fallback('inline')
             self.out.append(r'\DUrole{%s}{' % cls)
         math_env = pick_math_environment(node.astext())
-        labels = self.ids_to_labels(node, set_anchor=False, newline=True)
         self.out += [f'%\n\\begin{{{math_env}}}\n',
                      node.astext().translate(unichar2tex.uni2tex_table),
                      '\n',
-                     *labels,
+                     *self.ids_to_labels(node, set_anchor=False, newline=True),
                      f'\\end{{{math_env}}}']
         self.out.append('}' * len(node['classes']))
         raise nodes.SkipNode  # content already processed
@@ -3079,9 +3077,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.push_output_collector([])
 
     def depart_table(self, node) -> None:
-        # wrap content in the right environment:
-        content = self.out
-        self.pop_output_collector()
+        # complete and write the table
+        content = self.pop_output_collector()
         try:
             width = self.to_latex_length(node['width'], node)
         except KeyError:
