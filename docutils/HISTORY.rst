@@ -33,6 +33,7 @@ Release 0.22rc3 (unpublished)
   - `LaTeXTranslator.visit_inline()` now inserts labels for the
     node's IDs.
   - Disable "hyperref" footnote handling to avoid "empty anchor" warnings.
+  - Re-style system messages.
 
 * docutils/writers/manpage.py
 
