@@ -50,6 +50,8 @@
 
        · bullet list
 
+         second item is an inline target.
+
        · second item, with hyperlink target.
 
        See the Python <https://www.python.org> home page for info.
