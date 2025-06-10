@@ -34,6 +34,7 @@ Release 0.22rc3 (unpublished)
     node's IDs.
   - Disable "hyperref" footnote handling to avoid "empty anchor" warnings.
   - Re-style system messages.
+  - Don't merge paragraphs if there is a target between them.
 
 * docutils/writers/manpage.py
 
