@@ -1112,6 +1112,7 @@ class Translator(nodes.NodeVisitor):
                 self.body.append(r"\%%<%s>"
                                  % insert_URI_breakpoints(node.astext()))
                 raise nodes.SkipNode
+        # TODO markup the target
         # elif 'refid' in node:
         #     internal cross references are ignored (just print the text)
 
@@ -1142,6 +1143,7 @@ class Translator(nodes.NodeVisitor):
                 # if content is uri skip content
                 raise nodes.SkipNode
         else:
+            # TODO markup the target
             self.context.append('')
 
     def _depart_reference_with_macro(self, node) -> None:
