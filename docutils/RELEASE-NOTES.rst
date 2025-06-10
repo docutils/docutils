@@ -241,13 +241,18 @@ Misc
    __ https://packages.debian.org/source/trixie/python-docutils
 
 
-Release 0.22rc3 (unpublished)
-=============================
+Release 0.22rc3 (2025-06-10)
+============================
 
 New objects
   `transforms.references.`CitationReferences`
      Mark citation_references as resolved if the backend (LaTeX)
      uses a BibTeX database.
+
+Output changes
+
+  manpage:
+     Do not drop text of internal targets.
 
 Release 0.22rc2 (2025-05-22)
 ============================

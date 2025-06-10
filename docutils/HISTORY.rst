@@ -14,8 +14,8 @@
 .. contents::
 
 
-Release 0.22rc3 (unpublished)
-=============================
+Release 0.22rc3 (2025-06-10)
+============================
 
 * docutils/parsers/rst/states.py
 
