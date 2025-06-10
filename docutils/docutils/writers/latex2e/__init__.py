@@ -3111,7 +3111,9 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             or 'refname' in node):  # unresolved internal link
             ## self.out.append('%% %s\n' % node)   # for debugging
             return
-        self.out.append('%\n')
+        if self.is_inline(node):
+            self.out.append('%')
+        self.out.append('\n')
         self.visit_inline(node)
 
     def depart_target(self, node) -> None:

@@ -308,6 +308,25 @@ c4
 \\hline
 \\end{longtable*}
 """],
+# Test handling of IDs and custom class values
+# --------------------------------------------
+# targets with ID
+["""\
+A paragraph with _`inline target`.
+
+.. _block target:
+
+.. class:: custom paragraph
+
+Next paragraph.
+""",
+r"""
+A paragraph with %
+\phantomsection\label{inline-target}inline target.
+
+\phantomsection\label{block-target}
+\DUrole{custom}{\DUrole{paragraph}{Next paragraph.}}
+"""],
 # table with IDs and custom + special class values
 ["""\
 .. class:: cls1
