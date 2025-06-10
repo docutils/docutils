@@ -79,7 +79,18 @@ Test, package and release this checkout.
 
   check file sizes: the 0.21.2 wheel was 574K the sdist 2,2M.
 
-* TODO: Test the wheel in local environment.
+* Test the wheel in local environment
+
+  From checkout::
+
+    cd ..
+    python3 -m venv du3
+    cd du3
+    . bin/activate
+    pip install <checkout-dir>/dist/... .whl
+    # CAUTION copy test from modified not yet committed source tree.
+    cp -Lr ../docutils-code/docutils/test .
+    python test/alltests.py
 
   Uploads to pypi/test.pypi can not be overwritten, require a new version.
 
