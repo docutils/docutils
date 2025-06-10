@@ -55,7 +55,7 @@ The hyperlink target above points to this paragraph.
 
 * bullet list
 
-  .. _`second item`:
+  _`second item` is an inline target.
 
 * second item, with hyperlink target.
 

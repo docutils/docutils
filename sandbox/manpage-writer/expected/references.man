@@ -97,6 +97,8 @@ The hyperlink target above points to this paragraph.
 .INDENT 0.0
 .IP \(bu 2
 bullet list
+.sp
+second item is an inline target.
 .IP \(bu 2
 second item, with hyperlink target.
 .UNINDENT
