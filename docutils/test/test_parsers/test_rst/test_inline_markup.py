@@ -1155,31 +1155,36 @@ Escape other char in URIs:
             anonymouscall
 """],
 ["""\
-Report duplicate refnames. First use: _`named.txt` vs. _`anonymous.html`.
+Report duplicate refname.
 
-Embedded targets: `<named.txt>`_, `<anonymous.html>`__
+Explicit targets: _`file.txt`, _`file.html`.
+
+Embedded URI: named `<file.txt>`_ and anonymous `<file.html>`__.
 """,
 """\
 <document source="test data">
     <paragraph>
-        Report duplicate refnames. First use: \n\
-        <target dupnames="named.txt" ids="named-txt">
-            named.txt
-         vs. \n\
-        <target ids="anonymous-html" names="anonymous.html">
-            anonymous.html
-        .
-    <system_message level="2" line="4" source="test data" type="WARNING">
-        <paragraph>
-            Duplicate explicit target name: "named.txt".
+        Report duplicate refname.
     <paragraph>
-        Embedded targets: \n\
-        <reference name="named.txt" refuri="named.txt">
-            named.txt
-        <target dupnames="named.txt" ids="named-txt-1" refuri="named.txt">
+        Explicit targets: \n\
+        <target dupnames="file.txt" ids="file-txt">
+            file.txt
         , \n\
-        <reference name="anonymous.html" refuri="anonymous.html">
-            anonymous.html
+        <target ids="file-html" names="file.html">
+            file.html
+        .
+    <system_message level="2" line="6" source="test data" type="WARNING">
+        <paragraph>
+            Duplicate explicit target name: "file.txt".
+    <paragraph>
+        Embedded URI: named \n\
+        <reference name="file.txt" refuri="file.txt">
+            file.txt
+        <target dupnames="file.txt" ids="file-txt-1" refuri="file.txt">
+         and anonymous \n\
+        <reference name="file.html" refuri="file.html">
+            file.html
+        .
 """],
 ]
 
@@ -1275,31 +1280,44 @@ long  phrase_>`__
             anonymous reference
 """],
 ["""\
-Report duplicate refnames: First use: _`named` vs. _`anonymous`.
+Duplicate refnames in references with embedded alias.
 
-Embedded alias: `named <anonymous_>`_, `ano <anonymous_>`__
+Explicit targets: _`tg1` and _`tg2`.
+
+References with embedded alias: `link <tg1_>`_ and `link <tg2_>`_.
+
+No clash with anonymous reference `link <tg1_>`__.
 """,
 """\
 <document source="test data">
     <paragraph>
-        Report duplicate refnames: First use: \n\
-        <target dupnames="named" ids="named">
-            named
-         vs. \n\
-        <target ids="anonymous" names="anonymous">
-            anonymous
-        .
-    <system_message backrefs="named-1" level="2" line="4" source="test data" type="WARNING">
-        <paragraph>
-            Duplicate explicit target name: "named".
+        Duplicate refnames in references with embedded alias.
     <paragraph>
-        Embedded alias: \n\
-        <reference name="named" refname="anonymous">
-            named
-        <target dupnames="named" ids="named-1" refname="anonymous">
-        , \n\
-        <reference name="ano" refname="anonymous">
-            ano
+        Explicit targets: \n\
+        <target ids="tg1" names="tg1">
+            tg1
+         and \n\
+        <target ids="tg2" names="tg2">
+            tg2
+        .
+    <system_message backrefs="link-1" level="2" line="6" source="test data" type="WARNING">
+        <paragraph>
+            Duplicate explicit target name: "link".
+    <paragraph>
+        References with embedded alias: \n\
+        <reference name="link" refname="tg1">
+            link
+        <target dupnames="link" ids="link" refname="tg1">
+         and \n\
+        <reference name="link" refname="tg2">
+            link
+        <target dupnames="link" ids="link-1" refname="tg2">
+        .
+    <paragraph>
+        No clash with anonymous reference \n\
+        <reference name="link" refname="tg1">
+            link
+        .
 """],
 ]
 

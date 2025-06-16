@@ -222,6 +222,33 @@ Duplicate external targets (same URIs):
     <target dupnames="target" ids="target-1" refuri="first">
 """],
 ["""\
+Duplicate external targets (same URIs):
+
+See the `example <example.rst>`_
+
+See the example_
+
+.. _example: example.rst
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Duplicate external targets (same URIs):
+    <paragraph>
+        See the \n\
+        <reference name="example" refuri="example.rst">
+            example
+        <target ids="example" names="example" refuri="example.rst">
+    <paragraph>
+        See the \n\
+        <reference name="example" refname="example">
+            example
+    <system_message level="1" line="7" source="test data" type="INFO">
+        <paragraph>
+            Duplicate explicit target name: "example".
+    <target dupnames="example" ids="example-1" refuri="example.rst">
+"""],
+["""\
 Duplicate implicit targets.
 
 Title
