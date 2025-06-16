@@ -1169,7 +1169,7 @@ Embedded targets: `<named.txt>`_, `<anonymous.html>`__
         <target ids="anonymous-html" names="anonymous.html">
             anonymous.html
         .
-    <system_message backrefs="named-txt-1" level="2" line="4" source="test data" type="WARNING">
+    <system_message level="2" line="4" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "named.txt".
     <paragraph>

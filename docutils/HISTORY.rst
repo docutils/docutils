@@ -17,6 +17,11 @@
 Release 0.22rc4 (unpublished)
 =============================
 
+* docutils/nodes.py
+
+  Don't include a "backlink" reference in system messages, if the
+  referenced element is an external target (not visible in the output).
+
 * docutils/parsers/rst/directives/references.py
 
   Remove "name" from `TargetNotes.option_spec`.

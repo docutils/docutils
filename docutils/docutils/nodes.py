@@ -1922,52 +1922,56 @@ class document(Root, Element):
                               msgnode: Element,
                               explicit: bool,
                               ) -> None:
-        old_id = self.nameids[name]
+        old_id = self.nameids[name]  # None if name is only dupname
         old_explicit = self.nametypes[name]
         old_node = self.ids.get(old_id)
+        level = 0  # system message level: 1-info, 2-warning
+
         self.nametypes[name] = old_explicit or explicit
+
         if explicit:
             if old_explicit:
                 level = 2
+                s = f'Duplicate explicit target name: "{name}".'
+                dupname(node, name)
                 if old_id is not None:
-                    if 'refuri' in node:
-                        refuri = node['refuri']
-                        if (old_node['names']
-                            and 'refuri' in old_node
-                            and old_node['refuri'] == refuri):
-                            level = 1  # just inform if refuri is identical
-                    if level > 1:
+                    if ('refuri' in node and 'refuri' in old_node
+                            and node['refuri'] == old_node['refuri']):
+                        level = 1  # keep old target, just inform
+                    else:
                         dupname(old_node, name)
                         self.nameids[name] = None
-                msg = self.reporter.system_message(
-                    level, 'Duplicate explicit target name: "%s".' % name,
-                    backrefs=[id], base_node=node)
-                if msgnode is not None:
-                    # append <system_message> if valid at this place
-                    msgnode += msg
-                    try:
-                        msgnode.validate(recursive=False)
-                    except ValidationError:
-                        msgnode.pop()
-                        msg.parent = None
-                dupname(node, name)
-            else:  # new explicit, old implicit -> silently overwrite
+            else:  # new explicit, old implicit -> override
                 self.nameids[name] = id
                 if old_id is not None:
+                    level = 1
+                    s = f'Target name overrides implicit target name "{name}".'
                     dupname(old_node, name)
         else:  # new name is implicit
-            if old_id is not None and not old_explicit:
-                self.nameids[name] = None
-                dupname(old_node, name)
+            level = 1
+            s = f'Duplicate implicit target name: "{name}".'
             dupname(node, name)
-        if not explicit or (not old_explicit and old_id is not None):
-            if explicit:
-                s = f'Target name overrides implicit target name "{name}".'
-            else:
-                s = f'Duplicate implicit target name: "{name}".'
-            msg = self.reporter.info(s, backrefs=[id], base_node=node)
+            if old_id is not None and not old_explicit:
+                dupname(old_node, name)
+                self.nameids[name] = None
+
+        if level:
+            backrefs = [id]
+            # don't add backref id for empty targets (not shown in output)
+            if isinstance(node, target) and 'refuri' in node:
+                backrefs = []
+            msg = self.reporter.system_message(level, s,
+                                               backrefs=backrefs,
+                                               base_node=node)
+            # try appending near to the problem:
             if msgnode is not None:
                 msgnode += msg
+                try:
+                    msgnode.validate(recursive=False)
+                except ValidationError:
+                    # detach -> will be handled by `Messages` transform
+                    msgnode.pop()
+                    msg.parent = None
 
     def has_name(self, name: str) -> bool:
         return name in self.nameids

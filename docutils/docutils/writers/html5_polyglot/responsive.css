@@ -293,6 +293,7 @@ span:target + h5, span:target + h6,
 dt:target, span:target, p:target,
 .contents :target,
 .contents:target > .topic-title,
+aside.system-message:target,
 [role="doc-biblioentry"]:target,
 [role="doc-biblioref"]:target,
 [role="note"]:target, /* Docutils 0.18 and 0.19 */

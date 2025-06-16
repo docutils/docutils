@@ -764,7 +764,7 @@ Duplicate external target_'s (different URIs):
             target_
         's (different URIs):
     <target dupnames="target" ids="target" refuri="first">
-    <system_message backrefs="target-1" level="2" line="5" source="test data" type="WARNING">
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "target".
     <target dupnames="target" ids="target-1" refuri="second">
@@ -784,7 +784,7 @@ Duplicate external targets (different URIs) without reference:
     <paragraph>
         Duplicate external targets (different URIs) without reference:
     <target dupnames="target" ids="target" refuri="first">
-    <system_message backrefs="target-1" level="2" line="5" source="test data" type="WARNING">
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "target".
     <target dupnames="target" ids="target-1" refuri="second">

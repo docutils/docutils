@@ -199,7 +199,7 @@ Duplicate external targets (different URIs):
     <paragraph>
         Duplicate external targets (different URIs):
     <target dupnames="target" ids="target" refuri="first">
-    <system_message backrefs="target-1" level="2" line="5" source="test data" type="WARNING">
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "target".
     <target dupnames="target" ids="target-1" refuri="second">
@@ -216,7 +216,7 @@ Duplicate external targets (same URIs):
     <paragraph>
         Duplicate external targets (same URIs):
     <target ids="target" names="target" refuri="first">
-    <system_message backrefs="target-1" level="1" line="5" source="test data" type="INFO">
+    <system_message level="1" line="5" source="test data" type="INFO">
         <paragraph>
             Duplicate explicit target name: "target".
     <target dupnames="target" ids="target-1" refuri="first">
@@ -416,7 +416,7 @@ Explicit internal target.
         <target dupnames="target" ids="target-3">
         <paragraph>
             Explicit internal target.
-        <system_message backrefs="target-4" level="2" line="16" source="test data" type="WARNING">
+        <system_message level="2" line="16" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "target".
         <target dupnames="target" ids="target-4" refuri="Explicit_external_target">
