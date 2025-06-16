@@ -54,6 +54,7 @@ directives = {
       'unicode': 'unicode',
       'date': 'date',
       'class': 'class',
+      'rst-class': 'class',  # Sphinx compatibility alias
       'role': 'role',
       'default-role': 'default-role',
       'title': 'title',

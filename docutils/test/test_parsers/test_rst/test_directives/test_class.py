@@ -23,6 +23,9 @@ from docutils.utils import new_document
 
 
 class ParserTestCase(unittest.TestCase):
+
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -64,6 +67,25 @@ totest['class'] = [
         The classes are applied to this paragraph.
     <paragraph classes="class1 class2">
         And this one.
+"""],
+["""\
+.. rst-class:: class1  class2
+..
+
+   The classes will be applied to this block quote.
+""",
+"""\
+<document source="test data">
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.misc.ClassAttribute
+             .details:
+               class: ['class1', 'class2']
+               directive: 'rst-class'
+    <comment xml:space="preserve">
+    <block_quote>
+        <paragraph>
+            The classes will be applied to this block quote.
 """],
 ]
 
