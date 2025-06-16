@@ -173,7 +173,7 @@ Removals
   in Docutils 1.0.  Use a transform_,
   see `transforms.references.CitationReferences` for an example.
 
-* Ignore `transforms.references.DanglingReferences` and
+* Don't call `transforms.references.DanglingReferences` and
   `transforms.references.DanglingReferencesVisitor` in Docutils 1.0;
   remove them in Docutils 2.0. [rationale__]
 
@@ -186,7 +186,7 @@ Removals
 * Remove the "rawsource" argument from `nodes.Text.__init__()`
   in Docutils 2.0.
 
-* Remove attributes `nodes.Element.known_attributes`,
+* Remove the internal attributes `nodes.Element.known_attributes`,
   `nodes.Element.basic_attributes`, and `nodes.Element.local_attributes`,
   in Docutils 2.0.
 
@@ -246,18 +246,20 @@ Release 0.22rc4 (unpublished)
 
 Nothing yet.
 
+
 Release 0.22rc3 (2025-06-10)
 ============================
 
 New objects
-  `transforms.references.`CitationReferences`
-     Mark citation_references as resolved if the backend (LaTeX)
+  `transforms.references.CitationReferences`
+     Mark citation_references as resolved if the backend
      uses a BibTeX database.
 
 Output changes
 
   manpage:
      Do not drop text of internal targets.
+
 
 Release 0.22rc2 (2025-05-22)
 ============================
@@ -303,12 +305,16 @@ Configuration changes
 
 Output changes
   LaTeX:
-     Don't wrap references with custom reference-label_ in a ``\hyperref``
+     Don't wrap references with custom reference_label_ in a ``\hyperref``
      command. The "hyperref" package generates hyperlinks for labels by
-     default, so there is no change in the PDF (except for "ref*").
+     default, so there is no change in the PDF
+     (except for the starred forms like ``reference_label = \ref*``).
 
-     Stop requiring "ifthen.sty". Replace use of
-     ``\ifthenelse{\isundefined...`` with the eTeX primitive ``\ifdefined``.
+     Stop requiring "ifthen.sty". Add "ifthen" to the stylesheet__ setting
+     or replace use of ``\ifthenelse{\isundefined...`` with the eTeX
+     primitive ``\ifdefined``.
+
+     __ docs/user/config.html#stylesheet-2
 
   HTML5:
      Unitless image_ size measures__ are written as <img> "width" and
@@ -320,7 +326,8 @@ Output changes
 
   manpage:
      Don't UPPERCASE section headings.
-     Handle hyperlink references (see text_references_).
+
+     Handle hyperlink references (see the text_references_ setting).
 
   null:
      The "null" writer output changed from None to the empty string.
@@ -1505,7 +1512,7 @@ Release 0.3.5 (2004-07-29)
     docs/user/config.html#old-format-configuration-files
 .. _output:
 .. _output_path: docs/user/config.html#output-path
-.. _reference-label: docs/user/config.html#reference-label
+.. _reference_label: docs/user/config.html#reference-label
 .. _root_prefix: docs/user/config.html#root-prefix
 .. _SmartQuotes: docs/user/config.html#smart-quotes
 .. _sources: docs/user/config.html#sources

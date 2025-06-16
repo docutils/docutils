@@ -610,7 +610,7 @@ is parsed and marked up as Python source code.
 
 The parsing can be turned off with the syntax_highlight_ configuration
 setting and command line option or by specifying the language as
-`class <class option>`_ option instead of directive argument.
+`class <class option_>`_ option instead of directive argument.
 This also avoids warnings when Pygments_ is not installed or the language
 is not in the `supported languages and markup formats`_.
 
@@ -1317,11 +1317,18 @@ Target Footnotes
 :Directive Options: `class <class option_>`_, name_
 :Directive Content: none
 
-The "target-notes" directive creates a footnote for each external
-target in the text, and corresponding footnote references after each
-reference.  For every explicit target (of the form, ``.. _target name:
-URL``) in the text, a footnote will be generated containing the
-visible URL as content.
+The "target-notes" directive generates a list of referenced URIs.
+This ensures the information is not lost in a hardcopy.
+
+For every explicit [#]_ `external hyperlink target`_ in the document,
+the "target-notes" directive inserts a `\<footnote>`_ showing the URL
+at the place of the directive and a `\<footnote_reference>`_ after each
+matching `hyperlink reference`_.
+
+The value of the `class option`_ is passed to the generated footnote
+references.
+
+.. [#] `Embedded URIs`_ like ```this <http://example.org>`_`` are skipped.
 
 
 Footnotes
@@ -1640,8 +1647,8 @@ The "include" directive recognizes the following options:
     where a negative value prevents expansion of hard tabs.
     Defaults to the tab_width_ configuration setting.
 
-With ``code`` or ``literal`` the common options `class <class option_>`_ and name_
-are recognized as well.
+With ``code`` or ``literal``, the common options `class <class option_>`_
+and name_ are recognized as well.
 
 Combining ``start-line``/``end-line`` and ``start-after``/``end-before``
 is possible.  The text markers will be searched in the specified lines
@@ -1748,13 +1755,13 @@ Class
                     elements.
 
 The "class" directive sets the `classes attribute`_ value on its content
-or on the first immediately following [#]_ non-comment element [#]_.
+or on the next visible [#]_ element. [#]_
 The directive argument consists of one or more space-separated class
 names. The names are transformed to conform to the regular expression
 ``[a-z](-?[a-z0-9]+)*`` (see `Identifier Normalization`_ below).
 
-.. tip:: For reStructuredText directives, it is recommended to use the
-   `class option`_ option instead of wrapping them in a "class" directive.
+.. tip:: For reStructuredText directives, the `class option`_ provides
+         a more compact markup alternative.
 
 Examples::
 
@@ -1789,38 +1796,36 @@ The text above is parsed and transformed into this doctree_ fragment::
         <paragraph classes="multiple">
             Second paragraph.
 
+Indented text after the directive is interpreted as content block.
+To set a classes attribute value on a `block quote`_, the
+"class" directive must be followed by a comment::
 
-.. [#] This is also true, if the class directive is "nested" at the end of
-   an indented text block, for example::
+   .. class:: special
+   ..
 
-       .. note:: the class values set in this directive-block do not apply to
-          the note but the next paragraph.
+       Special block quote.
 
-          .. class:: special
+results in this doctree_ fragment::
 
-       This is a paragraph with class value "special".
+    <comment xml:space="preserve">
+    <block_quote classes="special">
+        <paragraph>
+            Special block quote.
 
+.. [#] Elements that are not shown in the output (comments_,
+   `substitution definitions`_, `hyperlink targets`_, ...) as well as
+   "header_" and "footer_" directives are skipped.
+
+.. [#] This also works if the class directive is "nested" at the end of
+   an indented text block.
    This allows the "classification" of individual list items (except the
    first, as a preceding class directive applies to the list as a whole)::
 
        * bullet list
 
-         .. class:: classy item
+         .. class:: classy-item
 
        * second item, with class argument
-
-.. [#] To set a `classes attribute`_ value on a block quote, the
-   "class" directive must be followed by an empty comment::
-
-       .. class:: highlights
-       ..
-
-           Block quote text.
-
-   Without the empty comment, the indented text would be interpreted as the
-   "class" directive's content, and the classes would be applied to each
-   element (paragraph, in this case) individually, instead of to the block
-   quote as a whole.
 
 
 Identifier Normalization
@@ -1839,7 +1844,7 @@ and stripping
 * leading hyphens and number characters, and
 * trailing hyphens.
 
-For example ``"Rot.Gelb&Grün:+2008"`` becomes ``"rot-gelb-grun-2008"`` and
+For example ``"Rot.Gelb&Grün::2008+"`` becomes ``"rot-gelb-grun-2008"`` and
 ``"1000_Steps!"`` becomes ``"steps"``.
 
 .. topic:: Rationale:
@@ -2048,7 +2053,7 @@ Metadata
 :Directive Options: none
 :Directive Content: Must contain a flat `field list`_.
 
-The "meta" directive is used to specify metadata\ [#]_ to be stored
+The "meta" directive is used to specify metadata [#]_ to be stored
 in, e.g., `HTML meta elements`_ or as `ODT file properties`_. The
 LaTeX writer passes it to the ``pdfinfo`` option of the hyperref_
 package. If an output format does not support "invisible" metadata,
@@ -2259,12 +2264,18 @@ Common Option Value Types
     https://docs.python.org/3/library/codecs.html#standard-encodings
 
 .. _reStructuredText Markup Specification: restructuredtext.html
-.. _Directives: restructuredtext.html#directives
+.. _block quote: restructuredtext.html#block-quotes
+.. _comments: restructuredtext.html#comments
+.. _directives: restructuredtext.html#directives
 .. _document title: restructuredtext.html#document-title
+.. _embedded URIs: restructuredtext.html#embedded-uris-and-aliases
 .. _escaping mechanism: restructuredtext.html#escaping-mechanism
+.. _external hyperlink target:
 .. _external hyperlink targets:
     restructuredtext.html#external-hyperlink-targets
+.. _hyperlink reference:
 .. _hyperlink references: restructuredtext.html#hyperlink-references
+.. _hyperlink targets:
 .. _hyperlink target: restructuredtext.html#hyperlink-targets
 .. _supported length units: restructuredtext.html#length-units
 .. _reference name:

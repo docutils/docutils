@@ -91,9 +91,10 @@ Length units
 The LaTeX writer supports all `reStructuredText length units`_
 with the following peculiarities:
 
-* In LaTeX, the size of the *pixel unit* `can be configured
-  <size of a "px"_>`__. It defaults to **1 px = 1/72 in**
+* In LaTeX, the size of the *pixel unit* defaults to **1 px = 1/72 in**
   while the `CSS3 pixel unit`_ is defined as 1 px = 1/96 in.
+  The LaTeX conversion factor can be configured,
+  see below for the `size of a "px"`_.
 
 * LaTeX uses "pt" for the `American point`_ (*TeX point*), 1 pt = 1/72.25 in.
   The `DTP point`_ (*Postscript point*) used in CSS is available in LaTeX
