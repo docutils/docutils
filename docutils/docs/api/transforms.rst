@@ -137,10 +137,10 @@ Key:
 * (t): Transform
 * (/p): Via a `\<pending>`_ element
 
-.. [#dangling] `references.DanglingReferences` will be split into a
-   transform resolving refnames__ to refids__ and a transform reporting
-   unresolved references to make space for reference-resolving transforms
-   added by extensions or applications
+.. [#dangling] `references.DanglingReferences` will be replaced by
+   separate transforms for resolving refnames__ to refids__
+   and for reporting unresolved references to make space for
+   reference-resolving transforms added by extensions or applications
    (cf. `Release Notes`__).
 
    __ ../ref/doctree.html#refname

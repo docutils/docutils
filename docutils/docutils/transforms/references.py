@@ -862,7 +862,10 @@ class CitationReferences(Transform):
         if not getattr(self.document.settings, 'use_bibtex', []):
             return
         for node in self.document.findall(nodes.citation_reference):
-            # Skip nodes that are resolved or have a matching target:
+            # Skip nodes that are resolved or have a matching target
+            # and will be resolved by `DanglingReferences`:
+            # TODO: drop the second condition when `DanglingReferences` is
+            #       replaced by two separate transitions.
             if node.resolved or self.document.nameids.get(node.get('refname')):
                 continue
             if node.astext():  # ensure text content (becomes the BibTeX key)
@@ -875,6 +878,13 @@ class DanglingReferences(Transform):
     """
     Check for dangling references (incl. footnote & citation) and for
     unreferenced targets.
+
+    Provisional : pending deprecation
+      Docutils readers will add separate transforms for resolving
+      refnames to refids and for reporting unresolved references
+      instead of this transform (to make space for reference-resolving
+      transforms added by extensions or applications) in Docutils 1.0.
+      This transform will be removed in Docutils 2.0.
     """
 
     default_priority = 850
@@ -908,6 +918,12 @@ class DanglingReferences(Transform):
 
 
 class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
+    """Provisional : pending deprecation
+
+    This auxiliary class is used by the `DanglingReferences` transform
+    which will no longer be used in Docutils 1.0.
+    It will be removed in Docutils 2.0.
+    """
 
     def __init__(self, document, unknown_reference_resolvers) -> None:
         nodes.SparseNodeVisitor.__init__(self, document)

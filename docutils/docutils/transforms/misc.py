@@ -38,7 +38,7 @@ class ClassAttribute(Transform):
 
     """
     Move the "class" attribute specified in the "pending" node into the
-    immediately following non-comment element.
+    next visible element.
     """
 
     default_priority = 210
