@@ -1277,7 +1277,7 @@ the top of the generated web page or at the top of every printed page.
 These directives may be used multiple times, cumulatively.  There is
 currently support for only one header and footer.
 
-.. note::
+.. tip::
 
    While it is possible to use the "header" and "footer" directives to
    create navigational elements for web pages, you should be aware
@@ -1288,8 +1288,6 @@ currently support for only one header and footer.
    these purposes.  At that time, you should consider using a
    documentation generator like Sphinx_ rather than the "header" and
    "footer" directives.
-
-   .. _Sphinx: http://sphinx-doc.org/
 
 In addition to the use of these directives to populate header and
 footer content, content may also be added automatically by the
@@ -1740,13 +1738,14 @@ as well as
 
 
 .. _class directive:
+.. _rst-class:
 
 Class
 =====
 
 .. class:: field-indent-13em
 
-:Directive Type: "class"
+:Directive Type: "class" or "rst-class" (synonyms) [#]_
 :Doctree Element: `\<pending>`_
 :Directive Arguments: one or more, required
                       (class names / attribute values)
@@ -1811,6 +1810,14 @@ results in this doctree_ fragment::
     <block_quote classes="special">
         <paragraph>
             Special block quote.
+
+.. [#] Sphinx_ uses the directive name "class" for `domain specific`__
+   directives (by default "`py:class`__").
+   The "rst-class" synonym is compatible with Sphinx.
+
+   __ https://www.sphinx-doc.org/en/master/usage/domains/
+   __ https://www.sphinx-doc.org/en/master/usage/domains/python.html
+      #directive-py-class
 
 .. [#] Elements that are not shown in the output (comments_,
    `substitution definitions`_, `hyperlink targets`_, ...) as well as
@@ -2258,8 +2265,11 @@ Common Option Value Types
   Whitespace is removed (cf. `external hyperlink targets`_ in the
   reStructuredText specification).
 
+.. References
+
 .. _codecs: https://docs.python.org/3/library/codecs.html
 .. _relative reference: https://www.rfc-editor.org/rfc/rfc3986.html#section-4.2
+.. _Sphinx: http://sphinx-doc.org/
 .. _Standard Encodings:
     https://docs.python.org/3/library/codecs.html#standard-encodings
 

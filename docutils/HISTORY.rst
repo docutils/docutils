@@ -24,6 +24,12 @@ Release 0.22rc4 (unpublished)
   external target but "name" must be unique across the document.
   So far, the name was silently dropped.
 
+* docutils/parsers/rst/languages/en.py
+
+  Add alias "rst-class" for the "class" directive to improve the
+  compatibility with Sphinx.
+
+
 Release 0.22rc3 (2025-06-10)
 ============================
 

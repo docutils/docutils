@@ -250,6 +250,8 @@ Release 0.22rc4 (unpublished)
 Drop the "name" option of the "target-notes" directive.
 (Report an error instead of silently ignoring the value.)
 
+New alias "rst-class" for the `"class"`_ directive to improve the
+compatibility with Sphinx.
 
 
 Release 0.22rc3 (2025-06-10)
@@ -1484,6 +1486,7 @@ Release 0.3.5 (2004-07-29)
 .. _"colwidth" attribute: docs/ref/doctree.html#colwidth
 .. _<doctest_block>: docs/ref/doctree.html#doctest-block
 
+.. _"class": docs/ref/rst/directives.html#class
 .. _csv-table: docs/ref/rst/directives.html#csv-table
 .. _"date": docs/ref/rst/directives.html#date
 .. _doctest block: docs/ref/rst/restructuredtext.html#doctest-blocks
