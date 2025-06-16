@@ -1475,9 +1475,10 @@ class Targetable(Resolvable):
 
     indirect_reference_name: str | None = None
     """Holds the whitespace_normalized_name (contains mixed case) of a target.
-    Required for MoinMoin/reST compatibility.
 
-    Provisional.
+    This was required for MoinMoin <= 1.9 compatibility.
+
+    Deprecated, will be removed in Docutils 1.0.
     """
 
 

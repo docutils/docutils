@@ -173,6 +173,9 @@ Removals
   in Docutils 1.0.  Use a transform_,
   see `transforms.references.CitationReferences` for an example.
 
+* Remove the internal attribute `nodes.Targetable.indirect_reference_name`
+  in Docutils 1.0. (Was required for MoinMoin <= 1.9.)
+
 * Don't call `transforms.references.DanglingReferences` and
   `transforms.references.DanglingReferencesVisitor` in Docutils 1.0;
   remove them in Docutils 2.0. [rationale__]
