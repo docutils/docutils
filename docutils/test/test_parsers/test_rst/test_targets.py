@@ -282,7 +282,7 @@ Duplicate implicit/directive targets.
 Title
 =====
 
-.. target-notes::
+.. note:: remember remember
    :name: title
 """,
 """\
@@ -292,13 +292,12 @@ Title
     <section dupnames="title" ids="title">
         <title>
             Title
-        <pending ids="title-1" names="title">
+        <note ids="title-1" names="title">
             <system_message backrefs="title-1" level="1" line="7" source="test data" type="INFO">
                 <paragraph>
                     Target name overrides implicit target name "title".
-            .. internal attributes:
-                 .transform: docutils.transforms.references.TargetNotes
-                 .details:
+            <paragraph>
+                remember remember
 """],
 ["""\
 Duplicate explicit targets.

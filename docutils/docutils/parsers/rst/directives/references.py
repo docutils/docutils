@@ -18,8 +18,7 @@ class TargetNotes(Directive):
 
     """Target footnote generation."""
 
-    option_spec = {'class': directives.class_option,
-                   'name': directives.unchanged}
+    option_spec = {'class': directives.class_option}
 
     def run(self):
         pending = nodes.pending(references.TargetNotes)

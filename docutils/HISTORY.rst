@@ -17,7 +17,12 @@
 Release 0.22rc4 (unpublished)
 =============================
 
-Nothing yet.
+* docutils/parsers/rst/directives/references.py
+
+  Remove "name" from `TargetNotes.option_spec`.
+  The "target-notes" directive generates one footnote element per
+  external target but "name" must be unique across the document.
+  So far, the name was silently dropped.
 
 Release 0.22rc3 (2025-06-10)
 ============================
