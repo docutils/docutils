@@ -247,7 +247,9 @@ Misc
 Release 0.22rc4 (unpublished)
 =============================
 
-Nothing yet.
+Drop the "name" option of the "target-notes" directive.
+(Report an error instead of silently ignoring the value.)
+
 
 
 Release 0.22rc3 (2025-06-10)

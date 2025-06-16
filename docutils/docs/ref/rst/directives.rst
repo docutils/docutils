@@ -1314,7 +1314,7 @@ Target Footnotes
 :Directive Type: "target-notes"
 :Doctree Elements: `\<pending>`_, `\<footnote>`_, `\<footnote_reference>`_
 :Directive Arguments: none
-:Directive Options: `class <class option_>`_, name_
+:Directive Options: `class <class option_>`_
 :Directive Content: none
 
 The "target-notes" directive generates a list of referenced URIs.
