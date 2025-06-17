@@ -14,8 +14,8 @@
 .. contents::
 
 
-Release 0.22rc4 (unpublished)
-=============================
+Release 0.22rc4 (2025-06-17)
+============================
 
 * docutils/nodes.py
 
