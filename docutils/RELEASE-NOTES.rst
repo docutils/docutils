@@ -244,8 +244,8 @@ Misc
    __ https://packages.debian.org/source/trixie/python-docutils
 
 
-Release 0.22rc4 (unpublished)
-=============================
+Release 0.22rc4 (2025-06-17)
+============================
 
 Drop the "name" option of the "target-notes" directive.
 (Report an error instead of silently ignoring the value.)
