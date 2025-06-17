@@ -1,5 +1,6 @@
-Releasing
-=========
+===========
+ Releasing
+===========
 
 :Contact: grubert@users.sourceforge.net, docutils-develop@users.sourceforge.net
 :Revision: $Revision$
@@ -7,6 +8,62 @@ Releasing
 :Copyright: This document has been placed in the public domain.
 
 Notes on what happend while releasing.
+
+
+Release 0.22rc4 (2025-06-17)
+============================
+
+Follow docs/release.rst.
+
+* checkout current code
+* run: tox -epy312
+* set_version 022rc4
+* run: tox -epy313 : fail
+* fix the version_info release to True
+* run: tox -epy314
+* Check README, HISTORY and RELEASE-NOTES titles.
+* run: tox -epy39
+* check: svn di
+* svn commit 
+* run: tox -epy310
+* build wheel and tgz
+* test wheel locally: ignore missing HISTORY
+* test src.tgz locally: ignore missing HISTORY
+* upload to pypi
+* remove all docutils wheels from pip cache
+* test wheel from pypi, do not forget --pre argument to get the pre-release
+  ignore missing HISTORY.rst
+* test src.tgz from pypi: ignore missing HISTORY
+* send notification emails
+* update code in working directory
+* run tox : pass 39, 311, 312, 313
+* set_version 0.22rc5.dev
+* check docutils/__init__ : was Fale ... good
+* run: tox -epy314
+* Check README, HISTORY and RELEASE-NOTES titles.
+* Check: svn di
+* commit
+* run: sandbox/infrastructure/docutils-update.local
+
+
+
+Release 0.22rc3 (2025-06-10)
+============================
+
+Follow docs/release.rst.
+
+* Change release.rst: 
+
+  - test locally.
+  - Skip upload to test-pypi.
+
+* test source from pypi.
+  
+  In a virtual environment::
+
+    pip install --pre --no-binary docutils docutils
+    ...
+
 
 Release 0.22rc2 (2025-05-22)
 ============================
