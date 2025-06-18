@@ -247,7 +247,13 @@ Misc
 Release 0.22rc5 (unpublished)
 =============================
 
-.
+Targets generated from hyperlink references with embedded URI or alias
+are no longer "explicit" but "implicit" (i.e. with the same priority as
+auto-generated section targets, see `implicit hyperlink targets`__).
+
+__ https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html
+   #implicit-hyperlink-targets
+
 
 
 Release 0.22rc4 (2025-06-17)

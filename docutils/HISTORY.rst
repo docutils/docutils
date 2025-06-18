@@ -17,7 +17,10 @@
 Release 0.22rc5 (unpublished)
 =============================
 
-.
+* docutils/docutils/parsers/rst/states.py
+
+  - "Downgrade" targets generated from hyperlink references with embedded
+    URI or alias from explicit to implicit (cf. bug #502).
 
 
 Release 0.22rc4 (2025-06-17)
@@ -25,20 +28,20 @@ Release 0.22rc4 (2025-06-17)
 
 * docutils/nodes.py
 
-  Don't include a "backlink" reference in system messages, if the
-  referenced element is an external target (not visible in the output).
+  - Don't include a "backlink" reference in system messages, if the
+    referenced element is an external target (not visible in the output).
 
 * docutils/parsers/rst/directives/references.py
 
-  Remove "name" from `TargetNotes.option_spec`.
-  The "target-notes" directive generates one footnote element per
-  external target but "name" must be unique across the document.
-  So far, the name was silently dropped.
+  - Remove "name" from `TargetNotes.option_spec`.
+    The "target-notes" directive generates one footnote element per
+    external target but "name" must be unique across the document.
+    So far, the name was silently dropped.
 
 * docutils/parsers/rst/languages/en.py
 
-  Add alias "rst-class" for the "class" directive to improve the
-  compatibility with Sphinx.
+  - Add alias "rst-class" for the "class" directive to improve the
+    compatibility with Sphinx.
 
 
 Release 0.22rc3 (2025-06-10)

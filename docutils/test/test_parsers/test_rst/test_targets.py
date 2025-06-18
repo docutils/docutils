@@ -218,11 +218,11 @@ Duplicate external targets (same URIs):
     <target ids="target" names="target" refuri="first">
     <system_message level="1" line="5" source="test data" type="INFO">
         <paragraph>
-            Duplicate explicit target name: "target".
+            Duplicate name "target" for external target "first".
     <target dupnames="target" ids="target-1" refuri="first">
 """],
 ["""\
-Duplicate external targets (same URIs):
+Duplicate external targets (embedded/explicit, same URIs):
 
 See the `example <example.rst>`_
 
@@ -233,7 +233,7 @@ See the example_
 """\
 <document source="test data">
     <paragraph>
-        Duplicate external targets (same URIs):
+        Duplicate external targets (embedded/explicit, same URIs):
     <paragraph>
         See the \n\
         <reference name="example" refuri="example.rst">
@@ -245,7 +245,7 @@ See the example_
             example
     <system_message level="1" line="7" source="test data" type="INFO">
         <paragraph>
-            Duplicate explicit target name: "example".
+            Duplicate name "example" for external target "example.rst".
     <target dupnames="example" ids="example-1" refuri="example.rst">
 """],
 ["""\
