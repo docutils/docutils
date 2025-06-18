@@ -1167,15 +1167,15 @@ Embedded URI: named `<file.txt>`_ and anonymous `<file.html>`__.
         Report duplicate refname.
     <paragraph>
         Explicit targets: \n\
-        <target dupnames="file.txt" ids="file-txt">
+        <target ids="file-txt" names="file.txt">
             file.txt
         , \n\
         <target ids="file-html" names="file.html">
             file.html
         .
-    <system_message level="2" line="6" source="test data" type="WARNING">
+    <system_message level="1" line="6" source="test data" type="INFO">
         <paragraph>
-            Duplicate explicit target name: "file.txt".
+            Duplicate implicit target name: "file.txt".
     <paragraph>
         Embedded URI: named \n\
         <reference name="file.txt" refuri="file.txt">
@@ -1300,9 +1300,9 @@ No clash with anonymous reference `link <tg1_>`__.
         <target ids="tg2" names="tg2">
             tg2
         .
-    <system_message backrefs="link-1" level="2" line="6" source="test data" type="WARNING">
+    <system_message backrefs="link-1" level="1" line="6" source="test data" type="INFO">
         <paragraph>
-            Duplicate explicit target name: "link".
+            Duplicate implicit target name: "link".
     <paragraph>
         References with embedded alias: \n\
         <reference name="link" refname="tg1">

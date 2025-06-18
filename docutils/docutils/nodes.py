@@ -1929,18 +1929,21 @@ class document(Root, Element):
 
         self.nametypes[name] = old_explicit or explicit
 
-        if explicit:
+        if (old_id is not None and 'refuri' in node
+            and node['refuri'] == old_node.get('refuri')):
+            # external targets with same URI -> keep old target
+            level = 1
+            ref = node["refuri"]
+            s = f'Duplicate name "{name}" for external target "{ref}".'
+            dupname(node, name)
+        elif explicit:
             if old_explicit:
                 level = 2
                 s = f'Duplicate explicit target name: "{name}".'
                 dupname(node, name)
                 if old_id is not None:
-                    if ('refuri' in node and 'refuri' in old_node
-                            and node['refuri'] == old_node['refuri']):
-                        level = 1  # keep old target, just inform
-                    else:
-                        dupname(old_node, name)
-                        self.nameids[name] = None
+                    dupname(old_node, name)
+                    self.nameids[name] = None
             else:  # new explicit, old implicit -> override
                 self.nameids[name] = id
                 if old_id is not None:
