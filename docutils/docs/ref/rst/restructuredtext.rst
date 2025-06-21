@@ -2478,9 +2478,9 @@ targets`_ except in case of duplicate reference names:
 3. Duplicate explicit hyperlink targets are removed, and level-2
    (warning) system messages are inserted.
 
-4. Exception: duplicate `external hyperlink targets`_ (identical
-   reference names and referenced URIs) do not conflict, and are not
-   removed.
+4. Exception: duplicate external or indirect hyperlink targets
+   (identical reference names and referenced URIs or hyperlink
+   references) do not conflict, one is removed.
 
 System messages are inserted where target links have been removed.
 See "Error Handling" in `PEP 258`_.

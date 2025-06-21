@@ -17,7 +17,12 @@
 Release 0.22rc5 (unpublished)
 =============================
 
-* docutils/docutils/parsers/rst/states.py
+* docutils/nodes.py
+
+  - Don't invalidate indirect targets with duplicate name, if they refer to
+    the same refname (similar to external targets refering to the same URI).
+
+* docutils/parsers/rst/states.py
 
   - "Downgrade" targets generated from hyperlink references with embedded
     URI or alias from explicit to implicit (cf. bug #502).

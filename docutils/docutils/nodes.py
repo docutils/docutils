@@ -1904,7 +1904,7 @@ class document(Root, Element):
         ====  ========  ========  ========  =======  ====  ========  =====
 
         .. [#] Do not clear the name-to-id map or invalidate the old target if
-           both old and new targets are external and refer to identical URIs.
+           both old and new targets refer to identical URIs or reference names.
            The new target is invalidated regardless.
         """
         for name in tuple(node['names']):
@@ -1929,11 +1929,13 @@ class document(Root, Element):
 
         self.nametypes[name] = old_explicit or explicit
 
-        if (old_id is not None and 'refuri' in node
-            and node['refuri'] == old_node.get('refuri')):
-            # external targets with same URI -> keep old target
+        if old_id is not None and (
+            'refname' in node and node['refname'] == old_node.get('refname')
+            or 'refuri' in node and node['refuri'] == old_node.get('refuri')
+            ):
+            # indirect targets with same reference -> keep old target
             level = 1
-            ref = node["refuri"]
+            ref = node.get('refuri') or node.get('refname')
             s = f'Duplicate name "{name}" for external target "{ref}".'
             dupname(node, name)
         elif explicit:
