@@ -249,6 +249,33 @@ See the example_
     <target dupnames="example" ids="example-1" refuri="example.rst">
 """],
 ["""\
+Duplicate indirect _`targets` (same refname):
+
+.. _link: targets_
+
+.. _link: targets_
+
+do not conflict. The reference name can be used in a link_.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Duplicate indirect \n\
+        <target ids="targets" names="targets">
+            targets
+         (same refname):
+    <target ids="link" names="link" refname="targets">
+    <system_message backrefs="link-1" level="1" line="5" source="test data" type="INFO">
+        <paragraph>
+            Duplicate name "link" for external target "targets".
+    <target dupnames="link" ids="link-1" refname="targets">
+    <paragraph>
+        do not conflict. The reference name can be used in a \n\
+        <reference name="link" refname="link">
+            link
+        .
+"""],
+["""\
 Duplicate implicit targets.
 
 Title
