@@ -1878,30 +1878,35 @@ class document(Root, Element):
                         explicit: bool = False,
                         ) -> None:
         """
-        `self.nameids` maps names to IDs, while `self.nametypes` maps names to
-        booleans representing hyperlink target type (True==explicit,
-        False==implicit).  This method updates the mappings.
+        Update the name/id mappings.
+
+        `self.nameids` maps names to IDs. The value ``None`` indicates
+        that the name is a "dupname" (i.e. there are already at least
+        two targets with the same name and type).
+
+        `self.nametypes` maps names to booleans representing
+        hyperlink target type (True==explicit, False==implicit).
 
         The following state transition table shows how `self.nameids` items
         ("id") and `self.nametypes` items ("type") change with new input
         (a call to this method), and what actions are performed:
 
-        ====  ========  ========  ========  =======  ====  ========  =====
-          Old State      Input          Action        New State      Notes
-        --------------  --------  -----------------  --------------  -----
-        id    type      new type  sys.msg.  dupname  id    type
-        ====  ========  ========  ========  =======  ====  ========  =====
-        -     -         explicit  -         -        new   explicit
-        -     -         implicit  -         -        new   implicit
-        -     implicit  explicit  -         -        new   explicit
-        old   implicit  explicit  INFO      old      new   explicit
-        -     explicit  explicit  ERROR     new      -     explicit
-        old   explicit  explicit  ERROR     new,old  -     explicit  [#]_
-        -     implicit  implicit  INFO      new      -     implicit
-        old   implicit  implicit  INFO      new,old  -     implicit
-        -     explicit  implicit  INFO      new      -     explicit
-        old   explicit  implicit  INFO      new      old   explicit
-        ====  ========  ========  ========  =======  ====  ========  =====
+        ========  ====  ========  ====  ========  ======== =======  ======
+         Input      Old State      New State            Action      Notes
+        --------  --------------  --------------  ----------------  ------
+        type      id    type      id    type      dupname  report
+        ========  ====  ========  ====  ========  ======== =======  ======
+        explicit                  new   explicit
+        implicit                  new   implicit
+        explicit  old   explicit  None  explicit  new,old  WARNING  [#ex]_
+        implicit  old   explicit  old   explicit  new      INFO     [#ex]_
+        explicit  old   implicit  new   explicit  old      INFO     [#ex]_
+        implicit  old   implicit  None  implicit  new,old  INFO     [#ex]_
+        explicit  None  explicit  None  explicit  new      WARNING
+        implicit  None  explicit  None  explicit  new      INFO
+        explicit  None  implicit  new   explicit
+        implicit  None  implicit  None  implicit  new      INFO
+        ========  ====  ========  ====  ========  ======== =======  ======
 
         .. [#] Do not clear the name-to-id map or invalidate the old target if
            both old and new targets refer to identical URIs or reference names.
