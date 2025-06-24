@@ -10,6 +10,15 @@
 Notes on what happend while releasing.
 
 
+Release 0.22rc5 (2025-06-24)
+============================
+
+A small correction:
+
+  Don't report an error for duplicate targets with identical refname
+
+Follow steps from rc4, varying the python versions in tox runs.
+
 Release 0.22rc4 (2025-06-17)
 ============================
 
@@ -17,7 +26,7 @@ Follow docs/release.rst.
 
 * checkout current code
 * run: tox -epy312
-* set_version 022rc4
+* set_version 0.22rc4
 * run: tox -epy313 : fail
 * fix the version_info release to True
 * run: tox -epy314
