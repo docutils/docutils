@@ -19,6 +19,36 @@ A small correction:
 
 Follow steps from rc4, varying the python versions in tox runs.
 
+* checkout current code
+* run: tox -epy313
+* set_version 0.22rc5
+* run: tox -epy314 : fail
+* fix the version_info release to True
+* run: tox -epy310
+* Check README, HISTORY and RELEASE-NOTES titles.
+* check: svn di
+* svn commit 
+* build wheel and tgz
+* upload to pypi
+* remove all docutils wheels from pip cache
+* test src.tgz from pypi, do not forget --pre argument to get the pre-release:
+  ignore missing HISTORY
+* test wheel from pypi::
+  
+    pip install --pre  --no-cache-dir docutils
+
+  ignore missing HISTORY.rst
+
+* update code in working directory
+* run tox : pass 39, 311, 312, 313
+* set_version 0.22rc6.dev
+* check docutils/__init__ : was False ... good
+* run: tox -epy312
+* Check README, HISTORY and RELEASE-NOTES titles.
+* Check: svn di
+* commit
+* run: sandbox/infrastructure/docutils-update.local
+
 Release 0.22rc4 (2025-06-17)
 ============================
 
@@ -47,7 +77,7 @@ Follow docs/release.rst.
 * update code in working directory
 * run tox : pass 39, 311, 312, 313
 * set_version 0.22rc5.dev
-* check docutils/__init__ : was Fale ... good
+* check docutils/__init__ : was False ... good
 * run: tox -epy314
 * Check README, HISTORY and RELEASE-NOTES titles.
 * Check: svn di
