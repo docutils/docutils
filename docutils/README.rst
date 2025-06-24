@@ -1,6 +1,6 @@
-==============================
- README: Docutils 0.22rc5.dev
-==============================
+==========================
+ README: Docutils 0.22rc5
+==========================
 
 :Author: David Goodger
 :Contact: goodger@python.org

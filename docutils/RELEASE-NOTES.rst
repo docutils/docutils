@@ -244,8 +244,8 @@ Misc
    __ https://packages.debian.org/source/trixie/python-docutils
 
 
-Release 0.22rc5 (unpublished)
-=============================
+Release 0.22rc5 (2025-06-24)
+============================
 
 Targets generated from hyperlink references with embedded URI or alias
 are no longer "explicit" but "implicit" (i.e. with the same priority as
@@ -254,7 +254,7 @@ auto-generated section targets, see `implicit hyperlink targets`__).
 __ https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html
    #implicit-hyperlink-targets
 
-
+Don't report an error for duplicate targets with identical refname.
 
 Release 0.22rc4 (2025-06-17)
 ============================
