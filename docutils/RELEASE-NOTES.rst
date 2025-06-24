@@ -244,6 +244,11 @@ Misc
    __ https://packages.debian.org/source/trixie/python-docutils
 
 
+Release 0.22rc6 (unpublished)
+=============================
+
+.
+
 Release 0.22rc5 (2025-06-24)
 ============================
 
