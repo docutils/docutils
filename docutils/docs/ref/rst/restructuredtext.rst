@@ -2522,7 +2522,7 @@ Three constructs use different start-strings and end-strings:
 
 - `inline internal targets`_: ``_``` and `````
 - `footnote references`_: ``[`` and ``]_``
-- `hyperlink references`_: ````` and ``\`_`` (phrases), or just a
+- `hyperlink references`_: ````` and ```_`` (phrases), or just a
   trailing ``_`` (single words)
 
 `Standalone hyperlinks`_ are recognized implicitly, and use no extra
@@ -2650,7 +2650,7 @@ each character.  The inline markup recognition order is as follows:
 - Backquotes: `Inline literals`_ (``````), `inline internal targets`_
   (leading ``_```, trailing `````), are mutually independent, and are
   recognized before phrase `hyperlink references`_ (leading `````,
-  trailing ``\`_``) and `interpreted text`_ (`````).
+  trailing ```_``) and `interpreted text`_ (`````).
 
 - Trailing underscores: Footnote references (``[`` + label + ``]_``) and
   simple `hyperlink references`_ (name + trailing ``_``) are mutually
@@ -2841,9 +2841,9 @@ Hyperlink References
       reference type       name        start     end
      ===================  ==========  ========  =========
       named                simple_     none      ``_``
-      ..                   phrase_     `````\    ``\`_``
+      ..                   phrase_     `````\    ```_``
       anonymous_           simple      none      ``__``
-      ..                   phrase      `````\    ``\`__``
+      ..                   phrase      `````\    ```__``
      ===================  ==========  ========  =========
 
 :See also:        `hyperlink targets`_
