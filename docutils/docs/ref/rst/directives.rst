@@ -151,14 +151,13 @@ The `class <class option_>`_ option overrides the generated
 --------
 
 There are two directives to include images: image_ and figure_.
+The table below provides a non exhaustive overview of
+supported image formats.
 
 .. attention::
 
-  Images are not supported by the `manpage`_ writer.
-
   It is up to the author to ensure compatibility of the image data format
-  with the output format or user agent (LaTeX engine, `HTML browser`__).
-  The following, non exhaustive table provides an overview.
+  with the output format or user agent (LaTeX engine, `HTML browser`__, …).
 
 .. _image formats:
 
@@ -172,6 +171,8 @@ HTML4_ [#]_ ✓             ✓     ✓     ✓     (✓)   (✓)   (✓)   (✓
 HTML5_      ✓             ✓     ✓     ✓     ✓     ✓     ✓     ✓     ✓
 
 LaTeX_ [#]_ ✓ [#]_ ✓      ✓     ✓
+
+manpage_
 
 ODT_        ✓      ✓      ✓     ✓     ✓
 =========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
@@ -188,7 +189,8 @@ ODT_        ✓      ✓      ✓     ✓     ✓
 .. [#] When compiling with ``pdflatex``, ``xelatex``, or ``lualatex``.
        The original ``latex`` engine supports only the EPS image format.
        Some build systems, e.g. rubber_ support additional formats
-       via on-the-fly image conversion.
+       via on-the-fly image conversion. For details, see section
+       `image inclusion`__ in the LaTeX writer documentation.
 
 .. [#] New in Docutils 0.22.
        The `"svg" package`_ must be listed in the stylesheet__ setting.
@@ -198,10 +200,12 @@ __ https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
 .. _html4 writer: ../../user/html.html#html4css1
 .. _HTML5:
 .. _html5 writer: ../../user/html.html#html5
-.. _LaTeX: ../../user/latex.html#image-inclusion
+.. _LaTeX:
+.. _LaTeX writer: ../../user/latex.html
 .. _ODT: ../../user/odt.html
 .. _manpage: ../../user/manpage.html
 .. _rubber: https://gitlab.com/latex-rubber/rubber
+__ ../../user/latex.html#image-inclusion
 .. _"svg" package: https://ctan.org/pkg/svg
 __ ../../user/config.html#stylesheet-latex-writers
 
@@ -849,7 +853,8 @@ Formal tables need more structure than the reStructuredText `table syntax`_
 supplies.  Tables may be given titles with the "table_" directive.
 Sometimes reStructuredText tables are inconvenient to write, or table
 data in a standard format is readily available.  The "csv-table_"
-directive supports CSV [#CSV]_ data.
+directive supports CSV [#CSV]_ data, the "list-table_" directive uses
+a list-based input format.
 
 .. _table syntax: restructuredtext.html#tables
 
@@ -863,7 +868,7 @@ Table
 :Doctree Element: `\<table>`_
 :Directive Arguments: one, optional (table caption)
 :Directive Options: `see below <table options_>`__
-:Directive Content: A normal `reStructuredText table`_.
+:Directive Content: one reStructuredText `grid table`_ or `simple table`_
 :Configuration Setting: table_style_
 
 The "table" directive is used to provide a table caption
@@ -1051,6 +1056,8 @@ Recognizes the common options `class <class option_>`_ and name_ as well as
 .. [#] Before Docutils 0.21, the header option used a hard-coded
    CSV dialect with the backslash as escape character.
 
+
+.. _list-table:
 
 List Table
 ==========
@@ -2283,6 +2290,7 @@ Common Option Value Types
 .. _external hyperlink target:
 .. _external hyperlink targets:
     restructuredtext.html#external-hyperlink-targets
+.. _grid table: restructuredtext.html#grid-tables
 .. _hyperlink reference:
 .. _hyperlink references: restructuredtext.html#hyperlink-references
 .. _hyperlink targets:
@@ -2290,7 +2298,7 @@ Common Option Value Types
 .. _supported length units: restructuredtext.html#length-units
 .. _reference name:
 .. _reference names: restructuredtext.html#reference-names
-.. _reStructuredText table: restructuredtext.html#tables
+.. _simple table: restructuredtext.html#simple-tables
 
 .. _reStructuredText Interpreted Text Roles:
 .. _interpreted text role: roles.html

@@ -217,6 +217,12 @@ Removals
 Misc
 ----
 
+* Prefer explicit reference names as base for an HTML element's ID
+  in Docutils 1.0. No change for internal cross-references.
+  Cf. `Sphinx issue #1961`__
+
+  __ https://github.com/sphinx-doc/sphinx/issues/1961
+
 * Revise the `String I/O`__ interface used by the `publish_string()`
   and `publish_from_doctree()` publisher convenience functions.
   (In Python 3, name and behaviour no longer match.)
