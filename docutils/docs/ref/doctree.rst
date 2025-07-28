@@ -972,7 +972,7 @@ It is  defined in the `Exchange Table Model`_.
              Via the `%tbl.colspec.att`_ parameter entity, <colspec>
              also accepts the `common attributes`_ and `stub`_.
 
-             .. [#] Docutils ignores all but colwidth_.
+             .. [#] Docutils ignores all attributes except colwidth_.
 
 __ https://www.oasis-open.org/specs/tm9901.html#AEN446
 
@@ -4516,8 +4516,9 @@ to specify the column width.
 
 The attribute is defined in the `Exchange Table Model`_
 (which `see for details`__) as either a *proportional measure*
-(positive number followed by "*", e.g., "5*" for 5 times the unit proportion,
-or just "*" for one unit proportion) or a *fixed measure* (e.g., 2.5cm).
+(positive number followed by "*", e.g., "5*" for 5 times the
+`unit proportion`_ , or just "*" for one unit proportion)
+or a *fixed measure* (e.g., 2.5cm).
 Docutils supports only proportional measures.
 
 .. important::
@@ -5593,6 +5594,24 @@ _`Reference names`
   .. [#whitespace-normalization] Adjacent spaces, horizontal or vertical
      tabs, newlines, carriage returns, or form feeds, are replaced by a
      single space.  Leading and trailing whitespace is removed.
+
+_`Unit proportion`
+  is a length unit used in the definition of relative `table column widths`_
+  in the `Exchange Table Model`_.
+
+  Its definition boils down to
+
+     …, the *unit proportion* is determined by starting with the target
+     table width […].
+     Reduce that by the sum of border widths, column ruling widths, and
+     the fixed colwidths to get the available proportional width. […]
+     Then the unit proportion is the available proportional width divided
+     by the sum of the proportionality factors.
+
+     --- `Exchange Table Model, section 3.2.1`__
+
+  .. _table column widths: colwidth_
+  __ https://www.oasis-open.org/specs/tm9901.html#AEN285
 
 
 ------------

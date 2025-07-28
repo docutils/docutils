@@ -171,23 +171,21 @@ Configuration
 
 .. contents:: :local:
 
-.. _option:
 .. _setting:
 .. _settings:
 
 Options/Settings
 ----------------
 
-Docutils configuration settings can be specified as
+`Docutils configuration settings`_ can be specified as
+*command-line options* or *configuration settings*.
 
-* command-line options, or
-
-* configuration settings.
-
-Run ``rst2latex --help`` to get a list of available options;
+Run ``rst2latex --help`` to get a list of available options or
 see `Docutils Configuration`_ for details.
 
+.. _Docutils configuration settings:
 .. _Docutils Configuration: config.html
+
 
 Classes
 -------
@@ -564,7 +562,7 @@ Example 3:
 
 .. _role directive: ../ref/rst/directives.html#role
 .. _text roles: ../ref/rst/roles.html
-.. _class directive: ../ref/rst/directives.html#class
+.. _class directive: ../ref/rst/directives.html#class-directive
 
 definition lists
 ----------------
@@ -1665,8 +1663,8 @@ table style
 ------------
 
 A pre-configured *table style* can be globally selected via the table_style_
-setting or set for individual tables via a `class directive`_ or the class
-option of the `table directive`_.
+setting or set for individual tables via a `class directive`_ or the
+``class`` option of the `table directive`_.
 
 Supported values:
 
@@ -1681,7 +1679,7 @@ borderless
 
 colwidths-auto
   Column width determination by LaTeX.
-  Overridden by the `table directive`_'s "widths" option.
+  Overridden by the `table directive`_'s ``widths`` option.
 
   .. warning::
 
@@ -1697,7 +1695,7 @@ colwidths-auto
 
 By default, *column widths* are computed from the source column widths.
 The `legacy_column_widths`_ setting selects the conversion algorithm.
-Custom column widths can be set with the "widths" option of the `table
+Custom column widths can be set with the ``widths`` option of the `table
 directive`_.
 
 See also the section on problems with tables_ below.
@@ -1726,7 +1724,7 @@ With use-latex-toc (default since release 0.6):
 
 * The depth of the ToC and PDF-bookmarks can be configured
 
-  + with the "depth" argument of the `contents directive`_, or
+  + with the ``depth`` option of the `contents directive`_, or
 
   + in a style sheet with e.g. ``\setcounter{tocdepth}{5}``.
 
@@ -1735,7 +1733,7 @@ With use-latex-toc (default since release 0.6):
 
 .. note::
    Minitoc supports local ToCs only at "part" and top section level
-   ("chapter" or "section"). Local `contents` directives at lower levels
+   ("chapter" or "section"). Local "contents" directives at lower levels
    are ignored (a warning is issued).
 
    This is an intended feature of the minitoc_ package. If you really
@@ -2141,7 +2139,7 @@ Footnotes and citations
 ```````````````````````
 
 Initially both were implemented using figure floats, because hyperlinking
-back and forth seemed to be impossible. Later the `figure` directive was
+back and forth seemed to be impossible. Later the `figure directive`_ was
 added that puts images into figure floats.
 
 This results in footnotes, citations, and figures possibly being mixed at
@@ -2158,6 +2156,7 @@ only by a single space or a newline) are combined to a single citation
 group, i.e. ``[cite1]_ [cite2]_`` results in ``\cite{cite1,cite2}``.
 The appearance in the output can be configured in a `style sheet`_.
 
+.. _figure directive: ../ref/rst/directives.html#figure
 .. _use_latex_citations: config.html#use-latex-citations
 
 
@@ -2193,5 +2192,5 @@ Miscellaneous
 * Pdfbookmark level 4 (and greater) does not work (might be settable but
   complicated).
 
-* Hyperlinks are not hyphenated; this leads to bad spacing. See
-  docs/user/rst/demo.rst 2.14 directives.
+* Hyperlinks are not hyphenated; this leads to bad spacing.
+  See ``docs/user/rst/demo.rst`` section 2.14 "directives".

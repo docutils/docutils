@@ -1911,6 +1911,9 @@ class document(Root, Element):
         .. [#] Do not clear the name-to-id map or invalidate the old target if
            both old and new targets refer to identical URIs or reference names.
            The new target is invalidated regardless.
+
+        Provisional. There will be changes to prefer explicit reference names
+        as base for an element's ID.
         """
         for name in tuple(node['names']):
             if name in self.nameids:
@@ -1989,6 +1992,9 @@ class document(Root, Element):
     # "note" here is an imperative verb: "take note of".
     def note_implicit_target(
             self, target: Element, msgnode: Element | None = None) -> None:
+        # TODO: Postpone ID creation.  Register reference name instead of ID
+        # to allow for IDs based on explicit target pointing to the same
+        # element.  https://github.com/sphinx-doc/sphinx/issues/1961
         id = self.set_id(target, msgnode)
         self.set_name_id_map(target, id, msgnode, explicit=False)
 

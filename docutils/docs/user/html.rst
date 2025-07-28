@@ -35,7 +35,7 @@ html5_ in Docutils 2.0.
 html5
 -----
 
-:aliases:   _`html5_polyglot`
+:aliases:   _`html5_polyglot`, xhtml
 :front-end: rst2html5_
 :config:    `[html5 writer]`_
 
@@ -84,7 +84,7 @@ __ https://developer.mozilla.org/en-US/docs/Learn/Performance/Multimedia
 html4css1
 ---------
 
-:aliases:   html4, html_
+:aliases:   html4, html_, xhtml10
 :front-end: rst2html4_
 :config:    `[html4css1 writer]`_
 

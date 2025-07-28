@@ -448,6 +448,8 @@ class HTMLTranslator(writers.DoctreeTranslator):
     def read_size_with_PIL(self, node) -> tuple[int, int] | None:
         # Try reading size from image file.
         # Internal auxiliary method called from `self.image_size()`.
+        # TODO: use https://github.com/shibukawa/imagesize_py
+        #       faster, also handles SVG, attention: bug
         reading_problems = []
         uri = node['uri']
         if not PIL:
