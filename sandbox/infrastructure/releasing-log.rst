@@ -10,6 +10,71 @@
 Notes on what happend while releasing.
 
 
+Release 0.22 (2025-07-29)
+=========================
+
+* checkout current code
+* run: tox -epy313
+* set_version 0.22
+* run: tox -epy311
+* fix the version_info release to True
+* run: tox -epy39
+* Check README, HISTORY and RELEASE-NOTES titles.
+* check: svn di
+* svn commit 
+* build wheel and tgz
+* test tgz and wheel locally
+* upload to pypi
+* test src.tgz from pypi, ignore missing HISTORY
+* test wheel from pypi, ignore missing HISTORY.rst
+* update code in working directory
+* run tox : pass 39, 310, 311, 313, 314
+* tag #.# (Note: only directory docutils is copied)::
+
+    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.22 \
+             -m "tagging release 0.22"
+
+* check on sourceforge
+* update code in working directory
+* upload source and generated html to sf-htdocs/#.# ::
+
+    mkdir tmp1
+    cd tmp1
+    tar xzvf ../dist/docutils-0.22.tar.gz
+    cd docutils-0.22/
+    python3 tools/buildhtml.py .
+    find . -name \*.pyc -exec rm -v {} \;
+    find . -name __pycache__ -exec rmdir -v {} \;
+    rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/0.22
+
+* Check https://docutils.sourceforge.io/0.22/
+* Check web/index.rst for necessary corrections.
+* Run sandbox/infrastructure/docutils-update.local to update web-content.
+
+  Unnecessary will be 0.23b.dev soon.
+* Release to sourceforge.
+
+  - Upload docutils-0.22.tar.gz and release notes to sourceforge.
+  - Upload RELEASE_NOTES.rst as README.rst.
+  - Select docutils-0.22.tar.gz as default for all OS.
+
+* update working directory
+* set_version 0.23b.dev
+* docutils/HISTORY.rst: add title "Release 0.23b0.dev (unpublished)"
+* docutils/RELEASE-NOTES.rst: add title "Release 0.23b0.dev (unpublished)"
+* Check README, HISTORY and RELEASE-NOTES titles.
+
+  Fix: README, the version number should not be changed in line ::
+
+   The **type hints** added in version 0.22 use Python 3.10 syntax.
+
+* check docutils/__init__ : failed
+* run: tox -epy313
+* commit
+* run: sandbox/infrastructure/docutils-update.local
+
+
 Release 0.22rc5 (2025-06-24)
 ============================
 
