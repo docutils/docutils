@@ -17,101 +17,11 @@
 Release 0.23b0 (unpublished)
 ============================
 
-.
+...
+
 
 Release 0.22 (2026-07-29)
 =========================
-
-No changes to rc5.
-
-Release 0.22rc5 (2025-06-24)
-============================
-
-* docutils/nodes.py
-
-  - Don't invalidate indirect targets with duplicate name, if they refer to
-    the same refname (similar to external targets refering to the same URI).
-
-* docutils/parsers/rst/states.py
-
-  - "Downgrade" targets generated from hyperlink references with embedded
-    URI or alias from explicit to implicit (cf. bug #502).
-
-
-Release 0.22rc4 (2025-06-17)
-============================
-
-* docutils/nodes.py
-
-  - Don't include a "backlink" reference in system messages, if the
-    referenced element is an external target (not visible in the output).
-
-* docutils/parsers/rst/directives/references.py
-
-  - Remove "name" from `TargetNotes.option_spec`.
-    The "target-notes" directive generates one footnote element per
-    external target but "name" must be unique across the document.
-    So far, the name was silently dropped.
-
-* docutils/parsers/rst/languages/en.py
-
-  - Add alias "rst-class" for the "class" directive to improve the
-    compatibility with Sphinx.
-
-
-Release 0.22rc3 (2025-06-10)
-============================
-
-* docutils/parsers/rst/states.py
-
-  - Warn about duplicate name in references with embedded internal targets.
-    Fixes bug #502.
-
-* docutils/transforms/references.py
-
-  - New transform `CitationReferences`. Marks citation_references
-    as resolved if BibTeX is used by the backend (LaTeX).
-
-* docutils/writers/latex2e/__init__.py
-
-  - Replace `Writer.bibtex_reference_resolver()` with a transform.
-  - `LaTeXTranslator.visit_inline()` now inserts labels for the
-    node's IDs.
-  - Disable footnote handling by the "hyperref" LaTeX package (Docutils'
-    ``\DUfootnotemark`` and ``\DUfootnotetext`` macros implement
-    hyperlinks and backlinks).  Avoids "empty anchor" warnings.
-  - Fix target position and re-style system messages.
-  - Don't merge paragraphs if there is a target between them.
-
-* docutils/writers/manpage.py
-
-  - Do not drop text of internal targets.
-
-
-Release 0.22rc2 (2025-05-22)
-============================
-
-
-* docutils/parsers/rst/directives/misc.py
-
-  - Pass default settings to custom parser for included file.
-
-* docutils/parsers/rst/states.py
-
-  - Remove the `states.RSTStateMachine.memo.section_parents` cache
-    (introduced in Docutils 0.22rc1) that broke 3rd-party applications
-    employing a "mock memo".
-  - Use `types.SimpleNamespace` instead of a local definition for
-    the auxilliary class `states.Struct`.
-
-* docutils/writers/_html_base.py
-
-  - Fix error when determining the document metadata title from the
-    source path and the internal `source` attribute is None.
-
-
-Release 0.22rc1 (2025-05-06)
-============================
 
 * General
 
@@ -171,6 +81,10 @@ Release 0.22rc1 (2025-05-06)
   - Fix recursion in `Element.get_language_code()`.
   - Do not insert <system_message> elements for duplicate explicit targets
     if this results in an invalid doctree (cf. bug #489).
+  - Don't include a "backlink" reference in system messages, if the
+    referenced element is an external target (not visible in the output).
+  - Don't invalidate indirect targets with duplicate name, if they refer to
+    the same refname (similar to external targets refering to the same URI).
 
 * docutils/parsers/docutils_xml.py
 
@@ -183,6 +97,11 @@ Release 0.22rc1 (2025-05-06)
 * docutils/parsers/rst/languages/
 
   - Remove mistranslations of the "admonition" directive name.
+
+* docutils/parsers/rst/languages/en.py
+
+  - Add alias "rst-class" for the "class" directive to improve the
+    compatibility with Sphinx.
 
 * docutils/parsers/rst/directives/__init__.py
 
@@ -198,6 +117,14 @@ Release 0.22rc1 (2025-05-06)
   - Pass the included file's path to the parser when the
     "include" directive is used with :parser: option.
     Enables system messages with correct source/line info.
+  - Pass default settings to custom parser for included file.
+
+* docutils/parsers/rst/directives/references.py
+
+  - Remove "name" from `TargetNotes.option_spec`.
+    The "target-notes" directive generates one footnote element per
+    external target but "name" must be unique across the document.
+    So far, the name was silently dropped.
 
 * docutils/parsers/rst/directives/tables.py
 
@@ -217,6 +144,12 @@ Release 0.22rc1 (2025-05-06)
   - Change section handling to not rely on exceptions and reparsing.
     Based on patch #213 by Arne Skjærholt.
     Fixes bug #346 (duplicate System Messages).
+  - Use `types.SimpleNamespace` instead of a local definition for
+    the auxilliary class `states.Struct`.
+  - Warn about duplicate name in references with embedded internal targets.
+    Fixes bug #502.
+  - "Downgrade" targets generated from hyperlink references with embedded
+    URI or alias from explicit to implicit (cf. bug #502).
 
 * docutils/readers/__init__.py:
 
@@ -231,6 +164,11 @@ Release 0.22rc1 (2025-05-06)
   - Fix for `misc.Transitions`: report an error if a <transition> element
     follows a <meta> or <decoration> element as this is invalid
     according to ``docutils.dtd``.
+
+* docutils/transforms/references.py
+
+  - New transform `CitationReferences`. Marks citation_references
+    as resolved if BibTeX is used by the backend (LaTeX).
 
 * docutils/transforms/writer_aux.py
 
@@ -275,6 +213,8 @@ Release 0.22rc1 (2025-05-06)
   - Revise image size handling methods,
     use "width" and "height" attributes for unitless values.
   - Add "px" to unitless table "width" values.
+  - Fix error when determining the document metadata title from the
+    source path and the internal `source` attribute is None.
 
 * docutils/writers/html4css1/__init__.py
 
@@ -302,6 +242,14 @@ Release 0.22rc1 (2025-05-06)
   - Encode <meta> element content in pdfinfo.
   - Improve formatting of docinfo fields.
   - `LaTeXTranslator.pop_output_collector()` now returns the popped list.
+  - Replace `Writer.bibtex_reference_resolver()` with a transform.
+  - `LaTeXTranslator.visit_inline()` now inserts labels for the
+    node's IDs.
+  - Disable footnote handling by the "hyperref" LaTeX package (Docutils'
+    ``\DUfootnotemark`` and ``\DUfootnotetext`` macros implement
+    hyperlinks and backlinks).  Avoids "empty anchor" warnings.
+  - Fix target position and re-style system messages.
+  - Don't merge paragraphs if there is a target between them.
 
   .. _reference-label: docs/user/config.html#reference-label
   __ docs/user/config.html#stylesheet-latex-writers
@@ -322,6 +270,7 @@ Release 0.22rc1 (2025-05-06)
     configuration setting text_references_ is True.
     The current default is True (text references), it will change
     to False (macro references) in Docutils 1.0.
+  - Do not drop text of internal targets.
 
 * docutils/writers/null.py
 

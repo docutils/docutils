@@ -210,6 +210,9 @@ Removals
   `states.RSTState.title_inconsistent()`, and `states.Line.eofcheck`
   in Docutils 2.0. Ignored since Docutils 0.22.
 
+* Remove `parsers.rst.states.Struct` (obsoleted by `types.SimpleNamespace`)
+  in Docutils 2.0.
+
 * Remove `frontend.OptionParser`, `frontend.Option`, `frontend.Values`,
   `frontend.store_multiple()`, and `frontend.read_config_file()` when
   migrating to argparse_ in Docutils 2.0 or later.
@@ -253,71 +256,31 @@ Misc
 Release 0.23b0 (unpublished)
 ============================
 
-.
+...
 
-Release 0.22 (2026-07-29)
+
+Release 0.22 (2025-07-29)
 =========================
-
-No changes to rc5.
-
-Release 0.22rc5 (2025-06-24)
-============================
-
-Targets generated from hyperlink references with embedded URI or alias
-are no longer "explicit" but "implicit" (i.e. with the same priority as
-auto-generated section targets, see `implicit hyperlink targets`__).
-
-__ https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html
-   #implicit-hyperlink-targets
-
-Don't report an error for duplicate targets with identical refname.
-
-Release 0.22rc4 (2025-06-17)
-============================
-
-Drop the "name" option of the "target-notes" directive.
-(Report an error instead of silently ignoring the value.)
-
-New alias "rst-class" for the `"class"`_ directive to improve the
-compatibility with Sphinx.
-
-
-Release 0.22rc3 (2025-06-10)
-============================
-
-New objects
-  `transforms.references.CitationReferences`
-     Mark citation_references as resolved if the backend
-     uses a BibTeX database.
-
-Output changes
-
-  manpage:
-     Do not drop text of internal targets.
-
-
-Release 0.22rc2 (2025-05-22)
-============================
-
-Fix backwards-compatibility problem:
-  reStructuredText section parsing no longer requires
-  `parsers.rst.states.RSTStateMachine.memo.section_parents`
-  (a cache introduced in Docutils 0.22rc1).
-
-Deprecate `parsers.rst.states.Struct` (obsoleted by `types.SimpleNamespace`).
-
-
-Release 0.22rc1 (2025-05-06)
-============================
 
 reStructuredText:
   - Support `CSS3 units`_. This adds "ch", "rem", "vw", "vh", "vmin",
     "vmax", and "Q" to the `supported length units`__. Note that some
     output formats don't support all units.
   - New option "figname" for the `"figure"`_ directive.
+  - Targets generated from hyperlink references with embedded URI or
+    alias are no longer "explicit" but "implicit" (i.e. with the same
+    priority as auto-generated section targets, see `implicit hyperlink
+    targets`__).
+  - Don't report an error for duplicate targets with identical refname.
+  - Drop the "name" option of the "target-notes" directive.
+    (Report an error instead of silently ignoring the value.)
+  - New alias "rst-class" for the `"class"`_ directive to improve the
+    compatibility with Sphinx.
 
   .. _CSS3 units: https://www.w3.org/TR/css-values-3/#lengths
   __ docs/ref/rst/restructuredtext.html#length-units
+  __ https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html
+     #implicit-hyperlink-targets
 
 Document Tree / Docutils DTD
   - Allow multiple <term> elements in a `\<definition_list_item>`__
@@ -383,6 +346,10 @@ New objects
      Raise `nodes.ValidationError` if the element does not comply with
      the `Docutils Document Model`_.
      Provisional.
+
+  `transforms.references.CitationReferences`
+     Mark citation_references as resolved if the backend
+     uses a BibTeX database.
 
   `writers.DoctreeTranslator`
      Generic Docutils document tree translator base class with
