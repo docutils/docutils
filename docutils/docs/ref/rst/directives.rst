@@ -892,32 +892,38 @@ Recognizes the common options `class <class option_>`_ and name_ as well as
     The horizontal alignment of the table (new in Docutils 0.13).
 
 ``width`` : length_ or percentage_  of the current line width
-    Sets the width of the table to the specified length or percentage
-    of the line width.  If omitted, the renderer determines the width
-    of the table based on its contents or the column ``widths``.
+    The width of the table.
+    By default, the renderer determines the width of a table
+    from its contents. [#width-from-widths]_
 
 ``widths`` : "auto", "grid", or a `list of integers`_
-    Explicitly set column widths.
-    Specifies relative widths if used with the ``width`` option.
+    Table column widths.
     Possible values:
 
-    .. class:: field-indent-4em run-in
+    .. class:: field-indent-7ex run-in
 
-    :auto: Delegate the determination of column widths to the backend
-           (LaTeX, the HTML browser, ...).
+    :"auto": Delegate the determination of column widths to the backend
+             (LaTeX, the HTML browser, ...).
 
-    :grid: Determine column widths from the widths of the input columns
-           (in characters).
+    :"grid": Relative column widths match the widths of the columns
+             in the reStructuredText table markup.
 
-    :list of integers: Must match the number of table columns.
-           Used instead of the input column widths. Implies *"grid"*.
+    :list of integers: Specifies relative column widths.
+             Must match the number of table columns.
 
-    The default depends on the writer. Most writers default to *grid*. [#]_
+    The default depends on the writer.
+    The HTML5_ and manpage_ writers default to *"auto"*,
+    the html4_ and LaTeX_ writers default to *"grid"*. [#widths-default]_
 
-    .. [#] The `html5 writer`_ defaults to *auto*.
-       The default for the HTML and LaTeX writers can be configured
-       with the `table_style`_ configuration setting or the special class
-       values "colwidths-auto"/"colwidths-grid").
+.. [#width-from-widths] The LaTeX writer determines the `table width
+   from column widths`__ unless the ``widths`` option is set to *"auto"*.
+
+   __ ../../user/latex.html#table-width
+
+.. [#widths-default] The ``widths`` default of the HTML and LaTeX
+   writers can be configured with the `table_style`_ configuration
+   setting using the special class values "colwidths-auto" or
+   "colwidths-grid".
 
 
 .. _csv-table:
@@ -1032,29 +1038,36 @@ Recognizes the common options `class <class option_>`_ and name_ as well as
     A URI reference to a CSV data file.
 
 ``width`` : length_ or percentage_ of the current line width
-    Sets the width of the table to the specified length or percentage
-    of the line width.  If omitted, the renderer determines the width
-    of the table based on its contents or the column ``widths``.
+    The width of the table.
+    By default, the renderer determines the width of a table
+    from its contents. [#width-from-widths2]_
 
 ``widths`` : `list of integers`_ or "auto"
-    A list of relative column widths.
-    The default is equal-width columns (100%/#columns).
-
+    A list of relative column widths. The special value
     "auto" delegates the determination of column widths to the backend
     (LaTeX, the HTML browser, ...).
+
+    The default depends on the writer.
+    The html5_ and manpage_ writers default to *"auto"*, the html4_ and
+    LaTeX_ writers default to equal-width columns. [#widths-default]_
 
 .. [#CSV] CSV (comma separated values) is a common data format generated
    by spreadsheet applications and commercial databases. Despite the
    "comma" in its name, the field delimiter_ may be any Unicode character.
 
-.. [#tab-expansion] Note, that tabs can be used as separator only in
-   external files because hard tabs in the directive content are
-   `converted to spaces`__ before it reaches the CVS reader.
+.. [#tab-expansion] Note, that *tabs* can be used as separator only in
+   external files because hard tabs in the reStructuredText source are
+   `converted to spaces`__ before parsing.
 
    __ restructuredtext.html#whitespace
 
 .. [#] Before Docutils 0.21, the header option used a hard-coded
    CSV dialect with the backslash as escape character.
+
+.. [#width-from-widths2] The `LaTeX writer defaults to a table width
+   of 100%`__ unless the ``width`` or ``widths`` option is set.
+
+   __ ../../user/latex.html#table-width
 
 
 .. _list-table:
@@ -1119,16 +1132,18 @@ Recognizes the common options `class <class option_>`_ and name_ as well as
     .. _table width:
 
 ``width`` : length_ or percentage_ of the current line width
-    Sets the width of the table to the specified length or percentage
-    of the line width.  If omitted, the renderer determines the width
-    of the table based on its contents or the column ``widths``.
+    The width of the table.
+    By default, the renderer determines the width of a table
+    from its contents. [#width-from-widths2]_
 
 ``widths`` : `list of integers`_ or "auto"
-    A list of relative column widths.
-    The default is equal-width columns (100%/#columns).
-
+    A list of relative column widths. The special value
     "auto" delegates the determination of column widths to the backend
     (LaTeX, the HTML browser, ...).
+
+    The default depends on the writer.
+    The HTML5_ and manpage_ writers default to *"auto"*, the html4_ and
+    LaTeX_ writers default to equal-width columns. [#widths-default]_
 
 .. TODO
     Add option ``missing-cells`` with keywords "strict", "fill", "span"?
