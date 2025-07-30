@@ -1664,7 +1664,7 @@ table style
 
 A pre-configured *table style* can be globally selected via the table_style_
 setting or set for individual tables via a `class directive`_ or the
-``class`` option of the `table directive`_.
+``class`` option of the `table directives`_.
 
 Supported values:
 
@@ -1672,39 +1672,103 @@ standard
   Borders around all cells.
 
 booktabs
-  A line above and below the table and one after the head.
+  Use the booktabs_ package for publication quality tables (no vertical rules).
 
 borderless
   No borders around table cells.
 
-colwidths-auto
+_`colwidths-auto`
   Column width determination by LaTeX.
-  Overridden by the `table directive`_'s ``widths`` option.
+  Overridden by the `table directive option`_ ``widths``.
 
-  .. warning::
-
-    ``colwidths-auto`` is only suited for tables with simple cell content.
-
-    LaTeX puts the content of auto-sized columns on one line (merging
-    paragraphs) and may fail with complex content.
+  .. Caution::
+     `Auto-sized columns`_ work only with simple cell content.
 
 .. eventually in future
 
    align-left, align-center, align-right
      Align tables.
 
-By default, *column widths* are computed from the source column widths.
-The `legacy_column_widths`_ setting selects the conversion algorithm.
-Custom column widths can be set with the ``widths`` option of the `table
-directive`_.
+.. _booktabs: https://ctan.org/pkg/booktabs
 
-See also the section on problems with tables_ below.
 
-.. _new_column_widths:
+.. _table width:
+
+table width and column widths
+-----------------------------
+
+To support automatic line breaks, standard LaTeX tables need to know the
+column widths. Therefore, the LaTeX writer determines default values for
+both, relative column widths and the total width of a table from the
+table's ``colwidth`` [#fn:colwidth]_ values. [#fn:table-width]_
+The algorithm works sufficiently well in typical use cases. However,
+there are cases where the table layout requires manual intervention,
+for example:
+
+* Tables where the cells contain only numbers or short text look better
+  with `auto-sized columns`_.
+
+* If the input table contains verbose markup syntax, column widths in the
+  source may be bad indicators for output column widths.
+
+* Columns may become too narrow in tables that are nested inside lists,
+  quotes, or similar.
+
+To improve the table layout, you may:
+
+* Use the `table directive option`_ ``width`` to set the table width
+  to a custom `length <length units_>`__ or percentage_ of the current
+  line width.
+
+* Adjust the table column widths in the source document or use the
+  `table directive option`_ ``widths`` to specify column widths.
+
+  .. _auto-sized columns:
+
+* Set the `table directive option`_ ``widths`` to the value *"auto"* or
+  select the `table style`_ "colwidths-auto_" to let LaTeX determine
+  table and column widths from the table content.
+
+  .. Caution::
+     Auto-sized columns only work with simple cell content.
+
+     LaTeX sets cell content in auto-sized columns in one line (merging
+     paragraphs) and fails with other block level content.
+
+The `legacy_column_widths`_ setting provides backwards compatibility with
+the (faulty) legacy algorithm.
+
+.. [#fn:colwidth]
+   Docutils stores the column widths in the reStructuredText
+   `table markup`_ (in characters) in the colwidth_ attribute
+   of the table column specifications.
+   (The colwidth_\ s of a `list table`_ or `CSV table`_ with :math:`n`
+   columns default to :math:`w_i = 100\text{⫽}n`.)
+   The ``widths`` `table directive option`_ can be used to provide custom
+   values.
+
+.. [#fn:table-width]
+   The default width :math:`w` of a table with :math:`n` columns and
+   ``colwidth`` [#fn:colwidth]_ values :math:`w_i` is computed using
+   the equation
+
+   .. math::
+       w = \frac{100\,\%}{40} \left( n + \sum_{i=1}^n w_i \right)
+
+   with an upper limit of 100%.
+
+   .. For details see `docutils.writers.latex2e.Table.get_colspecs()`.
+
+.. _colwidth: ../ref/doctree.html#colwidth
+.. _CSV table: ../ref/rst/directives.html#csv-table
+.. _document tree: ../ref/doctree.html
 .. _legacy_column_widths: config.html#legacy-column-widths
+.. _list table: ../ref/rst/directives.html#list-table
+.. _percentage:  ../ref/rst/restructuredtext.html#percentage-unit
+.. _table directives: ../ref/rst/directives.html#tables
+.. _table directive option: ../ref/rst/directives.html#table-options
+.. _table markup: ../ref/rst/restructuredtext.html#tables
 .. _table_style: config.html#table-style-latex-writers
-.. _"widths" option:
-.. _table directive: ../ref/rst/directives.html#table
 
 
 table of contents
@@ -2163,10 +2227,10 @@ The appearance in the output can be configured in a `style sheet`_.
 Tables
 ``````
 
-* Too wide tables (cf. `bug #422`_):
+* Too wide tables:
 
-  Try the new_column_widths_ setting or use the `"widths" option`_ to
-  manually set the table column widths.
+  - Turn off the legacy_column_widths_ setting (cf. `bug #422`_)
+    or manually set the `table width`_.
 
 * Table cells with both multirow and multicolumn are currently not possible.
 

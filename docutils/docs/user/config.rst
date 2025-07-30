@@ -1788,7 +1788,7 @@ of the `"table" directive`_. See also `Generating LaTeX with Docutils`__.
 
 New in Docutils 0.18.
 
-__ latex.html#table-style
+__ latex.html#table-width
 
 
 literal_block_env
