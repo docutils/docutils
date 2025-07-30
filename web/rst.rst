@@ -43,9 +43,9 @@ reStructuredText should post a message to the Docutils-users_ mailing
 list.
 
 __ docs/user/rst/quickstart.html
-__ docs/user/rst/quickstart.txt
+__ docs/user/rst/quickstart.rst
 __ docs/user/rst/quickref.html
-__ docs/user/rst/cheatsheet.txt
+__ docs/user/rst/cheatsheet.rst
 .. _Docutils-users: docs/user/mailing-lists.html#docutils-users
 
 
@@ -235,7 +235,7 @@ is left as an exercise for the reader.
 
 .. |reStructuredText| image:: rst.png
 
-
+
 ..
    Local Variables:
    mode: indented-text
