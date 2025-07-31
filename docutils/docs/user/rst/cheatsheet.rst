@@ -27,7 +27,7 @@ Grid table:
 | >>> print 'Doctest block'      |                                   |
 | Doctest block                  | > Quoted                          |
 +--------------------------------+-----------------------------------+
-| | Line blocks preserve line breaks & indents. [new in 0.3.6]       |
+| | Line blocks preserve line breaks & indents.                      |
 | |     Useful for addresses, verse, and adornment-free lists; long  |
 |       lines can be wrapped with continuation lines.                |
 +--------------------------------------------------------------------+
@@ -70,7 +70,7 @@ with role`:emphasis:; ``inline literal text``; standalone hyperlink,
 https://docutils.sourceforge.io; named reference, reStructuredText_;
 `anonymous reference`__; footnote reference, [1]_; citation reference,
 [CIT2002]_; |substitution|; _`inline internal target`.
-
+
 Directive Quick Reference
 =========================
 See <https://docutils.sourceforge.io/docs/ref/rst/directives.html> for full info.
@@ -86,30 +86,31 @@ figure            Like "image", but with optional caption and legend
 topic             ``.. topic:: Title``; like a mini section
 sidebar           ``.. sidebar:: Title``; like a mini parallel document
 parsed-literal    A literal block with parsed inline markup
+code              Literal block for code with optional syntax highlighting
+math              Mathematical notation (input in LaTeX format)
 rubric            ``.. rubric:: Informal Heading``
 epigraph          Block quote with class="epigraph"
 highlights        Block quote with class="highlights"
 pull-quote        Block quote with class="pull-quote"
-compound          Compound paragraphs [0.3.6]
-container         Generic block-level container element [0.3.10]
-table             Create a titled table [0.3.1]
-list-table        Create a table from a uniform two-level bullet list [0.3.8]
-csv-table         Create a table from CSV data [0.3.4]
+compound          Compound paragraphs
+container         Generic block-level container element
+table             Create a titled table
+list-table        Create a table from a uniform two-level bullet list
+csv-table         Create a table from CSV data
 contents          Generate a table of contents
 sectnum           Automatically number sections, subsections, etc.
-header, footer    Create document decorations [0.3.8]
+header, footer    Create document decorations
 target-notes      Create an explicit footnote for each external target
-math              Mathematical notation (input in LaTeX format)
-meta              Document metadata
-include           Read an external reST file as if it were inline
-raw               Non-reST data passed untouched to the Writer
 replace           Replacement text for substitution definitions
 unicode           Unicode character code conversion for substitution defs
 date              Generates today's date; for substitution defs
+include           Read an external reST file as if it were inline
+raw               Non-reST data passed untouched to the Writer
 class             Set a "class" attribute on the next element
-role              Create a custom interpreted text role [0.3.2]
-default-role      Set the default interpreted text role [0.3.10]
-title             Set the metadata document title [0.3.10]
+role              Create a custom interpreted text role
+default-role      Set the default interpreted text role
+meta              Document metadata
+title             Set the metadata document title
 ================  ============================================================
 
 Interpreted Text Role Quick Reference
@@ -119,12 +120,13 @@ See <https://docutils.sourceforge.io/docs/ref/rst/roles.html> for full info.
 ================  ============================================================
 Role Name         Description
 ================  ============================================================
+code              code in a formal language (see docs for syntax highlighting)
 emphasis          Equivalent to *emphasis*
 literal           Equivalent to ``literal`` but processes backslash escapes
 math              Mathematical notation (input in LaTeX format)
 PEP               Reference to a numbered Python Enhancement Proposal
 RFC               Reference to a numbered Internet Request For Comments
-raw               For non-reST data; cannot be used directly (see docs) [0.3.6]
+raw               For non-reST data; cannot be used directly (see docs)
 strong            Equivalent to **strong**
 sub               Subscript
 sup               Superscript
