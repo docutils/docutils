@@ -430,15 +430,16 @@ Simple reference names may also optionally use backquotes.
 
 .. _normalized reference names:
 
-Reference names are whitespace-neutral and case-insensitive. [#case-forgiving]_
-When resolving reference names internally:
+Reference names are whitespace-neutral and
+case-insensitive [#substitution-text]_:
+When resolving reference names internally,
 
 - whitespace is normalized (one or more spaces, horizontal or vertical
   tabs, newlines, carriage returns, or form feeds, are interpreted as
   a single space), and
 
 - case is normalized (all alphabetic characters are converted to
-  lowercase). [#case-forgiving]_
+  lowercase). [#substitution-text]_
 
 For example, the following `hyperlink references`_ are equivalent::
 
@@ -448,21 +449,19 @@ For example, the following `hyperlink references`_ are equivalent::
       Hyperlink`_
 
 Hyperlinks_, footnotes_, and citations_ all share the same namespace
-for reference names.  The labels of citations (simple reference names)
-and manually-numbered footnotes (numbers) are entered into the same
-database as other hyperlink names.  This means that a footnote_
-(defined as "``.. [#note]``") which can be referred to by a footnote
-reference (``[#note]_``), can also be referred to by a plain hyperlink
-reference (``note_``).  Of course, each type of reference (hyperlink,
+for reference names. [#substitution-text]_
+This means that a footnote defined as "``.. [#note]``" can be referred to
+by the `footnote reference`_ ``[#note]_`` as well as a plain `hyperlink
+reference`_ ``note_``. Of course, each type of reference (hyperlink,
 footnote, citation) may be processed and rendered differently.  Some
 care should be taken to avoid reference name conflicts. [#]_
-References to `substitution definitions`_ (`substitution references`_)
-use a different namespace.
 
-.. [#case-forgiving] Matching `substitution references`_ to
-   `substitution definitions`_ is `case-sensitive but forgiving`_.
-.. [#] Docutils' rules for handling duplicate names are described in
-   section `Implicit Hyperlink Targets`_.
+.. [#substitution-text]
+   `Substitution references`_ and `substitution definitions`_
+   use a different namespace. Matching is `case-sensitive but forgiving`_.
+
+.. [#] Docutils' rules for handling duplicate reference names are described
+   in section `Implicit Hyperlink Targets`_.
 
 
 Document Structure
@@ -1695,7 +1694,7 @@ unambiguous.
 .. _footnote:
 
 Footnotes
-`````````
+---------
 
 :Doctree elements: `\<footnote>`_, `\<label>`_
 :Config settings:  footnote_references_
@@ -1703,15 +1702,15 @@ Footnotes
 
 Each footnote consists of an explicit markup start (:literal:`.. \ `),
 a left square bracket, the footnote label, a right square bracket, and
-whitespace, followed by indented body elements.  A footnote label can
-be:
+whitespace, followed by indented body elements.
+A _`footnote label` can be:
 
-- an integer consisting of one or more digits,
+- a decimal integer (manually `numbered footnotes`_),
 
 - a single ``#`` (denoting `auto-numbered footnotes`_),
 
-- a ``#`` followed by a `simple reference name`_ (an `autonumber label`_),
-  or
+- a ``#`` followed by a simple `reference name`_
+  (auto-numbered footnotes with `autonumber label`_), or
 
 - a single ``*`` (denoting `auto-symbol footnotes`_).
 
@@ -1723,17 +1722,13 @@ the remaining elements differ, the first element must begin on the
 line after the footnote label.  Otherwise, the difference in
 indentation will not be detected.
 
-Footnotes may occur anywhere in the document, not only at the end.
-Where and how they appear in the processed output depends on the
-processing system.
-
 Here is a manually numbered footnote::
 
     .. [1] Body elements go here.
 
-Each footnote automatically generates a `hyperlink target`_ pointing
-to itself (auto-numbered and auto-symbol footnotes generate `implicit
-hyperlink targets`_).  The target name is is the footnote label.
+Footnotes may occur anywhere in the document, not only at the end.
+Where and how they appear in the processed output depends on the
+processing system.
 
 Syntax diagram::
 
@@ -1744,6 +1739,17 @@ Syntax diagram::
             +-------------------------+
 
 
+Numbered Footnotes
+``````````````````
+
+`Numbered footnotes` use decimal numbers as label. The number may
+be specified in the source or automatically assigned.
+Numbered footnotes are assigned a `reference name`_;
+they can be referred to more than once, with a `footnote reference`_
+or `hyperlink reference`_::
+
+    The footnote above can be referred to with 1_ or [1]_.
+
 Auto-Numbered Footnotes
 .......................
 
@@ -1753,36 +1759,29 @@ reference.
 
 The first footnote to request automatic numbering is assigned the
 label "1", the second is assigned the label "2", and so on (assuming
-there are no manually numbered footnotes present; see `Mixed Manual
-and Auto-Numbered Footnotes`_ below).  A footnote which has
-automatically received a label "1" generates an `implicit hyperlink
-target`_ with name "1".
+there is no conflict with another reference name; see also
+`Mixed Manual and Auto-Numbered Footnotes`_ below).
+If the footnote label is a single ``#``, the assigned number is also used
+as reference name.
 
 .. _autonumber label:
 
-A footnote may specify a label explicitly while at the same time
-requesting automatic numbering: ``[#label]``.  These labels are called
-_`autonumber labels`.  Autonumber labels do two things:
-
-- On the footnote itself, they generate a hyperlink target whose name
-  is the autonumber label (doesn't include the ``#``).
-
-- They allow an automatically numbered footnote to be referred to more
-  than once, as a footnote reference or hyperlink reference.  For
-  example::
+A custom reference name can be specified appending a `simple reference
+name`_ to the number sign to form an *autonumber label*.
+For example::
 
       If [#note]_ is the first footnote reference, it will
       show up as "[1]".  We can refer to it again as [#note]_
       and again see "[1]".  We can also refer to it as note_
       (an ordinary internal hyperlink reference).
 
-      .. [#note] This is the footnote labeled "note".
+      .. [#note] This is the footnote with reference name "note".
 
 The numbering is determined by the order of the footnotes, not by the
-order of the references.  For footnote references without autonumber
-labels (``[#]_``), the footnotes and footnote references must be in
-the same relative order but need not alternate in lock-step.  For
-example::
+order of the references.
+Auto-numbered footnotes and footnote references without autonumber label
+must be in the same relative order but need not alternate in lock-step.
+For example::
 
     [#]_ is a reference to footnote 1,
     and [#]_ is a reference to footnote 2.
@@ -1800,12 +1799,36 @@ they are encountered in the document, which is not necessarily the
 same as the order in which a person would read them.
 
 
-Auto-Symbol Footnotes
-.....................
+Mixed Manual and Auto-Numbered Footnotes
+........................................
 
-An asterisk (``*``) may be used for footnote labels to request automatic
+Manual and automatic footnote numbering may both be used within a
+single document, although the results may not be expected.  Manual
+numbering takes priority.  Only unused footnote numbers are assigned
+to auto-numbered footnotes.  The following example should be
+illustrative::
+
+    [2]_ will be "2" (manually numbered),
+    [#]_ will be "3" (anonymous auto-numbered), and
+    [#label]_ will be "1" (labeled auto-numbered).
+
+    .. [2] This footnote is labeled manually, so its number is fixed.
+
+    .. [#label] This autonumber-labeled footnote will be labeled "1".
+       It is the first auto-numbered footnote and no other footnote
+       with label "1" exists.  The order of the footnotes is used to
+       determine numbering, not the order of the footnote references.
+
+    .. [#] This footnote will be labeled "3".  It is the second
+       auto-numbered footnote, but footnote label "2" is already used.
+
+
+Auto-Symbol Footnotes
+`````````````````````
+
+An asterisk (``*``) may be used as footnote label to request automatic
 symbol generation for footnotes and footnote references.  The asterisk
-may be the only character in the label.  For example::
+must be the only character in the label.  For example::
 
     Here is a symbolic footnote reference: [*]_.
 
@@ -1847,37 +1870,13 @@ reused, doubled and then tripled, and so on (``**`` etc.).
    "xmlcharrefreplace" `output encoding error handler`_.
 
 
-Mixed Manual and Auto-Numbered Footnotes
-........................................
-
-Manual and automatic footnote numbering may both be used within a
-single document, although the results may not be expected.  Manual
-numbering takes priority.  Only unused footnote numbers are assigned
-to auto-numbered footnotes.  The following example should be
-illustrative::
-
-    [2]_ will be "2" (manually numbered),
-    [#]_ will be "3" (anonymous auto-numbered), and
-    [#label]_ will be "1" (labeled auto-numbered).
-
-    .. [2] This footnote is labeled manually, so its number is fixed.
-
-    .. [#label] This autonumber-labeled footnote will be labeled "1".
-       It is the first auto-numbered footnote and no other footnote
-       with label "1" exists.  The order of the footnotes is used to
-       determine numbering, not the order of the footnote references.
-
-    .. [#] This footnote will be labeled "3".  It is the second
-       auto-numbered footnote, but footnote label "2" is already used.
-
-
 Citations
-`````````
+---------
 
 :Doctree element: `\<citation>`_
 :See also:        `citation references`_
 
-Citations are identical to footnotes_ except that they use only
+Citations are identical to manually numbered footnotes_ except that they use
 non-numeric labels such as ``[note]`` or ``[GVR2001]``.  Citation
 labels are simple `reference names`_ (case-insensitive single words
 consisting of alphanumerics plus internal hyphens, underscores, and
@@ -1894,7 +1893,7 @@ differently from footnotes.  For example::
 .. _hyperlink target:
 
 Hyperlink Targets
-`````````````````
+-----------------
 
 :Doctree element: `\<target>`_
 :See also:        | `hyperlink references`_
@@ -1909,7 +1908,7 @@ which may be linked to by `hyperlink references`_.
 
 Hyperlink targets may be named or anonymous.  *Named hyperlink targets*
 consist of an explicit markup start (:literal:`.. \ `), an underscore,
-the reference name (no trailing underscore), a colon, whitespace, and
+the `reference name`_ (no trailing underscore), a colon, whitespace, and
 a link block::
 
     .. _hyperlink-name: link-block
@@ -2089,15 +2088,15 @@ Syntax diagram::
 .. _anonymous:
 
 Anonymous Hyperlinks
-....................
+````````````````````
 
 The `World Wide Web Consortium`_ recommends in its `HTML Techniques
 for Web Content Accessibility Guidelines`_ that authors should
 "clearly identify the target of each link."  Hyperlink references
 should be as verbose as possible, but duplicating a verbose hyperlink
-name in the target is onerous and error-prone.  Anonymous hyperlinks
+name in the target is onerous and error-prone.  *Anonymous hyperlinks*
 are designed to allow convenient verbose hyperlink references, and are
-analogous to `Auto-Numbered Footnotes`_.  They are particularly useful
+analogous to `auto-numbered footnotes`_.  They are particularly useful
 in short or one-off documents.  However, this feature is easily abused
 and can result in unreadable plaintext and/or unmaintainable
 documents.  Caution is advised.
@@ -2107,8 +2106,8 @@ instead of one::
 
     See `the web site of my favorite programming language`__.
 
-Anonymous targets begin with ``.. __:``, no reference name is required
-or allowed::
+Anonymous `hyperlink targets`_ begin with ``.. __:``, no reference name
+is required or allowed::
 
     .. __: https://www.python.org
 
@@ -2117,19 +2116,22 @@ two underscores only::
 
     __ https://www.python.org
 
-The reference name of the reference is not used to match the reference
-to its target.  Instead, the order of anonymous hyperlink references
+.. _anonymous matching:
+
+The order of anonymous hyperlink references
 and targets within the document is significant: the first anonymous
 reference will link to the first anonymous target.  The number of
 anonymous hyperlink references in a document must match the number of
-anonymous targets.  For readability, it is recommended that targets be
+anonymous targets.
+
+For readability, it is recommended that targets be
 kept close to references.  Take care when editing text containing
 anonymous references; adding, removing, and rearranging references
 require attention to the order of corresponding targets.
 
 
 Directives
-``````````
+----------
 
 :Doctree elements: depend on the directive
 
@@ -2234,7 +2236,7 @@ Syntax diagram::
 
 
 Substitution Definitions
-````````````````````````
+------------------------
 
 :Doctree element: `\<substitution_definition>`_
 :See also:        `substitution references`_
@@ -2394,7 +2396,7 @@ Templates
 
 
 Comments
-````````
+--------
 
 :Doctree element: `\<comment>`_
 :Config setting:  strip_comments_
@@ -2436,7 +2438,7 @@ Syntax diagram::
             +----------------------+
 
 Empty Comments
-..............
+``````````````
 
 An explicit markup start followed by a blank line and nothing else
 (apart from whitespace) is an "_`empty comment`".  It serves to
@@ -2457,35 +2459,41 @@ construct, insert an unindented empty comment in-between::
 Implicit Hyperlink Targets
 ==========================
 
-:Doctree element: `\<target>`_
+:Doctree elements: `\<section>`_, `\<target>`_
 
-Implicit hyperlink targets are generated by `section titles`_,
-auto-numbered footnotes_, and hyperlink references with `embedded URIs
-and aliases`_. They may also be generated by extension constructs.
+Implicit hyperlink targets are generated by `section titles`_
+and named hyperlink references with `embedded URIs and aliases`_.
+They may also be generated by extension constructs.
 Implicit hyperlink targets behave identically to `explicit hyperlink
 targets`_ except in case of duplicate reference names.
 
-Ambiguity due to different targets with the same reference name is
+.. _name conflicts:
+
+Ambiguity due to different objects with the same `reference name`_ is
 avoided by the following procedure:
 
 #. Duplicate external__ or indirect__ hyperlink targets that refer to
    the same URI or hyperlink reference do not conflict.  One target
-   is removed and an INFO [#level]_ system message inserted.
+   is invalidated_ and an INFO [#level]_ system message inserted.
 
    __ `external hyperlink targets`_
    __ `indirect hyperlink targets`_
 
-#. `Explicit hyperlink targets`_ override any implicit targets having
-   the same reference name.  The implicit hyperlink target is removed,
+#. `Explicit hyperlink targets`_, citations_, `numbered footnotes`_,
+   and directives_ with `"name" option`_
+   override any implicit targets having the same reference name.
+   The implicit hyperlink target is invalidated_,
    and an INFO [#level]_ system message inserted.
 
-#. Duplicate implicit hyperlink targets are removed, and INFO [#level]_
-   system messages inserted.  For example, if two or more sections
+#. Duplicate implicit hyperlink targets are both invalidated_,
+   and INFO [#level]_ system messages inserted.
+   For example, if two or more sections
    have the same title (such as "Introduction" subsections of a
    rigidly-structured document), there will be duplicate implicit
    hyperlink targets.
 
-#. Duplicate explicit hyperlink targets are removed, and WARNING [#level]_
+#. Duplicate `explicit hyperlink targets`_ (or other objects with
+   the same reference name) are both invalidated_, and WARNING [#level]_
    system messages inserted.
 
 The parser returns a set of *unique* hyperlink targets.  The calling
@@ -2826,6 +2834,8 @@ For example::
     floating-point numbers (without exponents).
 
 
+.. _hyperlink reference:
+
 Hyperlink References
 --------------------
 
@@ -2857,19 +2867,26 @@ independently.  The underscore can be thought of as a right-pointing
 arrow.  The trailing underscores point away from hyperlink references,
 and the leading underscores point toward `hyperlink targets`_.
 
-_`Hyperlinks` consist of two parts:
+.. _hyperlinks:
 
-1. In the text body, there is a source link, a reference name with a
+*Hyperlinks* consist of two parts:
+
+1. In the text body, there is a *reference*, a `reference name`_ with a
    trailing underscore (or two underscores for `anonymous hyperlinks`_)::
 
        See the Python_ home page for info.
 
-2. A matching target link must exist in the document. It may be embedded
-   (see below) or exist somewhere else in the document (see `Hyperlink
-   Targets`_).
+2. A matching *target* must exist in the document.
+   It may be embedded (see below) or exist somewhere else in the document
+   (`explicit hyperlink targets`_, `implicit hyperlink targets`_,
+   `inline internal targets`_, directives_ with `"name" option`_,
+   citations_, or `numbered footnotes`_).
 
-`Anonymous hyperlinks`_ do not use reference names to match references
-to targets, but otherwise behave similarly to named hyperlinks.
+*Named* hyperlinks match reference and target by their `reference names`_.
+*Anonymous* hyperlinks match references to targets by their
+`order within the document`__.
+
+__ `anonymous matching`_
 
 
 Embedded URIs and Aliases
@@ -2978,6 +2995,8 @@ See `Implicit Hyperlink Targets`_ for the resolution of duplicate
 reference names.
 
 
+.. _footnote reference:
+
 Footnote References
 -------------------
 
@@ -2989,19 +3008,8 @@ Footnote References
                    trim_footnote_reference_space_
 :See also:         footnotes_
 
-
-Each footnote reference consists of a square-bracketed label followed
-by a trailing underscore.  Footnote labels are one of:
-
-- one or more digits (i.e., a number),
-
-- a single ``#`` (denoting `auto-numbered footnotes`_),
-
-- a ``#`` followed by a simple `reference name`_ (an `autonumber label`_),
-  or
-
-- a single ``*`` (denoting `auto-symbol footnotes`_).
-
+A *footnote reference* consists of a square-bracketed
+`footnote label`_ followed by a trailing underscore.
 For example::
 
     Please RTFM [1]_.
@@ -3040,7 +3048,7 @@ Substitution References
 :See also: `substitution definitions`_
 
 Vertical bars are used to bracket the substitution reference text.  A
-substitution reference may also be a hyperlink reference by appending
+substitution reference may also be a `hyperlink reference`_ by appending
 a ``_`` (named) or ``__`` (anonymous_) suffix; the substitution text is
 used for the reference text in the named case.
 
@@ -3230,6 +3238,7 @@ Markup errors are handled according to the specification in
 .. _"list-table": directives.html#list-table
 .. _"math": directives.html#math
 .. _"meta": directives.html#metadata
+.. _"name" option: directives.html#name
 .. _"raw": directives.html#raw
 .. _"replace": directives.html#replace
 .. _"role" directive: directives.html#custom-interpreted-text-roles
@@ -3314,6 +3323,7 @@ Markup errors are handled according to the specification in
 .. _`<version>`: ../doctree.html#version
 .. _"classes" attribute:  ../doctree.html#classes
 .. _identifier key: ../doctree.html#identifiers
+.. _invalidated: ../doctree.html#reference-name-removal
 .. _`measure`: ../doctree.html#measure
 .. _metadata title: ../doctree.html#title-attribute
 

@@ -4718,14 +4718,20 @@ The ``names`` attribute is a space-separated list containing `reference
 names`_ of an element (spaces inside a name are backslash-escaped).
 It is one of the `common attributes`_, shared by all Docutils elements.
 
-Each name in the list must be unique; if there are name conflicts (two or
-more elements want to use the same name), the contents will be transferred
-to the `dupnames`_ attribute on the duplicate elements. [#]_
+.. _reference name removal:
 
-.. [#] An element may have both ``names`` and ``dupnames`` attributes,
-   if the ``dupnames`` are from conflicting `implicit hyperlink targets`_
-   and the ``names`` from `explicit hyperlink targets`_ or a directive's
-   `name option`_.
+Each reference name must be unique in its namespace_;
+if there are name conflicts (two or more elements want to use the same
+name), the affected name will be transferred to the `dupnames`_ attribute on
+the duplicate element(s). The element can no longer be used as hyperlink
+target. [#]_
+
+An element may have both ``names`` and ``dupnames`` attributes,
+if the ``dupnames`` are from conflicting `implicit hyperlink targets`_
+and the ``names`` from `explicit hyperlink targets`_ or a directive's
+`name option`_.
+
+.. [#] See `Implicit Hyperlink Targets`_ for details of conflict resolution.
 
 
 ``namest``
@@ -5581,10 +5587,14 @@ _`Reference names`
 
   Reference names may consist of any text.
   Whitespace is normalized. [#whitespace-normalization]_
-  Hyperlinks_, footnotes_, and citations_ all share the same namespace
-  for reference names. Comparison ignores case.
-  Substitutions_ use a distinct namespace.  Comparison is case-sensitive
-  but forgiving.
+
+  .. _namespace:
+
+  Almost all elements in a document share a common *namespace*
+  for reference names, comparison ignores case.
+  Only `\<substitution_definition>`_ and `\<substitution_reference>`_
+  elements use a distinct namespace with `case-sensitive but forgiving`_
+  matching of reference names.
 
   In reStructuredText, `reference names <rST reference names_>`__
   originate from `internal hyperlink targets`_, a directive's `name
@@ -5718,6 +5728,8 @@ Bibliography
 .. _"authors" field:        rst/restructuredtext.html#authors
 .. _block quote:            rst/restructuredtext.html#block-quotes
 .. _bullet list:            rst/restructuredtext.html#bullet-lists
+.. _case-sensitive but forgiving: rst/restructuredtext.html
+                                  #case-sensitive-but-forgiving
 .. _CSS3 length units:      rst/restructuredtext.html#length-units
 .. _citations:              rst/restructuredtext.html#citations
 .. _citation references:    rst/restructuredtext.html#citation-references
