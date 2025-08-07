@@ -62,23 +62,13 @@ General Docutils Options
 --input-encoding=<name[:handler]>
                         Specify the encoding and optionally the error handler
                         of input text.  Default: utf-8.
---input-encoding-error-handler=INPUT_ENCODING_ERROR_HANDLER
-                        Specify the error handler for undecodable characters.
-                        Choices: "strict" (default), "ignore", and "replace".
 --output-encoding=<name[:handler]>
                         Specify the text encoding and optionally the error
                         handler for output.  Default: utf-8.
---output-encoding-error-handler=OUTPUT_ENCODING_ERROR_HANDLER
-                        Specify error handler for unencodable output
-                        characters; "strict" (default), "ignore", "replace",
-                        "xmlcharrefreplace", "backslashreplace".
 --error-encoding=<name[:handler]>, -e <name[:handler]>
-                        Specify text encoding and optionally error handler for
-                        error output.  Default: utf-8.
---error-encoding-error-handler=ERROR_ENCODING_ERROR_HANDLER
-                        Specify the error handler for unencodable characters
-                        in error output.  Default: backslashreplace.
---language=<name>, -l <name>
+                        Specify text encoding and optionally the error handler
+                        for error output.  Default: utf-8.
+--language=<tag>, -l <tag>
                         Specify the language (as BCP 47 language tag).
                         Default: en.
 --record-dependencies=<file>
@@ -155,9 +145,9 @@ Standalone Reader Options
 
 LaTeX-Specific Options
 ----------------------
---documentclass=DOCUMENTCLASS
+--documentclass=<documentclass>
                         Specify LaTeX documentclass.  Default: "article".
---documentoptions=DOCUMENTOPTIONS
+--documentoptions=<options>
                         Specify document options.  Multiple options can be
                         given, separated by commas.  Default: "a4paper".
 --footnote-references=<format>
@@ -188,7 +178,7 @@ LaTeX-Specific Options
                         Comma-separated list of directories where stylesheets
                         are found. Used by --stylesheet-path when expanding
                         relative path arguments. Default: ".".
---latex-preamble=LATEX_PREAMBLE
+--latex-preamble=<preamble>
                         Customization by LaTeX code in the preamble. Default:
                         select PDF standard fonts (Times, Helvetica, Courier).
 --template=<file>       Specify the template file. Default: "default.tex".
@@ -201,10 +191,10 @@ LaTeX-Specific Options
 --topic-abstract        Typeset abstract as topic. (default)
 --use-latex-abstract    Use LaTeX abstract environment for the document's
                         abstract.
---hyperlink-color=HYPERLINK_COLOR
+--hyperlink-color=<color>
                         Color of any hyperlinks embedded in text. Default:
                         "blue" (use "false" to disable).
---hyperref-options=HYPERREF_OPTIONS
+--hyperref-options=<options>
                         Additional options to the "hyperref" package.
 --compound-enumerators  Enable compound enumerators for nested enumerated
                         lists (e.g. "1.2.a.ii").
@@ -222,26 +212,22 @@ LaTeX-Specific Options
                         Set the separator between section number and
                         enumerator for compound enumerated lists.  Default:
                         "-".
---literal-block-env=LITERAL_BLOCK_ENV
+--literal-block-env=<environment>
                         When possible, use the specified environment for
                         literal-blocks. Default: "" (fall back to "alltt").
---use-verbatim-when-possible
-                        Deprecated alias for "--literal-block-env=verbatim".
 --table-style=<format>  Table style. "standard" with horizontal and vertical
                         lines, "booktabs" (LaTeX booktabs style) only
                         horizontal lines above and below the table and below
                         the header, or "borderless". Default: "standard"
---graphicx-option=GRAPHICX_OPTION
-                        LaTeX graphicx package option. Possible values are
-                        "dvipdfmx", "dvips", "dvisvgm", "luatex", "pdftex",
-                        and "xetex".Default: "".
---font-encoding=FONT_ENCODING
+--graphicx-option=<option>
+                        LaTeX graphicx package option. Default: "".
+--font-encoding=<encoding>
                         LaTeX font encoding. Possible values are "", "T1"
                         (default), "OT1", "LGR,T1" or any other combination of
                         options to the `fontenc` package.
---reference-label=REFERENCE_LABEL
+--reference-label=<command name>
                         Per default the latex-writer puts the reference title
-                        into hyperreferences. Specify "ref*" or "pageref*" to
+                        into hyperreferences. Specify "ref" or "pageref" to
                         get the section number or the page number.
 --use-bibtex=<style,bibfile[,bibfile,...]>
                         Specify style and database(s) for bibtex, for example

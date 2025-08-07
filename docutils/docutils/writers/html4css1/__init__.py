@@ -74,7 +74,7 @@ class Writer(writers._html_base.Writer):
             'Math output format (one of "MathML", "HTML", "MathJax", or '
             '"LaTeX") and option(s). (default: "HTML math.css")',
             ['--math-output'],
-            {'default': 'HTML math.css',
+            {'metavar': '<format [option(s)]>', 'default': 'HTML math.css',
              'validator': frontend.validate_math_output}),
         xml_declaration=(
             'Prepend an XML declaration (default). ',

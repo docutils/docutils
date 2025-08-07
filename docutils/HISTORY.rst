@@ -17,7 +17,9 @@
 Release 0.23b0 (unpublished)
 ============================
 
-...
+* docutils/frontend.py, docutils/writers/
+
+  - More consistent and concise command line help.
 
 
 Release 0.22 (2026-07-29)

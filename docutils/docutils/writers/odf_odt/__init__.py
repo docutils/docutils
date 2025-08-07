@@ -386,10 +386,9 @@ class Writer(writers.Writer):
             ('Specify a stylesheet.  '
                 'Default: "%s"' % default_stylesheet_path,
                 ['--stylesheet'],
-                {
-                    'default': default_stylesheet_path,
-                    'dest': 'stylesheet'
-                }),
+                {'default': default_stylesheet_path,
+                    'dest': 'stylesheet',
+                    'metavar': '<filename>'}),
             ('Specify an ODF-specific configuration/mapping file '
                 'relative to the current working directory.',
                 ['--odf-config-file'],
