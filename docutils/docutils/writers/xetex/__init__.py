@@ -57,7 +57,8 @@ class Writer(latex2e.Writer):
         latex_preamble=('Customization by LaTeX code in the preamble. '
                         'Default: select "Linux Libertine" fonts.',
                         ['--latex-preamble'],
-                        {'default': default_preamble}),
+                        {'metavar': '<preamble>',
+                         'default': default_preamble}),
         )
 
     def __init__(self) -> None:

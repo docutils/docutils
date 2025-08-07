@@ -61,23 +61,13 @@ General Docutils Options
 --input-encoding=<name[:handler]>
                         Specify the encoding and optionally the error handler
                         of input text.  Default: utf-8.
---input-encoding-error-handler=INPUT_ENCODING_ERROR_HANDLER
-                        Specify the error handler for undecodable characters.
-                        Choices: "strict" (default), "ignore", and "replace".
 --output-encoding=<name[:handler]>
                         Specify the text encoding and optionally the error
                         handler for output.  Default: utf-8.
---output-encoding-error-handler=OUTPUT_ENCODING_ERROR_HANDLER
-                        Specify error handler for unencodable output
-                        characters; "strict" (default), "ignore", "replace",
-                        "xmlcharrefreplace", "backslashreplace".
 --error-encoding=<name[:handler]>, -e <name[:handler]>
-                        Specify text encoding and optionally error handler for
-                        error output.  Default: utf-8.
---error-encoding-error-handler=ERROR_ENCODING_ERROR_HANDLER
-                        Specify the error handler for unencodable characters
-                        in error output.  Default: backslashreplace.
---language=<name>, -l <name>
+                        Specify text encoding and optionally the error handler
+                        for error output.  Default: utf-8.
+--language=<tag>, -l <tag>
                         Specify the language (as BCP 47 language tag).
                         Default: en.
 --record-dependencies=<file>
@@ -189,11 +179,10 @@ HTML Writer Options
                         simple field lists. (default)
 --no-compact-field-lists
                         Disable compact simple field lists.
---table-style=TABLE_STYLE
-                        Added to standard table classes. Defined styles:
+--table-style=<style>   Class value(s) assigned to all tables. Defined styles:
                         borderless, booktabs, align-left, align-center, align-
                         right, colwidths-auto, colwidths-grid.
---math-output=MATH_OUTPUT
+--math-output=<format [option(s)]>
                         Math output format (one of "MathML", "HTML",
                         "MathJax", or "LaTeX") and option(s). (default:
                         "MathML")
@@ -206,7 +195,7 @@ HTML Writer Options
 
 HTML5 Writer Options
 --------------------
---image-loading=IMAGE_LOADING
+--image-loading=<strategy>
                         Suggest at which point images should be loaded:
                         "embed", "link" (default), or "lazy".
 --section-self-link     Append a self-link to section headings.

@@ -335,7 +335,7 @@ error_encoding
 The text encoding [#encodings]_ for error output.
 
 :Default: The encoding reported by ``sys.stderr``, locale encoding, or "ascii".
-:Options: ``--error-encoding``, ``-e``.
+:Options: ``--error-encoding``, ``-e`` (deprecated).
 
 
 error_encoding_error_handler
@@ -345,8 +345,12 @@ The error handler for unencodable characters in error output.
 Acceptable values are the `Error Handlers`_ of Python's "codecs" module.
 See also output_encoding_error_handler_.
 
+The error handler may also be appended to the error_encoding_
+setting, delimited by a colon, e.g. ``--error-encoding=ascii:replace``.
+
 :Default: "backslashreplace"
-:Options: ``--error-encoding-error-handler``, ``--error-encoding``, ``-e``.
+:Options: ``--error-encoding-error-handler``
+          (hidden, intended mainly for programmatic use).
 
 
 exit_status_level
@@ -441,8 +445,9 @@ ignore
 The error handler may also be appended to the input_encoding_
 setting, delimited by a colon, e.g. ``--input-encoding=ascii:replace``.
 
-*Default*: "strict".
-*Options*: ``--input-encoding-error-handler``.
+:Default: "strict".
+:Options: ``--input-encoding-error-handler``
+           (hidden, intended mainly for programmatic use).
 
 
 language_code
@@ -504,7 +509,7 @@ instead of `bytes`.
      In non-English documents, also auto-generated labels
      may contain non-ASCII characters.
 
-This setting is ignored by the `ODF/ODT Writer`_ which always usues UTF-8.
+This setting is ignored by the `ODF/ODT Writer`_ which always uses UTF-8.
 
 :Default: "utf-8".
 :Option: ``--output-encoding`` (shortcut ``-o`` removed in Docutils 0.22).
@@ -534,8 +539,9 @@ The error handler may also be appended to the output_encoding_
 setting using a colon as delimiter, e.g.
 ``--output-encoding=ascii:xmlcharrefreplace``.
 
-*Default*: "strict".
-*Options*: ``--output-encoding-error-handler``.
+:Default: "strict".
+:Options: ``--output-encoding-error-handler``
+          (hidden, intended mainly for programmatic use).
 
 
 record_dependencies
@@ -1366,7 +1372,7 @@ __ `stylesheet_dirs [html writers]`_
 
 table_style
 ~~~~~~~~~~~
-Class value(s) added to all tables_.
+Class value(s) assigned to all tables_.
 See also `table_style [latex writers]`_.
 
 The default CSS sylesheets define:

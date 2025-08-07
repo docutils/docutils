@@ -199,6 +199,9 @@ Removals
   (obsoleted by the `"writer" setting`_ since Docutils 0.18)
   in Docutils 2.0.
 
+* Drop short option ``-e`` in Docutils 2.0.
+  Use the long equivalent ``--error-encoding``.
+
 * Remove the "reader_name", "parser_name", and "writer_name" arguments of
   `core.Publisher.__init__()` and the `core.publish_*()` convenience
   functions as well as the "parser_name" argument of `Reader.__init__()`
