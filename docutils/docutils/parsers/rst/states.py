@@ -342,7 +342,7 @@ class RSTState(StateWS):
         # of the current level:
         if newlevel > oldlevel + 1:
             styles = ' '.join('/'.join(style) for style in title_styles)
-            self.parent += self.reporter.severe(
+            self.parent += self.reporter.error(
                 'Inconsistent title style:'
                 f' skip from level {oldlevel} to {newlevel}.',
                 nodes.literal_block('', source),
@@ -356,9 +356,9 @@ class RSTState(StateWS):
             new_parent = parent_sections[newlevel-1].parent
             if new_parent is None:
                 styles = ' '.join('/'.join(style) for style in title_styles)
-                self.parent += self.reporter.severe(
+                self.parent += self.reporter.error(
                     f'Cannot skip from level {oldlevel} to {newlevel}.'
-                    ' Current element has only {len(self.parent_sections)'
+                    ' Current element has only {len(self.parent_sections)}'
                     ' parent sections.'
                     ' (Mismatch of `memo.section_styles`,'
                     ' and the root node of a nested parser?)',
@@ -371,7 +371,7 @@ class RSTState(StateWS):
 
     def title_inconsistent(self, sourcetext, lineno):
         # Ignored. Will be removed in Docutils 2.0.
-        error = self.reporter.severe(
+        error = self.reporter.error(
             'Title level inconsistent:', nodes.literal_block('', sourcetext),
             line=lineno)
         return error
@@ -2432,7 +2432,7 @@ class Body(RSTState):
             raise statemachine.TransitionCorrection('text')
         else:
             blocktext = self.state_machine.line
-            msg = self.reporter.severe(
+            msg = self.reporter.error(
                   'Unexpected section title or transition.',
                   nodes.literal_block(blocktext, blocktext),
                   line=self.state_machine.abs_line_number())
@@ -2787,7 +2787,7 @@ class Text(RSTState):
             # if the error is in a table (try with test_tables.py)?
             # print("get_source_and_line", srcline)
             # print("abs_line_number", self.state_machine.abs_line_number())
-            msg = self.reporter.severe(
+            msg = self.reporter.error(
                 'Unexpected section title.',
                 nodes.literal_block(blocktext, blocktext),
                 source=src, line=srcline)
@@ -2989,7 +2989,7 @@ class Line(SpecializedText):
             if len(overline.rstrip()) < 4:
                 self.short_overline(context, blocktext, lineno, 2)
             else:
-                msg = self.reporter.severe(
+                msg = self.reporter.error(
                     'Incomplete section title.',
                     nodes.literal_block(blocktext, blocktext),
                     line=lineno)
@@ -3003,7 +3003,7 @@ class Line(SpecializedText):
             if len(overline.rstrip()) < 4:
                 self.short_overline(context, blocktext, lineno, 2)
             else:
-                msg = self.reporter.severe(
+                msg = self.reporter.error(
                     'Missing matching underline for section title overline.',
                     nodes.literal_block(source, source),
                     line=lineno)
@@ -3014,7 +3014,7 @@ class Line(SpecializedText):
             if len(overline.rstrip()) < 4:
                 self.short_overline(context, blocktext, lineno, 2)
             else:
-                msg = self.reporter.severe(
+                msg = self.reporter.error(
                       'Title overline & underline mismatch.',
                       nodes.literal_block(source, source),
                       line=lineno)

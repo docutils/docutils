@@ -104,7 +104,7 @@ Test unexpected section titles.
     <paragraph>
         Test unexpected section titles.
     <block_quote>
-        <system_message level="4" line="4" source="test data" type="SEVERE">
+        <system_message level="3" line="4" source="test data" type="ERROR">
             <paragraph>
                 Unexpected section title.
             <literal_block xml:space="preserve">
@@ -112,12 +112,12 @@ Test unexpected section titles.
                 =====
         <paragraph>
             Paragraph.
-        <system_message level="4" line="7" source="test data" type="SEVERE">
+        <system_message level="3" line="7" source="test data" type="ERROR">
             <paragraph>
                 Unexpected section title or transition.
             <literal_block xml:space="preserve">
                 -----
-        <system_message level="4" line="9" source="test data" type="SEVERE">
+        <system_message level="3" line="9" source="test data" type="ERROR">
             <paragraph>
                 Unexpected section title.
             <literal_block xml:space="preserve">
@@ -196,7 +196,7 @@ Test overline title with inset.
 """,
 """\
 <document source="test data">
-    <system_message level="4" line="1" source="test data" type="SEVERE">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Incomplete section title.
         <literal_block xml:space="preserve">
@@ -210,7 +210,7 @@ Test overline title with inset.
 """,
 """\
 <document source="test data">
-    <system_message level="4" line="1" source="test data" type="SEVERE">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Missing matching underline for section title overline.
         <literal_block xml:space="preserve">
@@ -225,7 +225,7 @@ Test missing underline, with paragraph.
 """,
 """\
 <document source="test data">
-    <system_message level="4" line="1" source="test data" type="SEVERE">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Missing matching underline for section title overline.
         <literal_block xml:space="preserve">
@@ -265,7 +265,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <system_message level="4" line="1" source="test data" type="SEVERE">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Title overline & underline mismatch.
         <literal_block xml:space="preserve">
@@ -495,7 +495,7 @@ Paragraph 4.
             Title 3
         <paragraph>
             Paragraph 3.
-        <system_message level="4" line="15" source="test data" type="SEVERE">
+        <system_message level="3" line="15" source="test data" type="ERROR">
             <paragraph>
                 Inconsistent title style: skip from level 1 to 3.
             <literal_block xml:space="preserve">
@@ -548,7 +548,7 @@ Paragraph 4.
             Title 3
         <paragraph>
             Paragraph 3.
-        <system_message level="4" line="19" source="test data" type="SEVERE">
+        <system_message level="3" line="19" source="test data" type="ERROR">
             <paragraph>
                 Inconsistent title style: skip from level 1 to 3.
             <literal_block xml:space="preserve">

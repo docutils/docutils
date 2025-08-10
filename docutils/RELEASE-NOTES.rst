@@ -259,7 +259,7 @@ Misc
 Release 0.23b0 (unpublished)
 ============================
 
-...
+Bugfixes and improvements (see HISTORY_).
 
 
 Release 0.22 (2025-07-29)
