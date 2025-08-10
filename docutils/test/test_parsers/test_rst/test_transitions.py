@@ -23,6 +23,8 @@ from docutils.utils import new_document
 
 
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -146,7 +148,7 @@ Test unexpected transition markers.
     <block_quote>
         <paragraph>
             Block quote.
-        <system_message level="4" line="5" source="test data" type="SEVERE">
+        <system_message level="3" line="5" source="test data" type="ERROR">
             <paragraph>
                 Unexpected section title or transition.
             <literal_block xml:space="preserve">

@@ -28,6 +28,8 @@ TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', '..'))
 
 
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -1269,14 +1271,14 @@ A table with  many row separators.
                         <paragraph>
                             1
                     <entry>
-                        <system_message level="4" line="19" source="test data" type="SEVERE">
+                        <system_message level="3" line="19" source="test data" type="ERROR">
                             <paragraph>
                                 Unexpected section title.
                             <literal_block xml:space="preserve">
                                 Not a span
                                 -----------
                     <entry>
-                        <system_message level="4" line="19" source="test data" type="SEVERE">
+                        <system_message level="3" line="19" source="test data" type="ERROR">
                             <paragraph>
                                 Unexpected section title.
                             <literal_block xml:space="preserve">
