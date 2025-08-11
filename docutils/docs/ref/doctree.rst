@@ -3398,7 +3398,7 @@ The <section> element is the main unit of hierarchy for Docutils documents.
              `%structure.model`_ indirectly includes <section>.
 
 The Docutils document model uses a simple, recursive model for section
-structure.  A `\<document>`_ nodeelements.
+structure.  A `\<document>`_ element may contain <section> elements.
 Sections in turn may contain other <section> elements, without limit.
 The level (depth) of a section element is determined from its physical
 nesting level.
