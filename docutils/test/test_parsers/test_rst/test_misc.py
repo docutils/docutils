@@ -151,6 +151,53 @@ class RSTStateTests(unittest.TestCase):
                          '            sub 2\n',
                          section.pformat())
 
+    def test_nested_parse_with_sections_detached(self):
+        # The base `node` does not need to be attached to the document.
+        # "global" title style hierarchy (ignored with detached base node)
+        self.machine.memo.title_styles = ['-', '~']
+
+        # base `node` is a <paragraph> without parents
+        base = nodes.paragraph('')
+        base.document = self.document  # this is not "attaching"
+        # level-2 title style
+        title = self.title_markup('sub', '~')
+        # new hierarchy -> attach <section> to base `node`
+        self.state.nested_parse(title, 0, node=base, match_titles=True)
+        self.assertEqual('<paragraph>\n'
+                         '    <section ids="sub" names="sub">\n'
+                         '        <title>\n'
+                         '            sub\n',
+                         base.pformat())
+        # It is the users responsibility to ensure that the base node
+        # may contain a <section> (or move the section after parsing).
+        # You may check with `validate()`:
+        with self.assertRaises(nodes.ValidationError):
+            base.validate()
+
+        # a new hierarchy is used in every call of nested_parse()
+        # parse 2 section titles
+        title = self.title_markup('new', '*') + self.title_markup('top', '-')
+        # new hierarchy -> attach section and sub-section to base node
+        self.state.nested_parse(title, 0, node=base, match_titles=True)
+        self.assertEqual(
+                         '<paragraph>\n'
+                         '    <section ids="sub" names="sub">\n'
+                         '        <title>\n'
+                         '            sub\n'
+                         '    <section ids="new" names="new">\n'
+                         '        <title>\n'
+                         '            new\n'
+                         '        <section ids="top" names="top">\n'
+                         '            <title>\n'
+                         '                top\n',
+                         base.pformat())
+
+        # document-wide style hierarchy unchanged:
+        self.assertEqual(['-', '~'], self.machine.memo.title_styles)
+
+        # print(self.document.pformat())
+        # print(base.pformat())
+
 
 if __name__ == '__main__':
     unittest.main()

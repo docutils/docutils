@@ -31,6 +31,8 @@ Release 0.23b0 (unpublished)
   - Relax "section title" system message from SEVERE to ERROR.
   - Ensure new "current node" is valid when switching section level
     (cf. bugs #508 and #509).
+  - `NestedStateMachine.run()` uses a separate title style hierarchy
+    if the base node is not attached to the document (cf. bug #508).
 
 
 Release 0.22 (2026-07-29)
