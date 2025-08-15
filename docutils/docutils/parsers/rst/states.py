@@ -151,16 +151,19 @@ class RSTStateMachine(StateMachineWS):
         if inliner is None:
             inliner = Inliner()
         inliner.init_customizations(document.settings)
+        # A collection of objects to share with nested parsers.
+        # The attributes `reporter`, `section_level`, and
+        # `section_bubble_up_kludge` will be removed in Docutils 2.0
         self.memo = Struct(document=document,
-                           reporter=document.reporter,
+                           reporter=document.reporter,  # ignored
                            language=self.language,
                            title_styles=[],
-                           section_level=0,  # ignored, to be removed in 2.0
-                           section_bubble_up_kludge=False,  # ignored, ""
+                           section_level=0,  # ignored
+                           section_bubble_up_kludge=False,  # ignored
                            inliner=inliner)
         self.document = document
         self.attach_observer(document.note_source)
-        self.reporter = self.memo.reporter
+        self.reporter = self.document.reporter
         self.node = document
         results = StateMachineWS.run(self, input_lines, input_offset,
                                      input_source=document['source'])
@@ -184,8 +187,8 @@ class NestedStateMachine(StateMachineWS):
         self.memo = memo
         self.document = memo.document
         self.attach_observer(self.document.note_source)
-        self.reporter = memo.reporter
         self.language = memo.language
+        self.reporter = self.document.reporter
         self.node = node
         results = StateMachineWS.run(self, input_lines, input_offset)
         assert results == [], ('NestedStateMachine.run() results should be '
@@ -213,9 +216,9 @@ class RSTState(StateWS):
         StateWS.runtime_init(self)
         memo = self.state_machine.memo
         self.memo = memo
-        self.reporter = memo.reporter
-        self.inliner = memo.inliner
         self.document = memo.document
+        self.inliner = memo.inliner
+        self.reporter = self.document.reporter
         self.parent = self.state_machine.node
         # enable the reporter to determine source and source-line
         if not hasattr(self.reporter, 'get_source_and_line'):
@@ -637,9 +640,9 @@ class Inliner:
         :text: source string
         :lineno: absolute line number, cf. `statemachine.get_source_and_line()`
         """
-        self.reporter = memo.reporter
         self.document = memo.document
         self.language = memo.language
+        self.reporter = self.document.reporter
         self.parent = parent
         pattern_search = self.patterns.initial.search
         dispatch = self.dispatch

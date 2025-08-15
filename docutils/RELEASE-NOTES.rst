@@ -208,10 +208,11 @@ Removals
   in Docutils 2.0.  Since Docutils 0.22, you may use "reader", "parser",
   and "writer" arguments for component names as well as instances.
 
-* Remove `states.RSTStateMachine.memo.section_bubble_up_kludge`,
+* Remove `states.RSTStateMachine.memo.reporter`,
+  `states.RSTStateMachine.memo.section_bubble_up_kludge`,
   `states.RSTStateMachine.memo.section_level`,
   `states.RSTState.title_inconsistent()`, and `states.Line.eofcheck`
-  in Docutils 2.0. Ignored since Docutils 0.22.
+  in Docutils 2.0. Ignored since Docutils 0.22.1.
 
 * Remove `parsers.rst.states.Struct` (obsoleted by `types.SimpleNamespace`)
   in Docutils 2.0.
