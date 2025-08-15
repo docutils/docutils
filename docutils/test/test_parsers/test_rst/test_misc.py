@@ -138,7 +138,6 @@ class RSTStateTests(unittest.TestCase):
                          self.document[-1].pformat())
 
         # new (2nd-level) section title
-        # TODO: don't append <section> to <paragraph>!
         title = self.title_markup('sub 2', '~')
         self.state.nested_parse(title, 0, node=paragraph, match_titles=True)
         self.assertEqual('<section>\n'
@@ -147,9 +146,9 @@ class RSTStateTests(unittest.TestCase):
                          '            sub\n'
                          '    <paragraph>\n'
                          '        base node\n'
-                         '        <section ids="sub-2" names="sub\\ 2">\n'
-                         '            <title>\n'
-                         '                sub 2\n',
+                         '    <section ids="sub-2" names="sub\\ 2">\n'
+                         '        <title>\n'
+                         '            sub 2\n',
                          section.pformat())
 
 

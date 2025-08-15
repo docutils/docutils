@@ -385,7 +385,12 @@ class RSTState(StateWS):
         if newlevel > len(title_styles):
             title_styles.append(style)
         self.memo.section_level = newlevel
-        if newlevel <= oldlevel:
+        if newlevel > oldlevel:
+            # new section is a subsection: get the current section or base node
+            while self.parent.parent and not isinstance(
+                      self.parent, (nodes.section, nodes.document)):
+                self.parent = self.parent.parent
+        else:
             # new section is sibling or higher up in the section hierarchy
             self.parent = parent_sections[newlevel-1].parent
         return True
