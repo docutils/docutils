@@ -502,7 +502,7 @@ Paragraph 4.
                 Title 4
                 ```````
             <paragraph>
-                Established title styles: = - `
+                Established title styles: = -
         <paragraph>
             Paragraph 4.
 """],
@@ -556,7 +556,7 @@ Paragraph 4.
                 Title 4
                 ```````
             <paragraph>
-                Established title styles: =/= -/- `/`
+                Established title styles: =/= -/-
         <paragraph>
             Paragraph 4.
 """],
