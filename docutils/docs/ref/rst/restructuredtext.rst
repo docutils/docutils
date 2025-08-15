@@ -599,7 +599,7 @@ subsection, etc.).
 All section title styles need not be used, nor need any specific
 section title style be used.  However, a document must be consistent
 in its use of section titles: once a hierarchy of title styles is
-established, sections must use that hierarchy.
+established, sections must use that hierarchy. [#]_
 
 Each section title automatically generates a hyperlink target pointing
 to the section.  The text of the hyperlink target (the "reference
@@ -608,6 +608,13 @@ Hyperlink Targets`_ for a complete description.
 
 Sections may contain `body elements`_, transitions_, and nested
 sections.
+
+.. [#] Directives_ may establish a separate hierarchy of title styles
+   for their content.  This is handy for directives that include
+   content from separate sources, e.g., the directives provided by
+   the `"autodoc" Sphinx extension`__.
+
+   __ https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
 
 
 Transitions

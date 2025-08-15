@@ -260,6 +260,10 @@ Misc
 Release 0.23b0 (unpublished)
 ============================
 
+reStructuredText parser:
+  Nested parsing uses a separate title style hierarchy
+  if the base node is not attached to the document.
+
 Bugfixes and improvements (see HISTORY_).
 
 

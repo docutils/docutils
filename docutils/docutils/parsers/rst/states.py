@@ -104,6 +104,7 @@ from __future__ import annotations
 
 __docformat__ = 'reStructuredText'
 
+import copy
 import re
 from types import FunctionType, MethodType
 from types import SimpleNamespace as Struct
@@ -185,15 +186,26 @@ class NestedStateMachine(StateMachineWS):
         """
         Parse `input_lines` and populate `node`.
 
+        Use a separate "title style hierarchy" if `node` is not
+        attached to the document (changed in Docutils 0.23).
+
         Extend `StateMachineWS.run()`: set up document-wide data.
         """
         self.match_titles = match_titles
-        self.memo = memo
+        self.memo = copy.copy(memo)
         self.document = memo.document
         self.attach_observer(self.document.note_source)
         self.language = memo.language
         self.reporter = self.document.reporter
         self.node = node
+        if match_titles:
+            # Start a new title style hierarchy if `node` is not
+            # a descendant of the `document`:
+            _root = node
+            while _root.parent is not None:
+                _root = _root.parent
+            if _root != self.document:
+                self.memo.title_styles = []
         results = StateMachineWS.run(self, input_lines, input_offset)
         assert results == [], ('NestedStateMachine.run() results should be '
                                'empty!')
@@ -270,13 +282,16 @@ class RSTState(StateWS):
         :input_offset:
             Line number at start of the block.
         :node:
-            Root node. Generated nodes will be appended to this node
-            (unless a new section with lower level is encountered).
+            Base node. Generated nodes will be appended to this node
+            (unless a new section with lower level is encountered, see below).
         :match_titles:
             Allow section titles?
-            If True, `node` should be attached to the document
-            so that section levels can be computed correctly
-            and moving up in the section hierarchy works.
+            If the base `node` is attached to the document, new sections will
+            be appended according their level in the section hierarchy
+            (moving up the tree).
+            If the base `node` is *not* attached to the document,
+            a separate section title style hierarchy is used for the nested
+            parsing (all sections are subsections of the current section).
         :state_machine_class:
             Default: `NestedStateMachine`.
         :state_machine_kwargs:
@@ -326,9 +341,15 @@ class RSTState(StateWS):
                           state_machine_class=None,
                           state_machine_kwargs=None):
         """
-        Create a new StateMachine rooted at `node` and run it over the input
-        `block`. Also keep track of optional intermediate blank lines and the
+        Parse the input `block` with a nested state-machine rooted at `node`.
+
+        Create a new StateMachine rooted at `node` and run it over the
+        input `block` (see also `nested_parse()`).
+        Also keep track of optional intermediate blank lines and the
         required final one.
+
+        Return new offset and a boolean indicating whether there was a
+        blank final line.
         """
         if state_machine_class is None:
             state_machine_class = self.nested_sm
