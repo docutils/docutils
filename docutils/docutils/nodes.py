@@ -820,18 +820,21 @@ class Element(Node):
     def section_hierarchy(self) -> list[section]:
         """Return the element's section hierarchy.
 
-        Return a list of all <section> elements containing `self`
-        (including `self` if it is a <section>).
+        Return a list of all <section> elements that contain `self`
+        (including `self` if it is a <section>) and have a parent node.
 
         List item ``[i]`` is the parent <section> of level i+1
         (1: section, 2: subsection, 3: subsubsection, ...).
         The length of the list is the element's section level.
 
+        See `docutils.parsers.rst.states.RSTState.check_subsection()`
+        for a usage example.
+
         Provisional. May be changed or removed without warning.
         """
         sections = []
         node = self
-        while node is not None:
+        while node.parent is not None:
             if isinstance(node, section):
                 sections.append(node)
             node = node.parent

@@ -121,6 +121,10 @@ from docutils.utils import split_escaped_whitespace
 from docutils.utils._roman_numerals import (InvalidRomanNumeralError,
                                             RomanNumeral)
 
+TYPE_CHECKING = False
+if TYPE_CHECKING:
+    from docutils.statemachine import StringList
+
 
 class MarkupError(DataError): pass
 class UnknownInterpretedRoleError(DataError): pass
@@ -250,11 +254,37 @@ class RSTState(StateWS):
         """Called at beginning of file."""
         return [], []
 
-    def nested_parse(self, block, input_offset, node, match_titles=False,
-                     state_machine_class=None, state_machine_kwargs=None):
+    def nested_parse(self,
+                     block: StringList,
+                     input_offset: int,
+                     node: nodes.Element,
+                     match_titles: bool = False,
+                     state_machine_class: StateMachineWS|None = None,
+                     state_machine_kwargs: dict|None = None
+                     ) -> int:
         """
-        Create a new StateMachine rooted at `node` and run it over the input
-        `block`.
+        Parse the input `block` with a nested state-machine rooted at `node`.
+
+        :block:
+            reStructuredText source extract.
+        :input_offset:
+            Line number at start of the block.
+        :node:
+            Root node. Generated nodes will be appended to this node
+            (unless a new section with lower level is encountered).
+        :match_titles:
+            Allow section titles?
+            If True, `node` should be attached to the document
+            so that section levels can be computed correctly
+            and moving up in the section hierarchy works.
+        :state_machine_class:
+            Default: `NestedStateMachine`.
+        :state_machine_kwargs:
+            Keyword arguments for the state-machine instantiation.
+            Default: `self.nested_sm_kwargs`.
+
+        Create a new state-machine instance if required.
+        Return new offset.
         """
         use_default = 0
         if state_machine_class is None:
@@ -263,8 +293,6 @@ class RSTState(StateWS):
         if state_machine_kwargs is None:
             state_machine_kwargs = self.nested_sm_kwargs
             use_default += 1
-        block_length = len(block)
-
         state_machine = None
         if use_default == 2:
             try:
@@ -274,8 +302,11 @@ class RSTState(StateWS):
         if not state_machine:
             state_machine = state_machine_class(debug=self.debug,
                                                 **state_machine_kwargs)
+        # run the statemachine and populate `node`:
+        block_length = len(block)
         state_machine.run(block, input_offset, memo=self.memo,
                           node=node, match_titles=match_titles)
+        # clean up
         if use_default == 2:
             self.nested_sm_cache.append(state_machine)
         else:
@@ -332,20 +363,13 @@ class RSTState(StateWS):
         """
         title_styles = self.memo.title_styles
         parent_sections = self.parent.section_hierarchy()
-        # Adding a new <section> at level "i" is done by appending to
-        # ``parent_sections[i-1].parent``.
-        # However, in nested parsing the root `node` may be a <section>.
-        # Then ``parent_sections[0]`` has no parent and must be discarded:
-        if parent_sections and parent_sections[0].parent is None:
-            parent_sections.pop(0)
         # current section level: (0 root, 1 section, 2 subsection, ...)
         oldlevel = len(parent_sections)
         # new section level:
         try:  # check for existing title style
             newlevel = title_styles.index(style) + 1
         except ValueError:  # new title style
-            title_styles.append(style)
-            newlevel = len(title_styles)
+            newlevel = len(title_styles) + 1
         # The new level must not be deeper than an immediate child
         # of the current level:
         if newlevel > oldlevel + 1:
@@ -358,23 +382,12 @@ class RSTState(StateWS):
                 line=lineno)
             return False
         # Update parent state:
+        if newlevel > len(title_styles):
+            title_styles.append(style)
         self.memo.section_level = newlevel
         if newlevel <= oldlevel:
             # new section is sibling or higher up in the section hierarchy
-            new_parent = parent_sections[newlevel-1].parent
-            if new_parent is None:
-                styles = ' '.join('/'.join(style) for style in title_styles)
-                self.parent += self.reporter.error(
-                    f'Cannot skip from level {oldlevel} to {newlevel}.'
-                    ' Current element has only {len(self.parent_sections)}'
-                    ' parent sections.'
-                    ' (Mismatch of `memo.section_styles`,'
-                    ' and the root node of a nested parser?)',
-                    nodes.literal_block('', source),
-                    nodes.paragraph('', f'Established title styles: {styles}'),
-                    line=lineno)
-                return False
-            self.parent = new_parent
+            self.parent = parent_sections[newlevel-1].parent
         return True
 
     def title_inconsistent(self, sourcetext, lineno):
