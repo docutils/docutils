@@ -21,6 +21,11 @@ Release 0.23b0 (unpublished)
 
   - More consistent and concise command line help.
 
+* docutils/nodes.py
+
+  - `nodes.Element.section_hierarchy()` now returns only elements
+    with non-empty `.parent`.
+
 * docutils/parsers/rst/states.py
 
   - Relax "section title" system message from SEVERE to ERROR.
