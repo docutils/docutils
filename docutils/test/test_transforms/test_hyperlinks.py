@@ -432,6 +432,91 @@ An embedded URI with trailing underline:
         .
 """],
 ["""\
+`link <address >`_
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <problematic ids="problematic-1" refid="system-message-1">
+            `link <address >`_
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Unknown target name: "link <address >".
+        <paragraph>
+            Did you want to embed a URI or alias?
+            Whitespace around the embedded reference is not allowed.
+"""],
+["""\
+`link < address>`_
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <problematic ids="problematic-1" refid="system-message-1">
+            `link < address>`_
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Unknown target name: "link < address>".
+        <paragraph>
+            Did you want to embed a URI or alias?
+            Whitespace around the embedded reference is not allowed.
+"""],
+["""\
+`link <address> e`_
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <problematic ids="problematic-1" refid="system-message-1">
+            `link <address> e`_
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Unknown target name: "link <address> e".
+        <paragraph>
+            Did you want to embed a URI or alias?
+            The embedded reference must be the last text before the end string.
+"""],
+["""\
+`link<address>`_
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <problematic ids="problematic-1" refid="system-message-1">
+            `link<address>`_
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Unknown target name: "link<address>".
+        <paragraph>
+            Did you want to embed a URI or alias?
+            The embedded reference must be preceded by whitespace.
+"""],
+["""\
+`link <address`_
+`link address>`_
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <problematic ids="problematic-1" refid="system-message-1">
+            `link <address`_
+        \n\
+        <problematic ids="problematic-2" refid="system-message-2">
+            `link address>`_
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Unknown target name: "link <address".
+        <paragraph>
+            Did you want to embed a URI or alias?
+            Closing bracket missing.
+    <system_message backrefs="problematic-2" ids="system-message-2" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Unknown target name: "link address>".
+        <paragraph>
+            Did you want to embed a URI or alias?
+            Opening bracket missing.
+"""],
+["""\
 Hyperlinks with angle-bracketed text need escaping.
 
 See `Element \\<a>`_, `Element <b\\>`_, and `Element <c>\\ `_.
