@@ -7,7 +7,7 @@
 """
 Tests for latex2e writer.
 
-This module test only the "body" part of the output.
+This module tests only the "body" part of the output.
 For tests of constructs that change the "head", see test-latex2e_parts.py.
 """
 
@@ -377,14 +377,14 @@ samples['latex_citations'] = ({'use_latex_citations': True}, [
 Just a test citation [my_cite2006]_.
 
 .. [my_cite2006]
-   The underscore is mishandled.
+   Watch the underscore!
 """,
 r"""
 Just a test citation \cite{my_cite2006}.
 
 \begin{thebibliography}{my\_cite2006}
 \bibitem[my\_cite2006]{my_cite2006}{
-The underscore is mishandled.
+Watch the underscore!
 }
 \end{thebibliography}
 """],
@@ -496,6 +496,161 @@ No bibliography if there is no citation.
 """,
 r"""
 No bibliography if there is no citation.
+"""],
+])
+
+samples['docutils-footnotes'] = ({}, [
+# different markup variants
+[r"""
+Paragraphs contain text and may contain footnote references (manually
+numbered [1]_, anonymous auto-numbered [#]_, labeled auto-numbered
+[#label]_, or symbolic [*]_).
+
+.. [1] A footnote.
+
+.. [#label] Footnotes may be numbered, either manually or
+   automatically using a "#"-prefixed label.  This footnote has a
+   label so it can be referred to from multiple places, both as a
+   footnote reference ([#label]_) and as a `hyperlink reference`__.
+
+   __ label_
+
+.. [#] This footnote is numbered automatically and anonymously using a
+   label of "#" only.
+
+.. [*] Footnotes may also use symbols, specified with a "*" label.
+""",
+ r"""
+Paragraphs contain text and may contain footnote references (manually
+numbered\DUfootnotemark{footnote-reference-1}{footnote-1}{1}, anonymous auto-numbered\DUfootnotemark{footnote-reference-2}{footnote-2}{3}, labeled auto-numbered\DUfootnotemark{footnote-reference-3}{label}{2}, or symbolic\DUfootnotemark{footnote-reference-4}{footnote-3}{*}).
+%
+\DUfootnotetext{footnote-1}{footnote-reference-1}{1}{%
+A footnote.
+}
+%
+\DUfootnotetext{label}{footnote-reference-3}{2}{%
+Footnotes may be numbered, either manually or
+automatically using a \textquotedbl{}\#\textquotedbl{}-prefixed label.  This footnote has a
+label so it can be referred to from multiple places, both as a
+footnote reference (\DUfootnotemark{footnote-reference-5}{label}{2}) and as a \hyperref[label]{hyperlink reference}.
+}
+%
+\DUfootnotetext{footnote-2}{footnote-reference-2}{3}{%
+This footnote is numbered automatically and anonymously using a
+label of \textquotedbl{}\#\textquotedbl{} only.
+}
+%
+\DUfootnotetext{footnote-3}{footnote-reference-4}{*}{%
+Footnotes may also use symbols, specified with a \textquotedbl{}*\textquotedbl{} label.
+}
+"""],
+# nested footnotes
+["""\
+It's possible to produce nested footnotes in LaTeX. [#]_
+
+.. [#] It takes some work, though. [#]_
+.. [#] And don't even get me started on how tricky recursive footnotes
+       would be.
+""",
+r"""
+It's possible to produce nested footnotes in LaTeX.\DUfootnotemark{footnote-reference-1}{footnote-1}{1}
+%
+\DUfootnotetext{footnote-1}{footnote-reference-1}{1}{%
+It takes some work, though.\DUfootnotemark{footnote-reference-2}{footnote-2}{2}
+}
+%
+\DUfootnotetext{footnote-2}{footnote-reference-2}{2}{%
+And don't even get me started on how tricky recursive footnotes
+would be.
+}
+"""],
+# chained footnotes
+["""\
+It's possible to produce chained footnotes in LaTeX. [#]_
+
+.. [#] They're just a special case of nested footnotes. [#]_
+.. [#] A nested footnote is a footnote on a footnote. [#]_
+.. [#] This is a footnote on a footnote on a footnote.
+""",
+r"""
+It's possible to produce chained footnotes in LaTeX.\DUfootnotemark{footnote-reference-1}{footnote-1}{1}
+%
+\DUfootnotetext{footnote-1}{footnote-reference-1}{1}{%
+They're just a special case of nested footnotes.\DUfootnotemark{footnote-reference-2}{footnote-2}{2}
+}
+%
+\DUfootnotetext{footnote-2}{footnote-reference-2}{2}{%
+A nested footnote is a footnote on a footnote.\DUfootnotemark{footnote-reference-3}{footnote-3}{3}
+}
+%
+\DUfootnotetext{footnote-3}{footnote-reference-3}{3}{%
+This is a footnote on a footnote on a footnote.
+}
+"""],
+# multi-nested footnotes
+["""\
+A footnote [#multi]_
+
+.. [#multi] This is a footnote with nested [#]_ footnotes. [#]_ [#]_
+
+.. [#] First nested [#]_ footnote. [#]_
+
+.. [#] Second nested footnote. [#]_
+
+.. [#] Third nested footnote.
+
+.. [#] First double-nested footnote.
+
+.. [#] Second double-nested footnote.
+
+.. [#] First triple-nested footnote.
+
+.. [#] Not nested, referenced after footnote text.
+
+Ref to a new footnote [#]_
+
+A second reference to the first one [#multi]_.
+We can also write a hyperlink to multi_.
+""",
+r"""
+A footnote\DUfootnotemark{footnote-reference-1}{multi}{1}
+%
+\DUfootnotetext{multi}{footnote-reference-1}{1}{%
+This is a footnote with nested\DUfootnotemark{footnote-reference-2}{footnote-1}{2} footnotes.\DUfootnotemark{footnote-reference-3}{footnote-2}{3}\DUfootnotemark{footnote-reference-4}{footnote-3}{4}
+}
+%
+\DUfootnotetext{footnote-1}{footnote-reference-2}{2}{%
+First nested\DUfootnotemark{footnote-reference-5}{footnote-4}{5} footnote.\DUfootnotemark{footnote-reference-6}{footnote-5}{6}
+}
+%
+\DUfootnotetext{footnote-2}{footnote-reference-3}{3}{%
+Second nested footnote.\DUfootnotemark{footnote-reference-7}{footnote-6}{7}
+}
+%
+\DUfootnotetext{footnote-3}{footnote-reference-4}{4}{%
+Third nested footnote.
+}
+%
+\DUfootnotetext{footnote-4}{footnote-reference-5}{5}{%
+First double-nested footnote.
+}
+%
+\DUfootnotetext{footnote-5}{footnote-reference-6}{6}{%
+Second double-nested footnote.
+}
+%
+\DUfootnotetext{footnote-6}{footnote-reference-7}{7}{%
+First triple-nested footnote.
+}
+%
+\DUfootnotetext{footnote-7}{footnote-reference-8}{8}{%
+Not nested, referenced after footnote text.
+}
+
+Ref to a new footnote\DUfootnotemark{footnote-reference-8}{footnote-7}{8}
+
+A second reference to the first one\DUfootnotemark{footnote-reference-9}{multi}{1}.
+We can also write a hyperlink to \hyperref[multi]{multi}.
 """],
 ])
 

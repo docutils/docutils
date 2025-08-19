@@ -1359,7 +1359,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             else:
                 # require a minimal version:
                 self.fallbacks['_docutils.sty'] = (
-                    r'\usepackage{docutils}[2024-09-24]')
+                    r'\usepackage{docutils}[2025-08-06]')
 
         self.stylesheet = [self.stylesheet_call(path)
                            for path in stylesheet_list]
@@ -2335,9 +2335,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                 num = '[%s]' % num
             self.out.append('%%\n\\DUfootnotetext{%s}{%s}{%s}{' %
                             (node['ids'][0], backref, self.encode(num)))
-            if node['ids'] == [nodes.make_id(n) for n in node['names']]:
-                # autonumber-label: create anchor
-                self.out += self.ids_to_labels(node)
             # prevent spurious whitespace if footnote starts with paragraph:
             if len(node) > 1 and isinstance(node[1], nodes.paragraph):
                 self.out.append('%')
