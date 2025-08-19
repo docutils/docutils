@@ -32,6 +32,8 @@ Release 0.23b0 (unpublished)
   - Ensure new "current node" is valid when switching section level
     (cf. bugs #508 and #509).
   - Use a `separate title style hierarchy for nested parsing`__.
+  - Better error messages for grid table markup errors (bug #504),
+    based on patch #214 by Jynn Nelson.
 
 __ RELEASE-NOTES.html#nested-parsing
 
