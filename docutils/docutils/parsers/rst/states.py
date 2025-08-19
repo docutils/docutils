@@ -1648,7 +1648,7 @@ class Body(RSTState):
                   self.state_machine.input_lines[offset:],
                   input_offset=self.state_machine.abs_line_offset() + 1,
                   node=block, initial_state='LineBlock',
-                  blank_finish=0)
+                  blank_finish=False)
             self.goto_line(new_line_offset)
         if not blank_finish:
             self.parent += self.reporter.warning(
@@ -1743,14 +1743,14 @@ class Body(RSTState):
 
     def isolate_grid_table(self):
         messages = []
-        blank_finish = 1
+        blank_finish = True
         try:
             block = self.state_machine.get_text_block(flush_left=True)
         except statemachine.UnexpectedIndentationError as err:
             block, src, srcline = err.args
             messages.append(self.reporter.error('Unexpected indentation.',
                                                 source=src, line=srcline))
-            blank_finish = 0
+            blank_finish = False
         block.disconnect()
         # for East Asian chars:
         block.pad_double_width(self.double_width_pad_char)
@@ -1758,7 +1758,7 @@ class Body(RSTState):
         for i in range(len(block)):
             block[i] = block[i].strip()
             if block[i][0] not in '+|':  # check left edge
-                blank_finish = 0
+                blank_finish = False
                 self.state_machine.previous_line(len(block) - i)
                 del block[i:]
                 break
@@ -1768,7 +1768,7 @@ class Body(RSTState):
                 if self.grid_table_top_pat.match(block[i]):
                     self.state_machine.previous_line(len(block) - i + 1)
                     del block[i+1:]
-                    blank_finish = 0
+                    blank_finish = False
                     break
             else:
                 detail = 'Bottom border missing or corrupt.'
