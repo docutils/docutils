@@ -24,15 +24,16 @@ Release 0.23b0 (unpublished)
 * docutils/nodes.py
 
   - `nodes.Element.section_hierarchy()` now returns only elements
-    with non-empty `.parent`.
+    with non-empty "parent" attribute.
 
 * docutils/parsers/rst/states.py
 
-  - Relax "section title" system message from SEVERE to ERROR.
+  - Relax "section title" system messages from SEVERE to ERROR.
   - Ensure new "current node" is valid when switching section level
     (cf. bugs #508 and #509).
-  - `NestedStateMachine.run()` uses a separate title style hierarchy
-    if the base node is not attached to the document (cf. bug #508).
+  - Use a `separate title style hierarchy for nested parsing`__.
+
+__ RELEASE-NOTES.html#nested-parsing
 
 
 Release 0.22 (2026-07-29)

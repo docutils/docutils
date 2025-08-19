@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
-# $Id$
-# Author: David Goodger <goodger@python.org>
+# $id$
+# author: David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
 
 """
@@ -180,15 +180,13 @@ sec1.1
 
   current1
   ********
-  sec1.2
+  current1.1
   -----------
-  Sibling section appended 1 level up.
-
-  sec2
-  =========
+  current1.1.1
+  ============
   Top-level section appended to document.
 
-Succeeding paragraph. TODO: currently misplaced!
+Succeeding paragraph.
 """,
 """\
 <document source="test data">
@@ -201,18 +199,16 @@ Succeeding paragraph. TODO: currently misplaced!
             <section ids="current1" names="current1">
                 <title>
                     current1
+                <section ids="current1-1" names="current1.1">
+                    <title>
+                        current1.1
+                    <section ids="current1-1-1" names="current1.1.1">
+                        <title>
+                            current1.1.1
+                        <paragraph>
+                            Top-level section appended to document.
             <paragraph>
-                Succeeding paragraph. TODO: currently misplaced!
-        <section ids="sec1-2" names="sec1.2">
-            <title>
-                sec1.2
-            <paragraph>
-                Sibling section appended 1 level up.
-    <section ids="sec2" names="sec2">
-        <title>
-            sec2
-        <paragraph>
-            Top-level section appended to document.
+                Succeeding paragraph.
 """],
 # parse into attached wrapper node:
 ["""\
@@ -224,11 +220,10 @@ sec1.1
 
   attached1
   *********
-  sec2
-  =========
-  Nested top-level section appended to document.
+  attached1.1
+  ===========
 
-Succeeding paragraph. TODO: currently misplaced!
+Succeeding paragraph.
 """,
 """\
 <document source="test data">
@@ -239,16 +234,14 @@ Succeeding paragraph. TODO: currently misplaced!
             <title>
                 sec1.1
             <sidebar>
-            <section ids="attached1" names="attached1">
-                <title>
-                    attached1
+                <section ids="attached1" names="attached1">
+                    <title>
+                        attached1
+                    <section ids="attached1-1" names="attached1.1">
+                        <title>
+                            attached1.1
             <paragraph>
-                Succeeding paragraph. TODO: currently misplaced!
-    <section ids="sec2" names="sec2">
-        <title>
-            sec2
-        <paragraph>
-            Nested top-level section appended to document.
+                Succeeding paragraph.
 """],
 # detached base node -> start new section hierarchy
 ["""\

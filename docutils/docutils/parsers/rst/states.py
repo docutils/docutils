@@ -186,8 +186,7 @@ class NestedStateMachine(StateMachineWS):
         """
         Parse `input_lines` and populate `node`.
 
-        Use a separate "title style hierarchy" if `node` is not
-        attached to the document (changed in Docutils 0.23).
+        Use a separate "title style hierarchy" (changed in Docutils 0.23).
 
         Extend `StateMachineWS.run()`: set up document-wide data.
         """
@@ -199,13 +198,11 @@ class NestedStateMachine(StateMachineWS):
         self.reporter = self.document.reporter
         self.node = node
         if match_titles:
-            # Start a new title style hierarchy if `node` is not
-            # a descendant of the `document`:
-            _root = node
-            while _root.parent is not None:
-                _root = _root.parent
-            if _root != self.document:
-                self.memo.title_styles = []
+            # Use a separate section title style hierarchy;
+            # ensure all sections in the `input_lines` are treated as
+            # subsections of the current section by blocking lower
+            # section levels with a style that is impossible in rST:
+            self.memo.title_styles = ['x'] * len(node.section_hierarchy())
         results = StateMachineWS.run(self, input_lines, input_offset)
         assert results == [], ('NestedStateMachine.run() results should be '
                                'empty!')
@@ -282,16 +279,13 @@ class RSTState(StateWS):
         :input_offset:
             Line number at start of the block.
         :node:
-            Base node. Generated nodes will be appended to this node
-            (unless a new section with lower level is encountered, see below).
+            Base node. All generated nodes will be appended to this node.
         :match_titles:
             Allow section titles?
-            If the base `node` is attached to the document, new sections will
-            be appended according their level in the section hierarchy
-            (moving up the tree).
-            If the base `node` is *not* attached to the document,
-            a separate section title style hierarchy is used for the nested
+            A separate section title style hierarchy is used for the nested
             parsing (all sections are subsections of the current section).
+            The calling code should check whether sections are valid
+            children of the base node and move them or warn otherwise.
         :state_machine_class:
             Default: `NestedStateMachine`.
         :state_machine_kwargs:
@@ -406,12 +400,7 @@ class RSTState(StateWS):
         if newlevel > len(title_styles):
             title_styles.append(style)
         self.memo.section_level = newlevel
-        if newlevel > oldlevel:
-            # new section is a subsection: get the current section or base node
-            while self.parent.parent and not isinstance(
-                      self.parent, (nodes.section, nodes.document)):
-                self.parent = self.parent.parent
-        else:
+        if newlevel <= oldlevel:
             # new section is sibling or higher up in the section hierarchy
             self.parent = parent_sections[newlevel-1].parent
         return True

@@ -596,6 +596,8 @@ A blank line after a title is optional.  All text blocks up to the
 next title of the same or higher level are included in a section (or
 subsection, etc.).
 
+.. _title styles:
+
 All section title styles need not be used, nor need any specific
 section title style be used.  However, a document must be consistent
 in its use of section titles: once a hierarchy of title styles is

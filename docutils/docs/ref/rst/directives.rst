@@ -1646,8 +1646,8 @@ The "include" directive recognizes the following options:
     Parse the included content with the specified parser.
     See the `"parser" configuration setting`_ for available parsers.
 
-    Starts a new "`section hierarchy`_" (all sections in the included
-    content become subsections of the current section).
+    Starts a new `section title style hierarchy`_ (all sections in the
+    included content become subsections of the current section).
 
     .. Caution::
        There is is no check whether the inserted elements are valid at the
@@ -2315,7 +2315,7 @@ Common Option Value Types
 .. _hyperlink target: restructuredtext.html#hyperlink-targets
 .. _reference name:
 .. _reference names: restructuredtext.html#reference-names
-.. _section hierarchy: restructuredtext.html#sections
+.. _section title style hierarchy: restructuredtext.html#title-styles
 .. _simple table: restructuredtext.html#simple-tables
 .. _supported length units: restructuredtext.html#length-units
 
