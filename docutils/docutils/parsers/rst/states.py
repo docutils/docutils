@@ -1763,19 +1763,21 @@ class Body(RSTState):
                 del block[i:]
                 break
         if not self.grid_table_top_pat.match(block[-1]):  # find bottom
-            blank_finish = 0
             # from second-last to third line of table:
             for i in range(len(block) - 2, 1, -1):
                 if self.grid_table_top_pat.match(block[i]):
                     self.state_machine.previous_line(len(block) - i + 1)
                     del block[i+1:]
+                    blank_finish = 0
                     break
             else:
-                messages.extend(self.malformed_table(block))
+                detail = 'Bottom border missing or corrupt.'
+                messages.extend(self.malformed_table(block, detail, i))
                 return [], messages, blank_finish
         for i in range(len(block)):     # check right edge
             if len(block[i]) != width or block[i][-1] not in '+|':
-                messages.extend(self.malformed_table(block))
+                detail = 'Right border not aligned or missing.'
+                messages.extend(self.malformed_table(block, detail, i))
                 return [], messages, blank_finish
         return block, messages, blank_finish
 
@@ -1795,8 +1797,8 @@ class Body(RSTState):
                 if len(line.strip()) != toplen:
                     self.state_machine.next_line(i - start)
                     messages = self.malformed_table(
-                        lines[start:i+1], 'Bottom/header table border does '
-                        'not match top border.')
+                        lines[start:i+1], 'Bottom border or header rule does '
+                        'not match top border.', i-start)
                     return [], messages, i == limit or not lines[i+1].strip()
                 found += 1
                 found_at = i
@@ -1805,17 +1807,16 @@ class Body(RSTState):
                     break
             i += 1
         else:                           # reached end of input_lines
+            details = 'No bottom table border found'
             if found:
-                extra = ' or no blank line after table bottom'
+                details += ' or no blank line after table bottom'
                 self.state_machine.next_line(found_at - start)
                 block = lines[start:found_at+1]
             else:
-                extra = ''
                 self.state_machine.next_line(i - start - 1)
                 block = lines[start:]
-            messages = self.malformed_table(
-                block, 'No bottom table border found%s.' % extra)
-            return [], messages, not extra
+            messages = self.malformed_table(block, details + '.')
+            return [], messages, not found
         self.state_machine.next_line(end - start)
         block = lines[start:end+1]
         # for East Asian chars:
