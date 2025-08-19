@@ -937,24 +937,25 @@ class Table:
         return ''
 
     def get_opening(self, width=r'\linewidth'):
+        opening = []
+        nr_of_cols = len(self._col_specs)
         align_map = {'left': '[l]',
                      'center': '[c]',
                      'right': '[r]',
                      None: ''}
         align = align_map.get(self.get('align'))
         latex_type = self.get_latex_type()
-        if align and latex_type not in ("longtable", "longtable*"):
-            opening = [r'\noindent\makebox[\linewidth]%s{%%' % (align,),
-                       r'\begin{%s}' % (latex_type,)]
-        else:
-            opening = [r'\begin{%s}%s' % (latex_type, align)]
+        if align and not latex_type.startswith("longtable"):
+            opening.append(r'\noindent\makebox[\linewidth]%s{%%' % align)
+            align = ''
         if not self.colwidths_auto:
             if self.borders == 'standard' and not self.legacy_column_widths:
-                opening.insert(-1, r'\setlength{\DUtablewidth}'
+                opening.append(r'\setlength{\DUtablewidth}'
                                r'{\dimexpr%s-%i\arrayrulewidth\relax}%%'
-                               % (width, len(self._col_specs)+1))
+                               % (width, nr_of_cols+1))
             else:
-                opening.insert(-1, r'\setlength{\DUtablewidth}{%s}%%' % width)
+                opening.append(r'\setlength{\DUtablewidth}{%s}%%' % width)
+        opening.append(r'\begin{%s}%s' % (latex_type, align))
         return '\n'.join(opening)
 
     def get_closing(self):
@@ -965,7 +966,7 @@ class Table:
         #     closing.append(r'\hline')
         closing.append(r'\end{%s}' % self.get_latex_type())
         if (self.get('align')
-            and self.get_latex_type() not in ("longtable", "longtable*")):
+            and not self.get_latex_type().startswith("longtable")):
             closing.append('}')
         return '\n'.join(closing)
 
