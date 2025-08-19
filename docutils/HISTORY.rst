@@ -35,7 +35,11 @@ Release 0.23b0 (unpublished)
   - Better error messages for grid table markup errors (bug #504),
     based on patch #214 by Jynn Nelson.
 
-__ RELEASE-NOTES.html#nested-parsing
+  __ RELEASE-NOTES.html#nested-parsing
+
+* docutils/transforms/references.py
+
+  - Better error reports for hyperlinks with embedded URI or alias.
 
 
 Release 0.22 (2026-07-29)
