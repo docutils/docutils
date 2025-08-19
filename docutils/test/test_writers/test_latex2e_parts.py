@@ -191,15 +191,15 @@ paragraph
 }
 """,
   'fallbacks': r"""
-% numerical or symbol footnotes with hyperlinks and backlinks
+% numbered or symbol footnotes with hyperlinks and backlinks
 \providecommand*{\DUfootnotemark}[3]{%
   \raisebox{1em}{\hypertarget{#1}{}}%
-  \hyperlink{#2}{\textsuperscript{#3}}%
+  \hyperref[#2]{\textsuperscript{#3}}%
 }
 \providecommand{\DUfootnotetext}[4]{%
   \begingroup%
   \renewcommand{\thefootnote}{%
-    \protect\raisebox{1em}{\protect\hypertarget{#1}{}}%
+    \protect\phantomsection\protect\label{#1}
     \protect\hyperlink{#2}{#3}}%
   \footnotetext{#4}%
   \endgroup%
