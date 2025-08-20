@@ -4385,8 +4385,8 @@ Attribute type: `CDATA`_.  Default value: none.
 The ``auto`` attribute is used to indicate automatically-numbered
 `\<footnote>`_, `\<footnote_reference>`_ and `\<title>`_ elements
 (via the `%auto.att`_ parameter entity).
-In <footnote> and <footnote_reference> elements, it also carries information
-about the label type: "1": auto-numbered_, "*": auto-symbol_.
+In `\<footnote>`_ and `\<footnote_reference>`_ elements, it also carries
+information about the label type ("1": auto-numbered_, "*": auto-symbol_).
 
 
 ``backrefs``
@@ -4925,10 +4925,13 @@ Attribute type: `CDATA`_.  Default value: none.
 The ``title`` attribute is used in the `\<document>`_ element to store the
 document's *metadata title*.
 
-It is set by the `"title" directive`_ or the `DocTitle transform`_.
-This title is typically not part of the rendered document.
-It is, for example, used as `HTML <title> element`_ and shown in a
-browser's title bar, in a user's history or bookmarks, or in search results.
+The attribute is set by the `"title" directive`_ or the
+`DocTitle transform`_.  It is typically not part of the rendered document
+but, for example, used as `HTML <title> element`_ and shown in a
+browser's title bar, a user's history or bookmarks, or search results.
+
+Its value may may differ from the *displayed title* which is stored in a
+`\<title>`_ element.
 
 .. _HTML <title> element:
     https://html.spec.whatwg.org/multipage/semantics.html#the-title-element
