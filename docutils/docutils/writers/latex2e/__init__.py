@@ -1777,7 +1777,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.out.append('}')
 
     def visit_caption(self, node) -> None:
-        self.out.append('\n\\caption{')
+        self.out.append('\\caption{')
         self.visit_inline(node)
 
     def depart_caption(self, node) -> None:
@@ -2312,9 +2312,9 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             # The LaTeX "figure" environment always uses the full linewidth,
             # so "outer alignment" is ignored. Just write a comment.
             # TODO: use the wrapfigure environment?
-            self.out.append('\\begin{figure} %% align = "%s"\n' % alignment)
+            self.out.append('\\begin{figure} %% align = "%s"' % alignment)
         else:
-            self.out.append('\\begin{figure}\n')
+            self.out.append('\\begin{figure}')
 
     def depart_figure(self, node) -> None:
         self.out.append('\\end{figure}\n')
@@ -2444,6 +2444,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         return f'{value}\\DU{unit}dimen'
 
     def visit_image(self, node) -> None:
+        # <image> can be inline element, body element, or nested in a <figure>
+        # in all three cases the <image> may also be nested in a <reference>
         self.requirements['graphicx'] = self.graphicx_package
         attrs = node.attributes
         # convert image URI to filesystem path, do not adjust relative path:
@@ -2490,12 +2492,12 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                 f"width={self.to_latex_length(attrs['width'], node)}")
         pre.append(''.join(self.ids_to_labels(node, newline=True)))
         if not (self.is_inline(node)
-                or isinstance(node.parent, (nodes.figure, nodes.compound))):
+                or isinstance(node.parent, nodes.compound)):
             pre.append('\n')
-        if not (self.is_inline(node)
-                or isinstance(node.parent, nodes.figure)):
+        if not self.is_inline(node):
             post.append('\n')
         pre.reverse()
+        # now insert image code
         self.out.extend(pre)
         if imagepath.suffix == '.svg' and 'svg' in self.settings.stylesheet:
             cmd = 'includesvg'
@@ -2880,7 +2882,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                          ord('%'): '\\%',
                          ord('\\'): '\\\\',
                          }
-        if not (self.is_inline(node) or isinstance(node.parent, nodes.figure)):
+        if not self.is_inline(node):
             self.out.append('\n')
         # external reference (URL)
         if 'refuri' in node:
@@ -2910,7 +2912,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def depart_reference(self, node) -> None:
         self.out.append('}')
-        if not (self.is_inline(node) or isinstance(node.parent, nodes.figure)):
+        if not self.is_inline(node):
             self.out.append('\n')
 
     def visit_revision(self, node) -> None:

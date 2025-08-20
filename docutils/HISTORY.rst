@@ -46,6 +46,7 @@ Release 0.23b0 (unpublished)
   - Prepend ``\phantomsection`` to labelled math-blocks.
   - Fix cross-reference anchor placement in figures, images,
     literal-blocks, and tables.
+  - Simplify code for nested image.
 
 
 Release 0.22 (2026-07-29)
