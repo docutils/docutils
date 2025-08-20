@@ -133,19 +133,27 @@ same paragraph.
 ["""
 .. image:: larch-mini.jpg
    :target: larch.jpg
+   :name: the-larch
+   :class: currently ignored
    :align: center
 """,
 r"""
+\phantomsection\label{the-larch}
 \noindent\makebox[\linewidth][c]{\href{larch.jpg}{\includegraphics{larch-mini.jpg}}}
 """],
 ["""\
+.. _fig:larch:
+
 .. figure:: larch-mini.jpg
    :target: larch.jpg
+   :name: the-larch
 
    The larch
 """,
 r"""
+\phantomsection\label{fig-larch}
 \begin{figure}
+\phantomsection\label{the-larch}
 \noindent\makebox[\linewidth][c]{\href{larch.jpg}{\includegraphics{larch-mini.jpg}}}
 \caption{The larch}
 \end{figure}
@@ -327,6 +335,25 @@ A paragraph with %
 \phantomsection\label{block-target}
 \DUrole{custom}{\DUrole{paragraph}{Next paragraph.}}
 """],
+# literal block
+["""\
+.. class:: cls1
+.. _block1:
+
+::
+
+   1^2_3
+""",
+r"""
+\phantomsection\label{block1}
+\begin{DUclass}{cls1}
+\begin{quote}
+\begin{alltt}
+1^2_3
+\end{alltt}
+\end{quote}
+\end{DUclass}
+"""],
 # table with IDs and custom + special class values
 ["""\
 .. class:: cls1
@@ -341,9 +368,9 @@ A paragraph with %
    = =
 """,
 r"""
+\phantomsection\label{label2}\label{label1}
 \begin{DUclass}{cls2}
 \begin{DUclass}{cls1}
-\phantomsection\label{label2}\label{label1}
 \begin{longtable*}{ll}
 Y & N \\
 \end{longtable*}
