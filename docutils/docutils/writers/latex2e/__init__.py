@@ -1560,19 +1560,25 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                                    id for id in node['ids']))
 
     def ids_to_labels(self, node, set_anchor=True, protect=False,
-                      newline=False) -> list[str]:
+                      newline=False, pre_nl=False) -> list[str]:
         """Return label definitions for all ids of `node`.
 
         If `set_anchor` is True, an anchor is set with \\phantomsection.
         If `protect` is True, the \\label cmd is made robust.
         If `newline` is True, a newline is added if there are labels.
+        If `pre_nl` is True, a newline is prepended if there are labels.
+
+        Provisional.
         """
         prefix = '\\protect' if protect else ''
-        labels = [prefix + '\\label{%s}' % id for id in node['ids']]
-        if set_anchor and labels:
-            labels.insert(0, '\\phantomsection')
-        if newline and labels:
-            labels.append('\n')
+        labels = [f'{prefix}\\label{{{id}}}' for id in node['ids']]
+        if labels:
+            if set_anchor:
+                labels.insert(0, '\\phantomsection')
+            if newline:
+                labels.append('\n')
+            if pre_nl:
+                labels.insert(0, '\n')
         return labels
 
     def set_align_from_classes(self, node) -> None:
@@ -2297,6 +2303,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def visit_figure(self, node) -> None:
         self.requirements['float'] = PreambleCmds.float
+        self.out += self.ids_to_labels(node, pre_nl=True)
         self.duclass_open(node)
         # The 'align' attribute sets the "outer alignment",
         # for "inner alignment" use LaTeX default alignment (similar to HTML)
@@ -2308,7 +2315,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.out.append('\\begin{figure} %% align = "%s"\n' % alignment)
         else:
             self.out.append('\\begin{figure}\n')
-        self.out += self.ids_to_labels(node, newline=True)
 
     def depart_figure(self, node) -> None:
         self.out.append('\\end{figure}\n')
@@ -2482,6 +2488,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         if 'width' in attrs:
             include_graphics_options.append(
                 f"width={self.to_latex_length(attrs['width'], node)}")
+        pre.append(''.join(self.ids_to_labels(node, newline=True)))
         if not (self.is_inline(node)
                 or isinstance(node.parent, (nodes.figure, nodes.compound))):
             pre.append('\n')
@@ -2501,7 +2508,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.out.extend(post)
 
     def depart_image(self, node) -> None:
-        self.out += self.ids_to_labels(node, newline=True)
+        pass
 
     def visit_inline(self, node) -> None:
         # This function is also called by the visiting functions for
@@ -2623,8 +2630,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         _use_listings = (literal_env == 'lstlisting') and _use_env
 
         # Labels and classes:
+        self.out += self.ids_to_labels(node, pre_nl=True)
         self.duclass_open(node)
-        self.out += self.ids_to_labels(node, newline=True)
         # Highlight code?
         if (not _plaintext
             and 'code' in node['classes']
@@ -3058,7 +3065,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.depart_admonition(node)
 
     def visit_table(self, node) -> None:
-        self.duclass_open(node)
         self.requirements['table'] = PreambleCmds.table
         if not self.settings.legacy_column_widths:
             self.requirements['table1'] = PreambleCmds.table_columnwidth
@@ -3090,9 +3096,9 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         # if it has no caption/title.
         # See visit_thead() for tables with caption.
         if not self.active_table.caption:
-            self.out.extend(self.ids_to_labels(
-                node, set_anchor=len(self.table_stack) != 1,
-                newline=True))
+            set_anchor = (len(self.table_stack) != 1)
+            self.out += self.ids_to_labels(node, set_anchor, pre_nl=True)
+        self.duclass_open(node)
         # TODO: Don't use a longtable or add \noindent before
         #       the next paragraph, when in a "compound paragraph".
         #       Start a new line or a new paragraph?

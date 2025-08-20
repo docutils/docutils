@@ -44,6 +44,8 @@ Release 0.23b0 (unpublished)
 * docutils/writers/latex2e/__init__.py
 
   - Prepend ``\phantomsection`` to labelled math-blocks.
+  - Fix cross-reference anchor placement in figures, images,
+    literal-blocks, and tables.
 
 
 Release 0.22 (2026-07-29)
