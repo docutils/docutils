@@ -464,6 +464,45 @@ This is the \emph{document}.
 \date{}
 """
   }],
+# document title and subtitle with labels
+["""\
+.. _top:
+
+The Document Title
+==================
+
+.. _what-for:
+
+for test purposes
+-----------------
+
+Links to top_ and what-for_.
+""",
+ {'body': r"""
+Links to \hyperref[top]{top} and \hyperref[what-for]{what-for}.
+""",
+  'body_pre_docinfo': '\\maketitle\n',
+  'fallbacks': r"""
+% subtitle (in document title)
+\providecommand*{\DUdocumentsubtitle}[1]{{\large #1}}
+""",
+  'pdfsetup': DEFAULT_PARTS['pdfsetup'] + r"""\hypersetup{
+  pdftitle={The Document Title},
+}
+""",
+  'subtitle': 'for test purposes',
+  'title': 'The Document Title',
+  'titledata': r"""\title{The Document Title%
+  \label{the-document-title}%
+  \label{top}%
+  \\%
+  \DUdocumentsubtitle{for test purposes}%
+  \label{for-test-purposes}%
+  \label{what-for}}
+\author{}
+\date{}
+"""
+  }],
 # template
 ["""\
 """,

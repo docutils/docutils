@@ -1381,7 +1381,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     # -----------------
 
     def stylesheet_call(self, path):
-        """Return code to reference or embed stylesheet file `path`"""
+        """Return code to reference or embed stylesheet file `path`."""
+
         path = Path(path)
         # is it a package (no extension or *.sty) or "normal" tex code:
         is_package = path.suffix in ('.sty', '')
@@ -2518,8 +2519,9 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
         # Handle "ids" attribute:
         # do we need a \phantomsection?
-        set_anchor = not (isinstance(node.parent, (nodes.caption, nodes.title))
-                          or isinstance(node, nodes.caption))
+        anchor_nodes = (nodes.caption, nodes.subtitle, nodes.title)
+        set_anchor = not (isinstance(node.parent, anchor_nodes)
+                          or isinstance(node, anchor_nodes))
         add_newline = isinstance(node, nodes.paragraph)
         self.out += self.ids_to_labels(node, set_anchor, newline=add_newline)
         # Handle "classes" attribute:
