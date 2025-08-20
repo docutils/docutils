@@ -2725,16 +2725,21 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def visit_math_block(self, node) -> None:
         self.requirements['amsmath'] = r'\usepackage{amsmath}'
+        math_env = pick_math_environment(node.astext())
+        self.out.append('%\n')
+        if node['ids'] and math_env.endswith('*'):  # non-numbered equation
+            self.out.append('\\phantomsection\n')
         for cls in node['classes']:
             self.provide_fallback('inline')
-            self.out.append(r'\DUrole{%s}{' % cls)
-        math_env = pick_math_environment(node.astext())
-        self.out += [f'%\n\\begin{{{math_env}}}\n',
+            self.out.append(f'\\DUrole{{{cls}}}{{%\n')
+        self.out += [f'\\begin{{{math_env}}}\n',
                      node.astext().translate(unichar2tex.uni2tex_table),
                      '\n',
                      *self.ids_to_labels(node, set_anchor=False, newline=True),
                      f'\\end{{{math_env}}}']
-        self.out.append('}' * len(node['classes']))
+        if node['classes']:
+            self.out.append('\n')
+            self.out.append('}' * len(node['classes']))
         raise nodes.SkipNode  # content already processed
 
     def depart_math_block(self, node) -> None:
