@@ -41,6 +41,10 @@ Release 0.23b0 (unpublished)
 
   - Better error reports for hyperlinks with embedded URI or alias.
 
+* docutils/writers/latex2e/__init__.py
+
+  - Prepend ``\phantomsection`` to labelled math-blocks.
+
 
 Release 0.22 (2026-07-29)
 =========================
@@ -189,16 +193,13 @@ Release 0.22 (2026-07-29)
 
 * docutils/transforms/references.py
 
+  - Make `AnonymousHyperlinks` transform idempotent.
   - New transform `CitationReferences`. Marks citation_references
     as resolved if BibTeX is used by the backend (LaTeX).
 
 * docutils/transforms/writer_aux.py
 
   - Removed `Compound` transform.
-
-* docutils/transforms/references.py
-
-  - Make `AnonymousHyperlinks` transform idempotent.
 
 * docutils/transforms/universal.py
 
