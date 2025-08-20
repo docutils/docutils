@@ -24,6 +24,8 @@
 #           Supported values for the output argument are ascii, html, the default
 #           of locale, man, markdown, pdf, ps, tree, and utf8.
 
+export PYTHONPATH=../../docutils
+
 IN_DIR=input
 OUT_DIR=output-mandoc
 EXP_DIR=expected-mandoc

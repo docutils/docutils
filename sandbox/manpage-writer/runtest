@@ -7,6 +7,8 @@
 # Date: $Date$
 # Copyright: This script has been placed in the public domain.
 
+export PYTHONPATH=../../docutils
+
 IN_DIR=input
 OUT_DIR=output
 EXP_DIR=expected
