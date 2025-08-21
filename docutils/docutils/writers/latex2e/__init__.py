@@ -1714,6 +1714,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.provide_fallback('admonition')
         if 'error' in node['classes']:
             self.provide_fallback('error')
+        if not isinstance(node, nodes.system_message):
+            self.out += self.ids_to_labels(node, pre_nl=True)
         self.duclass_open(node)
         self.out.append('\\begin{DUadmonition}')
 
@@ -1746,6 +1748,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.depart_docinfo_item(node)
 
     def visit_block_quote(self, node) -> None:
+        self.out += self.ids_to_labels(node, pre_nl=True)
         self.duclass_open(node)
         self.out.append('\\begin{quote}')
 
@@ -1754,6 +1757,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.duclass_close(node)
 
     def visit_bullet_list(self, node) -> None:
+        self.out += self.ids_to_labels(node, pre_nl=True)
         self.duclass_open(node)
         self.out.append('\\begin{itemize}')
 
@@ -1876,6 +1880,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def visit_compound(self, node) -> None:
         if isinstance(node.parent, nodes.compound):
             self.out.append('\n')
+        self.out += self.ids_to_labels(node, pre_nl=True)
         node['classes'].insert(0, 'compound')
         self.duclass_open(node)
 
@@ -1889,6 +1894,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.depart_docinfo_item(node)
 
     def visit_container(self, node) -> None:
+        self.out += self.ids_to_labels(node, pre_nl=True)
         self.duclass_open(node)
 
     def depart_container(self, node) -> None:
@@ -1920,6 +1926,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         pass
 
     def visit_definition_list(self, node) -> None:
+        self.out += self.ids_to_labels(node, pre_nl=True)
         self.duclass_open(node)
         self.out.append('\\begin{description}\n')
 
@@ -1928,7 +1935,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.duclass_close(node)
 
     def visit_definition_list_item(self, node) -> None:
-        pass
+        self.out += self.ids_to_labels(node, newline=True)
 
     def depart_definition_list_item(self, node) -> None:
         if node.next_node(descend=False, siblings=True) is not None:
@@ -2239,6 +2246,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         label = r'%s\%s{%s}%s' % (prefix, enumtype, counter_name, suffix)
         self._enumeration_counters.append(label)
 
+        self.out += self.ids_to_labels(node, pre_nl=True)
         self.duclass_open(node)
         if enum_level <= 4:
             self.out.append('\\begin{enumerate}')
@@ -2263,8 +2271,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self._enumeration_counters.pop()
 
     def visit_field(self, node) -> None:
+        self.out += self.ids_to_labels(node, pre_nl=True)
         # output is done in field_body, field_name
-        pass
 
     def depart_field(self, node) -> None:
         pass
@@ -2278,6 +2286,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.out.append(r'\\'+'\n')
 
     def visit_field_list(self, node) -> None:
+        self.out += self.ids_to_labels(node, pre_nl=True)
         self.duclass_open(node)
         if self.out is not self.docinfo:
             self.provide_fallback('fieldlist')
@@ -2447,6 +2456,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def visit_image(self, node) -> None:
         # <image> can be inline element, body element, or nested in a <figure>
         # in all three cases the <image> may also be nested in a <reference>
+        # TODO: "classes" attribute currently ignored!
         self.requirements['graphicx'] = self.graphicx_package
         attrs = node.attributes
         # convert image URI to filesystem path, do not adjust relative path:
@@ -2560,6 +2570,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                             '\\begin{DUlineblock}{\\DUlineblockindent}\n')
             # In rST, nested line-blocks cannot be given class arguments
         else:
+            self.out += self.ids_to_labels(node, pre_nl=True)
             self.duclass_open(node)
             self.out.append('\\begin{DUlineblock}{0em}\n')
             self.insert_align_declaration(node)
@@ -2569,6 +2580,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.duclass_close(node)
 
     def visit_list_item(self, node) -> None:
+        self.out += self.ids_to_labels(node, pre_nl=True)
         self.out.append('\n\\item ')
 
     def depart_list_item(self, node) -> None:
@@ -2784,6 +2796,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def visit_option_list(self, node) -> None:
         self.provide_fallback('providelength', '_providelength')
         self.provide_fallback('optionlist')
+        self.out += self.ids_to_labels(node, pre_nl=True)
         self.duclass_open(node)
         self.out.append('\\begin{DUoptionlist}\n')
 
@@ -2792,7 +2805,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.duclass_close(node)
 
     def visit_option_list_item(self, node) -> None:
-        pass
+        self.out += self.ids_to_labels(node, newline=True)
 
     def depart_option_list_item(self, node) -> None:
         pass
@@ -2927,10 +2940,13 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.provide_fallback('rubric')
         # class wrapper would interfere with ``\section*"`` type commands
         # (spacing/indent of first paragraph)
-        self.out.append('\n\\DUrubric{')
+        self.out += self.ids_to_labels(node, pre_nl=True)
+        self.duclass_open(node)
+        self.out.append('\\DUrubric{')
 
     def depart_rubric(self, node) -> None:
         self.out.append('}\n')
+        self.duclass_close(node)
 
     def visit_section(self, node) -> None:
         # Update counter-prefix for compound enumerators
@@ -2972,6 +2988,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.section_level -= 1
 
     def visit_sidebar(self, node) -> None:
+        self.out += self.ids_to_labels(node, pre_nl=True)
         self.duclass_open(node)
         self.requirements['color'] = PreambleCmds.color
         self.provide_fallback('sidebar')
@@ -2988,12 +3005,15 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def visit_attribution(self, node) -> None:
         prefix, suffix = self.attribution_formats[self.settings.attribution]
-        self.out.append('\\nopagebreak\n\n\\raggedleft ')
-        self.out.append(prefix)
+        self.out.append('\\nopagebreak\n')
+        self.out += self.ids_to_labels(node, pre_nl=True)
+        self.duclass_open(node)
+        self.out.append(f'\\raggedleft {prefix}')
         self.context.append(suffix)
 
     def depart_attribution(self, node) -> None:
         self.out.append(self.context.pop() + '\n')
+        self.duclass_close(node)
 
     def visit_status(self, node) -> None:
         self.visit_docinfo_item(node)
@@ -3281,7 +3301,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
         # labels and PDF bookmark (sidebar entry)
         self.out.append('\n')  # start new paragraph
-        if node['names']:  # don't add labels just for auto-ids
+        if len(node['names']) > 1:  # don't add labels just for the auto-id
             self.out += self.ids_to_labels(node, newline=True)
         if (isinstance(node.next_node(), nodes.title)
             and 'local' not in node['classes']

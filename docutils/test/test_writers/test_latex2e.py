@@ -316,9 +316,11 @@ c4
 \\hline
 \\end{longtable*}
 """],
+])
+
 # Test handling of IDs and custom class values
 # --------------------------------------------
-# targets with ID
+samples['IDs and classes'] = ({}, [
 ["""\
 A paragraph with _`inline target`.
 
@@ -334,6 +336,177 @@ A paragraph with %
 
 \phantomsection\label{block-target}
 \DUrole{custom}{\DUrole{paragraph}{Next paragraph.}}
+"""],
+# admonition
+["""
+.. class:: cls1
+.. _label1:
+.. hint::
+   :name: label2
+   :class: cls2
+
+   Don't forget to breathe.
+""",
+r"""
+\phantomsection\label{label2}\label{label1}
+\begin{DUclass}{cls2}
+\begin{DUclass}{cls1}
+\begin{DUclass}{hint}
+\begin{DUadmonition}
+\DUtitle{Hint}
+
+Don't forget to breathe.
+\end{DUadmonition}
+\end{DUclass}
+\end{DUclass}
+\end{DUclass}
+"""],
+# block quote
+["""
+.. class:: cls1
+.. _label1:
+
+   Exlicit is better than implicit.
+
+   .. class:: attribute-cls cute
+   .. _a-tribution:
+
+   -- Zen of Python
+""",
+r"""
+\phantomsection\label{label1}
+\begin{DUclass}{cls1}
+\begin{quote}
+Exlicit is better than implicit.
+\nopagebreak
+
+\phantomsection\label{a-tribution}
+\begin{DUclass}{attribute-cls}
+\begin{DUclass}{cute}
+\raggedleft —Zen of Python
+\end{DUclass}
+\end{DUclass}
+\end{quote}
+\end{DUclass}
+"""],
+# bullet list
+["""
+.. class:: cls1
+.. _bullet1:
+
+* list item
+
+  .. class:: bullet-class
+  .. _b-item:
+
+* second bullet list item
+""",
+r"""
+\phantomsection\label{bullet1}
+\begin{DUclass}{cls1}
+\begin{itemize}
+\item list item
+
+\phantomsection\label{b-item}
+\item second bullet list item
+\end{itemize}
+\end{DUclass}
+"""],
+# definition list
+["""
+.. class:: def-list-class
+.. _def-list:
+
+definition
+  list
+
+  .. class:: def-item-class
+  .. _def-item:
+
+term
+  definition
+""",
+"""
+\\phantomsection\\label{def-list}
+\\begin{DUclass}{def-list-class}
+\\begin{description}
+\\item[{definition}] \n\
+list
+
+\\phantomsection\\label{def-item}
+\\item[{term}] \n\
+definition
+\\end{description}
+\\end{DUclass}
+"""],
+# enumerated list
+["""
+.. class:: cls1
+.. _enumerated1:
+
+#. list item
+
+   .. class:: e-item-class
+   .. _e-item:
+
+#. enumerated list item
+""",
+r"""
+\phantomsection\label{enumerated1}
+\begin{DUclass}{cls1}
+\begin{enumerate}
+\item list item
+
+\phantomsection\label{e-item}
+\item enumerated list item
+\end{enumerate}
+\end{DUclass}
+"""],
+# field list
+["""\
+Not a docinfo.
+
+.. class:: fieldlist-class
+.. _f-list:
+
+:field: list
+
+  .. class:: field-class
+  .. _f-list-item:
+
+:name: body
+""",
+r"""
+Not a docinfo.
+
+\phantomsection\label{f-list}
+\begin{DUclass}{fieldlist-class}
+\begin{DUfieldlist}
+\item[{field:}]
+list
+
+\phantomsection\label{f-list-item}
+\item[{name:}]
+body
+\end{DUfieldlist}
+\end{DUclass}
+"""],
+# line block
+["""\
+.. class:: lineblock-class
+.. _line-block:
+
+| line block
+| second line
+""",
+r"""
+\phantomsection\label{line-block}
+\begin{DUclass}{lineblock-class}
+\begin{DUlineblock}{0em}
+\item[] line block
+\item[] second line
+\end{DUlineblock}
+\end{DUclass}
 """],
 # literal block
 ["""\
@@ -352,6 +525,28 @@ r"""
 1^2_3
 \end{alltt}
 \end{quote}
+\end{DUclass}
+"""],
+# option list
+["""\
+.. class:: o-list-class
+.. _o-list:
+
+--an  option list
+
+  .. class:: option-class
+  .. _o-item:
+
+--another  option
+""",
+r"""
+\phantomsection\label{o-list}
+\begin{DUclass}{o-list-class}
+\begin{DUoptionlist}
+\item[-{}-an]  option list
+\phantomsection\label{o-item}
+\item[-{}-another]  option
+\end{DUoptionlist}
 \end{DUclass}
 """],
 # table with IDs and custom + special class values
@@ -374,6 +569,145 @@ r"""
 \begin{longtable*}{ll}
 Y & N \\
 \end{longtable*}
+\end{DUclass}
+\end{DUclass}
+"""],
+# directives
+["""\
+.. compound::
+   :class: compoundclass
+   :name: com-pound
+
+   Compound paragraph 1
+
+   Compound paragraph 2
+
+.. container:: containerclass
+   :name: con-tainer
+
+   Container paragraph 1
+
+   Container paragraph 2
+""",
+r"""
+\phantomsection\label{com-pound}
+\begin{DUclass}{compound}
+\begin{DUclass}{compoundclass}
+Compound paragraph 1
+
+Compound paragraph 2
+\end{DUclass}
+\end{DUclass}
+
+\phantomsection\label{con-tainer}
+\begin{DUclass}{containerclass}
+Container paragraph 1
+
+Container paragraph 2
+\end{DUclass}
+"""],
+# figures and images
+["""\
+.. figure:: parrot.png
+   :figclass: figureclass
+   :figname: fig-ure
+
+   .. class:: f-caption-class
+   .. _f-caption:
+
+   A figure with caption
+
+   .. class:: legend-class
+   .. _le-gend:
+
+   A figure legend
+
+.. image:: parrot.png
+   :class: imgclass TODO ignored!
+   :name: i-mage
+   :target: example.org/parrots
+""",
+r"""
+\phantomsection\label{fig-ure}
+\begin{DUclass}{figureclass}
+\begin{figure}
+\noindent\makebox[\linewidth][c]{\includegraphics{parrot.png}}
+\caption{\label{f-caption}\DUrole{f-caption-class}{A figure with caption}}
+\begin{DUlegend}
+\phantomsection\label{le-gend}
+\DUrole{legend-class}{A figure legend}
+\end{DUlegend}
+\end{figure}
+\end{DUclass}
+
+\phantomsection\label{i-mage}
+\href{example.org/parrots}{\includegraphics{parrot.png}}
+"""],
+["""\
+.. math:: x = 2^4
+   :class: mathclass
+   :name: math-block
+
+.. note:: a specific admonition
+   :class: noteclass
+   :name: my-note
+
+.. _my-raw:
+.. raw:: latex pseudoxml xml
+   :class: rawclass
+
+   \\LaTeX
+
+.. sidebar:: sidebar title
+   :class: sideclass
+   :name: side-bar
+
+   sidebar content
+
+.. topic:: topic heading
+   :class: topicclass
+   :name: to-pic
+
+   topic content
+""",
+r"""%
+\phantomsection
+\DUrole{mathclass}{%
+\begin{equation*}
+x = 2^4
+\label{math-block}
+\end{equation*}
+}
+\phantomsection\label{my-note}
+\begin{DUclass}{noteclass}
+\begin{DUclass}{note}
+\begin{DUadmonition}
+\DUtitle{Note}
+
+a specific admonition
+\end{DUadmonition}
+\end{DUclass}
+\end{DUclass}
+
+\phantomsection\label{my-raw}\DUrole{rawclass}{\LaTeX}
+
+\phantomsection\label{side-bar}
+\begin{DUclass}{sideclass}
+\DUsidebar{
+\DUtitle{sidebar title}
+
+sidebar content
+}
+\end{DUclass}
+
+\phantomsection\label{to-pic}
+\begin{DUclass}{topic}
+\begin{DUclass}{topicclass}
+\begin{quote}
+\DUtitle{topic heading}
+
+topic content
+\end{quote}
 \end{DUclass}
 \end{DUclass}
 """],
