@@ -214,7 +214,6 @@ unnumbered section
 ------------------
 """,
  {'body': r"""
-\phantomsection\label{contents}
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
 
@@ -235,7 +234,6 @@ first section
 -------------
 """,
  {'body': r"""
-\phantomsection\label{contents}
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
 
@@ -256,7 +254,6 @@ first section
 -------------
 """,
  {'body': r"""
-\phantomsection\label{contents}
 \pdfbookmark[1]{Contents}{contents}
 \setcounter{tocdepth}{1}
 \tableofcontents
@@ -286,7 +283,6 @@ section not in local toc
   \label{section-with-local-toc}%
 }
 
-\phantomsection\label{contents}
 \mtcsettitle{secttoc}{}
 \secttoc
 
@@ -596,7 +592,6 @@ first chapter
 -------------
 """,
  {'body': r"""
-\phantomsection\label{contents}
 \pdfbookmark[1]{Contents}{contents}
 \setcounter{tocdepth}{0}
 \tableofcontents
@@ -703,7 +698,6 @@ Title 2
 Paragraph 2.
 """,
  {'body': r"""
-\phantomsection\label{table-of-contents}
 \pdfbookmark[1]{Table of Contents}{table-of-contents}
 
 \begin{DUclass}{contents}
