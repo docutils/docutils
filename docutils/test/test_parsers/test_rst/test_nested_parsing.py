@@ -43,25 +43,39 @@ class ParseIntoDetachedNode(rst.Directive):
     def run(self):
         # similar to sphinx.util.parsing.nested_parse_to_nodes()
         node = nodes.Element()
-        node.document = self.state.document
+        node.document = self.state.document  # not required
+        # support sections if it is valid:
+        match_titles = isinstance(self.state.parent, (nodes.document,
+                                                      nodes.section))
         self.state.nested_parse(self.content, input_offset=0,
-                                node=node, match_titles=True)
+                                node=node, match_titles=match_titles)
         return node.children
 
 
 class ParseIntoCurrentNode(ParseIntoDetachedNode):
     def run(self):
         node = self.state.parent  # the current "insertion point"
-        self.state.nested_parse(self.content, 0, node, match_titles=True)
+        # support sections if it is valid:
+        match_titles = isinstance(node, (nodes.document, nodes.section))
+        self.state.nested_parse(self.content, 0, node, match_titles)
         return []  # nodes already attached to document
 
 
-class ParseIntoAttachedNode(ParseIntoDetachedNode):
+class ParseIntoSectionNode(ParseIntoDetachedNode):
     def run(self):
-        node = nodes.sidebar('')
-        self.state.parent.append(node)
+        if not isinstance(self.state.parent, (nodes.document, nodes.section)):
+            msg = self.reporter.error(
+                    'The "nested-section" directive can only be used'
+                    ' where a section is valid.',
+                    nodes.literal_block(self.block_text, self.block_text),
+                    line=self.lineno)
+            return [msg]
+        node = nodes.section('')
+        node.append(nodes.title('', 'generated section'))
+        # In production, also generate and register section name and ID
+        # (cf. rst.states.RSTState.new_subsection()).
         self.state.nested_parse(self.content, 0, node, match_titles=True)
-        return []  # nodes already attached to document
+        return [node]
 
 
 class ParserTestCase(unittest.TestCase):
@@ -72,8 +86,8 @@ class ParserTestCase(unittest.TestCase):
                                           ParseIntoDetachedNode)
         rst.directives.register_directive('nested-current',
                                           ParseIntoCurrentNode)
-        rst.directives.register_directive('nested-attached',
-                                          ParseIntoAttachedNode)
+        rst.directives.register_directive('nested-section',
+                                          ParseIntoSectionNode)
         parser = rst.Parser()
         settings = get_default_settings(rst.Parser)
         settings.warning_stream = ''
@@ -89,29 +103,32 @@ class ParserTestCase(unittest.TestCase):
 
 totest = {}
 
-# Parse into the base node:
 totest['nested_parsing'] = [
+
 ["""\
-Preceding paragraph.
+Parse into section node:
 
-.. nested-attached::
+.. nested-section::
 
-  .. hint:: this is nested.
+  This is nested.
 
-Succeeding paragraph.
+sec2
+====
 """,
 """\
 <document source="test data">
     <paragraph>
-        Preceding paragraph.
-    <sidebar>
-        <hint>
-            <paragraph>
-                this is nested.
-    <paragraph>
-        Succeeding paragraph.
+        Parse into section node:
+    <section>
+        <title>
+            generated section
+        <paragraph>
+            This is nested.
+    <section ids="sec2" names="sec2">
+        <title>
+            sec2
 """],
-# detached base node -> start new section hierarchy with every nested parse
+# start new section hierarchy with every nested parse
 ["""\
 sec1
 ====
@@ -133,8 +150,8 @@ sec1.1
   detached2.1
   ***********
 
-Succeeding paragraph.
-
+sec1.1.1
+~~~~~~~~
 sec2
 ====
 The document-wide section title styles are kept.
@@ -162,15 +179,16 @@ The document-wide section title styles are kept.
                 <section ids="detached2-1" names="detached2.1">
                     <title>
                         detached2.1
-            <paragraph>
-                Succeeding paragraph.
+            <section ids="sec1-1-1" names="sec1.1.1">
+                <title>
+                    sec1.1.1
     <section ids="sec2" names="sec2">
         <title>
             sec2
         <paragraph>
             The document-wide section title styles are kept.
 """],
-# base node == current node -> keep section hierarchy
+# base node == current node
 ["""\
 sec1
 ====
@@ -184,9 +202,9 @@ sec1.1
   -----------
   current1.1.1
   ============
-  Top-level section appended to document.
 
-Succeeding paragraph.
+sec1.1.1
+~~~~~~~~
 """,
 """\
 <document source="test data">
@@ -205,25 +223,26 @@ Succeeding paragraph.
                     <section ids="current1-1-1" names="current1.1.1">
                         <title>
                             current1.1.1
-                        <paragraph>
-                            Top-level section appended to document.
-            <paragraph>
-                Succeeding paragraph.
+            <section ids="sec1-1-1" names="sec1.1.1">
+                <title>
+                    sec1.1.1
 """],
-# parse into attached wrapper node:
+# parse into generated <section> node:
 ["""\
 sec1
 ====
 sec1.1
 ------
-.. nested-attached::
+.. nested-section::
 
   attached1
   *********
   attached1.1
   ===========
 
-Succeeding paragraph.
+sec1.1.1
+~~~~~~~~
+
 """,
 """\
 <document source="test data">
@@ -233,85 +252,61 @@ Succeeding paragraph.
         <section ids="sec1-1" names="sec1.1">
             <title>
                 sec1.1
-            <sidebar>
+            <section>
+                <title>
+                    generated section
                 <section ids="attached1" names="attached1">
                     <title>
                         attached1
                     <section ids="attached1-1" names="attached1.1">
                         <title>
                             attached1.1
-            <paragraph>
-                Succeeding paragraph.
-"""],
-# detached base node -> start new section hierarchy
-["""\
-sec1
-====
-sec1.1
-------
-sec2
-====
-.. nested-detached::
-  detached1
-  ~~~~~~~~~
-  detached1.1
-  -----------
-
-Succeeding paragraph.
-""",
-"""\
-<document source="test data">
-    <section ids="sec1" names="sec1">
-        <title>
-            sec1
-        <section ids="sec1-1" names="sec1.1">
-            <title>
-                sec1.1
-    <section ids="sec2" names="sec2">
-        <title>
-            sec2
-        <section ids="detached1" names="detached1">
-            <title>
-                detached1
-            <section ids="detached1-1" names="detached1.1">
+            <section ids="sec1-1-1" names="sec1.1.1">
                 <title>
-                    detached1.1
-        <paragraph>
-            Succeeding paragraph.
+                    sec1.1.1
 """],
-# base node == <blockquote>
+# Nested parsing in a block-quote:
 ["""\
-sec1
-====
-
-  A block-quote is parsed into a detached <blockquote> element.
-
   .. nested-current::
+
+    Nested parsing is OK but a section is invalid in a block-quote.
 
     nested section
     ==============
 
-  The nested <section> becomes a child of the <blockquote> (sic.)!
+  .. nested-detached::
 
-The calling directive should move the nested <section> or report
-a validity violation.
+    invalid section
+    ---------------
+
+  .. nested-section::
+
+    The <section> base node is invalid in a block-quote.
 """,
 """\
 <document source="test data">
-    <section ids="sec1" names="sec1">
-        <title>
-            sec1
-        <block_quote>
-            <paragraph>
-                A block-quote is parsed into a detached <blockquote> element.
-            <section ids="nested-section" names="nested\\ section">
-                <title>
-                    nested section
-            <paragraph>
-                The nested <section> becomes a child of the <blockquote> (sic.)!
+    <block_quote>
         <paragraph>
-            The calling directive should move the nested <section> or report
-            a validity violation.
+            Nested parsing is OK but a section is invalid in a block-quote.
+        <system_message level="3" line="6" source="test data" type="ERROR">
+            <paragraph>
+                Unexpected section title.
+            <literal_block xml:space="preserve">
+                nested section
+                ==============
+        <system_message level="3" line="11" source="test data" type="ERROR">
+            <paragraph>
+                Unexpected section title.
+            <literal_block xml:space="preserve">
+                invalid section
+                ---------------
+        <system_message level="3" line="13" source="test data" type="ERROR">
+            <paragraph>
+                The "nested-section" directive can only be used where a section is valid.
+            <literal_block xml:space="preserve">
+                .. nested-section::
+                \n\
+                  The <section> base node is invalid in a block-quote.
 """],
 ]
 
