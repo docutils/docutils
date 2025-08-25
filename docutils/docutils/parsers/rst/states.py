@@ -232,10 +232,17 @@ class RSTState(StateWS):
         self.document = memo.document
         self.inliner = memo.inliner
         self.reporter = self.document.reporter
-        self.parent = self.state_machine.node
         # enable the reporter to determine source and source-line
         if not hasattr(self.reporter, 'get_source_and_line'):
             self.reporter.get_source_and_line = self.state_machine.get_source_and_line  # noqa:E501
+
+    @property
+    def parent(self) -> nodes.Element | None:
+        return self.state_machine.node
+
+    @parent.setter
+    def parent(self, value: nodes.Element):
+        self.state_machine.node = value
 
     def goto_line(self, abs_line_offset) -> None:
         """
@@ -425,15 +432,7 @@ class RSTState(StateWS):
         section_node += title_messages
         self.document.note_implicit_target(section_node, section_node)
         # Update state:
-        self.state_machine.node = section_node
-        # Also update the ".parent" attribute in all states.
-        # This is a bit violent, but the state classes copy their .parent from
-        # state_machine.node on creation, so we need to update them. We could
-        # also remove RSTState.parent entirely and replace references to it
-        # with statemachine.node, but that might break code downstream of
-        # docutils.
-        for s in self.state_machine.states.values():
-            s.parent = section_node
+        self.parent = section_node
 
     def paragraph(self, lines, lineno):
         """
