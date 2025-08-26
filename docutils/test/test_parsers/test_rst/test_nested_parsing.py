@@ -31,10 +31,11 @@ if __name__ == '__main__':
 from docutils import nodes
 from docutils.frontend import get_default_settings
 from docutils.parsers import rst
+from docutils.parsers.rst.directives import register_directive
 from docutils.utils import new_document
 
 
-class ParseIntoDetachedNode(rst.Directive):
+class ParseIntoNode(rst.Directive):
     """A directive implementing nested parsing with support for sections.
     """
     final_argument_whitespace = True
@@ -44,26 +45,36 @@ class ParseIntoDetachedNode(rst.Directive):
         # similar to sphinx.util.parsing.nested_parse_to_nodes()
         node = nodes.Element()
         node.document = self.state.document  # not required
-        # support sections if it is valid:
-        match_titles = isinstance(self.state.parent, (nodes.document,
-                                                      nodes.section))
+        # support sections (unless we know it is invalid):
+        match_titles = isinstance(self.state_machine.node,
+                                  (nodes.document, nodes.section))
         self.state.nested_parse(self.content, input_offset=0,
                                 node=node, match_titles=match_titles)
-        return node.children
+        # Append and move the "insertion point" to the last nested section.
+        # TODO: this fails in some cases, see tests below.
+        self.state_machine.node += node.children
+        # print(self.state_machine, self.state_machine.node[-1].shortrepr())
+        try:
+            while isinstance(self.state_machine.node[-1], nodes.section):
+                self.state_machine.node = self.state_machine.node[-1]
+        except IndexError:
+            pass
+        return []  # node already attached to document
 
 
-class ParseIntoCurrentNode(ParseIntoDetachedNode):
+class ParseIntoCurrentNode(ParseIntoNode):
     def run(self):
-        node = self.state.parent  # the current "insertion point"
-        # support sections if it is valid:
+        node = self.state_machine.node  # the current "insertion point"
+        # support sections (unless we know it is invalid):
         match_titles = isinstance(node, (nodes.document, nodes.section))
         self.state.nested_parse(self.content, 0, node, match_titles)
-        return []  # nodes already attached to document
+        return []  # node already attached to document
 
 
-class ParseIntoSectionNode(ParseIntoDetachedNode):
+class ParseIntoSectionNode(ParseIntoNode):
     def run(self):
-        if not isinstance(self.state.parent, (nodes.document, nodes.section)):
+        if not isinstance(self.state_machine.node,
+                          (nodes.document, nodes.section)):
             msg = self.reporter.error(
                     'The "nested-section" directive can only be used'
                     ' where a section is valid.',
@@ -82,12 +93,9 @@ class ParserTestCase(unittest.TestCase):
     maxDiff = None
 
     def test_parser(self):
-        rst.directives.register_directive('nested-detached',
-                                          ParseIntoDetachedNode)
-        rst.directives.register_directive('nested-current',
-                                          ParseIntoCurrentNode)
-        rst.directives.register_directive('nested-section',
-                                          ParseIntoSectionNode)
+        register_directive('nested', ParseIntoNode)
+        register_directive('nested-current', ParseIntoCurrentNode)
+        register_directive('nested-section', ParseIntoSectionNode)
         parser = rst.Parser()
         settings = get_default_settings(rst.Parser)
         settings.warning_stream = ''
@@ -97,6 +105,11 @@ class ParserTestCase(unittest.TestCase):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     document = new_document('test data', settings.copy())
                     parser.parse(case_input, document)
+                    try:
+                        document.validate()
+                    except nodes.ValidationError as e:
+                        document.append(document.reporter.warning(
+                            str(e), base_node=e.problematic_element or None))
                     output = document.pformat()
                     self.assertEqual(case_expected, output)
 
@@ -104,57 +117,35 @@ class ParserTestCase(unittest.TestCase):
 totest = {}
 
 totest['nested_parsing'] = [
-
-["""\
-Parse into section node:
-
-.. nested-section::
-
-  This is nested.
-
-sec2
-====
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        Parse into section node:
-    <section>
-        <title>
-            generated section
-        <paragraph>
-            This is nested.
-    <section ids="sec2" names="sec2">
-        <title>
-            sec2
-"""],
-# start new section hierarchy with every nested parse
+# Start new section hierarchy with every nested parse.
 ["""\
 sec1
 ====
 sec1.1
 ------
-.. nested-detached::
 
-  detached1
-  *********
-  detached1.1
-  -----------
-  detached1.1.1
-  =============
+.. nested::
 
-.. nested-detached::
+  nested1
+  *******
+  nested1.1
+  =========
 
-  detached2
-  ---------
-  detached2.1
-  ***********
-
-sec1.1.1
-~~~~~~~~
 sec2
 ====
 The document-wide section title styles are kept.
+
+.. nested::
+
+  nested2
+  =======
+  nested2.1
+  *********
+
+sec2.2
+------
+sec2.2.1
+~~~~~~~~
 """,
 """\
 <document source="test data">
@@ -164,29 +155,82 @@ The document-wide section title styles are kept.
         <section ids="sec1-1" names="sec1.1">
             <title>
                 sec1.1
-            <section ids="detached1" names="detached1">
+            <section ids="nested1" names="nested1">
                 <title>
-                    detached1
-                <section ids="detached1-1" names="detached1.1">
+                    nested1
+                <section ids="nested1-1" names="nested1.1">
                     <title>
-                        detached1.1
-                    <section ids="detached1-1-1" names="detached1.1.1">
-                        <title>
-                            detached1.1.1
-            <section ids="detached2" names="detached2">
-                <title>
-                    detached2
-                <section ids="detached2-1" names="detached2.1">
-                    <title>
-                        detached2.1
-            <section ids="sec1-1-1" names="sec1.1.1">
-                <title>
-                    sec1.1.1
+                        nested1.1
     <section ids="sec2" names="sec2">
         <title>
             sec2
         <paragraph>
             The document-wide section title styles are kept.
+        <section ids="nested2" names="nested2">
+            <title>
+                nested2
+            <section ids="nested2-1" names="nested2.1">
+                <title>
+                    nested2.1
+        <section ids="sec2-2" names="sec2.2">
+            <title>
+                sec2.2
+            <section ids="sec2-2-1" names="sec2.2.1">
+                <title>
+                    sec2.2.1
+"""],
+# Move "insertion point" if the nested block contains sections to
+# comply with the validity constraints of the "structure model".
+["""\
+.. nested::
+
+  nested1
+  *******
+  nested1.1
+  ---------
+
+This paragraph belongs to the last nested section.
+""",
+"""\
+<document source="test data">
+    <section ids="nested1" names="nested1">
+        <title>
+            nested1
+        <section ids="nested1-1" names="nested1.1">
+            <title>
+                nested1.1
+            <paragraph>
+                This paragraph belongs to the last nested section.
+"""],
+["""\
+.. note:: A preceding directive foils the "insertion point move".
+
+.. nested::
+
+  nested1
+  *********
+  nested1.1
+  ---------
+
+TODO: This paragraph belongs to the last nested section.
+""",
+"""\
+<document source="test data">
+    <note>
+        <paragraph>
+            A preceding directive foils the "insertion point move".
+    <section ids="nested1" names="nested1">
+        <title>
+            nested1
+        <section ids="nested1-1" names="nested1.1">
+            <title>
+                nested1.1
+    <paragraph>
+        TODO: This paragraph belongs to the last nested section.
+    <system_message level="2" line="10" source="test data" type="WARNING">
+        <paragraph>
+            Element <document source="test data"> invalid:
+              Child element <paragraph> not allowed at this position.
 """],
 # base node == current node
 ["""\
@@ -203,7 +247,7 @@ sec1.1
   current1.1.1
   ============
 
-sec1.1.1
+sec1.1.2
 ~~~~~~~~
 """,
 """\
@@ -223,9 +267,9 @@ sec1.1.1
                     <section ids="current1-1-1" names="current1.1.1">
                         <title>
                             current1.1.1
-            <section ids="sec1-1-1" names="sec1.1.1">
+            <section ids="sec1-1-2" names="sec1.1.2">
                 <title>
-                    sec1.1.1
+                    sec1.1.2
 """],
 # parse into generated <section> node:
 ["""\
@@ -235,12 +279,14 @@ sec1.1
 ------
 .. nested-section::
 
-  attached1
-  *********
-  attached1.1
-  ===========
+  nested-section1
+  ***************
+  nested-section1.1
+  =================
 
-sec1.1.1
+This paragraph belongs to the last nested section.
+
+sec1.1.2
 ~~~~~~~~
 
 """,
@@ -255,15 +301,21 @@ sec1.1.1
             <section>
                 <title>
                     generated section
-                <section ids="attached1" names="attached1">
+                <section ids="nested-section1" names="nested-section1">
                     <title>
-                        attached1
-                    <section ids="attached1-1" names="attached1.1">
+                        nested-section1
+                    <section ids="nested-section1-1" names="nested-section1.1">
                         <title>
-                            attached1.1
-            <section ids="sec1-1-1" names="sec1.1.1">
+                            nested-section1.1
+            <paragraph>
+                This paragraph belongs to the last nested section.
+            <section ids="sec1-1-2" names="sec1.1.2">
                 <title>
-                    sec1.1.1
+                    sec1.1.2
+    <system_message level="2" line="12" source="test data" type="WARNING">
+        <paragraph>
+            Element <section ids="sec1-1" names="sec1.1"> invalid:
+              Child element <paragraph> not allowed at this position.
 """],
 # Nested parsing in a block-quote:
 ["""\
@@ -274,7 +326,7 @@ sec1.1.1
     nested section
     ==============
 
-  .. nested-detached::
+  .. nested::
 
     invalid section
     ---------------
