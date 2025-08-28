@@ -51,13 +51,20 @@ class ParseIntoNode(rst.Directive):
         self.state.nested_parse(self.content, input_offset=0,
                                 node=node, match_titles=match_titles)
         # Append and move the "insertion point" to the last nested section.
-        # TODO: this fails in some cases, see tests below.
         self.state_machine.node += node.children
         # print(self.state_machine, self.state_machine.node[-1].shortrepr())
         try:
             while isinstance(self.state_machine.node[-1], nodes.section):
                 self.state_machine.node = self.state_machine.node[-1]
         except IndexError:
+            pass
+        # pass on the new "current node" to parent state machines
+        sm = self.state_machine
+        try:
+            while True:
+                sm = sm.parent_state_machine
+                sm.node = self.state_machine.node
+        except AttributeError:
             pass
         return []  # node already attached to document
 
@@ -203,7 +210,7 @@ This paragraph belongs to the last nested section.
                 This paragraph belongs to the last nested section.
 """],
 ["""\
-.. note:: A preceding directive foils the "insertion point move".
+.. note:: A preceding directive must not foil the "insertion point move".
 
 .. nested::
 
@@ -212,25 +219,37 @@ This paragraph belongs to the last nested section.
   nested1.1
   ---------
 
-TODO: This paragraph belongs to the last nested section.
+This paragraph belongs to the last nested section.
 """,
 """\
 <document source="test data">
     <note>
         <paragraph>
-            A preceding directive foils the "insertion point move".
+            A preceding directive must not foil the "insertion point move".
     <section ids="nested1" names="nested1">
         <title>
             nested1
         <section ids="nested1-1" names="nested1.1">
             <title>
                 nested1.1
+            <paragraph>
+                This paragraph belongs to the last nested section.
+"""],
+["""\
+.. nested::
+
+  Keep the "current node", if the nested parse does not
+  contain a section.
+
+This paragraph belongs to the document.
+""",
+"""\
+<document source="test data">
     <paragraph>
-        TODO: This paragraph belongs to the last nested section.
-    <system_message level="2" line="10" source="test data" type="WARNING">
-        <paragraph>
-            Element <document source="test data"> invalid:
-              Child element <paragraph> not allowed at this position.
+        Keep the "current node", if the nested parse does not
+        contain a section.
+    <paragraph>
+        This paragraph belongs to the document.
 """],
 # base node == current node
 ["""\

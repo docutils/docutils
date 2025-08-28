@@ -316,8 +316,10 @@ class RSTState(StateWS):
             except IndexError:
                 pass
         if not state_machine:
-            state_machine = state_machine_class(debug=self.debug,
-                                                **state_machine_kwargs)
+            state_machine = state_machine_class(
+                                debug=self.debug,
+                                parent_state_machine=self.state_machine,
+                                **state_machine_kwargs)
         # run the statemachine and populate `node`:
         block_length = len(block)
         state_machine.run(block, input_offset, memo=self.memo,
@@ -357,8 +359,10 @@ class RSTState(StateWS):
         if state_machine_kwargs is None:
             state_machine_kwargs = self.nested_sm_kwargs.copy()
         state_machine_kwargs['initial_state'] = initial_state
-        state_machine = state_machine_class(debug=self.debug,
-                                            **state_machine_kwargs)
+        state_machine = state_machine_class(
+                            debug=self.debug,
+                            parent_state_machine=self.state_machine,
+                            **state_machine_kwargs)
         if blank_finish_state is None:
             blank_finish_state = initial_state
         state_machine.states[blank_finish_state].blank_finish = blank_finish
