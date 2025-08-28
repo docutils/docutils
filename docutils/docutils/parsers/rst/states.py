@@ -309,27 +309,28 @@ class RSTState(StateWS):
         if state_machine_kwargs is None:
             state_machine_kwargs = self.nested_sm_kwargs
             use_default += 1
-        state_machine = None
+        my_state_machine = None
         if use_default == 2:
             try:
-                state_machine = self.nested_sm_cache.pop()
+                # get cached state machine, prevent others from using it
+                my_state_machine = self.nested_sm_cache.pop()
             except IndexError:
                 pass
-        if not state_machine:
-            state_machine = state_machine_class(
-                                debug=self.debug,
-                                parent_state_machine=self.state_machine,
-                                **state_machine_kwargs)
-        # run the statemachine and populate `node`:
+        if not my_state_machine:
+            my_state_machine = state_machine_class(
+                                  debug=self.debug,
+                                  parent_state_machine=self.state_machine,
+                                  **state_machine_kwargs)
+        # run the state machine and populate `node`:
         block_length = len(block)
-        state_machine.run(block, input_offset, memo=self.memo,
-                          node=node, match_titles=match_titles)
+        my_state_machine.run(block, input_offset, memo=self.memo,
+                             node=node, match_titles=match_titles)
         # clean up
+        new_offset = my_state_machine.abs_line_offset()
         if use_default == 2:
-            self.nested_sm_cache.append(state_machine)
+            self.nested_sm_cache.append(my_state_machine)
         else:
-            state_machine.unlink()
-        new_offset = state_machine.abs_line_offset()
+            my_state_machine.unlink()
         # No `block.parent` implies disconnected -- lines aren't in sync:
         if block.parent and (len(block) - block_length) != 0:
             # Adjustment for block if modified in nested parse:
@@ -359,20 +360,20 @@ class RSTState(StateWS):
         if state_machine_kwargs is None:
             state_machine_kwargs = self.nested_sm_kwargs.copy()
         state_machine_kwargs['initial_state'] = initial_state
-        state_machine = state_machine_class(
-                            debug=self.debug,
-                            parent_state_machine=self.state_machine,
-                            **state_machine_kwargs)
+        my_state_machine = state_machine_class(
+                               debug=self.debug,
+                               parent_state_machine=self.state_machine,
+                               **state_machine_kwargs)
         if blank_finish_state is None:
             blank_finish_state = initial_state
-        state_machine.states[blank_finish_state].blank_finish = blank_finish
+        my_state_machine.states[blank_finish_state].blank_finish = blank_finish
         for key, value in extra_settings.items():
-            setattr(state_machine.states[initial_state], key, value)
-        state_machine.run(block, input_offset, memo=self.memo,
-                          node=node, match_titles=match_titles)
-        blank_finish = state_machine.states[blank_finish_state].blank_finish
-        state_machine.unlink()
-        return state_machine.abs_line_offset(), blank_finish
+            setattr(my_state_machine.states[initial_state], key, value)
+        my_state_machine.run(block, input_offset, memo=self.memo,
+                             node=node, match_titles=match_titles)
+        blank_finish = my_state_machine.states[blank_finish_state].blank_finish
+        my_state_machine.unlink()
+        return my_state_machine.abs_line_offset(), blank_finish
 
     def section(self, title, source, style, lineno, messages) -> None:
         """Check for a valid subsection and create one if it checks out."""
