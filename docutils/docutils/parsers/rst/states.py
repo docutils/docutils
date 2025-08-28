@@ -108,6 +108,7 @@ import copy
 import re
 from types import FunctionType, MethodType
 from types import SimpleNamespace as Struct
+import warnings
 
 from docutils import nodes, statemachine, utils
 from docutils import ApplicationError, DataError
@@ -341,7 +342,7 @@ class RSTState(StateWS):
                           blank_finish,
                           blank_finish_state=None,
                           extra_settings={},
-                          match_titles=False,
+                          match_titles=False,  # deprecated, will be removed
                           state_machine_class=None,
                           state_machine_kwargs=None):
         """
@@ -355,6 +356,12 @@ class RSTState(StateWS):
         Return new offset and a boolean indicating whether there was a
         blank final line.
         """
+        if match_titles:
+            warnings.warn('The "match_titles" argument of '
+                          'parsers.rst.states.RSTState.nested_list_parse() '
+                          'will be ignored in Docutils 1.0 '
+                          'and removed in Docutils 2.0.',
+                          PendingDeprecationWarning, stacklevel=2)
         if state_machine_class is None:
             state_machine_class = self.nested_sm
         if state_machine_kwargs is None:
@@ -2435,8 +2442,7 @@ class Body(RSTState):
               self.state_machine.input_lines[offset:],
               input_offset=self.state_machine.abs_line_offset() + 1,
               node=self.parent, initial_state='Explicit',
-              blank_finish=blank_finish,
-              match_titles=self.state_machine.match_titles)
+              blank_finish=blank_finish)
         self.goto_line(newline_offset)
         if not blank_finish:
             self.parent += self.unindent_warning('Explicit markup')
