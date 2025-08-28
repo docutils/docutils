@@ -217,6 +217,10 @@ Removals
 * Remove `parsers.rst.states.Struct` (obsoleted by `types.SimpleNamespace`)
   in Docutils 2.0.
 
+* Ignore the "match_titles" argument of
+  `parsers.rst.states.RSTState.nested_list_parse()` in Docutils 1.0;
+  remove it in Docutils 2.0.
+
 * Remove `frontend.OptionParser`, `frontend.Option`, `frontend.Values`,
   `frontend.store_multiple()`, and `frontend.read_config_file()` when
   migrating to argparse_ in Docutils 2.0 or later.
