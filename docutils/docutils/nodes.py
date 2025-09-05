@@ -818,7 +818,7 @@ class Element(Node):
         return self.parent[i-1] if i > 0 else None
 
     def section_hierarchy(self) -> list[section]:
-        """Return the element's section hierarchy.
+        """Return the element's section anchestors.
 
         Return a list of all <section> elements that contain `self`
         (including `self` if it is a <section>) and have a parent node.
