@@ -32,8 +32,8 @@ Release 0.23b0 (unpublished)
   - Revert to using `document.memo.section_level` to fix behaviour with
     nested parsing into a detached node (cf. bugs #508 and #509).
   - Set `parent_state_machine` attribute when creating nested state machines.
-    Allows passing an updated "current node" to the parent state machine,
-    e.g. for changing the section level in a directive.
+    Use it to update the "current node" of the parent state machines after
+    nested parsing.
   - Better error messages for grid table markup errors (bug #504),
     based on patch #214 by Jynn Nelson.
 

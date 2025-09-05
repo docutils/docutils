@@ -233,6 +233,25 @@ class ElementTests(unittest.TestCase):
         self.assertEqual(c1.previous_sibling(), None)
         self.assertEqual(c2.previous_sibling(), c1)
 
+    def test_section_hierarchy(self):
+        p = nodes.paragraph()
+        a = nodes.admonition('', p)
+        self.assertEqual(p.section_hierarchy(), [])
+        s2_1 = nodes.section('', a)
+        self.assertEqual(p.section_hierarchy(), [])
+        s2_2 = nodes.section()
+        s1 = nodes.section()
+        s2 = nodes.section('', s2_1, s2_2)
+        self.assertEqual(p.section_hierarchy(), [s2_1])
+        d = utils.new_document('test data')
+        d += [nodes.paragraph(), s1, s2]
+        self.assertEqual(d.section_hierarchy(), [])
+        self.assertEqual(d[0].section_hierarchy(), [])
+        self.assertEqual(s2.section_hierarchy(), [s2])
+        self.assertEqual(s2_1.section_hierarchy(), [s2, s2_1])
+        self.assertEqual(a.section_hierarchy(), [s2, s2_1])
+        self.assertEqual(p.section_hierarchy(), [s2, s2_1])
+
     def test_clear(self):
         element = nodes.Element()
         element += nodes.Element()

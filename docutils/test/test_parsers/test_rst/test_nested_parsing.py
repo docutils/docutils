@@ -46,17 +46,17 @@ class ParseIntoNode(rst.Directive):
     has_content = True
 
     def run(self):
-        # cf. sphinx.util.parsing.nested_parse_to_nodes()
         node = nodes.Element()
         node.document = self.state.document
-        # support sections (unless we know it is invalid):
+        # Support sections (unless we know it is invalid):
         match_titles = isinstance(self.state_machine.node,
                                   (nodes.document, nodes.section))
-        self.state.nested_parse(self.content, input_offset=0,
+
+        self.state.nested_parse(self.content, input_offset=self.content_offset,
                                 node=node, match_titles=match_titles)
-        # Append and move the "insertion point" to the last nested section.
         self.state_machine.node += node.children
-        # print(self.state_machine, self.state_machine.node[-1].shortrepr())
+
+        # Move the "insertion point" to the last nested section.
         try:
             while isinstance(self.state_machine.node[-1], nodes.section):
                 self.state_machine.node = self.state_machine.node[-1]
@@ -70,16 +70,18 @@ class ParseIntoNode(rst.Directive):
                 sm.node = self.state_machine.node
         except AttributeError:
             pass
+        # Update section level:
+        self.state_machine.memo.section_level = len(
+            self.state_machine.node.section_hierarchy())
         return []  # node already attached to document
 
 
 class ParseIntoCurrentNode(ParseIntoNode):
-    # Attention: this directive is flawed:
-    # * no check for section validity,
-    # * "current" node not updated! -> element order may get lost.
+    # If `node` is the "current node", `nested_parse()` ensures validity
+    # and updates the "current node".
     def run(self):
-        node = self.state_machine.node  # the current "insertion point"
-        self.state.nested_parse(self.content, 0, node, match_titles=True)
+        self.state.nested_parse(self.content, self.content_offset,
+                                match_titles=True)
         return []  # node already attached to document
 
 
@@ -91,7 +93,8 @@ class ParseIntoSectionNode(ParseIntoNode):
     # * "current" node not updated! -> element order may get lost.
     def run(self):
         node = nodes.section()
-        self.state.nested_parse(self.content, 0, node, match_titles=True)
+        self.state.nested_parse(self.content, self.content_offset,
+                                node, match_titles=True)
         return node.children
 
 
@@ -169,7 +172,7 @@ skipping2.2.1
     <section ids="sec2" names="sec2">
         <title>
             sec2
-        <system_message level="3" line="1" source="test data" type="ERROR">
+        <system_message level="3" line="16" source="test data" type="ERROR">
             <paragraph>
                 Inconsistent title style: skip from level 1 to 3.
             <literal_block xml:space="preserve">
@@ -180,7 +183,7 @@ skipping2.2.1
         <section ids="nested2-1" names="nested2.1">
             <title>
                 nested2.1
-            <system_message level="3" line="5" source="test data" type="ERROR">
+            <system_message level="3" line="20" source="test data" type="ERROR">
                 <paragraph>
                     A level 1 section cannot be used here.
                 <literal_block xml:space="preserve">
@@ -211,7 +214,9 @@ skipping2.2.1
 
   nested1
   *******
-  nested1.1
+  nested2
+  *******
+  nested2.1
   ---------
 
 This paragraph belongs to the last nested section.
@@ -221,9 +226,12 @@ This paragraph belongs to the last nested section.
     <section ids="nested1" names="nested1">
         <title>
             nested1
-        <section ids="nested1-1" names="nested1.1">
+    <section ids="nested2" names="nested2">
+        <title>
+            nested2
+        <section ids="nested2-1" names="nested2.1">
             <title>
-                nested1.1
+                nested2.1
             <paragraph>
                 This paragraph belongs to the last nested section.
 """],
@@ -304,15 +312,15 @@ sec2.2
             <section ids="nc1-1-1" names="nc1.1.1">
                 <title>
                     nc1.1.1
-            <section ids="sec2-2" names="sec2.2">
-                <title>
-                    sec2.2
         <section ids="nc1-2" names="nc1.2">
             <title>
                 nc1.2
     <section ids="nc2" names="nc2">
         <title>
             nc2
+        <section ids="sec2-2" names="sec2.2">
+            <title>
+                sec2.2
 """],
 # Flawed directive (no update of "current node"):
 ["""\
@@ -326,6 +334,9 @@ sec1.1
   *******************
 
 This paragraph belongs to the last nested section (sic!).
+
+sec2
+====
 """,
 """\
 <document source="test data">
@@ -340,6 +351,9 @@ This paragraph belongs to the last nested section (sic!).
                     nested-section1.1.1
             <paragraph>
                 This paragraph belongs to the last nested section (sic!).
+    <section ids="sec2" names="sec2">
+        <title>
+            sec2
     <system_message level="2" line="10" source="test data" type="WARNING">
         <paragraph>
             Element <section ids="sec1-1" names="sec1.1"> invalid:
@@ -362,7 +376,7 @@ sec1
     <section ids="sec1" names="sec1">
         <title>
             sec1
-        <system_message level="3" line="1" source="test data" type="ERROR">
+        <system_message level="3" line="5" source="test data" type="ERROR">
             <paragraph>
                 A level 1 section cannot be used here.
             <literal_block xml:space="preserve">
@@ -388,8 +402,8 @@ sec1
 
   .. nested-current::
 
-    invalid, too (sic!)
-    ===================
+    invalid, too
+    ============
 
   .. nested-section::
 
@@ -409,9 +423,12 @@ sec1
             <literal_block xml:space="preserve">
                 invalid section
                 ---------------
-        <section ids="invalid-too-sic" names="invalid,\\ too\\ (sic!)">
-            <title>
-                invalid, too (sic!)
+        <system_message level="3" line="11" source="test data" type="ERROR">
+            <paragraph>
+                Unexpected section title.
+            <literal_block xml:space="preserve">
+                invalid, too
+                ============
         <paragraph>
             The <section> base node is discarded.
         <section ids="invalid-section-sic" names="invalid\\ section\\ (sic!)">
@@ -420,7 +437,7 @@ sec1
     <system_message level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Element <block_quote> invalid:
-              Child element <section ids="invalid-too-sic" names="invalid,\\ too\\ (sic!)"> not allowed at this position.
+              Child element <section ids="invalid-section-sic" names="invalid\\ section\\ (sic!)"> not allowed at this position.
 """],
 ]
 

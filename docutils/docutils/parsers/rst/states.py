@@ -265,7 +265,7 @@ class RSTState(StateWS):
     def nested_parse(self,
                      block: StringList,
                      input_offset: int,
-                     node: nodes.Element,
+                     node: nodes.Element|None = None,
                      match_titles: bool = False,
                      state_machine_class: StateMachineWS|None = None,
                      state_machine_kwargs: dict|None = None
@@ -279,9 +279,11 @@ class RSTState(StateWS):
             Line number at start of the block.
         :node:
             Base node. Generated nodes will be appended to this node.
+            Default: the "current node" (`self.state_machine.node`).
         :match_titles:
             Allow section titles?
-            Caution: May lead to an invalid or mixed up document tree. [#]_
+            Caution: With a custom base node, this may lead to an invalid
+            or mixed up document tree. [#]_
         :state_machine_class:
             Default: `NestedStateMachine`.
         :state_machine_kwargs:
@@ -297,6 +299,8 @@ class RSTState(StateWS):
         __ https://www.sphinx-doc.org/en/master/extdev/utils.html
            #sphinx.util.parsing.nested_parse_to_nodes
         """
+        if node is None:
+            node = self.state_machine.node
         use_default = 0
         if state_machine_class is None:
             state_machine_class = self.nested_sm
@@ -316,10 +320,30 @@ class RSTState(StateWS):
                                   debug=self.debug,
                                   parent_state_machine=self.state_machine,
                                   **state_machine_kwargs)
+        # Check if we may use sections (with a caveat for custom nodes
+        # that may be dummies to collect children):
+        if (node == self.state_machine.node
+                and not isinstance(node, (nodes.document, nodes.section))):
+            match_titles = False  # avoid invalid sections
+
         # run the state machine and populate `node`:
         block_length = len(block)
+        old_section_level = self.memo.section_level
         my_state_machine.run(block, input_offset, memo=self.memo,
                              node=node, match_titles=match_titles)
+
+        if match_titles:
+            if node == self.state_machine.node:
+                # Pass on the new "current node" to parent state machines:
+                sm = self.state_machine
+                try:
+                    while True:
+                        sm.node = my_state_machine.node
+                        sm = sm.parent_state_machine
+                except AttributeError:
+                    pass
+            else:
+                self.memo.section_level = old_section_level
         # clean up
         new_offset = my_state_machine.abs_line_offset()
         if use_default == 2:
@@ -431,10 +455,9 @@ class RSTState(StateWS):
                     line=lineno)
                 return False
             self.parent = new_parent
-        # Update memo:
+            self.memo.section_level = newlevel - 1
         if newlevel > len(title_styles):
             title_styles.append(style)
-        self.memo.section_level = newlevel
         return True
 
     def title_inconsistent(self, sourcetext, lineno):
@@ -458,6 +481,7 @@ class RSTState(StateWS):
         self.document.note_implicit_target(section_node, section_node)
         # Update state:
         self.parent = section_node
+        self.memo.section_level += 1
 
     def paragraph(self, lines, lineno):
         """
