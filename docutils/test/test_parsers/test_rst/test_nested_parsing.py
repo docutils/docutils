@@ -7,16 +7,20 @@
 Tests for nested parsing with support for sections (cf. states.py).
 
 The method states.RSTState.nested_parse() provides the argument `match_titles`.
-However, in Docutils, it is only used with `match_titles=False`.
-None of the standard Docutils directives supports section titles in the
-directive content.  (Directives supporting sections in the content are,
-e.g., defined by the "autodoc" and "kerneldoc" Sphinx extensions.)
+With ``match_titles=True``, sections are supported, the section level is
+determined by the document-wide hierarchy of title styles. [1]_
 
-Up to Docutils 0.22, the section title styles were document-wide enforced and
-sections with current level or higher were silently dropped!
+In Docutils, `nested_parse()` is only used with ``match_titles=False``.
+None of the standard Docutils directives support section titles in the
+directive content.   Up to Docutils 0.22, sections with current level or
+higher were silently dropped!
 
-Sphinx uses the `sphinx.util.parsing._fresh_title_style_context` context
-manager to provide a separate title style hierarchy for nested parsing.
+Directives supporting sections in the content are defined
+by Sphinx extensions, e.g., "autodoc" and "kerneldoc".
+
+.. [1] Sphinx uses the `sphinx.util.parsing._fresh_title_style_context`
+       context manager to provide a separate title style hierarchy for
+       nested parsing.
 """
 
 from pathlib import Path
@@ -42,9 +46,9 @@ class ParseIntoNode(rst.Directive):
     has_content = True
 
     def run(self):
-        # similar to sphinx.util.parsing.nested_parse_to_nodes()
+        # cf. sphinx.util.parsing.nested_parse_to_nodes()
         node = nodes.Element()
-        node.document = self.state.document  # not required
+        node.document = self.state.document
         # support sections (unless we know it is invalid):
         match_titles = isinstance(self.state_machine.node,
                                   (nodes.document, nodes.section))
@@ -58,7 +62,7 @@ class ParseIntoNode(rst.Directive):
                 self.state_machine.node = self.state_machine.node[-1]
         except IndexError:
             pass
-        # pass on the new "current node" to parent state machines
+        # Pass current node to parent state machines:
         sm = self.state_machine
         try:
             while True:
@@ -70,30 +74,25 @@ class ParseIntoNode(rst.Directive):
 
 
 class ParseIntoCurrentNode(ParseIntoNode):
+    # Attention: this directive is flawed:
+    # * no check for section validity,
+    # * "current" node not updated! -> element order may get lost.
     def run(self):
         node = self.state_machine.node  # the current "insertion point"
-        # support sections (unless we know it is invalid):
-        match_titles = isinstance(node, (nodes.document, nodes.section))
-        self.state.nested_parse(self.content, 0, node, match_titles)
+        self.state.nested_parse(self.content, 0, node, match_titles=True)
         return []  # node already attached to document
 
 
 class ParseIntoSectionNode(ParseIntoNode):
+    # Some 3rd party extensions use a <section> as dummy base node.
+    #
+    # Attention: this directive is flawed:
+    # * no check for section validity,
+    # * "current" node not updated! -> element order may get lost.
     def run(self):
-        if not isinstance(self.state_machine.node,
-                          (nodes.document, nodes.section)):
-            msg = self.reporter.error(
-                    'The "nested-section" directive can only be used'
-                    ' where a section is valid.',
-                    nodes.literal_block(self.block_text, self.block_text),
-                    line=self.lineno)
-            return [msg]
-        node = nodes.section('')
-        node.append(nodes.title('', 'generated section'))
-        # In production, also generate and register section name and ID
-        # (cf. rst.states.RSTState.new_subsection()).
+        node = nodes.section()
         self.state.nested_parse(self.content, 0, node, match_titles=True)
-        return [node]
+        return node.children
 
 
 class ParserTestCase(unittest.TestCase):
@@ -124,35 +123,34 @@ class ParserTestCase(unittest.TestCase):
 totest = {}
 
 totest['nested_parsing'] = [
-# Start new section hierarchy with every nested parse.
+# The document-wide section hierarchy is employed also in nested parsing.
 ["""\
 sec1
 ====
 sec1.1
 ------
-
 .. nested::
 
-  nested1
-  *******
-  nested1.1
-  =========
+  nested1.1.1
+  ***********
+  nested1.1.1.1
+  ~~~~~~~~~~~~~
 
 sec2
 ====
-The document-wide section title styles are kept.
-
 .. nested::
 
-  nested2
-  =======
+  skipping2.1
+  ***********
   nested2.1
-  *********
+  ---------
+  inaccessible2
+  =============
 
 sec2.2
 ------
-sec2.2.1
-~~~~~~~~
+skipping2.2.1
+~~~~~~~~~~~~~
 """,
 """\
 <document source="test data">
@@ -162,32 +160,52 @@ sec2.2.1
         <section ids="sec1-1" names="sec1.1">
             <title>
                 sec1.1
-            <section ids="nested1" names="nested1">
+            <section ids="nested1-1-1" names="nested1.1.1">
                 <title>
-                    nested1
-                <section ids="nested1-1" names="nested1.1">
+                    nested1.1.1
+                <section ids="nested1-1-1-1" names="nested1.1.1.1">
                     <title>
-                        nested1.1
+                        nested1.1.1.1
     <section ids="sec2" names="sec2">
         <title>
             sec2
-        <paragraph>
-            The document-wide section title styles are kept.
-        <section ids="nested2" names="nested2">
+        <system_message level="3" line="1" source="test data" type="ERROR">
+            <paragraph>
+                Inconsistent title style: skip from level 1 to 3.
+            <literal_block xml:space="preserve">
+                skipping2.1
+                ***********
+            <paragraph>
+                Established title styles: = - * ~
+        <section ids="nested2-1" names="nested2.1">
             <title>
-                nested2
-            <section ids="nested2-1" names="nested2.1">
-                <title>
-                    nested2.1
+                nested2.1
+            <system_message level="3" line="5" source="test data" type="ERROR">
+                <paragraph>
+                    A level 1 section cannot be used here.
+                <literal_block xml:space="preserve">
+                    inaccessible2
+                    =============
+                <paragraph>
+                    Established title styles: = - * ~
+                <paragraph>
+                    The parent of level 1 sections cannot be reached.
+                    One reason may be a high level section used in a directive that parses its content into a base node not attached to the document
+                    (up to Docutils 0.21, these sections were silently dropped).
         <section ids="sec2-2" names="sec2.2">
             <title>
                 sec2.2
-            <section ids="sec2-2-1" names="sec2.2.1">
-                <title>
-                    sec2.2.1
+            <system_message level="3" line="25" source="test data" type="ERROR">
+                <paragraph>
+                    Inconsistent title style: skip from level 2 to 4.
+                <literal_block xml:space="preserve">
+                    skipping2.2.1
+                    ~~~~~~~~~~~~~
+                <paragraph>
+                    Established title styles: = - * ~
 """],
-# Move "insertion point" if the nested block contains sections to
-# comply with the validity constraints of the "structure model".
+# The `ParseIntoNode` directive updates the "current node" to comply with
+# the validity constraints of the "structure model".
 ["""\
 .. nested::
 
@@ -210,8 +228,7 @@ This paragraph belongs to the last nested section.
                 This paragraph belongs to the last nested section.
 """],
 ["""\
-.. note:: A preceding directive must not foil the "insertion point move".
-
+.. note:: The next directive is parsed with "nested_list_parse()".
 .. nested::
 
   nested1
@@ -225,7 +242,7 @@ This paragraph belongs to the last nested section.
 <document source="test data">
     <note>
         <paragraph>
-            A preceding directive must not foil the "insertion point move".
+            The next directive is parsed with "nested_list_parse()".
     <section ids="nested1" names="nested1">
         <title>
             nested1
@@ -251,23 +268,27 @@ This paragraph belongs to the document.
     <paragraph>
         This paragraph belongs to the document.
 """],
-# base node == current node
+# If the base node is the "current node", it is possible to have lower
+# level sections inside the nested content block.
+# The generated nodes are added to the respective parent sections
+# and not necessarily children of the base node.
 ["""\
 sec1
 ====
 sec1.1
 ------
+.. note:: The next directive is parsed with "nested_list_parse()".
 .. nested-current::
 
-  current1
-  ********
-  current1.1
-  -----------
-  current1.1.1
-  ============
+  nc1.1.1
+  *******
+  nc1.2
+  -----
+  nc2
+  ===
 
-sec1.1.2
-~~~~~~~~
+sec2.2
+------
 """,
 """\
 <document source="test data">
@@ -277,20 +298,23 @@ sec1.1.2
         <section ids="sec1-1" names="sec1.1">
             <title>
                 sec1.1
-            <section ids="current1" names="current1">
+            <note>
+                <paragraph>
+                    The next directive is parsed with "nested_list_parse()".
+            <section ids="nc1-1-1" names="nc1.1.1">
                 <title>
-                    current1
-                <section ids="current1-1" names="current1.1">
-                    <title>
-                        current1.1
-                    <section ids="current1-1-1" names="current1.1.1">
-                        <title>
-                            current1.1.1
-            <section ids="sec1-1-2" names="sec1.1.2">
+                    nc1.1.1
+            <section ids="sec2-2" names="sec2.2">
                 <title>
-                    sec1.1.2
+                    sec2.2
+        <section ids="nc1-2" names="nc1.2">
+            <title>
+                nc1.2
+    <section ids="nc2" names="nc2">
+        <title>
+            nc2
 """],
-# parse into generated <section> node:
+# Flawed directive (no update of "current node"):
 ["""\
 sec1
 ====
@@ -298,16 +322,10 @@ sec1.1
 ------
 .. nested-section::
 
-  nested-section1
-  ***************
-  nested-section1.1
-  =================
+  nested-section1.1.1
+  *******************
 
-This paragraph belongs to the last nested section.
-
-sec1.1.2
-~~~~~~~~
-
+This paragraph belongs to the last nested section (sic!).
 """,
 """\
 <document source="test data">
@@ -317,67 +335,92 @@ sec1.1.2
         <section ids="sec1-1" names="sec1.1">
             <title>
                 sec1.1
-            <section>
+            <section ids="nested-section1-1-1" names="nested-section1.1.1">
                 <title>
-                    generated section
-                <section ids="nested-section1" names="nested-section1">
-                    <title>
-                        nested-section1
-                    <section ids="nested-section1-1" names="nested-section1.1">
-                        <title>
-                            nested-section1.1
+                    nested-section1.1.1
             <paragraph>
-                This paragraph belongs to the last nested section.
-            <section ids="sec1-1-2" names="sec1.1.2">
-                <title>
-                    sec1.1.2
-    <system_message level="2" line="12" source="test data" type="WARNING">
+                This paragraph belongs to the last nested section (sic!).
+    <system_message level="2" line="10" source="test data" type="WARNING">
         <paragraph>
             Element <section ids="sec1-1" names="sec1.1"> invalid:
               Child element <paragraph> not allowed at this position.
 """],
+# Even if the base node is a <section>, it does not show up in
+# `node.parent_sections()` because it does not have a parent
+# -> we cannot add a sibling section:
+["""\
+sec1
+====
+.. nested-section::
+
+  nested-section1
+  ===============
+  with content
+""",
+"""\
+<document source="test data">
+    <section ids="sec1" names="sec1">
+        <title>
+            sec1
+        <system_message level="3" line="1" source="test data" type="ERROR">
+            <paragraph>
+                A level 1 section cannot be used here.
+            <literal_block xml:space="preserve">
+                nested-section1
+                ===============
+            <paragraph>
+                Established title styles: =
+            <paragraph>
+                The parent of level 1 sections cannot be reached.
+                One reason may be a high level section used in a directive that parses its content into a base node not attached to the document
+                (up to Docutils 0.21, these sections were silently dropped).
+        <paragraph>
+            with content
+"""],
 # Nested parsing in a block-quote:
 ["""\
-  .. nested-current::
-
-    Nested parsing is OK but a section is invalid in a block-quote.
-
-    nested section
-    ==============
-
   .. nested::
+
+    A section in a block-quote is invalid.
 
     invalid section
     ---------------
 
+  .. nested-current::
+
+    invalid, too (sic!)
+    ===================
+
   .. nested-section::
 
-    The <section> base node is invalid in a block-quote.
+    The <section> base node is discarded.
+
+    invalid section (sic!)
+    ----------------------
 """,
 """\
 <document source="test data">
     <block_quote>
         <paragraph>
-            Nested parsing is OK but a section is invalid in a block-quote.
+            A section in a block-quote is invalid.
         <system_message level="3" line="6" source="test data" type="ERROR">
-            <paragraph>
-                Unexpected section title.
-            <literal_block xml:space="preserve">
-                nested section
-                ==============
-        <system_message level="3" line="11" source="test data" type="ERROR">
             <paragraph>
                 Unexpected section title.
             <literal_block xml:space="preserve">
                 invalid section
                 ---------------
-        <system_message level="3" line="13" source="test data" type="ERROR">
-            <paragraph>
-                The "nested-section" directive can only be used where a section is valid.
-            <literal_block xml:space="preserve">
-                .. nested-section::
-                \n\
-                  The <section> base node is invalid in a block-quote.
+        <section ids="invalid-too-sic" names="invalid,\\ too\\ (sic!)">
+            <title>
+                invalid, too (sic!)
+        <paragraph>
+            The <section> base node is discarded.
+        <section ids="invalid-section-sic" names="invalid\\ section\\ (sic!)">
+            <title>
+                invalid section (sic!)
+    <system_message level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Element <block_quote> invalid:
+              Child element <section ids="invalid-too-sic" names="invalid,\\ too\\ (sic!)"> not allowed at this position.
 """],
 ]
 
