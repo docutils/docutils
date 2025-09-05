@@ -104,7 +104,6 @@ from __future__ import annotations
 
 __docformat__ = 'reStructuredText'
 
-import copy
 import re
 from types import FunctionType, MethodType
 from types import SimpleNamespace as Struct
@@ -158,13 +157,13 @@ class RSTStateMachine(StateMachineWS):
             inliner = Inliner()
         inliner.init_customizations(document.settings)
         # A collection of objects to share with nested parsers.
-        # The attributes `reporter`, `section_level`, and
-        # `section_bubble_up_kludge` will be removed in Docutils 2.0
+        # The attributes `reporter` and `section_bubble_up_kludge`
+        # will be removed in Docutils 2.0
         self.memo = Struct(document=document,
                            reporter=document.reporter,  # ignored
                            language=self.language,
                            title_styles=[],
-                           section_level=0,  # ignored
+                           section_level=0,  # (0 document, 1 section, ...)
                            section_bubble_up_kludge=False,  # ignored
                            inliner=inliner)
         self.document = document
@@ -187,23 +186,15 @@ class NestedStateMachine(StateMachineWS):
         """
         Parse `input_lines` and populate `node`.
 
-        Use a separate "title style hierarchy" (changed in Docutils 0.23).
-
         Extend `StateMachineWS.run()`: set up document-wide data.
         """
         self.match_titles = match_titles
-        self.memo = copy.copy(memo)
+        self.memo = memo
         self.document = memo.document
         self.attach_observer(self.document.note_source)
         self.language = memo.language
         self.reporter = self.document.reporter
         self.node = node
-        if match_titles:
-            # Use a separate section title style hierarchy;
-            # ensure all sections in the `input_lines` are treated as
-            # subsections of the current section by blocking lower
-            # section levels with a style that is impossible in rST:
-            self.memo.title_styles = ['x'] * len(node.section_hierarchy())
         results = StateMachineWS.run(self, input_lines, input_offset)
         assert results == [], ('NestedStateMachine.run() results should be '
                                'empty!')
@@ -287,13 +278,10 @@ class RSTState(StateWS):
         :input_offset:
             Line number at start of the block.
         :node:
-            Base node. All generated nodes will be appended to this node.
+            Base node. Generated nodes will be appended to this node.
         :match_titles:
             Allow section titles?
-            A separate section title style hierarchy is used for the nested
-            parsing (all sections are subsections of the current section).
-            The calling code should check whether sections are valid
-            children of the base node and move them or warn otherwise.
+            Caution: May lead to an invalid or mixed up document tree. [#]_
         :state_machine_class:
             Default: `NestedStateMachine`.
         :state_machine_kwargs:
@@ -302,6 +290,12 @@ class RSTState(StateWS):
 
         Create a new state-machine instance if required.
         Return new offset.
+
+        .. [#] See also ``test_parsers/test_rst/test_nested_parsing.py``
+               and Sphinx's `nested_parse_to_nodes()`__.
+
+        __ https://www.sphinx-doc.org/en/master/extdev/utils.html
+           #sphinx.util.parsing.nested_parse_to_nodes
         """
         use_default = 0
         if state_machine_class is None:
@@ -396,9 +390,8 @@ class RSTState(StateWS):
         (or the root node if the new section is a top-level section).
         """
         title_styles = self.memo.title_styles
-        parent_sections = self.parent.section_hierarchy()
         # current section level: (0 root, 1 section, 2 subsection, ...)
-        oldlevel = len(parent_sections)
+        oldlevel = self.memo.section_level
         # new section level:
         try:  # check for existing title style
             newlevel = title_styles.index(style) + 1
@@ -415,13 +408,33 @@ class RSTState(StateWS):
                 nodes.paragraph('', f'Established title styles: {styles}'),
                 line=lineno)
             return False
-        # Update parent state:
+        if newlevel <= oldlevel:
+            # new section is sibling or higher up in the section hierarchy
+            parent_sections = self.parent.section_hierarchy()
+            try:
+                new_parent = parent_sections[newlevel-oldlevel-1].parent
+            except IndexError:
+                new_parent = None
+            if new_parent is None:
+                styles = ' '.join('/'.join(style) for style in title_styles)
+                details = (f'The parent of level {newlevel} sections cannot'
+                           ' be reached.\nOne reason may be a high level'
+                           ' section used in a directive that parses its'
+                           ' content into a base node not attached to'
+                           ' the document\n(up to Docutils 0.21,'
+                           ' these sections were silently dropped).')
+                self.parent += self.reporter.error(
+                    f'A level {newlevel} section cannot be used here.',
+                    nodes.literal_block('', source),
+                    nodes.paragraph('', f'Established title styles: {styles}'),
+                    nodes.paragraph('', details),
+                    line=lineno)
+                return False
+            self.parent = new_parent
+        # Update memo:
         if newlevel > len(title_styles):
             title_styles.append(style)
         self.memo.section_level = newlevel
-        if newlevel <= oldlevel:
-            # new section is sibling or higher up in the section hierarchy
-            self.parent = parent_sections[newlevel-1].parent
         return True
 
     def title_inconsistent(self, sourcetext, lineno):

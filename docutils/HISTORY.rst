@@ -29,16 +29,13 @@ Release 0.23b0 (unpublished)
 * docutils/parsers/rst/states.py
 
   - Relax "section title" system messages from SEVERE to ERROR.
-  - Ensure new "current node" is valid when switching section level
-    (cf. bugs #508 and #509).
-  - Use a `separate title style hierarchy for nested parsing`__.
+  - Revert to using `document.memo.section_level` to fix behaviour with
+    nested parsing into a detached node (cf. bugs #508 and #509).
   - Set `parent_state_machine` attribute when creating nested state machines.
     Allows passing an updated "current node" to the parent state machine,
     e.g. for changing the section level in a directive.
   - Better error messages for grid table markup errors (bug #504),
     based on patch #214 by Jynn Nelson.
-
-  __ RELEASE-NOTES.html#nested-parsing
 
 * docutils/statemachine.py
 
