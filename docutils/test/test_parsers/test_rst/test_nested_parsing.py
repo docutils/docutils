@@ -24,6 +24,7 @@ by Sphinx extensions, e.g., "autodoc" and "kerneldoc".
 """
 
 from pathlib import Path
+import contextlib
 import sys
 import unittest
 
@@ -87,6 +88,7 @@ class ParseIntoCurrentNode(ParseIntoNode):
 
 class ParseIntoSectionNode(ParseIntoNode):
     # Some 3rd party extensions use a <section> as dummy base node.
+    # cf. https://github.com/sphinx-contrib/autoprogram/blob/master/sphinxcontrib/autoprogram.py
     #
     # Attention: this directive is flawed:
     # * no check for section validity,
@@ -98,6 +100,53 @@ class ParseIntoSectionNode(ParseIntoNode):
         return node.children
 
 
+class FreshParseIntoNode(ParseIntoNode):
+    """Nested parsing with support for sections (separate title styles).
+
+    * no check for section validity,
+    * "current" node not updated! -> element order may get lost.
+
+    cf. `sphinx.util.nodes.nested_parse_with_titles()`
+    and `sphinx.util.parsing.nested_parse_to_nodes()`
+    """
+    def run(self):
+        node = nodes.Element()
+        with _fresh_title_style_context(self.state):
+            self.state.nested_parse(self.content, self.content_offset,
+                                    node, match_titles=True)
+        return node.children
+
+
+class FreshParseIntoCurrentNode(ParseIntoNode):
+    # Nested parsing with support for sections (separate title styles)
+    #
+    # Parsing into the current node, `nested_parse()` ensures validity
+    # and updates the "current node".
+    def run(self):
+        with _fresh_title_style_context(self.state):
+            self.state.nested_parse(self.content, self.content_offset,
+                                    match_titles=True)
+        # update section level
+        self.state_machine.memo.section_level = len(
+            self.state_machine.node.section_hierarchy())
+        return []  # node already attached to document
+
+
+@contextlib.contextmanager
+def _fresh_title_style_context(state):
+    # copied from sphinx/sphinx/util/parsing.py
+    memo = state.memo
+    surrounding_title_styles = memo.title_styles
+    surrounding_section_level = memo.section_level
+    memo.title_styles = []
+    memo.section_level = 0
+    try:
+        yield
+    finally:
+        memo.title_styles = surrounding_title_styles
+        memo.section_level = surrounding_section_level
+
+
 class ParserTestCase(unittest.TestCase):
     maxDiff = None
 
@@ -105,6 +154,8 @@ class ParserTestCase(unittest.TestCase):
         register_directive('nested', ParseIntoNode)
         register_directive('nested-current', ParseIntoCurrentNode)
         register_directive('nested-section', ParseIntoSectionNode)
+        register_directive('fresh', FreshParseIntoNode)
+        register_directive('fresh-current', FreshParseIntoCurrentNode)
         parser = rst.Parser()
         settings = get_default_settings(rst.Parser)
         settings.warning_stream = ''
@@ -147,6 +198,8 @@ sec2
   ***********
   nested2.1
   ---------
+  nested2.2
+  ---------
   inaccessible2
   =============
 
@@ -183,7 +236,10 @@ skipping2.2.1
         <section ids="nested2-1" names="nested2.1">
             <title>
                 nested2.1
-            <system_message level="3" line="20" source="test data" type="ERROR">
+        <section ids="nested2-2" names="nested2.2">
+            <title>
+                nested2.2
+            <system_message level="3" line="22" source="test data" type="ERROR">
                 <paragraph>
                     A level 1 section cannot be used here.
                 <literal_block xml:space="preserve">
@@ -192,13 +248,13 @@ skipping2.2.1
                 <paragraph>
                     Established title styles: = - * ~
                 <paragraph>
-                    The parent of level 1 sections cannot be reached.
+                    The parent of level 1 sections cannot be reached. The parser is at section level 2 but the current node has only 1 parent section(s).
                     One reason may be a high level section used in a directive that parses its content into a base node not attached to the document
                     (up to Docutils 0.21, these sections were silently dropped).
         <section ids="sec2-2" names="sec2.2">
             <title>
                 sec2.2
-            <system_message level="3" line="25" source="test data" type="ERROR">
+            <system_message level="3" line="27" source="test data" type="ERROR">
                 <paragraph>
                     Inconsistent title style: skip from level 2 to 4.
                 <literal_block xml:space="preserve">
@@ -385,7 +441,7 @@ sec1
             <paragraph>
                 Established title styles: =
             <paragraph>
-                The parent of level 1 sections cannot be reached.
+                The parent of level 1 sections cannot be reached. The parser is at section level 1 but the current node has only 0 parent section(s).
                 One reason may be a high level section used in a directive that parses its content into a base node not attached to the document
                 (up to Docutils 0.21, these sections were silently dropped).
         <paragraph>
@@ -438,6 +494,132 @@ sec1
         <paragraph>
             Element <block_quote> invalid:
               Child element <section ids="invalid-section-sic" names="invalid\\ section\\ (sic!)"> not allowed at this position.
+"""],
+# Nested parsing with new title style hierarchy
+["""\
+sec1
+====
+sec1.1
+------
+.. fresh::
+
+  fresh1.1.1
+  ==========
+  fresh1.1.1.1
+  ~~~~~~~~~~~~~
+
+sec2
+====
+.. fresh::
+
+  fresh2.1
+  ***********
+  New title styles with every directive.
+
+  fresh2.1.1
+  -----------
+  fresh2.1.2
+  -----------
+  fresh2.1.2.1
+  =============
+
+This text belongs into the last nested section (sic!).
+
+sec2.2
+------
+Document-wide title styles unchanged
+
+sec2.2.1
+********
+""",
+"""\
+<document source="test data">
+    <section ids="sec1" names="sec1">
+        <title>
+            sec1
+        <section ids="sec1-1" names="sec1.1">
+            <title>
+                sec1.1
+            <section ids="fresh1-1-1" names="fresh1.1.1">
+                <title>
+                    fresh1.1.1
+                <section ids="fresh1-1-1-1" names="fresh1.1.1.1">
+                    <title>
+                        fresh1.1.1.1
+    <section ids="sec2" names="sec2">
+        <title>
+            sec2
+        <section ids="fresh2-1" names="fresh2.1">
+            <title>
+                fresh2.1
+            <paragraph>
+                New title styles with every directive.
+            <section ids="fresh2-1-1" names="fresh2.1.1">
+                <title>
+                    fresh2.1.1
+            <section ids="fresh2-1-2" names="fresh2.1.2">
+                <title>
+                    fresh2.1.2
+                <section ids="fresh2-1-2-1" names="fresh2.1.2.1">
+                    <title>
+                        fresh2.1.2.1
+        <paragraph>
+            This text belongs into the last nested section (sic!).
+        <section ids="sec2-2" names="sec2.2">
+            <title>
+                sec2.2
+            <paragraph>
+                Document-wide title styles unchanged
+            <section ids="sec2-2-1" names="sec2.2.1">
+                <title>
+                    sec2.2.1
+    <system_message level="2" line="27" source="test data" type="WARNING">
+        <paragraph>
+            Element <section ids="sec2" names="sec2"> invalid:
+              Child element <paragraph> not allowed at this position.
+"""],
+# Nested parsing into current node with new title style hierarchy
+["""\
+sec1
+====
+sec1.1
+------
+.. fresh-current::
+
+  fc1.1.1
+  -------
+  fc1.1.2
+  -------
+  fc1.1.2.1
+  =========
+
+This text belongs into the last nested section.
+
+sec1.2
+------
+""",
+"""\
+<document source="test data">
+    <section ids="sec1" names="sec1">
+        <title>
+            sec1
+        <section ids="sec1-1" names="sec1.1">
+            <title>
+                sec1.1
+            <section ids="fc1-1-1" names="fc1.1.1">
+                <title>
+                    fc1.1.1
+            <section ids="fc1-1-2" names="fc1.1.2">
+                <title>
+                    fc1.1.2
+                <section ids="fc1-1-2-1" names="fc1.1.2.1">
+                    <title>
+                        fc1.1.2.1
+                    <paragraph>
+                        This text belongs into the last nested section.
+        <section ids="sec1-2" names="sec1.2">
+            <title>
+                sec1.2
 """],
 ]
 

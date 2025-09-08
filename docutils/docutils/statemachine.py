@@ -130,8 +130,7 @@ class StateMachine:
     results of processing in a list.
     """
 
-    def __init__(self, state_classes, initial_state,
-                 debug=False, parent_state_machine=None) -> None:
+    def __init__(self, state_classes, initial_state, debug=False) -> None:
         """
         Initialize a `StateMachine` object; add state objects.
 
@@ -140,7 +139,6 @@ class StateMachine:
         - `state_classes`: a list of `State` (sub)classes.
         - `initial_state`: a string, the class name of the initial state.
         - `debug`: a boolean; produce verbose output if true (nonzero).
-        - `parent_state_machine`: the parent of a nested state machine.
         """
         self.input_lines = None
         """`StringList` of input lines (without newlines).
@@ -157,9 +155,6 @@ class StateMachine:
 
         self.debug = debug
         """Debugging mode on/off."""
-
-        self.parent_state_machine = parent_state_machine
-        """The instance of the parent state machine or None."""
 
         self.initial_state = initial_state
         """The name of the initial state (key to `self.states`)."""
