@@ -182,6 +182,14 @@ class NestedStateMachine(StateMachineWS):
     document structures.
     """
 
+    def __init__(self, state_classes, initial_state,
+                 debug=False, parent_state_machine=None) -> None:
+
+        self.parent_state_machine = parent_state_machine
+        """The instance of the parent state machine."""
+
+        super().__init__(state_classes, initial_state, debug)
+
     def run(self, input_lines, input_offset, memo, node, match_titles=True):
         """
         Parse `input_lines` and populate `node`.
@@ -328,7 +336,6 @@ class RSTState(StateWS):
 
         # run the state machine and populate `node`:
         block_length = len(block)
-        old_section_level = self.memo.section_level
         my_state_machine.run(block, input_offset, memo=self.memo,
                              node=node, match_titles=match_titles)
 
@@ -342,8 +349,10 @@ class RSTState(StateWS):
                         sm = sm.parent_state_machine
                 except AttributeError:
                     pass
-            else:
-                self.memo.section_level = old_section_level
+            # set section level
+            # (fails with Sphinx's `_fresh_title_style_context`)
+            self.memo.section_level = len(
+                self.state_machine.node.section_hierarchy())
         # clean up
         new_offset = my_state_machine.abs_line_offset()
         if use_default == 2:
@@ -438,11 +447,12 @@ class RSTState(StateWS):
             try:
                 new_parent = parent_sections[newlevel-oldlevel-1].parent
             except IndexError:
-                new_parent = None
-            if new_parent is None:
                 styles = ' '.join('/'.join(style) for style in title_styles)
                 details = (f'The parent of level {newlevel} sections cannot'
-                           ' be reached.\nOne reason may be a high level'
+                           ' be reached. The parser is at section level'
+                           f' {oldlevel} but the current node has only'
+                           f' {len(parent_sections)} parent section(s).'
+                           '\nOne reason may be a high level'
                            ' section used in a directive that parses its'
                            ' content into a base node not attached to'
                            ' the document\n(up to Docutils 0.21,'

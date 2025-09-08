@@ -14,7 +14,7 @@
 .. contents::
 
 
-Release 0.23b0 (unpublished)
+Release 0.22.1 (unpublished)
 ============================
 
 * docutils/frontend.py, docutils/writers/
@@ -29,18 +29,13 @@ Release 0.23b0 (unpublished)
 * docutils/parsers/rst/states.py
 
   - Relax "section title" system messages from SEVERE to ERROR.
-  - Revert to using `document.memo.section_level` to fix behaviour with
-    nested parsing into a detached node (cf. bugs #508 and #509).
-  - Set `parent_state_machine` attribute when creating nested state machines.
-    Use it to update the "current node" of the parent state machines after
-    nested parsing.
+  - Fix behaviour with nested parsing into a detached node
+    (cf. bugs #508 and #509).
+  - New attribute `NestedStateMachine.parent_state_machine`.
+    Use case: update the "current node" of parent state machine(s)
+    after nested parsing.
   - Better error messages for grid table markup errors (bug #504),
     based on patch #214 by Jynn Nelson.
-
-* docutils/statemachine.py
-
-  - New attribute `StateMachine.parent_state_machine` to store the
-    parent state machine of nested state machines.
 
 * docutils/transforms/references.py
 
@@ -52,7 +47,7 @@ Release 0.23b0 (unpublished)
     for elements with IDs (fixes bug #503).
   - Fix cross-reference anchor placement in figures, images,
     literal-blocks, tables, and (sub)titles.
-  - Simplify code for nested image.
+  - Simplify code for images nested in reference or figure elements.
 
 
 Release 0.22 (2026-07-29)
