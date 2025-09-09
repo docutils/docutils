@@ -71,9 +71,6 @@ class ParseIntoNode(rst.Directive):
                 sm.node = self.state_machine.node
         except AttributeError:
             pass
-        # Update section level:
-        self.state_machine.memo.section_level = len(
-            self.state_machine.node.section_hierarchy())
         return []  # node already attached to document
 
 
@@ -126,9 +123,6 @@ class FreshParseIntoCurrentNode(ParseIntoNode):
         with _fresh_title_style_context(self.state):
             self.state.nested_parse(self.content, self.content_offset,
                                     match_titles=True)
-        # update section level
-        self.state_machine.memo.section_level = len(
-            self.state_machine.node.section_hierarchy())
         return []  # node already attached to document
 
 
@@ -137,14 +131,12 @@ def _fresh_title_style_context(state):
     # copied from sphinx/sphinx/util/parsing.py
     memo = state.memo
     surrounding_title_styles = memo.title_styles
-    surrounding_section_level = memo.section_level
     memo.title_styles = []
     memo.section_level = 0
     try:
         yield
     finally:
         memo.title_styles = surrounding_title_styles
-        memo.section_level = surrounding_section_level
 
 
 class ParserTestCase(unittest.TestCase):

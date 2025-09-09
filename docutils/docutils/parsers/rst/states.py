@@ -141,6 +141,15 @@ class RSTStateMachine(StateMachineWS):
 
     The entry point to reStructuredText parsing is the `run()` method.
     """
+    section_level_offset: int = 0
+    """Correction term for section level determination in nested parsing.
+
+    Updated by `RSTState.nested_parse()` and used in
+    `RSTState.check_subsection()` to compensate differences when
+    nested parsing uses a detached base node with a document-wide
+    section title style hierarchy or the current node with a new,
+    independent title style hierarchy.
+    """
 
     def run(self, input_lines, document, input_offset=0, match_titles=True,
             inliner=None) -> None:
@@ -157,13 +166,13 @@ class RSTStateMachine(StateMachineWS):
             inliner = Inliner()
         inliner.init_customizations(document.settings)
         # A collection of objects to share with nested parsers.
-        # The attributes `reporter` and `section_bubble_up_kludge`
-        # will be removed in Docutils 2.0
+        # The attributes `reporter`, `section_level`, and
+        # `section_bubble_up_kludge` will be removed in Docutils 2.0
         self.memo = Struct(document=document,
                            reporter=document.reporter,  # ignored
                            language=self.language,
                            title_styles=[],
-                           section_level=0,  # (0 document, 1 section, ...)
+                           section_level=0,  # ignored
                            section_bubble_up_kludge=False,  # ignored
                            inliner=inliner)
         self.document = document
@@ -176,7 +185,7 @@ class RSTStateMachine(StateMachineWS):
         self.node = self.memo = None    # remove unneeded references
 
 
-class NestedStateMachine(StateMachineWS):
+class NestedStateMachine(RSTStateMachine):
     """
     StateMachine run from within other StateMachine runs, to parse nested
     document structures.
@@ -333,6 +342,15 @@ class RSTState(StateWS):
         if (node == self.state_machine.node
                 and not isinstance(node, (nodes.document, nodes.section))):
             match_titles = False  # avoid invalid sections
+        if match_titles:
+            # Compensate mismatch of known title styles and number of
+            # parent sections of the base node if the document wide
+            # title styles are used with a detached base node or
+            # a new list of title styles with the current parent node:
+            l_node = len(node.section_hierarchy())
+            l_start = min(len(self.parent.section_hierarchy()),
+                          len(self.memo.title_styles))
+            my_state_machine.section_level_offset = l_start - l_node
 
         # run the state machine and populate `node`:
         block_length = len(block)
@@ -349,10 +367,6 @@ class RSTState(StateWS):
                         sm = sm.parent_state_machine
                 except AttributeError:
                     pass
-            # set section level
-            # (fails with Sphinx's `_fresh_title_style_context`)
-            self.memo.section_level = len(
-                self.state_machine.node.section_hierarchy())
         # clean up
         new_offset = my_state_machine.abs_line_offset()
         if use_default == 2:
@@ -423,8 +437,10 @@ class RSTState(StateWS):
         (or the root node if the new section is a top-level section).
         """
         title_styles = self.memo.title_styles
+        parent_sections = self.parent.section_hierarchy()
         # current section level: (0 root, 1 section, 2 subsection, ...)
-        oldlevel = self.memo.section_level
+        oldlevel = (len(parent_sections)
+                    + self.state_machine.section_level_offset)
         # new section level:
         try:  # check for existing title style
             newlevel = title_styles.index(style) + 1
@@ -443,7 +459,6 @@ class RSTState(StateWS):
             return False
         if newlevel <= oldlevel:
             # new section is sibling or higher up in the section hierarchy
-            parent_sections = self.parent.section_hierarchy()
             try:
                 new_parent = parent_sections[newlevel-oldlevel-1].parent
             except IndexError:
