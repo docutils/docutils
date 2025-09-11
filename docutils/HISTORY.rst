@@ -50,7 +50,7 @@ Release 0.22.1 (unpublished)
   - Simplify code for images nested in reference or figure elements.
 
 
-Release 0.22 (2026-07-29)
+Release 0.22 (2025-07-29)
 =========================
 
 * General
