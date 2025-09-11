@@ -229,7 +229,7 @@ class RSTState(StateWS):
     nested_sm = NestedStateMachine
     nested_sm_cache = []
 
-    def __init__(self, state_machine, debug=False) -> None:
+    def __init__(self, state_machine: RSTStateMachine, debug=False) -> None:
         self.nested_sm_kwargs = {'state_classes': state_classes,
                                  'initial_state': 'Body'}
         StateWS.__init__(self, state_machine, debug)
@@ -354,8 +354,8 @@ class RSTState(StateWS):
 
         # run the state machine and populate `node`:
         block_length = len(block)
-        my_state_machine.run(block, input_offset, memo=self.memo,
-                             node=node, match_titles=match_titles)
+        my_state_machine.run(block, input_offset, self.memo,
+                             node, match_titles)
 
         if match_titles:
             if node == self.state_machine.node:

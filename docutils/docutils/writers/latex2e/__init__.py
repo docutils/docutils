@@ -2761,8 +2761,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                      *self.ids_to_labels(node, set_anchor=False, newline=True),
                      f'\\end{{{math_env}}}']
         if node['classes']:
-            self.out.append('\n')
-            self.out.append('}' * len(node['classes']))
+            self.out.append('\n' + '}' * len(node['classes']))
         raise nodes.SkipNode  # content already processed
 
     def depart_math_block(self, node) -> None:
