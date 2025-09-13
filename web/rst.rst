@@ -235,8 +235,8 @@ is left as an exercise for the reader.
 
 .. |reStructuredText| image:: rst.png
 
+.. Emacs settings
 
-..
    Local Variables:
    mode: indented-text
    indent-tabs-mode: nil

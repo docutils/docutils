@@ -76,7 +76,7 @@ Directive Quick Reference
 See <https://docutils.sourceforge.io/docs/ref/rst/directives.html> for full info.
 
 ================  ============================================================
-Directive Name    Description (Docutils version added to, in [brackets])
+Directive Name    Description
 ================  ============================================================
 attention         Specific admonition; also "caution", "danger",
                   "error", "hint", "important", "note", "tip", "warning"

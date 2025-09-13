@@ -215,6 +215,8 @@ __ ../../user/config.html#stylesheet-2
 .. [#attribute-optional] Would gain from support for attributes/arguments
    to inline roles (see TODO_).
 
+New in Docutils 0.22
+
 .. _TODO: https://docutils.sourceforge.io/docs/dev/todo.html
           #acronym-and-abbreviation
 .. _"html5" writer: ../../user/html.html#html5

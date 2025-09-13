@@ -210,6 +210,7 @@ Removals
 
 * Remove `states.RSTStateMachine.memo.reporter`,
   `states.RSTStateMachine.memo.section_bubble_up_kludge`,
+  `states.RSTStateMachine.memo.section_level`,
   `states.RSTState.title_inconsistent()`, and `states.Line.eofcheck`
   in Docutils 2.0. Ignored since Docutils 0.22.
 
