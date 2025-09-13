@@ -10,6 +10,35 @@
 Notes on what happend while releasing.
 
 
+Release 0.22.1rc1 (2025-09-13)
+==============================
+
+* checkout current code
+* run: tox -epy313
+* set_version 0.22
+* run: tox -epy311
+* fix the __version_info__: release=True, micro=1, serial=1
+* run: tox -epy39
+* Check README, HISTORY and RELEASE-NOTES titles.
+* check: svn di
+* svn commit 
+* build wheel and tgz
+* test tgz and wheel locally
+* upload to pypi
+* test src.tgz from pypi, ignore missing HISTORY
+* test wheel from pypi, ignore missing HISTORY.rst
+* update code in working directory
+* run tox : pass 39, 310, 311, 313, 314
+
+* set_version 0.22.1b2.dev
+* docutils/HISTORY.rst: add title "Release 0.22.1b2.dev (unpublished)"
+* docutils/RELEASE-NOTES.rst: add title "Release 0.22.1b2.dev (unpublished)"
+* Check README, HISTORY and RELEASE-NOTES changes.
+* run: tox -epy313
+* commit
+* run: sandbox/infrastructure/docutils-update.local
+
+
 Release 0.22 (2025-07-29)
 =========================
 
