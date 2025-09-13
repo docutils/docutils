@@ -376,6 +376,14 @@ Writer.  For example::
    prefix for role names is recommended.
 
 
+Roles Defined in Standard Definition Files
+==========================================
+
+The `reStructuredText Standard Definition Files`_ ``html-roles.txt`` and
+``s5defs.txt`` define additional roles for `semantic inline markup`_
+and for use in `S5/HTML slide shows`_ (colors, font sizes, display options).
+
+
 Custom Roles
 ============
 
@@ -390,6 +398,10 @@ generated roles.
 .. _reStructuredText Markup Specification: restructuredtext.html
 .. _Interpreted Text: restructuredtext.html#interpreted-text
 .. _hyperlink references: restructuredtext.html#hyperlink-references
+
+.. _reStructuredText Standard Definition Files: definitions.html
+.. _HTML5 inline markup elements: definitions.html#additional-roles-for-html
+.. _S5/HTML slide shows: definitions.html#s5-html-definitions
 
 .. _The Docutils Document Tree: ../doctree.html
 .. _class names: ../doctree.html#classname

@@ -3357,16 +3357,48 @@ See `\<table>`_.
 <rubric>
 ========
 
-     rubric n. 1. a title, heading, or the like, in a manuscript,
-     book, statute, etc., written or printed in red or otherwise
-     distinguished from the rest of the text. ...
+A <rubric> is an informal heading outside the document's section structure.
 
-     -- Random House Webster's College Dictionary, 1991
+:Category:   `Simple Body Elements`_
+:Analogues:  <rubric> has no direct analogues in common DTDs.
+             It shares some features with the <bridgehead> DocBook_ element.
+:Processing: Rendered similar to a section heading, traditionally highlighted
+             in red (hence the name). Rubrics are not (auto)numbered
+             and not included in the document's table of contents.
+:Parents:    all elements employing `%body.elements`_ or
+             `%structure.model`_ in their content models
+:Children:   text data plus `inline elements`_ (`%text.model`_)
+:Attributes: only the `common attributes`_.
 
-A rubric is like an informal heading that doesn't correspond to the
-document's structure.
+Example
+-------
 
-`To be completed`_.
+The reStructuredText `"rubric" directive`_ can be used to get a
+heading at places where a section is not allowed::
+
+    .. sidebar:: Sidebar Title
+
+       This is a sidebar.  It is for text outside the flow
+       of the main text.
+
+       .. rubric:: A heading inside a sidebar
+
+       Sections are not supported in a sidebar.
+       A rubric can be used to structure the content instead.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <sidebar>
+        <title>
+            Sidebar Title
+        <paragraph>
+            This is a sidebar.  It is for text outside the flow
+            of the main text.
+        <rubric>
+            A heading inside a sidebar
+        <paragraph>
+            Sections are not supported in a sidebar.
+            A rubric can be used to structure the content instead.
 
 
 <section>
@@ -3618,16 +3650,113 @@ Pseudo-XML_ fragment from simple parsing::
 <substitution_definition>
 =========================
 
-The <substitution_definition> element stores a
-reStructuredText `substitution definition`_.
+The <substitution_definition> element stores content that shall
+replace matching `\<substitution_reference>`_ elements.
 
-`To be completed`_.
+:Category:   `Simple Body Elements`_
+:Analogues:  Substitution definitions are analog to XML’s
+             `internal entities`_ or programming language macros.
+:Processing: A <substitution_definition> is not directly rendered.
+:Parents:    all elements employing `%body.elements`_ or
+             `%structure.model`_ in their content models
+:Children:   text data plus `inline elements`_ (`%text.model`_)
+:Attributes: ltrim_, rtrim_, and the `common attributes`_.
+             The names_ attribute uses the "substitution" namespace_.
+
+Examples
+--------
+
+A reStructuredText `substitution definition`_ allows to include
+complex inline structures within text while keeping the details
+out of the text flow::
+
+    The chemical formula for water is |H2O|.
+
+    .. |H2O| replace:: H\ :sub:`2`\ O
+
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        The chemical formula for water is
+        <substitution_reference refname="H2O">
+            H2O
+        .
+    <substitution_definition names="H2O">
+        H
+        <subscript>
+            2
+        O
+
+The `references.Substitutions` transform_ replaces the
+`\<substitution_reference>`_ with the content of the
+<substitution_definition>::
+
+    <paragraph>
+        The chemical formula for water is
+        H
+        <subscript>
+            2
+        O
+        .
+    <substitution_definition names="H2O">
+        H
+        <subscript>
+            2
+        O
+
+A substitution definition can also supply an `\<image>`_ for inline use::
+
+    The |biohazard| symbol must be used on
+    medical waste containers.
+
+    .. |biohazard| image:: biohazard.png
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        The
+        <substitution_reference refname="biohazard">
+            biohazard
+         symbol must be used on
+        medical waste containers.
+    <substitution_definition names="biohazard">
+        <image alt="biohazard" uri="biohazard.png">
+
+After running the `references.Substitutions` transform_, we get::
+
+    <paragraph>
+        The
+        <image alt="biohazard" uri="biohazard.png">
+         symbol must be used on
+        medical waste containers.
+    <substitution_definition names="biohazard">
+        <image alt="biohazard" uri="biohazard.png">
+
+For more usage examples, see `Substitution Definitions`_ in the
+`reStructuredText Markup Specification`_.
 
 
 <substitution_reference>
 ========================
 
-`To be completed`_.
+The <substitution_reference> element is a placeholder for the content of
+the matching <substitution_definition>.
+
+:Category:   `Inline Elements`_
+:Analogues:  A <substitution_reference> is analogue to an XML
+             `entity reference`_.
+:Processing: Replaced by the content of a matching
+             `\<substitution_definition>`_.
+:Parents:    all elements employing `%text.model`_ in their content models
+:Children:   text data plus `inline elements`_ (`%text.model`_)
+:Attributes: the `common attributes`_ plus refname_.
+             The refname_ attribute uses the "substitution" namespace_.
+
+Examples
+--------
+
+See `\<substitution_definition>`_.
 
 
 <subtitle>
@@ -4929,7 +5058,6 @@ The attribute is set by the `"title" directive`_ or the
 `DocTitle transform`_.  It is typically not part of the rendered document
 but, for example, used as `HTML <title> element`_ and shown in a
 browser's title bar, a user's history or bookmarks, or search results.
-
 Its value may may differ from the *displayed title* which is stored in a
 `\<title>`_ element.
 
@@ -5689,10 +5817,11 @@ Bibliography
 .. _XML: https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction
 .. _Introducing the Extensible Markup Language (XML):
     http://xml.coverpages.org/xmlIntro.html
+.. _internal entities: https://www.w3.org/TR/xml/#sec-internal-ent
+.. _entity reference: https://www.w3.org/TR/xml/#dt-entref
 .. _external DTD subset: https://www.w3.org/TR/xml11/#sec-external-ent
 .. _XML attribute types: https://www.w3.org/TR/REC-xml/#sec-attribute-types
 .. _One ID per Element Type: https://www.w3.org/TR/REC-xml/#one-id-per-el
-
 
 .. _Docutils: https://docutils.sourceforge.io/
 .. _docutils.nodes:
@@ -5771,6 +5900,7 @@ Bibliography
 .. _standalone hyperlinks:  rst/restructuredtext.html#standalone-hyperlinks
 .. _strong emphasis:        rst/restructuredtext.html#strong-emphasis
 .. _substitution definition:
+.. _substitution definitions:
 .. _substitutions:          rst/restructuredtext.html#substitution-definitions
 .. _hyperlink targets:      rst/restructuredtext.html#hyperlink-targets
 .. _transition:             rst/restructuredtext.html#transitions
@@ -5798,6 +5928,7 @@ Bibliography
 .. _"contents" directive:       rst/directives.html#table-of-contents
 .. _"csv-table":                rst/directives.html#csv-table
 .. _"danger" directive:         rst/directives.html#danger
+.. _"date" directive:           rst/directives.html#date
 .. _"epigraph":                 rst/directives.html#epigraph
 .. _"error" directive:          rst/directives.html#error
 .. _"figure" directive:         rst/directives.html#figure
@@ -5816,6 +5947,7 @@ Bibliography
 .. _"parsed-literal" directive: rst/directives.html#parsed-literal
 .. _"pull-quote":               rst/directives.html#pull-quote
 .. _"raw" directive:            rst/directives.html#raw
+.. _"rubric" directive:         rst/directives.html#rubric
 .. _"sectnum" directive:        rst/directives.html#sectnum
 .. _"sidebar" directive:        rst/directives.html#sidebar
 .. _"table" directive:          rst/directives.html#table
