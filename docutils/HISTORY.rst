@@ -14,8 +14,8 @@
 .. contents::
 
 
-Release 0.22.1 (unpublished)
-============================
+Release 0.22.1rc1 (2025-09-13)
+==============================
 
 * docutils/frontend.py, docutils/writers/
 

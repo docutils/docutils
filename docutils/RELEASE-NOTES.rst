@@ -261,10 +261,28 @@ Misc
    __ https://packages.debian.org/source/trixie/python-docutils
 
 
-Release 0.23b0 (unpublished)
-============================
+Release 0.22.1rc1 (2025-09-13)
+==============================
 
-Bugfixes and improvements (see HISTORY_).
+* docutils/parsers/rst/states.py
+
+  - Relax "section title" system messages from SEVERE to ERROR.
+  - Fix behaviour with nested parsing into a detached node
+    (cf. bugs #508 and #509).
+  - New attribute `NestedStateMachine.parent_state_machine`.
+    Use case: update the "current node" of parent state machine(s)
+    after nested parsing.
+  - Better error messages for grid table markup errors (bug #504),
+    based on patch #214 by Jynn Nelson.
+
+* docutils/writers/latex2e/__init__.py
+
+  - Add cross-reference anchors (``\phantomsection\label{...}``)
+    for elements with IDs (fixes bug #503).
+  - Fix cross-reference anchor placement in figures, images,
+    literal-blocks, tables, and (sub)titles.
+
+and improvements (see HISTORY_).
 
 
 Release 0.22 (2025-07-29)
