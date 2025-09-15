@@ -130,7 +130,7 @@ _`Compound elements`
 
 _`Simple elements`
   | may contain text data.
-  | Most simple elements support have a mixed content model.  However, only
+  | Most simple elements have a mixed content model.  However, only
     `inline elements`_ may be intermixed with text (`%text.model`_). [#]_
   | Examples: `\<paragraph>`_ (mixed), `\<literal_block>`_ (text-only)
 
@@ -245,11 +245,11 @@ body elements.
   .. class:: narrow run-in
 
   :empty:
-    `\<image>`_ , `\<pending>`_
+    `\<image>`_ , `\<pending>`_, `\<target>`_
   :simple:
     `\<comment>`_, `\<doctest_block>`_, `\<literal_block>`_, `\<math_block>`_,
     `\<paragraph>`_, `\<raw>`_, `\<reference>`_, `\<rubric>`_,
-    `\<substitution_definition>`_, `\<target>`_
+    `\<substitution_definition>`_
   :compound:
     `\<admonition>`_, `\<attention>`_, `\<block_quote>`_, `\<bullet_list>`_,
     `\<caution>`_, `\<citation>`_, `\<compound>`_, `\<container>`_,
@@ -363,9 +363,6 @@ section below.  Each section contains the following items:
   fragments of the document trees resulting from parsing.
   Pseudo-XML_ is used to display the results of parsing and processing.
 
-.. Note::
-   Some element reference sections below are marked "_`to be completed`".
-   Please help complete this document by contributing to its writing.
 
 <abbreviation>
 ==============
@@ -3943,7 +3940,74 @@ Pseudo-XML_ fragment from simple parsing::
 <target>
 ========
 
-`To be completed`_.
+The <target> element provides an end-point for a hypertext `\<reference>`_.
+
+:Category:   Empty `Body Elements`_, `Inline Elements`_ [#inline-targets]_
+:Analogues:  As body element, <target> is similar to the DocBook_ <anchor>
+             element. An inline <target> can be represented by a DocBook
+             <phrase> or HTML_ <span> element.
+:Processing: <target> elements with refid_, refname_, or refuri_ attribute
+             (indirect targets) act as a relay for links to one of the
+             target's ids_ or names_.
+             A <target> without refid_, refname_, or refuri_ attributes
+             provides ids_ or names_ for its content or, if empty, the
+             next element.
+:Parents:    all elements employing `%body.elements`_, `%structure.model`_,
+             or `%text.model`_ in their content models
+:Children:   only text data [#target-content]_
+:Attributes: anonymous_, refid_, refname_, refuri_, and
+             the `common attributes`_.
+
+
+.. [#inline-targets] Inline <target> elements will be deprecated in
+   Docutils 1.0 and invalid in Docutils 2.0.  The "rst" parser will
+   use `\<inline>`_ elements for inline targets.
+
+.. [#target-content] <target> elements with content will be deprecated in
+   Docutils 1.0 and invalid in Docutils 2.0.
+
+Examples
+--------
+
+In reStructuredText, `hyperlink targets`_ are indicated by a leading
+underscore::
+
+    .. _inline: `inline target`_
+    .. _example: https//:example.org
+    .. _alias:
+    .. _explicit target:
+
+    The hyperlink target above points to this paragraph
+    with an _`inline target`.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <target ids="inline" names="inline" refname="inline target">
+    <target ids="example" names="example" refuri="https//:example.org">
+    <target ids="alias" names="alias">
+    <target ids="explicit-target" names="explicit\ target">
+    <paragraph>
+        The hyperlink target above points to this paragraph
+        with an
+        <target ids="inline-target" names="inline\ target">
+            inline target
+        .
+
+After applying transforms_, the paragraph has two reference names and
+two IDs, transferred from the preceding targets::
+
+    <target ids="inline" names="inline" refid="inline-target">
+    <target ids="example" names="example" refuri="https//:example.org">
+    <target refid="alias">
+    <target refid="explicit-target">
+    <paragraph ids="explicit-target alias" names="explicit\ target alias">
+        The hyperlink target above points to this paragraph
+        with an
+        <target ids="inline-target" names="inline\ target">
+            inline target
+        .
+
+For more examples, see `\<reference>`_.
 
 
 <tbody>
