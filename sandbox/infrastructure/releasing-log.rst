@@ -10,6 +10,81 @@
 Notes on what happend while releasing.
 
 
+Release 0.22.1 (2025-09-17)
+===========================
+
+* checkout current code
+* run: tox -epy313
+* set_version 0.22.1
+* run: tox -epy311
+* fix the version_info release to True
+* run: tox -epy39
+* Check README, HISTORY and RELEASE-NOTES titles.
+* check: svn di
+* svn commit 
+* build wheel and tgz
+* test tgz and wheel locally
+* upload to pypi
+* test src.tgz from pypi, ignore missing HISTORY::
+
+    pip install --pre --no-binary docutils docutils
+
+* test wheel from pypi, ignore missing HISTORY.rst
+* update code in working directory
+* run tox : pass 39, 310, 311, 313, 314
+* tag #.# (Note: only directory docutils is copied)::
+
+    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.22 \
+             -m "tagging release 0.22"
+
+* check on sourceforge: https://sourceforge.net/p/docutils/code/HEAD/tree/tags/
+* update code in working directory
+* upload source and generated html to sf-htdocs/#.# ::
+
+    mkdir tmp1
+    cd tmp1
+    tar xzvf ../dist/docutils-0.22.1.tar.gz
+    cd docutils-0.22.1/
+    python3 tools/buildhtml.py .
+    find . -name \*.pyc -exec rm -v {} \;
+    find . -name __pycache__ -exec rmdir -v {} \;
+    rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/0.22.1
+
+* Check https://docutils.sourceforge.io/0.22.1/
+* Check web/index.rst for necessary corrections.
+* Run sandbox/infrastructure/docutils-update.local to update web-content.
+
+* Release to sourceforge.
+
+  - Upload docutils-0.22.1.tar.gz and release notes to sourceforge.
+  - Upload RELEASE_NOTES.rst as README.rst.
+  - Select docutils-0.22.1.tar.gz as default for all OS.
+
+* update working directory
+* set_version 0.22.2b1.dev
+* tox -epy312
+* check docutils/__init__ : failed
+* fix __init__.py::
+
+    __version_info__ = VersionInfo(
+        major=0,
+        minor=22, 
+        micro=2,
+        releaselevel='beta',  # one of 'alpha', 'beta', 'candidate', 'final'
+        serial=1,  # pre-release number (0 for final releases and snapshots)
+        release=False  # True for official releases and pre-releases
+        )
+
+* run: tox -epy312
+* docutils/HISTORY.rst: add title "Release 0.2.22b1.dev (unpublished)"
+* docutils/RELEASE-NOTES.rst: add title "Release 0.22.2b1.dev (unpublished)"
+* Check README, HISTORY and RELEASE-NOTES titles.
+* svn di
+* commit
+* run: sandbox/infrastructure/docutils-update.local
+
+
 Release 0.22.1rc1 (2025-09-13)
 ==============================
 
