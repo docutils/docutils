@@ -14,10 +14,10 @@
 .. contents::
 
 
-Release 0.22.1b2.dev (unpublished)
-==================================
+Release 0.22.1 (2025-09-17)
+===========================
 
-Hopefully 0.22.1 will be next.
+Only documentation fixes.
 
 
 Release 0.22.1rc1 (2025-09-13)
