@@ -107,6 +107,9 @@ Writers
 
 * "latex2e" writer:
 
+  - Only write ``\label`` commands for IDs that are referenced in the
+    current document in Docutils 0.23.
+
   - Change default of use_latex_citations_ setting to True
     in Docutils 1.0.
 
