@@ -1,6 +1,6 @@
 '\" t
 .\" Man page generated from reStructuredText
-.\" by the Docutils 0.22.1b2.dev manpage writer.
+.\" by the Docutils 0.22.2b1.dev manpage writer.
 .
 .
 .nr rst2man-indent-level 0
