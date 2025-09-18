@@ -77,4 +77,4 @@ function set_ver()
 set_ver "$old_ver" "$new_ver"
 
 #echo "VERIFY: major, minor, micro, releaselevel (candidate,final), prerelease serial, pre/release or checkout"
-#python -c 'import docutils; print "__version_info__ =", docutils.__version_info__'
+#python -c 'import docutils; print("__version_info__ =", docutils.__version_info__)'
