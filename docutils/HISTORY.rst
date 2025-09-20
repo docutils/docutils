@@ -23,20 +23,11 @@ Release 0.22.3b1.dev (unpublished)
 Release 0.22.2 (2025-09-20)
 ===========================
 
-CI of snakemake on an MacOS arm failed, because homebrew possibly restored
-a vim .swp-file ... maybe.
-
-So release without the .swp.
+Remove a spurious vim .swp-file to fix bug #513.
 
 
 Release 0.22.1 (2025-09-17)
 ===========================
-
-Only documentation fixes.
-
-
-Release 0.22.1rc1 (2025-09-13)
-==============================
 
 * docutils/frontend.py, docutils/writers/
 
