@@ -14,10 +14,13 @@
 .. contents::
 
 
-Release 0.22.2b1.dev (unpublished)
-==================================
+Release 0.22.2 (2025-09-20)
+===========================
 
-.
+CI of snakemake on an MacOS arm failed, because homebrew possibly restored
+a vim .swp-file ... maybe.
+
+So release without the .swp.
 
 
 Release 0.22.1 (2025-09-17)
