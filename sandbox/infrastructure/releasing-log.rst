@@ -10,6 +10,81 @@
 Notes on what happend while releasing.
 
 
+Release 0.22.2 (2025-09-20)
+===========================
+
+CI of snakemake on an MacOS arm failed, because homebrew possibly restored
+a vim .swp-file ... maybe.
+
+So release without the .swp.
+
+* checkout current code
+* run: tox -epy313
+* set_version 0.22.2
+* run: tox -epy311
+* fix the version_info release to True
+* run: tox -epy39
+* Check README, HISTORY and RELEASE-NOTES titles.
+* check: svn di
+* svn commit 
+* check for swap files: ``find . -name \*.sw\*``
+* build wheel and tgz
+* test tgz and wheel locally
+* upload to pypi
+* test src.tgz from pypi, ignore missing HISTORY::
+
+    pip install --pre --no-binary docutils docutils
+
+* check for swap files in testenvironmen: ``find . -name \*.sw\*``
+* test wheel from pypi, ignore missing HISTORY.rst
+* update code in working directory
+* run tox : pass 39, 310, 311, 313, 314
+* tag #.# (Note: only directory docutils is copied)::
+
+    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.22.2 \
+             -m "tagging release 0.22.2"
+
+* check on sourceforge: https://sourceforge.net/p/docutils/code/HEAD/tree/tags/
+* update code in working directory
+* upload source and generated html to sf-htdocs/#.# ::
+
+    mkdir tmp1
+    cd tmp1
+    tar xzvf ../dist/docutils-0.22.2.tar.gz
+    cd docutils-0.22.2/
+    python3 tools/buildhtml.py .
+    find . -name \*.pyc -exec rm -v {} \;
+    find . -name __pycache__ -exec rmdir -v {} \;
+    rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/0.22.2
+
+* Check https://docutils.sourceforge.io/0.22.2/
+* Check web/index.rst for necessary corrections.
+* Run sandbox/infrastructure/docutils-update.local to update web-content.
+
+* Release to sourceforge.
+
+  - Upload docutils-0.22.2.tar.gz and release notes to sourceforge.
+  - Upload RELEASE_NOTES.rst as README.rst.
+  - Select docutils-0.22.2.tar.gz as default for all OS.
+
+* update working directory
+* set_version 0.22.3b1.dev
+* check docutils/__init__ ok
+* tox -epy39 310 312 313 pass
+* tox-epy311 fails 
+
+  somewhere still 0.22.2 but only via 3.11
+
+* docutils/HISTORY.rst: add title "Release 0.22.3b1.dev (unpublished)"
+* docutils/RELEASE-NOTES.rst: add title "Release 0.22.3b1.dev (unpublished)"
+* Check README, HISTORY and RELEASE-NOTES titles.
+* svn di
+* commit
+* now tox -epy311 passes
+* run: sandbox/infrastructure/docutils-update.local
+
+
 Release 0.22.1 (2025-09-17)
 ===========================
 
@@ -35,8 +110,8 @@ Release 0.22.1 (2025-09-17)
 * tag #.# (Note: only directory docutils is copied)::
 
     svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
-             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.22 \
-             -m "tagging release 0.22"
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.22.1 \
+             -m "tagging release 0.22.1"
 
 * check on sourceforge: https://sourceforge.net/p/docutils/code/HEAD/tree/tags/
 * update code in working directory
@@ -77,7 +152,7 @@ Release 0.22.1 (2025-09-17)
         )
 
 * run: tox -epy312
-* docutils/HISTORY.rst: add title "Release 0.2.22b1.dev (unpublished)"
+* docutils/HISTORY.rst: add title "Release 0.22.2b1.dev (unpublished)"
 * docutils/RELEASE-NOTES.rst: add title "Release 0.22.2b1.dev (unpublished)"
 * Check README, HISTORY and RELEASE-NOTES titles.
 * svn di
