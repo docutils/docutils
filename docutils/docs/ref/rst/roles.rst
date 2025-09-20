@@ -400,7 +400,7 @@ generated roles.
 .. _hyperlink references: restructuredtext.html#hyperlink-references
 
 .. _reStructuredText Standard Definition Files: definitions.html
-.. _HTML5 inline markup elements: definitions.html#additional-roles-for-html
+.. _semantic inline markup: definitions.html#additional-roles-for-html
 .. _S5/HTML slide shows: definitions.html#s5-html-definitions
 
 .. _The Docutils Document Tree: ../doctree.html
