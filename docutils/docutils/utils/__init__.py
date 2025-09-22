@@ -704,10 +704,7 @@ def column_indices(text: str) -> list[int]:
     """
     # TODO: account for asian wide chars here instead of using dummy
     # replacements in the tableparser?
-    string_indices = list(range(len(text)))
-    for index in find_combining_chars(text):
-        string_indices[index] = None
-    return [i for i in string_indices if i is not None]
+    return [i for i, c in enumerate(text) if not unicodedata.combining(c)]
 
 
 east_asian_widths = {'W': 2,   # Wide
