@@ -167,6 +167,9 @@ class GridTableParser(TableParser):
         We'll end up knowing all the row and column boundaries, cell positions
         and their dimensions.
         """
+        # a copy of the block without combining characters:
+        self.stripped_block = [strip_combining_chars(line)
+                               for line in self.block]
         corners = [(0, 0)]
         while corners:
             top, left = corners.pop(0)
@@ -209,7 +212,7 @@ class GridTableParser(TableParser):
 
     def scan_cell(self, top, left):
         """Starting at the top-left corner, start tracing out a cell."""
-        assert self.block[top][left] == '+'
+        assert self.stripped_block[top][left] == '+'
         return self.scan_right(top, left)
 
     def scan_right(self, top, left):
@@ -218,7 +221,7 @@ class GridTableParser(TableParser):
         boundaries ('+').
         """
         colseps = {}
-        line = self.block[top]
+        line = self.stripped_block[top]
         for i in range(left + 1, self.right + 1):
             if line[i] == '+':
                 colseps[i] = [top]
@@ -238,14 +241,14 @@ class GridTableParser(TableParser):
         """
         rowseps = {}
         for i in range(top + 1, self.bottom + 1):
-            if self.block[i][right] == '+':
+            if self.stripped_block[i][right] == '+':
                 rowseps[i] = [right]
                 result = self.scan_left(top, left, i, right)
                 if result:
                     newrowseps, colseps = result
                     update_dict_of_lists(rowseps, newrowseps)
                     return i, rowseps, colseps
-            elif self.block[i][right] != '|':
+            elif self.stripped_block[i][right] != '|':
                 return None
         return None
 
@@ -255,7 +258,7 @@ class GridTableParser(TableParser):
         It must line up with the starting point.
         """
         colseps = {}
-        line = self.block[bottom]
+        line = self.stripped_block[bottom]
         for i in range(right - 1, left, -1):
             if line[i] == '+':
                 colseps[i] = [bottom]
@@ -275,9 +278,9 @@ class GridTableParser(TableParser):
         """
         rowseps = {}
         for i in range(bottom - 1, top, -1):
-            if self.block[i][left] == '+':
+            if self.stripped_block[i][left] == '+':
                 rowseps[i] = [left]
-            elif self.block[i][left] != '|':
+            elif self.stripped_block[i][left] != '|':
                 return None
         return rowseps
 

@@ -73,32 +73,32 @@ totest['grid_tables'] = [
  [],
  [[(0, 0, 1, ['A table with']),
    (0, 0, 1, ['two columns.'])]])],
-# Combining chars in grid tables still fail
-# ["""\
-# +--------------+------------------+
-# | A tāble w̅ith | comb̲ining chars. |
-# +--------------+------------------+
-# """,
-# [(0, 0, 2, 15, ['A table with']),
-#  (0, 15, 2, 30, ['combining chars.'])],
-# ([14, 14],
-#  [],
-#  [[(0, 0, 1, ['A table with']),
-#    (0, 0, 1, ['combining chars.'])]])],
+# Combining chars in table cells
+["""\
++--------------+------------------+
+| A tāble w̅ith | comb̲ining chars. |
++--------------+------------------+
+""",
+[(0, 0, 2, 15, ['A tāble w̅ith']),
+ (0, 15, 2, 34, ['comb̲ining chars.'])],
+([14, 18],
+ [],
+ [[(0, 0, 1, ['A tāble w̅ith']),
+   (0, 0, 1, ['comb̲ining chars.'])]])],
 ["""\
 +--------------+-------------+
-| A table with | two columns |
+| A tāble w̅ith | two columns |
 +--------------+-------------+
 | and          | two rows.   |
 +--------------+-------------+
 """,
-[(0, 0, 2, 15, ['A table with']),
+[(0, 0, 2, 15, ['A tāble w̅ith']),
  (0, 15, 2, 29, ['two columns']),
  (2, 0, 4, 15, ['and']),
  (2, 15, 4, 29, ['two rows.'])],
 ([14, 13],
  [],
- [[(0, 0, 1, ['A table with']),
+ [[(0, 0, 1, ['A tāble w̅ith']),
    (0, 0, 1, ['two columns'])],
   [(0, 0, 3, ['and']),
    (0, 0, 3, ['two rows.'])]])],
@@ -126,18 +126,18 @@ totest['grid_tables'] = [
    None]])],
 ["""\
 +------------+-------------+---------------+
-| A table    | two rows in | and row spans |
-| with three +-------------+ to left and   |
+| A tāble    | two rows in | and row spans |
+| with t̲h̲r̲e̲e̲ +-------------+ to left and   |
 | columns,   | the middle, | right.        |
 +------------+-------------+---------------+
 """,
-[(0, 0, 4, 13, ['A table', 'with three', 'columns,']),
+[(0, 0, 4, 13, ['A tāble', 'with t̲h̲r̲e̲e̲', 'columns,']),
  (0, 13, 2, 27, ['two rows in']),
  (0, 27, 4, 43, ['and row spans', 'to left and', 'right.']),
  (2, 13, 4, 27, ['the middle,'])],
 ([12, 13, 15],
  [],
- [[(1, 0, 1, ['A table', 'with three', 'columns,']),
+ [[(1, 0, 1, ['A tāble', 'with t̲h̲r̲e̲e̲', 'columns,']),
    (0, 0, 1, ['two rows in']),
    (1, 0, 1, ['and row spans', 'to left and', 'right.'])],
   [None,

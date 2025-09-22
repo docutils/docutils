@@ -266,7 +266,9 @@ Misc
 Release 0.22.3b1.dev (unpublished)
 ==================================
 
-.
+Rst parser:
+  Allow for combining characters in grid tables.
+  Fixes bugs #128 and #512.
 
 
 Release 0.22.2 (2025-09-20)
@@ -278,19 +280,11 @@ Remove a spurious vim .swp-file.
 Release 0.22.1 (2025-09-17)
 ===========================
 
-* docutils/parsers/rst/states.py
-
+Rst parser:
   - Relax "section title" system messages from SEVERE to ERROR.
-  - Fix behaviour with nested parsing into a detached node
-    (cf. bugs #508 and #509).
-  - New attribute `NestedStateMachine.parent_state_machine`.
-    Use case: update the "current node" of parent state machine(s)
-    after nested parsing.
-  - Better error messages for grid table markup errors (bug #504),
-    based on patch #214 by Jynn Nelson.
+  - New attribute `parsers.rst.states.NestedStateMachine.parent_state_machine`.
 
-* docutils/writers/latex2e/__init__.py
-
+LaTeX writer:
   - Add cross-reference anchors (``\phantomsection\label{...}``)
     for elements with IDs (fixes bug #503).
   - Fix cross-reference anchor placement in figures, images,

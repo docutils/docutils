@@ -1426,18 +1426,18 @@ class StringList(ViewList):
     def get_2D_block(self, top, left, bottom, right, strip_indent=True):
         block = self[top:bottom]
         indent = right
-        for i in range(len(block.data)):
-            # get slice from line, care for combining characters
-            ci = utils.column_indices(block.data[i])
+        for i, line in enumerate(block.data):
+            # trim line to block borders, allow for for combining characters
+            adjusted_indices = utils.column_indices(line)
             try:
-                left = ci[left]
+                left_i = adjusted_indices[left]
             except IndexError:
-                left += len(block.data[i]) - len(ci)
+                left_i = left
             try:
-                right = ci[right]
+                right_i = adjusted_indices[right]
             except IndexError:
-                right += len(block.data[i]) - len(ci)
-            block.data[i] = line = block.data[i][left:right].rstrip()
+                right_i = len(line)
+            block.data[i] = line = line[left_i:right_i].rstrip()
             if line:
                 indent = min(indent, len(line) - len(line.lstrip()))
         if strip_indent and 0 < indent < right:
