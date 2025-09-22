@@ -116,7 +116,7 @@ from docutils.nodes import fully_normalize_name as normalize_name
 from docutils.nodes import unescape, whitespace_normalize_name
 import docutils.parsers.rst
 from docutils.parsers.rst import directives, languages, tableparser, roles
-from docutils.utils import escape2null, column_width
+from docutils.utils import escape2null, column_width, strip_combining_chars
 from docutils.utils import punctuation_chars, urischemes
 from docutils.utils import split_escaped_whitespace
 from docutils.utils._roman_numerals import (InvalidRomanNumeralError,
@@ -1848,7 +1848,8 @@ class Body(RSTState):
                 messages.extend(self.malformed_table(block, detail, i))
                 return [], messages, blank_finish
         for i in range(len(block)):     # check right edge
-            if len(block[i]) != width or block[i][-1] not in '+|':
+            if len(strip_combining_chars(block[i])
+                   ) != width or block[i][-1] not in '+|':
                 detail = 'Right border not aligned or missing.'
                 messages.extend(self.malformed_table(block, detail, i))
                 return [], messages, blank_finish

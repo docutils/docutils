@@ -17,7 +17,17 @@
 Release 0.22.3b1.dev (unpublished)
 ==================================
 
-.
+* docutils/parsers/rst/states.py
+
+  - Ignore combining characters when extracting a grid table block
+
+* docutils/parsers/rst/tableparser.py
+
+  - Ignore combining characters when parsing the grid table structure.
+
+* docutils/statemachine.py
+
+  - Fix handling of combining characters when extracting 2d-block.
 
 
 Release 0.22.2 (2025-09-20)
