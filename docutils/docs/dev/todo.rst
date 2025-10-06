@@ -2030,7 +2030,7 @@ Unimplemented Transforms
 
   Collect and move footnotes & citations to the end of a document or the
   place of a "footnotes" or "citations" directive
-  (see `<./ref/rst/directives.html>_`)
+  (see `<../ref/rst/directives.html#references>`_)
 
   Footnotes:
     Collect all footnotes that are referenced in the document before the
