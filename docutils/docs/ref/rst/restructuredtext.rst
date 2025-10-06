@@ -1764,17 +1764,21 @@ Auto-Numbered Footnotes
 
 A number sign (``#``) may be used as the first character of a footnote
 label to request automatic numbering of the footnote or footnote
-reference.
+reference::
+
+    Footnotes may be auto-numbered. [#]_
+
+    .. [#] This is an auto-numbered footnote.
 
 The first footnote to request automatic numbering is assigned the
 label "1", the second is assigned the label "2", and so on (assuming
 there is no conflict with another reference name; see also
 `Mixed Manual and Auto-Numbered Footnotes`_ below).
-If the footnote label is a single ``#``, the assigned number is also used
-as reference name.
 
 .. _autonumber label:
 
+If the footnote label is a single ``#``, the assigned number is also used
+as reference name.
 A custom reference name can be specified appending a `simple reference
 name`_ to the number sign to form an *autonumber label*.
 For example::
@@ -2969,9 +2973,10 @@ A *footnote reference* consists of a square-bracketed
 `footnote label`_ followed by a trailing underscore.
 For example::
 
-    Please RTFM [1]_.
+    Please RTFM [1]_. [#]_
 
     .. [1] Read The Fine Manual
+    .. [#] See "footnotes_" for the format of the *footnote label*.
 
 `Inline markup recognition rules`_ may require whitespace in front of the
 footnote reference. To remove the whitespace from the output, use an

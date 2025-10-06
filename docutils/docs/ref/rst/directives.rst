@@ -228,16 +228,17 @@ An "image" is a simple picture::
 
 A `URI reference`_ to the image source file is specified in the directive
 argument.  As with hyperlink targets, the image URI may begin on the
-same line as the explicit markup start and target name, or it may
+same line as the explicit markup start and directive name, or it may
 begin in an indented text block immediately following, with no
 intervening blank lines.  If there are multiple lines in the link
 block, they are stripped of leading and trailing whitespace and joined
 together.
 
-Optionally, the image link block may contain a flat field list, the
+Optionally, the image directive may contain a flat field list, the
 `image options`_.  For example::
 
-    .. image:: picture.jpeg
+    .. image::
+       https://example.com/images/picture.jpeg
        :height: 100px
        :width: 200 px
        :scale: 50 %
@@ -245,9 +246,8 @@ Optionally, the image link block may contain a flat field list, the
        :alt: alternate text
        :align: right
 
-
-*Inline images* can be defined with an "image" directive in a `substitution
-definition`_, e.g. ::
+`Inline images`_ can be defined with an "image" directive in a
+`substitution definition`_, e.g. ::
 
     |Red light| means stop, |green light| means go.
 
@@ -277,6 +277,8 @@ and name_ as well as
     Alternate text: a short description of the image, displayed by
     applications that cannot display images, or spoken by applications
     for visually impaired users.
+    Defaults to the image URI or, in a `substitution definition`_ to the
+    substitution text.
 
 ``height`` : length_
     The desired height of the image.
@@ -1355,6 +1357,10 @@ Footnotes
 =========
 
 **NOT IMPLEMENTED YET**
+(`see todo item <../../dev/todo.html#footnote-citation-gathering>`_)
+
+Collect `footnotes <footnote_>`__ and move them to the place of this
+directive.
 
 .. class:: field-indent-13em
 
@@ -1371,12 +1377,19 @@ Citations
 =========
 
 **NOT IMPLEMENTED YET**
+(`see todo item <../../dev/todo.html#footnote-citation-gathering>`_)
+
+Collect `citations <citation_>`__ or generate them for all
+`citation references`_ from a database [#]_ and move them
+to the place of this directive.
+
+.. [#] For example a BibTeX file (cf. the use_bibtex_ LaTeX writer setting).
 
 .. class:: field-indent-13em
 
 :Directive Type: "citations"
 :Doctree Elements: `\<pending>`_, `\<topic>`_
-:Directive Arguments: none?
+:Directive Arguments: optional (database)?
 :Directive Options: Possible?
 :Directive Content: none
 
@@ -1398,9 +1411,9 @@ Citations
  Directives for Substitution Definitions
 -----------------------------------------
 
-The directives introduced in this section may only be used in
+The directives introduced in this section may be used in
 `substitution definitions`_.  They may not be used directly,
-in standalone context.
+in standalone context (except for the image_ directive).
 
 .. _substitution definitions:
 .. _substitution definition: restructuredtext.html#substitution-definitions
@@ -2300,6 +2313,8 @@ Common Option Value Types
 
 .. _reStructuredText Markup Specification: restructuredtext.html
 .. _block quote: restructuredtext.html#block-quotes
+.. _citation references: restructuredtext.html#citation-references
+.. _citation: restructuredtext.html#citations
 .. _comments: restructuredtext.html#comments
 .. _directives: restructuredtext.html#directives
 .. _document title: restructuredtext.html#document-title
@@ -2308,6 +2323,7 @@ Common Option Value Types
 .. _external hyperlink target:
 .. _external hyperlink targets:
     restructuredtext.html#external-hyperlink-targets
+.. _footnote: restructuredtext.html#footnotes
 .. _grid table: restructuredtext.html#grid-tables
 .. _hyperlink reference:
 .. _hyperlink references: restructuredtext.html#hyperlink-references
@@ -2326,6 +2342,7 @@ Common Option Value Types
 .. _"raw" role: roles.html#raw
 
 .. Docutils Configuration
+.. _use_bibtex: ../../user/config.html#use-bibtex
 .. _file_insertion_enabled: ../../user/config.html#file-insertion-enabled
 .. _generate_oowriter_toc: ../../user/config.html#generate-oowriter-toc
 .. _image_loading: ../../user/config.html#image-loading
