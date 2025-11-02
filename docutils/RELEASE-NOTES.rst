@@ -267,8 +267,11 @@ Release 0.22.3b1.dev (unpublished)
 ==================================
 
 Rst parser:
-  Allow for combining characters in grid tables.
-  Fixes bugs #128 and #512.
+  - Allow for combining characters in grid tables.
+    Fixes bugs #128 and #512.
+
+  - Ignore auxiliary elements like `sphinx.addnodes.only`
+    when testing for invalid parents of topics or sidebars.
 
 
 Release 0.22.2 (2025-09-20)

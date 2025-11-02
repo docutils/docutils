@@ -72,6 +72,11 @@ div.line-block div.line-block,
 pre, dd, dl.option-list {
   margin-left: calc(2% + 1em);
 }
+/* but not in a table cell */
+td pre, td dl.option-list {
+  margin-left: 0;
+}
+
 
 /* Object styling */
 /* ============== */
@@ -201,6 +206,8 @@ table tr {
   text-align: left;
   vertical-align: baseline;
 }
+td *:first-child { margin-top: 0; }
+td *:last-child { margin-bottom: 0; }
 table.booktabs { /* "booktabs" style (no vertical lines) */
   border-top: 2px solid;
   border-bottom: 2px solid;

@@ -12,6 +12,7 @@ from docutils import nodes, languages
 from docutils.transforms import parts
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
+from docutils.parsers.rst.directives.body import BasePseudoSection
 
 
 class Contents(Directive):
@@ -43,8 +44,8 @@ class Contents(Directive):
                    'class': directives.class_option}
 
     def run(self):
-        if not isinstance(self.state_machine.node,
-                          (nodes.document, nodes.section, nodes.sidebar)):
+        if isinstance(self.state_machine.node,
+                      BasePseudoSection.invalid_parents):
             raise self.error('The "%s" directive may not be used within '
                              'topics or body elements.' % self.name)
         document = self.state_machine.document
