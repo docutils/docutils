@@ -453,8 +453,8 @@ Topic
 A topic is like a block quote with a title, or a self-contained
 section with no subsections.  Use the "topic" directive to indicate a
 self-contained idea that is separate from the flow of the document.
-Topics may occur anywhere a section or transition may occur.  Body
-elements and topics may not contain nested topics.
+Topics may occur anywhere a section or transition may occur and
+in sidebars.  Body elements and topics may not contain nested topics.
 
 The directive's sole argument is interpreted as the topic title; the
 next line must be blank.  All subsequent lines make up the topic body,
@@ -1173,7 +1173,7 @@ Table of Contents
 
 The "contents" directive generates a table of contents (TOC) in
 a `\<topic>`_ element.  Topics, and therefore tables of contents,
-may occur anywhere a section or transition may occur.
+may occur anywhere a section or transition may occur and in sidebars.
 Body elements and topics may not contain tables of contents.
 
 Here's the directive in its simplest form::

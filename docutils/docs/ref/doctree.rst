@@ -4469,7 +4469,7 @@ _`%classnames.type`
   | Used in the `classes`_ attribute.  Python data type: ``list[str]``.
 
 _`%idref.type`
-  | A reference to another element by its identifier_.
+  | A reference to another element by one of its identifiers_.
     Resolves to NMTOKEN_. [#id-vc]_
   | Used in the `refid`_ attribute.  Python data type: ``str``.
 
@@ -4803,10 +4803,18 @@ The ``ids`` attribute is a space separated list containing one or more
 unique `identifiers`_, typically assigned by the system.
 It is one of the `common attributes`_, shared by all Docutils elements.
 
+An XPath_ expression to select the element with identifier `test` is ::
+
+  //*[contains(concat(' ', @ids, ' '), ' test ')]
+
+(similar to `selecting an element by CSS class`__).
+
 .. TODO:
    * Use 'id' for primary identifier key?
    * Keep additional keys in `ids`
      or in the preceding target elements?
+
+__ https://stackoverflow.com/questions/1604471/how-can-i-find-an-element-by-css-class-with-xpath
 
 
 ``level``
@@ -4984,8 +4992,8 @@ Writers_ may ignore this attribute.
 
 Attribute type: `%idref.type`_.  Default value: none.
 
-The ``refid`` attribute contains a reference to another element via its
-`identifier`_.
+The ``refid`` attribute contains a reference to another element via
+one of its `identifiers`_.
 It is used by the `\<citation_reference>`_, `\<footnote_reference>`_,
 `\<problematic>`_, `\<reference>`_, `\<target>`_, and `\<title>`_ elements
 (via the `%refid.att`_ and `%reference.atts`_ parameter entities).
@@ -5886,6 +5894,7 @@ Bibliography
 .. _external DTD subset: https://www.w3.org/TR/xml11/#sec-external-ent
 .. _XML attribute types: https://www.w3.org/TR/REC-xml/#sec-attribute-types
 .. _One ID per Element Type: https://www.w3.org/TR/REC-xml/#one-id-per-el
+.. _XPath: https://www.w3.org/TR/xpath/
 
 .. _Docutils: https://docutils.sourceforge.io/
 .. _docutils.nodes:
