@@ -23,6 +23,8 @@ from docutils.utils import new_document
 
 
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -287,25 +289,17 @@ Elements that are prohibited inside of substitution definitions:
         Elements that are prohibited inside of substitution definitions:
     <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
-            Substitution definition contains illegal element <target>:
-        <literal_block xml:space="preserve">
-            <target ids="target" names="target">
-                target
+            Targets (names and identifiers) are not supported in a substitution definition.
         <literal_block xml:space="preserve">
             .. |target| replace:: _`target`
     <system_message level="3" line="4" source="test data" type="ERROR">
         <paragraph>
-            Substitution definition contains illegal element <reference>:
-        <literal_block xml:space="preserve">
-            <reference anonymous="1" name="anonymous">
-                anonymous
+            Anonymous references are not supported in a substitution definition.
         <literal_block xml:space="preserve">
             .. |reference| replace:: anonymous__
     <system_message level="3" line="5" source="test data" type="ERROR">
         <paragraph>
-            Substitution definition contains illegal element <footnote_reference>:
-        <literal_block xml:space="preserve">
-            <footnote_reference auto="1" ids="footnote-reference-1">
+            References to auto-numbered and auto-symbol footnotes are not supported in a substitution definition.
         <literal_block xml:space="preserve">
             .. |auto-numbered footnote| replace:: [#]_
 """],

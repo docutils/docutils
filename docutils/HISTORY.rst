@@ -20,6 +20,8 @@ Release 0.22.3b1.dev (unpublished)
 * docutils/parsers/rst/states.py
 
   - Ignore combining characters when extracting a grid table block
+  - More informative error messages when a substitution definition contains
+    problematic or not supported content.
 
 * docutils/parsers/rst/tableparser.py
 

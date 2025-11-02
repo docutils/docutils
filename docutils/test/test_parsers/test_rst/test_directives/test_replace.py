@@ -23,6 +23,8 @@ from docutils.utils import new_document
 
 
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -129,12 +131,20 @@ I recommend you try |Python|_.
             Inline literal start-string without end-string.
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Substitution definition contains illegal element <problematic>:
-        <literal_block xml:space="preserve">
-            <problematic ids="problematic-1" refid="system-message-1">
-                *
+            Problematic content in substitution definition
         <literal_block xml:space="preserve">
             .. |name| replace::  *error in **inline ``markup
+        <block_quote>
+            <paragraph>
+                <problematic ids="problematic-1" refid="system-message-1">
+                    *
+                error in \n\
+                <problematic ids="problematic-2" refid="system-message-2">
+                    **
+                inline \n\
+                <problematic ids="problematic-3" refid="system-message-3">
+                    ``
+                markup
 """],
 ["""\
 .. replace:: not valid outside of a substitution definition
