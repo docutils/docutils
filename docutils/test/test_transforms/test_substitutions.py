@@ -25,6 +25,8 @@ from docutils.utils import new_document
 
 
 class TransformTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_transforms(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -378,10 +380,7 @@ Make sure this substitution definition is not registered: |target|
         Substitution definition with an illegal element:
     <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
-            Substitution definition contains illegal element <target>:
-        <literal_block xml:space="preserve">
-            <target ids="target" names="target">
-                target
+            Targets (names and identifiers) are not supported in a substitution definition.
         <literal_block xml:space="preserve">
             .. |target| replace:: _`target`
     <paragraph>

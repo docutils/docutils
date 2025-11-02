@@ -2189,14 +2189,22 @@ class Body(RSTState):
                 del substitution_node[i]
             else:
                 i += 1
-        for node in substitution_node.findall(nodes.Element):
-            if self.disallowed_inside_substitution_definitions(node):
-                pformat = nodes.literal_block('', node.pformat().rstrip())
+        for node in substitution_node.findall(nodes.Element,
+                                              include_self=False):
+            if isinstance(node, nodes.problematic):
                 msg = self.reporter.error(
-                    'Substitution definition contains illegal element <%s>:'
-                    % node.tagname,
-                    pformat, nodes.literal_block(blocktext, blocktext),
+                    'Problematic content in substitution definition',
+                    nodes.literal_block('', blocktext),
                     source=src, line=srcline)
+                msg.append(nodes.block_quote(
+                    '', nodes.paragraph('', '', *substitution_node.children)))
+                return [msg], blank_finish
+            illegal = self.disallowed_inside_substitution_definitions(node)
+            if illegal:
+                msg = self.reporter.error(f'{illegal} are not supported in '
+                                          'a substitution definition.',
+                                          nodes.literal_block('', blocktext),
+                                          source=src, line=srcline)
                 return [msg], blank_finish
         if len(substitution_node) == 0:
             msg = self.reporter.warning(
@@ -2208,13 +2216,15 @@ class Body(RSTState):
             substitution_node, subname, self.parent)
         return [substitution_node], blank_finish
 
-    def disallowed_inside_substitution_definitions(self, node) -> bool:
-        if (node['ids']
-            or isinstance(node, nodes.reference) and node.get('anonymous')
-            or isinstance(node, nodes.footnote_reference) and node.get('auto')):  # noqa: E501
-            return True
+    def disallowed_inside_substitution_definitions(self, node) -> str:
+        if isinstance(node, nodes.reference) and node.get('anonymous'):
+            return 'Anonymous references'
+        if isinstance(node, nodes.footnote_reference) and node.get('auto'):
+            return 'References to auto-numbered and auto-symbol footnotes'
+        if node['names'] or node['ids']:
+            return 'Targets (names and identifiers)'
         else:
-            return False
+            return ''
 
     def directive(self, match, **option_presets):
         """Returns a 2-tuple: list of nodes, and a "blank finish" boolean."""

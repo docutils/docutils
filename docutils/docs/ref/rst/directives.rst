@@ -259,7 +259,7 @@ Optionally, the image directive may contain a flat field list, the
 .. _image options:
 
 The "image" directive recognizes the common options `class <class option_>`_
-and name_ as well as
+and name_ [#no-inline-name]_ as well as
 
 ``align`` : "top", "middle", "bottom", "left", "center", or "right"
     The alignment of the image, equivalent to the HTML ``<img>`` tag's
@@ -1424,7 +1424,10 @@ Inline Images
 
 The `image`_ directive can be used both, stand-alone (to define
 block-level images) and in substitution definitions to define
-inline images.
+inline images. [#no-inline-name]_
+
+.. [#no-inline-name] The name_ option cannot be used in
+                     a substitution definition. [#substitution-limits]_
 
 
 .. _replace:
@@ -1435,7 +1438,7 @@ Replacement Text
 .. class:: field-indent-13em
 
 :Directive Type: "replace"
-:Doctree Element: Text & `inline elements`_
+:Doctree Element: Text & `inline elements`_ [#substitution-limits]_
 :Directive Arguments: none
 :Directive Options: none
 :Directive Content: A single paragraph; may contain inline markup.
@@ -1460,6 +1463,13 @@ the "replace" directive::
 
     .. |Python| replace:: Python, *the* best language around
     .. _Python: https://www.python.org/
+
+.. [#substitution-limits] As a substitution may be referenced more than
+   one time, a substitution definition may not contain references to
+   `anonymous hyperlinks`_, `auto-numbered`_ or `auto-symbol`_ footnotes
+   and no `hyperlink targets`__ (names and identifiers must be unique).
+
+   __ restructuredtext.html#inline-internal-targets
 
 
 .. _unicode:
@@ -2312,6 +2322,9 @@ Common Option Value Types
     https://docs.python.org/3/library/codecs.html#standard-encodings
 
 .. _reStructuredText Markup Specification: restructuredtext.html
+.. _anonymous hyperlinks: restructuredtext.html#anonymous-hyperlinks
+.. _auto-numbered: restructuredtext.html#auto-numbered-footnotes
+.. _auto-symbol: restructuredtext.html#auto-symbol-footnotes
 .. _block quote: restructuredtext.html#block-quotes
 .. _citation references: restructuredtext.html#citation-references
 .. _citation: restructuredtext.html#citations
