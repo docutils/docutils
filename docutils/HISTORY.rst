@@ -20,19 +20,20 @@ Release 0.22.3b1.dev (unpublished)
 * docutils/parsers/rst/directives/body.py,
   docutils/parsers/rst/directives/parts.py
 
-  - Ignore auxiliary elements like `sphinx.addnodes.only`
+  - Do not flag uncategorized, auxiliary elements like `sphinx.addnodes.only`
     when testing for invalid parents of topics or sidebars
     (cf. https://github.com/sphinx-doc/sphinx/issues/14002).
 
 * docutils/parsers/rst/states.py
 
-  - Ignore combining characters when extracting a grid table block
   - More informative error messages when a substitution definition contains
     problematic or not supported content.
+  - Ignore combining characters when extracting a grid table block
 
 * docutils/parsers/rst/tableparser.py
 
   - Ignore combining characters when parsing the grid table structure.
+    Fixes bugs #128 and #512.
 
 * docutils/statemachine.py
 
