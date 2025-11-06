@@ -99,6 +99,8 @@ Quick tiny release for two important bugfixes.
 * commit
 * now tox -epy311 passes
 * run: sandbox/infrastructure/docutils-update.local
+* send notification emails
+
 
 Release 0.22.2 (2025-09-20)
 ===========================
