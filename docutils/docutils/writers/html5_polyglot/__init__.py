@@ -388,6 +388,8 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     def section_title_tags(self, node):
         start_tag, close_tag = super().section_title_tags(node)
         ids = node.parent['ids']
+        # TODO: use ``ids[-1]``
+        # (IDs from explicit targets are appended to the implicit ID)
         if (ids and getattr(self.settings, 'section_self_link', None)
             and not isinstance(node.parent, nodes.document)):
             self_link = ('<a class="self-link" title="link to this section"'

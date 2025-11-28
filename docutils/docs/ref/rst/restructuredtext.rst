@@ -88,7 +88,7 @@ Here are examples of `body elements`_:
 
          1. This is an enumerated list.
 
-         2. Enumerators may be arabic numbers, letters, or roman
+         2. Enumerators may be arabic numerals, letters, or roman
             numerals.
 
   3. `Definition lists`_::
@@ -204,7 +204,7 @@ Here are examples of `body elements`_:
 
   - Comments_::
 
-        .. Comments begin with two dots and a space.  Anything may
+        .. Comments begin with two dots and whitespace.  Anything may
            follow, except for the syntax of footnotes/citations,
            hyperlink targets, directives, or substitution definitions.
 
@@ -359,7 +359,7 @@ A backslash (``\``) escapes the following character.
   itself. (A literal backslash can be specified by two backslashes in a
   row -- the first backslash escapes the second. [#caveat]_)
 
-* Escaped whitespace characters are removed from the output document
+* _`Escaped whitespace` characters are removed from the output document
   together with the escaping backslash. This allows for `character-level
   inline markup`_.
 
@@ -743,7 +743,7 @@ Enumerated Lists
 Enumerated lists (a.k.a. "ordered" lists) are similar to bullet lists,
 but use enumerators instead of bullets.  An enumerator consists of an
 enumeration sequence member and formatting, followed by whitespace.
-The following enumeration sequences are recognized:
+The following *enumeration sequences* are recognized:
 
 - arabic numerals: 1, 2, 3, ... (no upper limit).
 - uppercase alphabet characters: A, B, C, ..., Z.
@@ -753,10 +753,10 @@ The following enumeration sequences are recognized:
 
 In addition, the auto-enumerator, ``#``, may be used to automatically
 enumerate a list.  Auto-enumerated lists may begin with explicit
-enumeration, which sets the sequence.  Fully auto-enumerated lists use
-arabic numerals and begin with 1.
+enumeration, which sets the sequence and start value.
+Fully auto-enumerated lists use arabic numerals and begin with 1.
 
-The following formatting types are recognized:
+The following *formatting types* are recognized:
 
 - suffixed with a period: ``1.``, ``A.``, ``a.``, ``I.``, ``i.``.
 - surrounded by parentheses: ``(1)``, ``(A)``, ``(a)``, ``(I)``, ``(i)``.
@@ -1377,7 +1377,7 @@ markup) continues within the block quote::
 
         -- Sherlock Holmes
 
-A block quote may end with an attribution: a text block beginning with
+A block quote may end with an _`attribution`: a paragraph beginning with
 ``--``, ``---``, or a true em-dash, flush left within the block quote.  If
 the attribution consists of multiple lines, the left edges of the
 second and subsequent lines must align.
@@ -2299,8 +2299,13 @@ Syntax diagram::
 
 The following *inline-compatible directives* are implemented in Docutils:
 
+:`"date"`_: inserts the current local date.
+
 :`"image"`_: can be used for block-level images as well as in a
              substitution definition for `inline images`_.
+
+:`"raw"`_: can be used in block-level context as well as in a
+           substitution definition.
 
 :`"replace"`_: allows simple macro substitution.
   It also provides a workaround__ for the still missing support of
@@ -2309,8 +2314,6 @@ The following *inline-compatible directives* are implemented in Docutils:
   __ directives.html#hyperlink-workaround
 
 :`"unicode"`_: converts Unicode character codes to characters.
-
-:`"date"`_: inserts the current local date.
 
 Applications may find other use cases for the substitution mechanism.
 The following are ideas that have not been implemented in Docutils.

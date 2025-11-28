@@ -546,7 +546,7 @@ Comments
 
 Here's one:
 
-.. Comments begin with two dots and a space. Anything may
+.. Comments begin with two dots and whitespace. Anything may
    follow, except for the syntax of footnotes, hyperlink
    targets, directives, or substitution definitions.
 

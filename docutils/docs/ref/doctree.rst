@@ -3854,8 +3854,9 @@ system.
 :Children:   one or more `body elements`_
 :Attributes: backrefs_, level_, line_, type_, and the `common attributes`_.
 
-In Docutils, the generation of system messages can be configured with the
-`"report_level"`_ setting.
+In Docutils, system messages with a level lower than the
+`"report_level"`_ setting are removed by the `universal.FilterMessages`
+transform_.
 
 Examples
 --------
@@ -4249,8 +4250,9 @@ content that is separate from the flow of the document.
 
 :Category:   `Structural Elements`_
 
-:Analogues:  <topic> is analogous to the DocBook_ <simplesect> element
-             and the HTML_ <aside> element.
+:Analogues:  <topic> is analogous to the HTML_ <aside> element.
+             The DocBook_ <simplesect> element is similar, but you cannot
+             place `body elements`_ after a <simplesect>.
 
 :Processing: A <topic> element should be set off from the rest of the
              document somehow, such as with indentation or a border.
@@ -5794,7 +5796,7 @@ _`Reference names`
   .. _namespace:
 
   Almost all elements in a document share a common *namespace*
-  for reference names, comparison ignores case.
+  for reference names and match them ignoring case.
   Only `\<substitution_definition>`_ and `\<substitution_reference>`_
   elements use a distinct namespace with `case-sensitive but forgiving`_
   matching of reference names.
