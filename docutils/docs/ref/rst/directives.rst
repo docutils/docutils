@@ -453,8 +453,8 @@ Topic
 A topic is like a block quote with a title, or a self-contained
 section with no subsections.  Use the "topic" directive to indicate a
 self-contained idea that is separate from the flow of the document.
-Topics may occur anywhere a section or transition may occur and
-in sidebars.  Body elements and topics may not contain nested topics.
+Topics may be nested in the document, a section, or a
+sidebar_.  Body elements and topics may not contain topics.
 
 The directive's sole argument is interpreted as the topic title; the
 next line must be blank.  All subsequent lines make up the topic body,
@@ -511,13 +511,6 @@ Recognizes the common options `class <class option_>`_ and name_ as well as
 Line Block
 ==========
 
-.. admonition:: Deprecated
-
-   The "line-block" directive is deprecated.  Use the `line block
-   syntax`_ instead.
-
-   .. _line block syntax: restructuredtext.html#line-blocks
-
 .. class:: field-indent-13em
 
 :Directive Type: "line-block"
@@ -526,26 +519,29 @@ Line Block
 :Directive Options: `class <class option_>`_, name_
 :Directive Content: Becomes the body of the line block.
 
-The "line-block" directive constructs an element where line breaks and
-initial indentation is significant and inline markup is supported.  It
-is equivalent to a `parsed literal block`_ with different rendering:
-typically in an ordinary serif typeface instead of a
-typewriter/monospaced face, and not automatically indented.  (Have the
-line-block directive begin a block quote to get an indented line
-block.)  Line blocks are useful for address blocks and verse (poetry,
-song lyrics), where the structure of lines is significant.  For
-example, here's a classic::
+.. class:: details
 
-    "To Ma Own Beloved Lassie: A Poem on her 17th Birthday", by
-    Ewan McTeagle (for Lassie O'Shea):
+**Deprecated.**  Use the `line block syntax`_ instead.
+  The "line-block" directive constructs an element where line breaks and
+  initial indentation is significant and inline markup is supported.  It
+  is comparable to a `parsed literal block`_ with different rendering:
+  typically in an ordinary serif typeface instead of a
+  typewriter/monospaced face, and not automatically indented.  (Have the
+  line-block directive begin a block quote to get an indented line
+  block.)  Line blocks are useful for address blocks and verse (poetry,
+  song lyrics), where the structure of lines is significant.  For
+  example, here's a classic::
 
-        .. line-block::
+      "To Ma Own Beloved Lassie: A Poem on her 17th Birthday", by
+      Ewan McTeagle (for Lassie O'Shea):
 
-            Lend us a couple of bob till Thursday.
-            I'm absolutely skint.
-            But I'm expecting a postal order and I can pay you back
-                as soon as it comes.
-            Love, Ewan.
+          .. line-block::
+
+              Lend us a couple of bob till Thursday.
+              I'm absolutely skint.
+              But I'm expecting a postal order and I can pay you back
+                  as soon as it comes.
+              Love, Ewan.
 
 
 .. _parsed-literal:
@@ -1171,9 +1167,9 @@ Table of Contents
 :Directive Content: none
 :Configuration Settings: toc_backlinks_, use_latex_toc_, generate_oowriter_toc_
 
-The "contents" directive generates a table of contents (TOC) in
+The "contents" directive generates a table of contents (ToC) in
 a `\<topic>`_ element.  Topics, and therefore tables of contents,
-may occur anywhere a section or transition may occur and in sidebars.
+may be nested in the document, a section, or a sidebar_.
 Body elements and topics may not contain tables of contents.
 
 Here's the directive in its simplest form::
@@ -1283,6 +1279,8 @@ The "sectnum" directive recognizes the following options:
 
 Document Header & Footer
 ========================
+
+.. class:: field-indent-13em
 
 :Directive Types: "header" and "footer"
 :Doctree Elements: `\<decoration>`_, `\<header>`_, `\<footer>`_
@@ -1411,23 +1409,27 @@ to the place of this directive.
  Directives for Substitution Definitions
 -----------------------------------------
 
-The directives introduced in this section may be used in
-`substitution definitions`_.  They may not be used directly,
-in standalone context (except for the image_ directive).
-
-.. _substitution definitions:
-.. _substitution definition: restructuredtext.html#substitution-definitions
+This section lists directives that may be used in `substitution definitions`_.
 
 
 Inline Images
 =============
 
-The `image`_ directive can be used both, stand-alone (to define
+The "`image`_" directive can be used both, stand-alone (to define
 block-level images) and in substitution definitions to define
 inline images. [#no-inline-name]_
 
 .. [#no-inline-name] The name_ option cannot be used in
                      a substitution definition. [#substitution-limits]_
+
+
+Inline Raw
+==========
+
+The "raw_" directive can be used stand-alone and in substitution definitions.
+
+"Raw data pass-through" in inline context is also possible with
+a `custom role`_ derived from the `"raw" role`_.
 
 
 .. _replace:
@@ -1464,10 +1466,11 @@ the "replace" directive::
     .. |Python| replace:: Python, *the* best language around
     .. _Python: https://www.python.org/
 
-.. [#substitution-limits] As a substitution may be referenced more than
-   one time, a substitution definition may not contain references to
-   `anonymous hyperlinks`_, `auto-numbered`_ or `auto-symbol`_ footnotes
-   and no `hyperlink targets`__ (names and identifiers must be unique).
+.. [#substitution-limits]
+   A substitution definition may not contain references to `anonymous
+   hyperlinks`_, `auto-numbered`_ or `auto-symbol`_ footnotes and no
+   `hyperlink targets`__ because a substitution may be referenced more
+   than once but names and identifiers must be unique.
 
    __ restructuredtext.html#inline-internal-targets
 
@@ -1768,6 +1771,8 @@ For example::
 
 Inline equivalents of the "raw" directive can be defined via
 `custom interpreted text roles`_ derived from the `"raw" role`_.
+The "raw" directive can also be used directly in a `substitution
+definition`_.
 
 .. _raw options:
 
@@ -1788,8 +1793,8 @@ as well as
 .. _class directive:
 .. _rst-class:
 
-Class
-=====
+Setting Class Attributes
+========================
 
 .. class:: field-indent-13em
 
@@ -1949,6 +1954,7 @@ For example ``"Rot.Gelb&Grün::2008+"`` becomes ``"rot-gelb-grun-2008"`` and
 
 
 .. _role:
+.. _custom role:
 
 Custom Interpreted Text Roles
 =============================
@@ -2342,10 +2348,13 @@ Common Option Value Types
 .. _hyperlink references: restructuredtext.html#hyperlink-references
 .. _hyperlink targets:
 .. _hyperlink target: restructuredtext.html#hyperlink-targets
+.. _line block syntax: restructuredtext.html#line-blocks
 .. _reference name:
 .. _reference names: restructuredtext.html#reference-names
 .. _section title style hierarchy: restructuredtext.html#title-styles
 .. _simple table: restructuredtext.html#simple-tables
+.. _substitution definitions:
+.. _substitution definition: restructuredtext.html#substitution-definitions
 .. _supported length units: restructuredtext.html#length-units
 
 .. _reStructuredText Interpreted Text Roles:

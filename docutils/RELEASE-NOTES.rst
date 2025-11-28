@@ -56,9 +56,6 @@ Document Tree / Docutils DTD
 * The <footnote> element's first child (<label>) will become mandatory
   in Docutils 1.0.
 
-* The "rst" parser will warn if a `"figure"`_ directive is missing both
-  caption and legend in Docutils 1.0.
-
 * Inline `\<target>`_ elements and <target> elements with content will be
   deprecated in Docutils 1.0 and invalid in Docutils 2.0.
   The "rst" parser will use <inline> elements for inline targets
@@ -73,6 +70,15 @@ Document Tree / Docutils DTD
 * The `\<doctest_block>`_ element will be deprecated in Docutils 1.0.
   The rST parser will handle a `doctest block`_ similar to a "code" directive
   with language "pycon" (Python console) and generate a <literal_block>.
+
+Parsers
+-------
+
+* The "rst" parser will warn, if a directive that does not take arguments
+  has content above and below directive options in Docutils 0.23.
+
+* The "rst" parser will warn if a `"figure"`_ directive is missing both
+  caption and legend in Docutils 1.0.
 
 Writers
 -------
@@ -93,6 +99,11 @@ Writers
 
 * "html5" writer:
 
+  - If a section title has several IDs, use the last one (from the first
+    `explicit target`__) as self-link_ in Docutils 0.23.
+
+    __ docs/ref/rst/restructuredtext.html#explicit-hyperlink-targets
+
   - Move attribution behind the blockquote to comply with the
     `"HTML living standard"`__ [#]_ and adapt CSS stylesheets
     in Docutils 1.0.
@@ -107,8 +118,9 @@ Writers
 
 * "latex2e" writer:
 
-  - Only write ``\label`` commands for IDs that are referenced in the
-    current document in Docutils 0.23.
+  - Only write ``\label`` commands for explicit IDs and IDs that are
+    referenced in the current document (i.e. not for un-referenced
+    section titles) in Docutils 0.23.
 
   - Change default of use_latex_citations_ setting to True
     in Docutils 1.0.
@@ -1560,6 +1572,7 @@ Release 0.3.5 (2004-07-29)
 .. _output_path: docs/user/config.html#output-path
 .. _reference_label: docs/user/config.html#reference-label
 .. _root_prefix: docs/user/config.html#root-prefix
+.. _self-link: docs/user/config.html#section-self-link
 .. _SmartQuotes: docs/user/config.html#smart-quotes
 .. _sources: docs/user/config.html#sources
 .. _use_latex_citations: docs/user/config.html#use-latex-citations

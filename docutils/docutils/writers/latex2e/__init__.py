@@ -2600,23 +2600,21 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.depart_inline(node)
         self.out.append('}')
 
-    # Literal blocks are used for '::'-prefixed literal-indented
-    # blocks of text, where the inline markup is not recognized,
-    # but are also the product of the "parsed-literal" directive,
-    # where the markup is respected.
+    # <literal_block> elements are used
+    # for literal blocks (where content is not parsed),
+    # for the "code" directive (where content may be parsed by Pygments), and
+    # for the "parsed-literal" directive (where rST inline markup is parsed).
     #
-    # In both cases, we want to use a typewriter/monospaced typeface.
-    # For "real" literal-blocks, we can use \verbatim, while for all
-    # the others we must use \ttfamily and \raggedright.
+    # In all cases, we want to use a monospaced typeface.
+    # If the <literal_block> contains only text, we can use a "verbatim-like"
+    # environment, for mixed content we must use \ttfamily and \raggedright.
     #
-    # We can distinguish between the two kinds by the number of
-    # siblings that compose this node: if it is composed by a
-    # single element, it's either
-    # * a real one,
-    # * a parsed-literal that does not contain any markup, or
-    # * a parsed-literal containing just one markup construct.
+    # We can distinguish between the use cases looking at the element's
+    # children: if there is a single <Text> child, it is either
+    # * a "real" literal block or
+    # * a parsed-literal that does not contain any markup.
     def is_plaintext(self, node):
-        """Check whether a node can be typeset verbatim"""
+        """Check whether `node` contains only text"""
         return (len(node) == 1) and isinstance(node[0], nodes.Text)
 
     def visit_literal_block(self, node) -> None:

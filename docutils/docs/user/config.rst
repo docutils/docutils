@@ -1521,8 +1521,8 @@ New in Docutils 0.18.
 
 section_self_link
 """""""""""""""""
-Append an empty anchor element with a ``href`` to the section to
-section headings. See ``responsive.css`` for an example how this can be
+Extend section headings with an empty <a> element with a ``href`` to
+the section.  See ``responsive.css`` for an example how this can be
 styled to show a symbol allowing users to copy the section's URL.
 
 :Default: False.
