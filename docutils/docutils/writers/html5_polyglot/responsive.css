@@ -134,12 +134,11 @@ hr {
 
 /* Lists */
 
+ul, ol {
+  padding-left: 2em; /* allow for 2-digit numbers */
+}
 dl.field-list.narrow {
   --field-indent: 2.4em;
-}
-
-ul, ol {
-  padding-left: 1.1em; /* indent by bullet width (Firefox, DejaVu fonts) */
 }
 dl.field-list > dd,
 dl.docinfo > dd {
@@ -204,7 +203,7 @@ figure.numbered > figcaption > p:before {
 
 table tr {
   text-align: left;
-  vertical-align: baseline;
+  vertical-align: top;
 }
 td *:first-child { margin-top: 0; }
 td *:last-child { margin-bottom: 0; }

@@ -24,6 +24,14 @@ Release 0.22.4b1 (unpublished)
     auxiliary elements belonging to several categories (e.g. `nodes.Root`
     and `nodes.BodyElements`) as parents of topics or sidebars.
 
+* docutils/writers/html5_polyglot/responsive.css
+
+  - Increase indentation of enumerated lists to fit 2-digit numerals
+    and of bullet lists to keep them looking similar.
+  - Use "top" instead of "baseline" for the vertical alignment in table
+    rows. ("Baseline" fails if one cell contains certain body elements,
+    e.g. a figure or a table with caption.)
+
 
 Release 0.22.3 (2025-11-06)
 ===========================
