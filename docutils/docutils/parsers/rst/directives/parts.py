@@ -44,8 +44,10 @@ class Contents(Directive):
                    'class': directives.class_option}
 
     def run(self):
-        if isinstance(self.state_machine.node,
-                      BasePseudoSection.invalid_parents):
+        if (not isinstance(self.state_machine.node,
+                           (nodes.Root, nodes.section, nodes.sidebar))
+            and isinstance(self.state_machine.node,
+                           BasePseudoSection.invalid_parents)):
             raise self.error('The "%s" directive may not be used within '
                              'topics or body elements.' % self.name)
         document = self.state_machine.document

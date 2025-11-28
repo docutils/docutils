@@ -17,7 +17,12 @@
 Release 0.22.4b1 (unpublished)
 ==============================
 
-.
+* docutils/parsers/rst/directives/body.py,
+  docutils/parsers/rst/directives/parts.py
+
+  - Test a "whitelist" of categories before the "blacklist" to allow
+    auxiliary elements belonging to several categories (e.g. `nodes.Root`
+    and `nodes.BodyElements`) as parents of topics or sidebars.
 
 
 Release 0.22.3 (2025-11-06)
