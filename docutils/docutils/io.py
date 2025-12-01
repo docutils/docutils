@@ -141,15 +141,13 @@ class Input(TransformSpec):
 
         Provisional: encoding detection will be removed in Docutils 1.0.
         """
-        if self.encoding and self.encoding.lower() == 'unicode':
-            assert isinstance(data, str), ('input encoding is "unicode" '
-                                           'but `data` is no `str` instance')
         if isinstance(data, str):
-            # nothing to decode
-            return data
+            return data  # nothing to decode
         if self.encoding:
             # We believe the user/application when the encoding is
             # explicitly given.
+            assert self.encoding.lower() != 'unicode', (
+                'input encoding is "unicode" but `data` is no `str` instance')
             encoding_candidates = [self.encoding]
         else:
             with warnings.catch_warnings():
@@ -419,15 +417,15 @@ class FileInput(Input):
     ) -> None:
         """
         :Parameters:
-            - `source`: either a file-like object (which is read directly), or
-              `None` (which implies `sys.stdin` if no `source_path` given).
-            - `source_path`: a path to a file, which is opened for reading.
-            - `encoding`: the expected text encoding of the input file.
+            - `source`: either a file-like object (with `read()` and `close()`
+              methods) or None (use source indicated by `source_path`).
+            - `source_path`: a path to a file (which is opened for reading
+              if `source` is None) or `None` (implies `sys.stdin`).
+            - `encoding`: the text encoding of the input file.
             - `error_handler`: the encoding error handler to use.
             - `autoclose`: close automatically after read (except when
-              `sys.stdin` is the source).
-            - `mode`: how the file is to be opened (see standard function
-              `open`). The default is read only ('r').
+              the source is `sys.stdin`).
+            - `mode`: how the file is to be opened. Default is read only ('r').
         """
         super().__init__(source, source_path, encoding, error_handler)
         self.autoclose = autoclose
@@ -467,7 +465,7 @@ class FileInput(Input):
                 # normalize newlines
                 data = '\n'.join(data.splitlines()+[''])
             else:
-                data = self.source.read()
+                data = self.decode(self.source.read())
         finally:
             if self.autoclose:
                 self.close()

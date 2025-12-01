@@ -719,7 +719,7 @@ def publish_programmatically(source_class, source, source_path,
       - `io.FileInput`: Path to the input file, opened if no `source`
         supplied.
 
-      - `io.StringInput`: Optional.  Path to the file or name of the
+      - `io.StringInput`: Optional.  Path to the file or description of the
         object that produced `source`.  Only used for diagnostic output.
 
     * `destination_class` **required**: The class for dynamically created

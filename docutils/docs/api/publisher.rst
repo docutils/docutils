@@ -525,16 +525,16 @@ source : file-like
   A file-like object holding the document source
   (must have `read()` and `close()` methods).
 
-  Default: None (open `source_path <source_path (file I/O)_>`__
-  or use `sys.stdin`).
+  Default: None (open `source_path`__ or use `sys.stdin`).
 
+  __
   .. _source_path (file I/O):
 
 source_path : str | pathlib.Path
   Path to the source file,
   opened if `source <source (file I/O)_>`__ is None.
 
-  Default: None (use `source <source (file I/O)_>`__).
+  Default: None (use `source <source (file I/O)_>`__ or `sys.stdin`).
 
 _`destination` : file-like
   A file-like object that will receive the output document
@@ -548,7 +548,7 @@ _`destination` : file-like
 destination_path : str | pathlib.Path
   Path to the destination file, opened if destination_ is None.
 
-  Default: None (use destination_).
+  Default: None (use destination_ or `sys.stdout`).
 
 
 .. _string input:
@@ -593,6 +593,7 @@ destination_path : str
   Used for determining relative paths (stylesheets, source links, etc.)
 
   Default: None.
+
 
 Component Specification
 -----------------------
