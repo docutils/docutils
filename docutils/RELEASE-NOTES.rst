@@ -71,11 +71,24 @@ Document Tree / Docutils DTD
   The rST parser will handle a `doctest block`_ similar to a "code" directive
   with language "pycon" (Python console) and generate a <literal_block>.
 
+* The `Transitions` transform will ignore <pending>,
+  <substitution_definition>, and <target> elements when warning about
+  transitions at the start or end of the document or a section.
+
 Parsers
 -------
 
 * The "rst" parser will warn, if a directive that does not take arguments
   has content above and below directive options in Docutils 0.23.
+
+* The highlight language of a custom role based on "code" will default to
+  its name in Docutils 0.23.
+
+* Problems with the "include" directive will be reported as ERROR instead
+  of SEVERE in Docutils 1.0.
+
+* The options :start-after: and :end-before: of the "include" directive
+  will support empty values (standing for an empty line).
 
 * The "rst" parser will warn if a `"figure"`_ directive is missing both
   caption and legend in Docutils 1.0.
@@ -104,13 +117,19 @@ Writers
 
     __ docs/ref/rst/restructuredtext.html#explicit-hyperlink-targets
 
+  - Prefer explicit reference names as base for an HTML element's ID
+    in Docutils 1.0. No change for internal cross-references.
+    Cf. `Sphinx issue #1961`__
+
+    __ https://github.com/sphinx-doc/sphinx/issues/1961
+
   - Move attribution behind the blockquote to comply with the
     `"HTML living standard"`__ [#]_ and adapt CSS stylesheets
     in Docutils 1.0.
 
     __ https://html.spec.whatwg.org/#the-blockquote-element
 
-  - Change the default value of the initial_header_level_ setting to None
+  - Change the default value of the initial_header_level_ setting to "auto"
     (<h2> if there is a document title, else <h1>) in Docutils 1.0.
 
   - Remove option ``--embed-images`` (obsoleted by "image_loading_")
@@ -241,12 +260,6 @@ Removals
 
 Misc
 ----
-
-* Prefer explicit reference names as base for an HTML element's ID
-  in Docutils 1.0. No change for internal cross-references.
-  Cf. `Sphinx issue #1961`__
-
-  __ https://github.com/sphinx-doc/sphinx/issues/1961
 
 * Revise the `String I/O`__ interface used by the `publish_string()`
   and `publish_from_doctree()` publisher convenience functions.
