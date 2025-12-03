@@ -85,7 +85,7 @@ class Writer(writers.Writer):
           'Does not affect document title & subtitle (see --no-doc-title).'
           '(default: writer dependent).',
           ['--initial-header-level'],
-          {'choices': '1 2 3 4 5 6'.split(), 'default': '2',
+          {'choices': '1 2 3 4 5 6 auto'.split(), 'default': '2',
            'metavar': '<level>'}),
          ('Format for footnote references: one of "superscript" or '
           '"brackets". (default: "brackets")',
@@ -295,7 +295,14 @@ class HTMLTranslator(writers.DoctreeTranslator):
         settings = self.settings
         self.language = languages.get_language(
                             settings.language_code, document.reporter)
-        self.initial_header_level = int(settings.initial_header_level)
+        if settings.initial_header_level == 'auto':
+            if len(document) and document[0].next_node(
+                    nodes.title, include_self=True, descend=False):
+                self.initial_header_level = 2
+            else:
+                self.initial_header_level = 1
+        else:
+            self.initial_header_level = int(settings.initial_header_level)
         # image_loading (only defined for HTML5 writer)
         _image_loading_default = 'link'
         # convert legacy setting embed_images:

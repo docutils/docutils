@@ -17,12 +17,21 @@
 Release 0.22.4b1 (unpublished)
 ==============================
 
+* docutils/io.py
+
+  - Ensure `FileInput.read()` returns a `str` (decode if `source.read`
+    returns `bytes`. Fixes bug #514.
+
 * docutils/parsers/rst/directives/body.py,
   docutils/parsers/rst/directives/parts.py
 
   - Test a "whitelist" of categories before the "blacklist" to allow
     auxiliary elements belonging to several categories (e.g. `nodes.Root`
     and `nodes.BodyElements`) as parents of topics or sidebars.
+
+* docutils/writers/html/*
+
+  - New value "auto" for `initial_header_level`_ configuration setting.
 
 * docutils/writers/html5_polyglot/responsive.css
 

@@ -68,7 +68,7 @@ class Writer(writers._html_base.Writer):
             'Specify the initial header level. Does not affect document '
             'title & subtitle (see --no-doc-title). (default: 1 for "<h1>")',
             ['--initial-header-level'],
-            {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
+            {'choices': '1 2 3 4 5 6 auto'.split(), 'default': '1',
              'metavar': '<level>'}),
         math_output=(
             'Math output format (one of "MathML", "HTML", "MathJax", or '

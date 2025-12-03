@@ -73,7 +73,7 @@ class Writer(_html_base.Writer):
             'Specify the initial header level. Does not affect document '
             'title & subtitle (see --no-doc-title). (default: 2 for "<h2>")',
             ['--initial-header-level'],
-            {'choices': '1 2 3 4 5 6'.split(), 'default': '2',
+            {'choices': '1 2 3 4 5 6 auto'.split(), 'default': '2',
              'metavar': '<level>'}),
         no_xml_declaration=(
             'Omit the XML declaration (default).',

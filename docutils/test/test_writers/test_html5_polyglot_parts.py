@@ -119,7 +119,8 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
 
 totest = {}
 
-totest['standard'] = ({}, [
+totest['standard'] = ({'initial_header_level': 'auto'  # becomes standard in 1.0
+                       }, [
     ['',  # empty input string
      {}   # results in default parts
      ],
@@ -231,7 +232,8 @@ Some stuff
      }],
     ])
 
-totest['no_title_promotion'] = ({'doctitle_xform': False}, [
+totest['no_title_promotion'] = ({'doctitle_xform': False,
+                                 'initial_header_level': 'auto'}, [
     ["""\
 +++++
 Title
@@ -254,15 +256,15 @@ And even more stuff
 """,
      {'fragment': """\
 <section id="title">
-<h2>Title<a class="self-link" title="link to this section" href="#title"></a></h2>
+<h1>Title<a class="self-link" title="link to this section" href="#title"></a></h1>
 <section id="not-a-subtitle">
-<h3>Not A Subtitle<a class="self-link" title="link to this section" href="#not-a-subtitle"></a></h3>
+<h2>Not A Subtitle<a class="self-link" title="link to this section" href="#not-a-subtitle"></a></h2>
 <p>Some stuff</p>
 <section id="section">
-<h4>Section<a class="self-link" title="link to this section" href="#section"></a></h4>
+<h3>Section<a class="self-link" title="link to this section" href="#section"></a></h3>
 <p>Some more stuff</p>
 <section id="another-section">
-<h5>Another Section<a class="self-link" title="link to this section" href="#another-section"></a></h5>
+<h4>Another Section<a class="self-link" title="link to this section" href="#another-section"></a></h4>
 <p>And even more stuff</p>
 </section>
 </section>
