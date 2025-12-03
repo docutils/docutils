@@ -1195,13 +1195,23 @@ if the parser supports this option. [#override]_
 
 initial_header_level
 ~~~~~~~~~~~~~~~~~~~~
-The initial level for section header elements.  This does not affect the
-document title & subtitle; see doctitle_xform_.
+The level of the first *section* heading element
+(the `document title`_ always uses <h1>).
+Supported values:
+
+:1, ..., 6: <h1>, ..., <h6>,
+:auto: <h2> if there is a `document title`_, else <h1>. [#auto-header-level]_
+
+See also `doctitle_xform`_.
 
 :Default: writer dependent
           (see `[html4css1 writer]`_, `[html5 writer]`_, `[pep_html writer]`_).
 :Option:  ``--initial-header-level``.
 
+.. [#auto-header-level] Ensures the HTML document has a valid outline__
+   in documents with/without a document title.
+   New in Docutils 0.22.3.
+__ https://html.spec.whatwg.org/multipage/sections.html#outline
 
 math_output
 ~~~~~~~~~~~
@@ -1489,13 +1499,7 @@ Writer Specific Defaults
   "minimal.css, plain.css".
 :`xml_declaration <xml_declaration [html writers]_>`__:  False.
 
-.. [#] Documents without (visible) document title may have <h2> as highest
-   heading level, which is not recommended but valid (cf. "`Headings and
-   outlines`__" in the HTML Standard). The default will change to None
-   (<h2> if there is a document title, else <h1>) in Docutils 1.0.
-
-__ https://html.spec.whatwg.org/multipage/sections.html
-   #headings-and-outlines-2
+.. [#] The default will change to "auto" in Docutils 1.0.
 
 image_loading
 """""""""""""
