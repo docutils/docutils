@@ -179,7 +179,10 @@ Here are examples of `body elements`_:
   - Footnotes_::
 
         .. [1] A footnote contains body elements, consistently
-           indented by at least 3 spaces.
+         indented by at least 1 space.
+
+            The least indented line sets the reference
+            indentation, so this is a nested block quote.
 
   - Citations_::
 
@@ -249,7 +252,19 @@ line of a document is treated as if it is followed by a blank line.
 Indentation
 -----------
 
-Indentation is used to indicate -- and is only significant in
+When a paragraph or other construct consists of more than one line of
+text, the lines must be left-aligned::
+
+    This is a paragraph.  The lines of
+    this paragraph are aligned at the left.
+
+        This paragraph has problems.  The
+    lines are not left-aligned.  In addition
+      to potential misinterpretation, warning
+        and/or error messages will be generated
+      by the parser.
+
+*Indentation* is used to indicate -- and is only significant in
 indicating -- block quotes, definitions (in `definition lists`_),
 and local nested content:
 
@@ -272,8 +287,11 @@ consistent.  For example, indentation is the sole markup indicator for
 
         Paragraph 2 of the first-level block quote.
 
-Multiple levels of indentation within a block quote will result in
-more complex structures::
+.. _reference indentation:
+
+Multiple levels of indentation within a block will result in more
+complex structures.  The least indented line of a block sets the
+*reference indentation*::
 
     This is a top-level paragraph.
 
@@ -285,21 +303,14 @@ more complex structures::
 
             This paragraph belongs to a second-level block quote.
 
-        This paragraph belongs to a first-level block quote.  The
-        second-level block quote above is inside this first-level
-        block quote.
+        This paragraph belongs to a first-level block quote.
+        The second-level block quote above is inside this
+        first-level block quote.
 
-When a paragraph or other construct consists of more than one line of
-text, the lines must be left-aligned::
+    Every block has its own reference indentation::
 
-    This is a paragraph.  The lines of
-    this paragraph are aligned at the left.
-
-        This paragraph has problems.  The
-    lines are not left-aligned.  In addition
-      to potential misinterpretation, warning
-        and/or error messages will be generated
-      by the parser.
+            This paragraph belongs to a first-level block quote
+            because there is no less indented line in the block.
 
 Several constructs begin with a marker, and the body of the construct
 must be indented relative to the marker.  For constructs using simple
@@ -320,18 +331,32 @@ line of text. For example::
      this paragraph does not belong to the list
      item (it's a block quote following the list).
 
+The first line of text may start below the marker::
+
+    1.
+     This is the first line of an enumeration
+     item's paragraph.
+
+      This indented paragraph is interpreted
+      as a block quote.
+
+     This paragraph still belongs to the list
+     item
+
+    This paragraph ends the list.
+
 The body of `explicit markup blocks`_, `field lists`_, and `option
 lists`_ ends above the first line with the same or less indentation
 than the marker.  For example, field lists may have very long markers
 (containing the field names)::
 
-    :Hello: This field has a short field name, so aligning the field
-            body with the first line is feasible.
-
-    :Number-of-African-swallows-required-to-carry-a-coconut: It would
-        be very difficult to align the field body with the left edge
-        of the first line.  It may even be preferable not to begin the
-        body on the same line as the marker.
+    :Hello: This field has a short field name, so aligning
+            the field body with the first line is feasible.
+    :Long field name: It would be inconvenient to align the
+        field body with the left edge of the first line.
+    :Number of African swallows required to carry a coconut:
+        Sometimes, it is preferable to begin the body
+        on the next line.
 
 
 .. _escape:
