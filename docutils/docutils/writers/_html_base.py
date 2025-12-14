@@ -637,6 +637,9 @@ class HTMLTranslator(writers.DoctreeTranslator):
             return
         child['classes'].append(class_)
 
+    # Visitor methods
+    # ---------------
+
     def visit_Text(self, node) -> None:
         text = node.astext()
         encoded = self.encode(text)

@@ -75,6 +75,11 @@ Document Tree / Docutils DTD
   <substitution_definition>, and <target> elements when warning about
   transitions at the start or end of the document or a section.
 
+* In case of name conflicts, an explicit target will not only override
+  the "name" attribute of an implicit target but also its name-based "id".
+  Use case: "sane" anchors for links from an external source to a fragment
+  of the document.  Cf. https://github.com/sphinx-doc/sphinx/issues/1961
+
 Parsers
 -------
 
@@ -291,7 +296,8 @@ Misc
 Release 0.22.4b1 (unpublished)
 ==============================
 
-.
+HTML writers:
+  - New value "auto" for the initial_header_level_ setting.
 
 
 Release 0.22.3 (2025-11-06)

@@ -1995,14 +1995,14 @@ class document(Root, Element):
     # "note" here is an imperative verb: "take note of".
     def note_implicit_target(
             self, target: Element, msgnode: Element | None = None) -> None:
-        # TODO: Postpone ID creation.  Register reference name instead of ID
-        # to allow for IDs based on explicit target pointing to the same
-        # element.  https://github.com/sphinx-doc/sphinx/issues/1961
+        # TODO: Postpone ID creation and register reference name instead of ID?
         id = self.set_id(target, msgnode)
         self.set_name_id_map(target, id, msgnode, explicit=False)
 
     def note_explicit_target(
             self, target: Element, msgnode: Element | None = None) -> None:
+        # TODO: if the id matching the name is applied to an implicid target,
+        # transfer it to this target and put a "disambiguated" id on the other.
         id = self.set_id(target, msgnode)
         self.set_name_id_map(target, id, msgnode, explicit=True)
 

@@ -42,26 +42,26 @@ Docutils does not do any checks before writing to a file:
 * Files may be **written to any location** accessible to the process.
 * There are **no restrictions to** the **file names**.
 
-Special care must be taken when allowing users to configure the *output
-destination* or the `warning_stream`_, `record_dependencies`_, or
-`_destination`_ settings.
+Special care must be taken when allowing users to configure the `output`_
+(or `_destination`_), `warning_stream`_, or `record_dependencies`_ settings.
 
+.. _output: ../user/config.html#output
+.. _`_destination`: ../user/config.html#destination
 .. _warning_stream: ../user/config.html#warning-stream
 .. _record_dependencies: ../user/config.html#record-dependencies
-.. _`_destination`: ../user/config.html#destination
 
 
 External Data Insertion
 -----------------------
 
-There are several `reStructuredText directives`_ that can insert
-external data (files and URLs) into the output document.  These
-directives are:
+There are several `reStructuredText directives`_ that can insert external
+data (files or content fetched from a URL) into the output document.
+These directives are:
 
 * "include_", by its very nature,
 * "raw_", through its ``:file:`` and ``:url:`` options,
 * "csv-table_", through its ``:file:`` and ``:url:`` options,
-* "image_", if `embed_images`_ is true.
+* "image_" through its ``:loading:`` option.
 
 The "include_" directive and the other directives' file insertion
 features can be disabled by setting "file_insertion_enabled_" to
@@ -70,7 +70,7 @@ features can be disabled by setting "file_insertion_enabled_" to
 __ ../user/config.html#configuration-file-syntax
 .. _reStructuredText directives: ../ref/rst/directives.html
 .. _include: ../ref/rst/directives.html#include
-.. _raw: ../ref/rst/directives.html#raw-directive
+.. _raw: ../ref/rst/directives.html#raw
 .. _csv-table: ../ref/rst/directives.html#csv-table
 .. _image: ../ref/rst/directives.html#image
 .. _embed_images: ../user/config.html#embed-images
@@ -80,14 +80,18 @@ __ ../user/config.html#configuration-file-syntax
 Raw HTML Insertion
 ------------------
 
-The "raw_" directive is intended for the insertion of
-non-reStructuredText data that is passed untouched to the Writer.
-This directive can be abused to bypass site features or insert
-malicious JavaScript code into a web page.  The "raw_" directive can
-be disabled by setting "raw_enabled_" to "false".
+Content of the "raw_" directive is passed untouched to the Writer.
+Docutils standard writers insert "raw" content with matching
+format_ into the output document without any checks or changes.
+This can be abused to bypass site features or insert malicious
+script code into a web page.
+
+A web-secure Writer must ignore or sanitize "raw" content.
+Alternatively, the "raw" directive can be disabled by setting
+"raw_enabled_" to "false".
 
 .. _raw_enabled: ../user/config.html#raw-enabled
-
+.. _format: ../ref/doctree.html#format
 
 CPU and memory utilization
 --------------------------

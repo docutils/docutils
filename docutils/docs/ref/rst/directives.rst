@@ -1627,11 +1627,14 @@ point of the directive. For example::
 If an included document fragment contains section structure, the title
 adornments must match those of the master document.
 
-Standard data files intended for inclusion in reStructuredText
-documents are distributed with the Docutils source code, located in
+.. _include Standard Definition files:
+
+`reStructuredText Standard Definition Files`_
+intended for inclusion in reStructuredText documents
+are distributed with the Docutils source code, located in
 the "docutils" package in the ``docutils/parsers/rst/include``
-directory.  To access these files, use the special syntax for standard
-"include" data files, angle brackets around the file name::
+directory.  To access these files, use the *special syntax for standard
+definition files*: angle brackets around the file name, e.g. ::
 
     .. include:: <isonum.txt>
 
