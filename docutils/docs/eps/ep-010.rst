@@ -29,7 +29,7 @@ documentation, readthedocs, ...). OTOH, Docutils has a version number
 below 1.0 (widely seen as an indicator of "beta" status of a project).
 
 The current `Docutils Project Policies`_ section on `version
-identifcation`_ concentrates on the formal definition of the version
+identification`_ concentrates on the formal definition of the version
 specifier but leaves open what consists a "major change in the design
 or API".
 
@@ -70,7 +70,7 @@ Developers
   - re-implementations of the `reStructuredText specification`_,
     e.g. Pandoc_ or Text-Restructured_ (prest).
 
-A person may belong to more than one of these catgories.
+A person may belong to more than one of these categories.
 
 .. _Sphinx: https://www.sphinx-doc.org/
 .. _rsted: https://github.com/anru/rsted
@@ -117,7 +117,7 @@ Docutils public APIs are:
   .. html4css1.css, minimal.css, docutils.sty (LaTeX), styles.odt
 
 * the interface to custom stylesheets -- elements, macros and classes
-  used by writers to represent doctree_ nodes in the output format.
+  used by writers to represent Doctree_ nodes in the output format.
 
 Exemptions:
   Python objects, stylesheets and templates can explicitly "opt-out" of
@@ -246,12 +246,12 @@ Open Issues
   * Use "private" or "internal"?
 
 * Declare only objects included in the ``__all__`` attribute of their
-  parent objects as public rsp. explicitely list all public objects in
+  parent objects as public resp. explicitly list all public objects in
   ``__all__`` attribute of their parents?
 
   This would hide private objects from `pydoc` help on the parent objects.
 
-* Define a minimum deprecation time similar to Docbook__? E.g.
+* Define a minimum deprecation time similar to DocBook__? E.g.
 
     * A "major" release may contain backward-incompatible changes if:
 
@@ -281,7 +281,7 @@ References
 .. _Docutils Design Specification: ../peps/pep-0258.html
 .. _Docutils Project Policies: ../dev/policies.html
 .. _version specifier:
-.. _version identifcation:
+.. _version identification:
     ../dev/policies.html#version-identification
 .. _backwards compatibility policy:
     ../dev/policies.html#backwards-compatibility-policy

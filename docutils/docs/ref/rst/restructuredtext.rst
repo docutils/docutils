@@ -3004,7 +3004,8 @@ For example::
     Please RTFM [1]_. [#]_
 
     .. [1] Read The Fine Manual
-    .. [#] See "footnotes_" for the format of the *footnote label*.
+    .. [#] Life is too short for man pages,
+       and occasionally much too short without them.
 
 `Inline markup recognition rules`_ may require whitespace in front of the
 footnote reference. To remove the whitespace from the output, use an
