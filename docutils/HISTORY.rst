@@ -32,6 +32,8 @@ Release 0.22.4b1 (unpublished)
 * docutils/writers/html/*
 
   - New value "auto" for `initial_header_level`_ configuration setting.
+    Produces a HTML document with valid "outline" for documents
+    with document title as well as documents without document title.
 
 * docutils/writers/html5_polyglot/responsive.css
 

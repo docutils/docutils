@@ -87,13 +87,13 @@ Parsers
   has content above and below directive options in Docutils 0.23.
 
 * The highlight language of a custom role based on "code" will default to
-  its name in Docutils 0.23.
+  the role's name in Docutils 0.23.
 
 * Problems with the "include" directive will be reported as ERROR instead
-  of SEVERE in Docutils 1.0.
+  of SEVERE in Docutils 0.23.
 
 * The options :start-after: and :end-before: of the "include" directive
-  will support empty values (standing for an empty line).
+  will support empty values (standing for an empty line) in Docutils 0.23.
 
 * The "rst" parser will warn if a `"figure"`_ directive is missing both
   caption and legend in Docutils 1.0.
@@ -121,6 +121,9 @@ Writers
     `explicit target`__) as self-link_ in Docutils 0.23.
 
     __ docs/ref/rst/restructuredtext.html#explicit-hyperlink-targets
+
+  - The default of the self-link_ configuration setting will change to
+    "True" in Docutils 1.0.
 
   - Prefer explicit reference names as base for an HTML element's ID
     in Docutils 1.0. No change for internal cross-references.
@@ -152,13 +155,13 @@ Writers
   - Change default of legacy_column_widths_ setting to False
     in Docutils 1.0.
 
-  - Remove ``use_verbatim_when_possible`` setting
-    (use literal_block_env_: verbatim) in Docutils 2.0.
-
   - The `default length unit`__ will change from "bp" (DTP point)
     to "px" (pixel unit) in Docutils 1.0.
 
     __ docs/user/latex.html#length-units
+
+  - Remove ``use_verbatim_when_possible`` setting
+    (use literal_block_env_: verbatim) in Docutils 2.0.
 
 * "manpage" writer:
 
@@ -296,8 +299,15 @@ Misc
 Release 0.22.4b1 (unpublished)
 ==============================
 
+reStructuredText Specification:
+  - Clarify indentation rules: minimal indentation is *one* space.
+  - Clarify comment syntax: Comments begin with two dots and *whitespace*.
+
 HTML writers:
   - New value "auto" for the initial_header_level_ setting.
+  - Bugfixes in the provisional style-sheet "responsive.css".
+
+See HISTORY_ for details.
 
 
 Release 0.22.3 (2025-11-06)
