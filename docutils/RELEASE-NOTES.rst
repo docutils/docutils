@@ -296,8 +296,8 @@ Misc
    __ https://packages.debian.org/source/trixie/python-docutils
 
 
-Release 0.22.4b1 (unpublished)
-==============================
+Release 0.22.4 (2025-12-18)
+===========================
 
 reStructuredText Specification:
   - Clarify indentation rules: minimal indentation is *one* space.
