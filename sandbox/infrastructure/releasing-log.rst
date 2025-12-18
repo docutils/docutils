@@ -10,6 +10,82 @@
 Notes on what happend while releasing.
 
 
+Release 0.22.4 (2025-12-18)
+===========================
+
+Quick tiny release for two important bugfixes.
+
+* checkout current code
+* run: tox -epy313
+* set_version 0.22.4
+* run: tox -epy311
+* fix the version_info release=True, releaselevel=final, serial=0
+* run: tox -epy39
+* Check README, HISTORY and RELEASE-NOTES titles.
+* check: svn di
+* svn commit 
+* check for swap files: ``find . -name \*.sw\*``
+* build wheel and tgz
+* test tgz and wheel locally
+* update code in working directory
+* tag #.# (Note: only directory docutils is copied)::
+
+    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.22.4 \
+             -m "tagging release 0.22.4"
+
+* check on sourceforge: https://sourceforge.net/p/docutils/code/HEAD/tree/tags/
+* update code in build directory
+* update code in working directory
+* upload to pypi
+* remove wheels from cache::
+
+    find .cache/pip/wheels -name docutils\*whl
+
+* test wheel from pypi, ignore missing HISTORY.rst
+* test src.tgz from pypi, ignore missing HISTORY::
+
+    pip install --no-binary docutils docutils
+
+* remove wheels from cache
+* update code in working directory
+* run tox : pass 39, 310, 311, 313, 314
+* upload source and generated html to sf-htdocs/#.# ::
+
+    mkdir tmp1
+    cd tmp1
+    tar xzvf ../dist/docutils-0.22.4.tar.gz
+    cd docutils-0.22.4/
+    python3 tools/buildhtml.py .
+    find . -name \*.pyc -exec rm -v {} \;
+    find . -name __pycache__ -exec rmdir -v {} \;
+    rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/0.22.4
+
+* Check https://docutils.sourceforge.io/0.22.4/
+* Check web/index.rst for necessary corrections.
+
+* Release to sourceforge.
+
+  - Upload docutils-0.22.4.tar.gz and release notes to sourceforge.
+  - Upload RELEASE_NOTES.rst as README.rst.
+  - Select docutils-0.22.4.tar.gz as default for all OS.
+
+* update working directory
+* set_version 0.22.5b1.dev
+* tox -ep312
+* tox -epy39 310 312 313 pass
+* tox-epy311 fails : somewhere is 0.22.4
+
+* docutils/HISTORY.rst: add title "Release 0.22.5b1.dev (unpublished)"
+* docutils/RELEASE-NOTES.rst: add title "Release 0.22.5b1.dev (unpublished)"
+* Check README, HISTORY and RELEASE-NOTES titles.
+* svn di
+* commit
+* now tox -epy311 passes
+* run: sandbox/infrastructure/docutils-update.local
+* send notification emails
+
+
 Release 0.22.3 (2025-11-06)
 ===========================
 
