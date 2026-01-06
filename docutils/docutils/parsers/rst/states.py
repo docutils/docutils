@@ -1911,6 +1911,8 @@ class Body(RSTState):
     def build_table(self, tabledata, tableline, stub_columns=0, widths=None):
         colwidths, headrows, bodyrows = tabledata
         table = nodes.table()
+        (table.source,
+         table.line) = self.state_machine.get_source_and_line(tableline)
         if widths == 'auto':
             table['classes'] += ['colwidths-auto']
         elif widths:  # "grid" or list of integers

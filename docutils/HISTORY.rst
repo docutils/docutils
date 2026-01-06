@@ -17,7 +17,14 @@
 Release 0.22.5b1.dev (unpublished)
 ==================================
 
-.
+* docutils/parsers/rst/directives/body.py
+
+  - Add source and line info to <rubric> elements.
+
+* docutils/parsers/rst/directives/tables.py,
+  docutils/parsers/rst/states.py
+
+  - Add source and line info to <table> elements.
 
 
 Release 0.22.4 (2025-12-18)

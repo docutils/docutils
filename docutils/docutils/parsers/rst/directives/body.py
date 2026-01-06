@@ -250,6 +250,8 @@ class Rubric(Directive):
         rubric_text = self.arguments[0]
         textnodes, messages = self.state.inline_text(rubric_text, self.lineno)
         rubric = nodes.rubric(rubric_text, '', *textnodes, **options)
+        (rubric.source,
+         rubric.line) = self.state_machine.get_source_and_line(self.lineno)
         self.add_name(rubric)
         return [rubric] + messages
 

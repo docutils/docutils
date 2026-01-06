@@ -296,7 +296,7 @@ Paragraph
 
          container content at line 23
 
-Final paragraph at line 25
+.. rubric:: at line 25
 """,
 """\
 <document source="test data">
@@ -329,8 +329,101 @@ Final paragraph at line 25
         <container internal:line="21" internal:source="test data">
             <paragraph internal:line="23" internal:source="test data">
                 container content at line 23
-    <paragraph internal:line="25" internal:source="test data">
-        Final paragraph at line 25
+    <rubric internal:line="25" internal:source="test data">
+        at line 25
+"""],
+["""\
+==== ===
+line  2
+==== ===
+
+.. table:: test table
+
+  +--------+
+  | line 8 |
+  +--------+
+  | line 10|
+  +--------+
+""",
+"""\
+<document source="test data">
+    <table internal:line="1" internal:source="test data">
+        <tgroup cols="2">
+            <colspec colwidth="4">
+            <colspec colwidth="3">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph internal:line="2" internal:source="test data">
+                            line
+                    <entry>
+                        <paragraph internal:line="2" internal:source="test data">
+                            2
+    <table internal:line="5" internal:source="test data">
+        <title internal:line="5" internal:source="test data">
+            test table
+        <tgroup cols="1">
+            <colspec colwidth="8">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph internal:line="8" internal:source="test data">
+                            line 8
+                <row>
+                    <entry>
+                        <paragraph internal:line="10" internal:source="test data">
+                            line 10
+"""],
+["""\
+.. list-table:: list table
+
+  * - line 3
+""",
+"""\
+<document source="test data">
+    <table internal:line="1" internal:source="test data">
+        <title internal:line="1" internal:source="test data">
+            list table
+        <tgroup cols="1">
+            <colspec colwidth="100">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph internal:line="3" internal:source="test data">
+                            line 3
+"""],
+["""\
+.. csv-table:: csv table
+
+  line, 3
+  ".. tip::
+            5", 5
+""",
+# TODO: in CSV tables, every cell starts with line-number 1!
+"""\
+<document source="test data">
+    <table internal:line="1" internal:source="test data">
+        <title internal:line="1" internal:source="test data">
+            csv table
+        <tgroup cols="2">
+            <colspec colwidth="50">
+            <colspec colwidth="50">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph internal:line="1" internal:source="test data">
+                            line
+                    <entry>
+                        <paragraph internal:line="1" internal:source="test data">
+                            3
+                <row>
+                    <entry>
+                        <tip internal:line="1" internal:source="test data">
+                            <paragraph internal:line="2" internal:source="test data">
+                                5
+                    <entry>
+                        <paragraph internal:line="1" internal:source="test data">
+                            5
 """],
 ])
 

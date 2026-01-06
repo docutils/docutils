@@ -150,6 +150,9 @@ class RSTTable(Table):
         table_node = node[0]
         table_node['classes'] += self.options.get('class', [])
         self.set_table_width(table_node)
+        # update line-nr to point to the start of the directive
+        table_node.line = self.state_machine.get_source_and_line(
+                                                            self.lineno)[1]
         if 'align' in self.options:
             table_node['align'] = self.options.get('align')
         if isinstance(self.widths, list):
@@ -316,6 +319,8 @@ class CSVTable(Table):
         self.add_name(table_node)
         if title:
             table_node.insert(0, title)
+        (table_node.source,
+         table_node.line) = self.state_machine.get_source_and_line(self.lineno)
         return [table_node] + messages
 
     def get_csv_data(self):
@@ -491,6 +496,8 @@ class ListTable(Table):
     def build_table_from_list(self, table_data,
                               col_widths, header_rows, stub_columns):
         table = nodes.table()
+        (table.source,
+         table.line) = self.state_machine.get_source_and_line(self.lineno)
         if self.widths == 'auto':
             table['classes'] += ['colwidths-auto']
         elif self.widths:  # explicitly set column widths
