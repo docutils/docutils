@@ -7,12 +7,14 @@
 \DeclareUnicodeCharacter{2663}{\ensuremath{\clubsuit}}
 \usepackage{alltt}
 \usepackage{amsmath}
+\usepackage{color}
 \usepackage{float} % extended float configuration
 \floatplacement{figure}{H} % place figures here definitely
 \usepackage{graphicx}
 \usepackage{multirow}
 \usepackage{pifont}
 \setcounter{secnumdepth}{0}
+\usepackage{soul}
 \usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables
@@ -64,6 +66,39 @@
      \end{center}
     }
 \fi
+
+% custom inline roles: \DUrole{#1}{#2} tries \DUrole#1{#2}
+\providecommand*{\DUrole}[2]{%
+  \ifcsname DUrole#1\endcsname%
+    \csname DUrole#1\endcsname{#2}%
+  \else%
+    #2%
+  \fi%
+}
+
+\providecommand{\DUroleb}{\textbf}
+
+\providecommand{\DUroledel}{\st}
+
+\providecommand{\DUroledfn}{\emph}
+
+\providecommand{\DUrolei}{\textit}
+
+\providecommand{\DUroleins}{\ul}
+
+\providecommand{\DUrolekbd}{\texttt}
+
+\providecommand{\DUrolemark}{\hl}
+
+\providecommand{\DUroleq}[1]{“#1”}
+
+\providecommand{\DUroles}{\st}
+
+\providecommand{\DUrolesmall}[1]{{\footnotesize #1}}
+
+\providecommand{\DUroleu}{\ul}
+
+\providecommand{\DUrolevar}{\textit}
 
 % legend environment (in figures and formal tables)
 \ifdefined\DUlegend
@@ -288,6 +323,152 @@ Image with 20\% width:
 Image with 100\% width:
 
 \includegraphics[width=1\linewidth]{../../../docs/user/rst/images/title.png}
+
+
+\section{Additional text roles}
+
+Including the \textquotedbl{}html-roles.txt\textquotedbl{} standard definition file adds
+roles matching semantic HTML inline markup elements.
+
+% Standard definition file for additional roles matching HTML tags.
+% 
+% :Copyright: © 2025 Günter Milde.
+% :License: Released under the terms of the
+%   `2-Clause BSD license <http://www.spdx.org/licenses/BSD-2-Clause>`__
+
+\setlength{\DUtablewidth}{\dimexpr\linewidth-4\arrayrulewidth\relax}%
+\begin{longtable*}{|p{\DUcolumnwidth{0.102}}|p{\DUcolumnwidth{0.271}}|p{\DUcolumnwidth{0.627}}|}
+\hline
+\textbf{%
+Role
+} & \textbf{%
+Example
+} & \textbf{%
+Notes
+} \\
+\hline
+\endfirsthead
+\hline
+\textbf{%
+Role
+} & \textbf{%
+Example
+} & \textbf{%
+Notes
+} \\
+\hline
+\endhead
+\multicolumn{3}{p{\DUcolumnwidth{1.000}}}{\raggedleft\ldots continued on next page}\\
+\endfoot
+\endlastfoot
+
+del
+ & 
+\DUrole{del}{removed}
+ & 
+removed content
+ \\
+\hline
+
+ins
+ & 
+\DUrole{ins}{inserted}
+ & 
+editional additions
+ \\
+\hline
+
+b
+ & 
+\DUrole{b}{keyword}
+ & 
+highlight \DUrole{b}{key words}
+without marking them up as important
+ \\
+\hline
+
+dfn
+ & 
+\DUrole{dfn}{dfn}
+ & 
+the defining instance of a term
+ \\
+\hline
+
+i
+ & 
+\DUrole{i}{rôle}
+ & 
+\DUrole{i}{voix alternative}
+ \\
+\hline
+
+kbd
+ & 
+\texttt{\DUrole{kbd}{Ctrl X}}
+ & 
+user input
+ \\
+\hline
+
+mark
+ & 
+\DUrole{mark}{up}
+ & 
+highlight a \DUrole{mark}{run of text}
+ \\
+\hline
+
+q
+ & 
+\DUrole{q}{Tagline!}
+ & 
+content quoted from another source
+ \\
+\hline
+
+s
+ & 
+\DUrole{s}{strike}
+ & 
+text that is inaccurate or
+no longer relevant
+ \\
+\hline
+
+samp
+ & 
+\texttt{\DUrole{samp}{Ready!}}
+ & 
+computer output
+ \\
+\hline
+
+small
+ & 
+\DUrole{small}{print}
+ & 
+side comments
+ \\
+\hline
+
+u
+ & 
+\DUrole{u}{anotation}
+ & 
+unarticulated annotations of, e.g,
+\DUrole{u}{comon mispellings}
+ \\
+\hline
+
+var
+ & 
+\DUrole{var}{n}
+ & 
+variables (or constants)
+ \\
+\hline
+\end{longtable*}
 
 
 \section{Tables}

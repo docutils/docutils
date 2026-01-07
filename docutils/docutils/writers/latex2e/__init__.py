@@ -621,7 +621,7 @@ with open(LATEX_WRITER_DIR/'docutils.sty', encoding='utf-8') as fp:
         block_name = line.rstrip(':')
         if not block_name:
             continue
-        definitions = _read_block(fp)
+        definitions = _read_block(fp)  # all lines up to the next empty one
         if block_name in ('color', 'float', 'table', 'textcomp'):
             definitions = definitions.strip()
         # print('Block: `%s`'% block_name)
@@ -1365,7 +1365,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             else:
                 # require a minimal version:
                 self.fallbacks['_docutils.sty'] = (
-                    r'\usepackage{docutils}[2025-08-06]')
+                    r'\usepackage{docutils}[2025-12-10]')
 
         self.stylesheet = [self.stylesheet_call(path)
                            for path in stylesheet_list]
@@ -2556,6 +2556,12 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                     self.out.append(r'\foreignlanguage{%s}{' % language)
             else:
                 self.provide_fallback('inline')
+                if hasattr(PreambleCmds, f'inline role {cls}'):
+                    self.provide_fallback(f'inline role {cls}')
+                if cls in ('del', 'ins', 'mark', 's', 'u'):
+                    self.requirements['soul'] = r'\usepackage{soul}'
+                if cls == 'mark':
+                    self.requirements['color'] = PreambleCmds.color
                 self.out.append(r'\DUrole{%s}{' % cls)
 
     def depart_inline(self, node) -> None:

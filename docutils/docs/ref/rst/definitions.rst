@@ -172,8 +172,10 @@ Role definitions use the `"role" directive`_ to provide additional
 .. _reStructuredText interpreted text roles: roles.html
 
 
-Additional roles for HTML
--------------------------
+.. _Additional roles for HTML:
+
+Semantic Inline Markup Roles
+----------------------------
 
 The "html-roles.txt_" standard definitions file provides role
 definitions for semantic `HTML inline markup elements`__ and
@@ -182,16 +184,11 @@ do not have a corresponding standard rST role
 (except for elements requiring an additional attribute).
 
 The additional roles work out of the box with the `"html5" writer`_
-that selects the corresponding HTML element.
-LaTeX styling definitions are included. For best results add
-the LaTeX packages soul_ and xcolor_ to the `stylesheet setting`__.
+(selects the corresponding HTML element) and the LaTeX writers.
 
 .. _html-roles.txt: ../../../docutils/parsers/rst/include/html-roles.txt
 __ https://html.spec.whatwg.org/multipage/text-level-semantics.html
 __ https://html.spec.whatwg.org/multipage/edits.html
-__ ../../user/config.html#stylesheet-2
-.. _soul: https://ctan.org/pkg/soul
-.. _xcolor: https://ctan.org/pkg/xcolor
 
 .. class:: field-indent-4em
 

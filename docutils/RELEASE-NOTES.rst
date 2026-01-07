@@ -298,6 +298,8 @@ LaTeX writer:
   - Only write ``\label`` commands for explicit IDs and IDs that are
     referenced in the current document (i.e. not for un-referenced
     section titles).
+  - Support the "semantic inline markup roles" from the ``html-roles.txt``
+    `standard definition file`_.
 
 Removed objects
   `parsers.rst.directives.tables.CSVTable.check_requirements()`
@@ -1451,9 +1453,7 @@ reStructuredText:
 
 * Length units are now supported for image_ sizes.
 
-* Added `standard definition files`__ for special characters etc.
-
-  __ docs/ref/rst/definitions.html
+* Added `standard definition files`_ for special characters etc.
 
 Internationalization:
 
@@ -1585,7 +1585,8 @@ Release 0.3.5 (2004-07-29)
     docs/ref/rst/directives.html#including-an-external-document-fragment
 .. _"widths" option: docs/ref/rst/directives.html#table
 
-.. _Standard definition file: docs/ref/rst/definitions.html
+.. _standard definition file:
+.. _standard definition files: docs/ref/rst/definitions.html
 .. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
 
 .. _configuration settings: docs/user/config.html

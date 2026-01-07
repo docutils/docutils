@@ -18,28 +18,3 @@
 .. role:: u
 .. role:: s
 .. role:: var
-
-.. raw:: latex
-
-   % Definitions for semantic HTML inline markup and representation of edits
-   % (standard definition file "html-roles.txt").
-   % Add "soul" to the "stylesheet" setting for markup test that wraps
-   % and "xcolor" for yellow highlighting with :mark:`me`.
-   \providecommand{\DUroleb}{\textbf}
-   \providecommand{\DUroledel}{\st}
-   \providecommand{\DUroledfn}{\emph}
-   \providecommand{\DUrolei}{\textit}
-   \providecommand{\DUroleins}{\ul}
-   \providecommand{\DUrolekbd}{\texttt}
-   \providecommand{\DUrolemark}{\hl}
-   \providecommand{\DUroleq}[1]{“#1”}
-   \providecommand{\DUroles}{\st}
-   \providecommand{\DUrolesmall}[1]{{\footnotesize #1}}
-   \providecommand{\DUroleu}{\underline}
-   \providecommand{\DUrolevar}{\textit}
-   % fallback definitions
-   \providecommand{\ul}{\underline}
-   \providecommand{\hl}{\underline}  % highlight/mark
-   \providecommand{\st}[1]{%           strikethrough
-     \raisebox{1ex}{\underline{\smash{\raisebox{-1ex}{#1}}}}%
-   }

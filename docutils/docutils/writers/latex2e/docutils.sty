@@ -22,7 +22,7 @@
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{docutils}
-  [2025-08-06 macros for Docutils LaTeX output]
+  [2025-12-10 macros for Docutils LaTeX output]
 
 % Helpers
 % -------
@@ -148,6 +148,69 @@
     #2%
   \fi%
 }
+
+% Definitions for `semantic HTML inline markup`__ and representation of edits
+%
+% __ https://docutils.sourceforge.io/docs/ref/rst/definitions.html#additional-roles-for-html
+
+% inline role b::
+
+\providecommand{\DUroleb}{\textbf}
+
+% inline role del::
+
+\providecommand{\DUroledel}{\st}
+
+% inline role dfn::
+
+\providecommand{\DUroledfn}{\emph}
+
+% inline role i::
+
+\providecommand{\DUrolei}{\textit}
+
+% inline role ins::
+
+\providecommand{\DUroleins}{\ul}
+
+% inline role kbd::
+
+\providecommand{\DUrolekbd}{\texttt}
+
+% inline role mark::
+
+\providecommand{\DUrolemark}{\hl}
+
+% inline role q::
+
+\providecommand{\DUroleq}[1]{“#1”}
+
+% inline role s::
+
+\providecommand{\DUroles}{\st}
+
+% inline role small::
+
+\providecommand{\DUrolesmall}[1]{{\footnotesize #1}}
+
+% inline role st::
+
+\providecommand{\DUroledel}{\st}
+
+% inline role u::
+
+\providecommand{\DUroleu}{\ul}
+
+% inline role var::
+
+\providecommand{\DUrolevar}{\textit}
+
+% Fallback hacks (Docutils loads "soul" for better implementation)
+\providecommand{\hl}{\underline}
+\providecommand{\st}[1]{%
+  \raisebox{1ex}{\underline{\smash{\raisebox{-1ex}{#1}}}}%
+}
+\providecommand{\ul}{\underline}
 
 % legend::
 

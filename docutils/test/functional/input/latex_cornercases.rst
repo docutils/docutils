@@ -53,6 +53,36 @@ Image with 100% width:
 .. image:: ../../../docs/user/rst/images/title.png
    :width: 100%
 
+
+Additional text roles
+=====================
+
+Including the "html-roles.txt" standard definition file adds
+roles matching semantic HTML inline markup elements.
+
+.. include:: <html-roles.txt>
+
+=====  ===============  ====================================
+Role   Example          Notes
+=====  ===============  ====================================
+del    :del:`removed`   removed content
+ins    :ins:`inserted`  editional additions
+b      :b:`keyword`     highlight :b:`key words`
+                        without marking them up as important
+dfn    :dfn:`dfn`       the defining instance of a term
+i      :i:`rôle`        :i:`voix alternative`
+kbd    :kbd:`Ctrl X`    user input
+mark   :mark:`up`       highlight a :mark:`run of text`
+q      :q:`Tagline!`    content quoted from another source
+s      :s:`strike`      text that is inaccurate or
+                        no longer relevant
+samp   :samp:`Ready!`   computer output
+small  :small:`print`   side comments
+u      :u:`anotation`   unarticulated annotations of, e.g,
+                        :u:`comon mispellings`
+var    :var:`n`         variables (or constants)
+=====  ===============  ====================================
+
 .. include:: data/tables_latex.rst
 .. include:: data/nonalphanumeric.rst
 .. include:: data/unicode.rst
