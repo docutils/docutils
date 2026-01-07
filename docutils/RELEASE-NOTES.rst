@@ -117,7 +117,7 @@ Writers
     "True" in Docutils 1.0.
 
   - Prefer explicit reference names as base for an HTML element's ID
-    in Docutils 1.0. No change for internal cross-references.
+    in Docutils 1.0. No change for internal cross-references.
     Cf. `Sphinx issue #1961`__
 
     __ https://github.com/sphinx-doc/sphinx/issues/1961
@@ -130,6 +130,9 @@ Writers
 
   - Change the default value of the initial_header_level_ setting to "auto"
     (<h2> if there is a document title, else <h1>) in Docutils 1.0.
+
+  - Use normal font size and colour for informal titles of type "rubric"
+    in Docutils 1.0.
 
   - Remove option ``--embed-images`` (obsoleted by "image_loading_")
     in Docutils 2.0.

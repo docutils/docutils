@@ -1746,7 +1746,7 @@ class document(Root, Element):
         """Mapping of names to lists of referencing nodes."""
 
         self.refids: dict[str, list[Element]] = {}
-        """Mapping of ids to lists of referencing nodes."""
+        """(Incomplete) Mapping of ids to lists of referencing nodes."""
 
         self.nameids: dict[str, str] = {}
         """Mapping of names to unique id's."""

@@ -438,6 +438,8 @@ contact address.
 
 :Category:   `Bibliographic Elements`_
 :Analogues:  <address> is analogous to the DocBook_ <address> element.
+             The HTML_ <address> element, in contrast, is analogous
+             to the `<contact>`_ element.
 :Processing: As with the `\<literal_block>`_ element, newlines are
              significant and must be preserved.
              However, a monospaced typeface should not be used.
@@ -1083,8 +1085,8 @@ The <contact> element holds contact information for the author
 It is typically used for an email or web address.
 
 :Category:   `Bibliographic Elements`_
-:Analogues:  <contact> is analogous to the DocBook_ <email> element.
-             The HTML_ <address> element serves a similar purpose.
+:Analogues:  <contact> is analogous to the DocBook_ <email> element
+             and the HTML_ <address> element.
 :Processing: See `\<docinfo>`_.
 :Parents:    `\<docinfo>`_, `\<authors>`_
 :Children:   text data plus `inline elements`_ (`%text.model`_)
