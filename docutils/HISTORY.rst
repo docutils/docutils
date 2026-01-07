@@ -14,8 +14,8 @@
 .. contents::
 
 
-Release 0.22.5b1.dev (unpublished)
-==================================
+Release 0.23b.dev (unpublished)
+===============================
 
 * docutils/parsers/rst/directives/body.py
 
