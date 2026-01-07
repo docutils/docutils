@@ -22,9 +22,13 @@ Release 0.22.5b1.dev (unpublished)
   - Add source and line info to <rubric> elements.
 
 * docutils/parsers/rst/directives/tables.py,
-  docutils/parsers/rst/states.py
 
   - Add source and line info to <table> elements.
+
+* docutils/parsers/rst/states.py
+
+  - Add source and line info to <table> elements.
+  - Fix bug #517: wrong "input_offset" when parsing table cell content.
 
 
 Release 0.22.4 (2025-12-18)

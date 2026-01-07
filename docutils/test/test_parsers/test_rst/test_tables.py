@@ -752,6 +752,29 @@ Paragraph.
         Paragraph.
 """],
 ["""\
+=================================  ========
+The ERROR should point to line 2.  .. tip::
+=================================  ========
+""",
+"""\
+<document source="test data">
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="33">
+            <colspec colwidth="8">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            The ERROR should point to line 2.
+                    <entry>
+                        <system_message level="3" line="2" source="test data" type="ERROR">
+                            <paragraph>
+                                Content block expected for the "tip" directive; none found.
+                            <literal_block xml:space="preserve">
+                                .. tip::
+"""],
+["""\
 ============  ============
 A table with  two columns
 and           two rows.

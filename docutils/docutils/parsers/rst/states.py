@@ -1950,7 +1950,7 @@ class Body(RSTState):
             entry = nodes.entry(**attributes)
             row += entry
             if ''.join(cellblock):
-                self.nested_parse(cellblock, input_offset=tableline+offset,
+                self.nested_parse(cellblock, input_offset=tableline+offset-1,
                                   node=entry)
         return row
 
