@@ -5522,6 +5522,12 @@ Element Category Entities
 
 The ``%bibliographic.elements`` parameter entity contains an OR-list of all
 `Bibliographic Elements`_.
+
+.. include:: docutils.dtd
+   :start-after: <!ENTITY % additional.bibliographic.elements "">
+   :end-before:
+   :literal:
+
 The `%additional.bibliographic.elements`_ placeholder can be used by
 wrapper DTDs to extend ``%bibliographic.elements``.
 
@@ -5533,7 +5539,12 @@ Only the `\<docinfo>`_ element directly employs the
 ------------------
 
 The ``%body.elements`` parameter entity contains an OR-list of all
-`Body Elements`_.
+`Body Elements`_:
+
+.. include:: docutils.dtd
+   :start-after: <!ENTITY % additional.body.elements "">
+   :end-before:
+   :literal:
 
 The `%additional.body.elements`_ placeholder can be used by
 wrapper DTDs to extend ``%body.elements``.
@@ -5557,6 +5568,12 @@ indirectly employed in the content models of the `\<document>`_ and
 
 The ``%inline.elements`` parameter entity contains an OR-list of all
 `Inline Elements`_.
+
+.. include:: docutils.dtd
+   :start-after: <!ENTITY % additional.inline.elements "">
+   :end-before:
+   :literal:
+
 The `%additional.inline.elements`_ placeholder can be used by
 wrapper DTDs to extend ``%inline.elements``.
 
@@ -5569,6 +5586,12 @@ The ``%inline.elements`` parameter entity is employed in the
 
 The ``%section.elements`` parameter entity contains the `\<section>`_
 element.
+
+.. include:: docutils.dtd
+   :start-after: <!ENTITY % additional.section.elements "">
+   :end-before:
+   :literal:
+
 The `%additional.section.elements`_ placeholder can be used
 by wrapper DTDs to extend ``%section.elements``.
 
@@ -5618,13 +5641,12 @@ body elements, topics, sidebars, or transitions,
 followed by zero or more sections (whose contents include this model),
 or transitions.
 
-The actual entity definition is more complex,
+The actual definition is more complex,
 
-.. parsed-literal::
-
-   ( ( (`%body.elements`_; | topic | sidebar)+, transition? )*,
-     ( (`%section.elements`_;),
-       (transition?, (`%section.elements`_;) )* )? )
+.. include:: docutils.dtd
+   :start-after: <!-- The structure model may not end with a transition. -->
+   :end-before:
+   :literal:
 
 because there are additional restrictions on `\<transition>`_\ s.
 [#extra-rule]_
