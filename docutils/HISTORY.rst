@@ -24,6 +24,7 @@ Release 0.23b.dev (unpublished)
 * docutils/parsers/rst/directives/tables.py,
 
   - Add source and line info to <table> elements.
+  - Remove `CSVTable.check_requirements()` (not required with Python 3).
 
 * docutils/parsers/rst/states.py
 

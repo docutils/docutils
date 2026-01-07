@@ -299,7 +299,9 @@ Misc
 Release 0.23b.dev (unpublished)
 ===============================
 
-.
+Removed objects
+  `parsers.rst.directives.tables.CSVTable.check_requirements()`
+     not required with Python 3
 
 
 Release 0.22.4 (2025-12-18)

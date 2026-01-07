@@ -226,7 +226,7 @@ class CSVTable(Table):
         """
         CSV dialect used for the "header" option data.
 
-        Deprecated. Will be removed in Docutils 0.22.
+        Deprecated. Will be removed in Docutils 1.0.
         """
         # The separate HeaderDialect was introduced in revision 2294
         # (2004-06-17) in the sandbox before the "csv-table" directive moved
@@ -256,13 +256,6 @@ class CSVTable(Table):
                           'in Docutils 1.0',
                           DeprecationWarning, stacklevel=2)
             super().__init__()
-
-    @staticmethod
-    def check_requirements() -> None:
-        warnings.warn('CSVTable.check_requirements()'
-                      ' is not required with Python 3'
-                      ' and will be removed in Docutils 0.22.',
-                      DeprecationWarning, stacklevel=2)
 
     def process_header_option(self):
         source = self.state_machine.get_source(self.lineno - 1)
