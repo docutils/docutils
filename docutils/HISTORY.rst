@@ -21,6 +21,12 @@ Release 0.23b.dev (unpublished)
 
   - Add source and line info to <rubric> elements.
 
+* docutils/parsers/rst/directives/misc.py,
+
+  - "Include" options :start-after: and :end-before: may now also
+    be used without value (standing for an empty line).
+  - The severity of "include" problems is lowered to 3: ERROR.
+
 * docutils/parsers/rst/directives/tables.py,
 
   - Add source and line info to <table> elements.

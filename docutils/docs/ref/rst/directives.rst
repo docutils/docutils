@@ -1658,6 +1658,7 @@ The "include" directive recognizes the following options:
     Only the content before the first occurrence of the specified *text*
     in the external data file (but after any ``start-after`` text)
     will be included.
+    If no *text* is given, include content up to the next empty line.
 
 ``end-line`` : integer_
     Only the content up to (but excluding) this line will be included.
@@ -1687,6 +1688,7 @@ The "include" directive recognizes the following options:
 ``start-after`` : text_
     Only the content after the first occurrence of the specified *text*
     in the external data file will be included.
+    If no *text* is given, include content after the next empty line.
 
 ``start-line`` : integer_
     Only the content starting from this line will be included.

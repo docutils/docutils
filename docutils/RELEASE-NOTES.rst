@@ -89,12 +89,6 @@ Parsers
 * The highlight language of a custom role based on "code" will default to
   the role's name in Docutils 0.23.
 
-* Problems with the "include" directive will be reported as ERROR instead
-  of SEVERE in Docutils 0.23.
-
-* The options :start-after: and :end-before: of the "include" directive
-  will support empty values (standing for an empty line) in Docutils 0.23.
-
 * The "rst" parser will warn if a `"figure"`_ directive is missing both
   caption and legend in Docutils 1.0.
 
@@ -298,6 +292,11 @@ Misc
 
 Release 0.23b.dev (unpublished)
 ===============================
+
+rST parser:
+  - Problems with the "include" directive are reported as ERROR, not SEVERE.
+  - The "include" directive options :start-after: and :end-before: may now
+    also be used without value (standing for an empty line).
 
 Removed objects
   `parsers.rst.directives.tables.CSVTable.check_requirements()`

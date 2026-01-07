@@ -315,7 +315,7 @@ A paragraph.
     <section ids="include-test" names="include\\ test">
         <title>
             Include Test
-        <system_message level="4" line="4" source="test data" type="SEVERE">
+        <system_message level="3" line="4" source="test data" type="ERROR">
             <paragraph>
                 Problems with "include" directive path:
                 InputError: [Errno 2] No such file or directory: 'nonexistent.rst'.
@@ -573,7 +573,7 @@ f"""\
 <document source="test data">
     <paragraph>
         Include file is UTF-16-encoded, and is not valid ASCII.
-    <system_message level="4" line="3" source="test data" type="SEVERE">
+    <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
             Problem with "include" directive:
             {utf_16_error_str}
@@ -590,7 +590,7 @@ f"""\
 <document source="test data">
     <paragraph>
         cyrillic filename:
-    <system_message level="4" line="3" source="test data" type="SEVERE">
+    <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
             Problems with "include" directive path:
             {errstr_8bit_path}
@@ -634,7 +634,7 @@ f"""\
         <system_message backrefs="hi-1" level="1" line="10" source="{include10}" type="INFO">
             <paragraph>
                 Duplicate implicit target name: "hi".
-        <system_message level="4" line="12" source="{include10}" type="SEVERE">
+        <system_message level="3" line="12" source="{include10}" type="ERROR">
             <paragraph>
                 Problems with "include" directive path:
                 InputError: [Errno 2] No such file or directory: '{nonexistent}'.
@@ -916,7 +916,7 @@ f"""\
 <document source="test data">
     <paragraph>
         Nonexistent standard include data file:
-    <system_message level="4" line="3" source="test data" type="SEVERE">
+    <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
             Problems with "include" directive path:
             InputError: [Errno 2] No such file or directory: '{nonexistent}'.
@@ -1018,7 +1018,7 @@ f"""\
 <document source="test data">
     <paragraph>
         Include start-after/end-before multi-line test.
-    <system_message level="4" line="3" source="test data" type="SEVERE">
+    <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
             Problem with "end-before" option of "include" directive:
             Text not found.
@@ -1044,7 +1044,7 @@ f"""\
 <document source="test data">
     <paragraph>
         Error handling test; "end-before" error handling tested in previous test.
-    <system_message level="4" line="3" source="test data" type="SEVERE">
+    <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
             Problem with "start-after" option of "include" directive:
             Text not found.

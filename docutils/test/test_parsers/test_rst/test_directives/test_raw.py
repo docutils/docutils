@@ -136,7 +136,7 @@ f"""\
 <document source="test data">
     <paragraph>
         Raw input file is UTF-16-encoded, and is not valid ASCII.
-    <system_message level="4" line="3" source="test data" type="SEVERE">
+    <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
             Problem with "raw" directive:
             {utf_16_error_str}
@@ -173,7 +173,7 @@ f"""\
 """,
 """\
 <document source="test data">
-    <system_message level="4" line="1" source="test data" type="SEVERE">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Problems with "raw" directive path:
             InputError: [Errno 2] No such file or directory: 'non-existent.file'.
