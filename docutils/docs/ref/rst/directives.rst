@@ -2047,20 +2047,20 @@ class : space separated list of `class names`_
           <inline classes="special">
               interpreted text
 
-    The "class" option is recognized with all interpreted text roles.
+    Recognized with all interpreted text roles.
 
 _`format` : space-separated list of output format names (`writer names`_)
     Specify the generated <raw> element's `format attribute`_.
 
-    Only recognized with the `"raw" <"raw" role_>`__ base role.
+    Recognized with the `"raw" <"raw" role_>`__ base role.
 
-_`language` : text_ (formal language)
-    Name of a formal language, passed to Pygments_ for syntax highlighting.
+_`language` : text_ (formal language or "none")
+    Name of a formal language, passed to Pygments_ for syntax highlighting
+    or "none" for no syntax highlighting.
+    The default is the role name (since Docutils 0.23).
     See `supported languages and markup formats`_ for recognized values.
 
-    Only recognized with the `"code" <"code" role>`__ base role.
-
-.. _writer names: ../../user/config.html#writer-docutils-application
+    Recognized with the `"code" <"code" role_>`__ base role.
 
 
 .. _default-role:
@@ -2386,6 +2386,7 @@ Common Option Value Types
 .. _toc_backlinks: ../../user/config.html#toc-backlinks
 .. _use_latex_toc: ../../user/config.html#use-latex-toc
 .. _validate: ../../user/config.html#validate
+.. _writer names: ../../user/config.html#writer-docutils-application
 
 .. _reStructuredText Standard Definition Files: definitions.html
 

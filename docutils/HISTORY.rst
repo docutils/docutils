@@ -32,6 +32,11 @@ Release 0.23b.dev (unpublished)
   - Add source and line info to <table> elements.
   - Remove `CSVTable.check_requirements()` (not required with Python 3).
 
+* docutils/parsers/rst/roles.py
+
+  - Use the name of a custom role based on "code" as default for its
+    highlight language.
+
 * docutils/parsers/rst/states.py
 
   - Add source and line info to <table> elements.

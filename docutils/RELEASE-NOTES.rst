@@ -86,9 +86,6 @@ Parsers
 * The "rst" parser will warn, if a directive that does not take arguments
   has content above and below directive options in Docutils 0.23.
 
-* The highlight language of a custom role based on "code" will default to
-  the role's name in Docutils 0.23.
-
 * The "rst" parser will warn if a `"figure"`_ directive is missing both
   caption and legend in Docutils 1.0.
 
@@ -293,6 +290,9 @@ rST parser:
   - Problems with the "include" directive are reported as ERROR, not SEVERE.
   - The "include" directive options :start-after: and :end-before: may now
     also be used without value (standing for an empty line).
+  - The highlight language of a custom role based on the `"code" role`_
+    defaults to the role's name (if supported by Pygments_).
+    Specifying ``:language: none`` turns off syntax highlight.
 
 LaTeX writer:
   - Only write ``\label`` commands for explicit IDs and IDs that are
@@ -1585,6 +1585,7 @@ Release 0.3.5 (2004-07-29)
     docs/ref/rst/directives.html#including-an-external-document-fragment
 .. _"widths" option: docs/ref/rst/directives.html#table
 
+.. _"code" role: docs/ref/rst/roles.html#code
 .. _standard definition file:
 .. _standard definition files: docs/ref/rst/definitions.html
 .. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html

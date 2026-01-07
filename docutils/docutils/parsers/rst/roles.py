@@ -343,10 +343,14 @@ raw_role.options = {'format': directives.unchanged}
 register_canonical_role('raw', raw_role)
 
 
-def code_role(role, rawtext, text, lineno, inliner,
+def code_role(role_name, rawtext, text, lineno, inliner,
               options=None, content=None):
     options = normalize_options(options)
-    language = options.get('language', '')
+    # syntax highlight language (for derived custom roles)
+    language = role_name if role_name != 'code' else ''
+    language = options.get('language', language)
+    if language.lower() == 'none':
+        language = ''  # disable syntax highlight
     classes = ['code']
     if 'classes' in options:
         classes.extend(options['classes'])
@@ -356,9 +360,12 @@ def code_role(role, rawtext, text, lineno, inliner,
         tokens = Lexer(nodes.unescape(text, True), language,
                        inliner.document.settings.syntax_highlight)
     except LexerError as error:
-        msg = inliner.reporter.warning(error)
-        prb = inliner.problematic(rawtext, rawtext, msg)
-        return [prb], [msg]
+        if 'language' in options:
+            msg = inliner.reporter.warning(error)
+            prb = inliner.problematic(rawtext, rawtext, msg)
+            return [prb], [msg]
+        else:
+            tokens = [('', nodes.unescape(text, True))]
 
     node = nodes.literal(rawtext, '', classes=classes)
 

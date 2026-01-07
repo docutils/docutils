@@ -24,6 +24,8 @@ from docutils.utils.code_analyzer import with_pygments
 
 
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -69,8 +71,8 @@ totest['basics'] = [
         <title_reference>
             interpreted
 """],
-["""\
-`interpreted \\`title``
+[r"""
+`interpreted \`title``
 """,
 """\
 <document source="test data">
@@ -87,8 +89,8 @@ totest['basics'] = [
         <title_reference>
             :not-role: interpreted
 """],
-["""\
-`interpreted` but not \\`interpreted` [`] or ({[`] or [`]}) or `
+[r"""
+`interpreted` but not \`interpreted` [`] or ({[`] or [`]}) or `
 """,
 """\
 <document source="test data">
@@ -147,8 +149,8 @@ totest['basics'] = [
     <paragraph>
         :title:`` (empty interpreted text not recognized)
 """],
-["""\
-:title:`\\ ` (interpreted text containing empty string)
+[r"""
+:title:`\ ` (interpreted text containing empty string)
 """,
 """\
 <document source="test data">
@@ -156,8 +158,8 @@ totest['basics'] = [
         <title_reference>
          (interpreted text containing empty string)
 """],
-["""\
-`\\ `:title: (interpreted text containing empty string (postfix))
+[r"""
+`\ `:title: (interpreted text containing empty string (postfix))
 """,
 """\
 <document source="test data">
@@ -165,8 +167,8 @@ totest['basics'] = [
         <title_reference>
          (interpreted text containing empty string (postfix))
 """],
-["""\
-:title:`\\ non-empty`
+[r"""
+:title:`\ non-empty`
 """,
 """\
 <document source="test data">
@@ -174,8 +176,8 @@ totest['basics'] = [
         <title_reference>
             non-empty
 """],
-["""\
-:title:`\\  ` (trailing unquoted space)
+[r"""
+:title:`\  ` (trailing unquoted space)
 """,
 """\
 <document source="test data">
@@ -184,7 +186,7 @@ totest['basics'] = [
         <problematic ids="problematic-1" refid="system-message-1">
             `
          ` (trailing unquoted space)
-    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="2" source="test data" type="WARNING">
         <paragraph>
             Inline interpreted text or phrase reference start-string without end-string.
 """],
@@ -239,16 +241,16 @@ Simple explicit roles:
 ]
 
 totest['code'] = [
-["""\
+[r"""
 Code role for inline code snippets:
-:code:`$\alpha = \\int_0^\\infty f(x) dx$`.
+:code:`$\alpha = \int_0^\infty f(x) dx$`.
 """,
 """\
 <document source="test data">
     <paragraph>
         Code role for inline code snippets:
         <literal classes="code">
-            $\x07lpha = \\int_0^\\infty f(x) dx$
+            $\\alpha = \\int_0^\\infty f(x) dx$
         .
 """],
 ]
@@ -288,7 +290,6 @@ Custom role based on code role:
 Custom role based on code role:
 
 .. role:: python(code)
-   :language: python3
    :class: testclass
 
 Python code :python:`print("The end")`.
@@ -299,7 +300,7 @@ Python code :python:`print("The end")`.
         Custom role based on code role:
     <paragraph>
         Python code \n\
-        <literal classes="code testclass python3">
+        <literal classes="code testclass python">
             <inline classes="name builtin">
                 print
             <inline classes="punctuation">
@@ -308,6 +309,24 @@ Python code :python:`print("The end")`.
                 "The end"
             <inline classes="punctuation">
                 )
+        .
+"""],
+["""\
+Turn off syntax highlight with language "none".
+
+.. role:: python(code)
+   :language: none
+
+Python code :python:`print("The end")`.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Turn off syntax highlight with language "none".
+    <paragraph>
+        Python code \n\
+        <literal classes="code python">
+            print("The end")
         .
 """],
 ]

@@ -77,24 +77,30 @@ An acronym.
 :Customization_ options: `class <"class" option_>`__,
                          `language <"language" option_>`__
 
-(New in Docutils 0.9.)
-
 The :code: role marks its content as code in a formal language.
 
-For syntax highlight of inline code, the `"role" directive`_ can
-be used to create `custom roles`_ with the code language specified
-in the `"language" option`_.
-For example, the following creates a LaTeX-specific "latex" role::
+For syntax highlight of inline code, the `"role" directive`_ can be
+used to create `custom roles`_.  For example, the following creates
+a role "tex" to mark up and highlight LaTeX examples::
 
-  .. role:: latex(code)
-     :language: latex
+  .. role:: tex(code)
+
+A different `highlight language`_ can be specified in the
+`"language" option`_::
+
+  .. role:: js(code)
+     :language: javascript+mozpreproc
 
 Content of the new role is parsed and tagged by the Pygments_ syntax
-highlighter. See the `"code" directive`_ for more info on parsing
-and display of code in reStructuredText.
+highlighter.  See the `"code" directive`_ for more info on syntax highlight
+in Docutils.
+
+New in Docutils 0.9.  Since Docutils 0.23, the highlight language of
+derived roles defaults to the role name.
 
 .. _customization: `custom roles`_
 .. _Pygments: https://pygments.org/
+.. _highlight language: https://pygments.org/languages/
 
 
 ----------

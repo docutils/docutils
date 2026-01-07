@@ -39,6 +39,7 @@ class TransformTestCase(unittest.TestCase):
         settings = get_default_settings(Parser)
         settings.warning_stream = ''
         settings.smart_quotes = True
+        settings.syntax_highlight = 'none'
         settings.trim_footnote_ref_space = True
         for name, (transforms, cases) in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
@@ -131,7 +132,6 @@ Do not "educate" quotes ``inside "literal" text`` and ::
   "literal" blocks.
 
 .. role:: python(code)
-   :class: python
 
 Keep quotes straight in code and math:
 :code:`print "hello"` :python:`print("hello")` :math:`1' 12"`.
