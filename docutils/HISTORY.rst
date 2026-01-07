@@ -51,6 +51,10 @@ Release 0.22.4 (2025-12-18)
   - Ensure `FileInput.read()` returns a `str` (decode if `source.read`
     returns `bytes`. Fixes bug #514.
 
+* docutils/nodes.py
+
+  - Element.findall() now accepts also a tuple of types as condition.
+
 * docutils/parsers/rst/directives/body.py,
   docutils/parsers/rst/directives/parts.py
 

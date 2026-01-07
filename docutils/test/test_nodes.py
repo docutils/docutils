@@ -58,12 +58,15 @@ class NodeTests(unittest.TestCase):
         self.assertEqual(list(e[0].findall()),
                          [e[0], e[0][0], e[0][1], e[0][1][0]])
         self.testlist = [e[0][0], e[0][1]]
+        # Condition is function returning a boolean, class or tuple of classes:
         self.assertEqual(list(e[0].findall(condition=self.not_in_testlist)),
                          [e[0], e[0][1][0]])
         self.testlist.append(e[0][1][0])
         self.assertEqual(list(e[0].findall(condition=self.not_in_testlist)),
                          [e[0]])
         self.assertEqual(list(e.findall(nodes.TextElement)), [e[0][1]])
+        self.assertEqual(list(e.findall((nodes.TextElement, nodes.Text))),
+                         [e[0][1], e[0][1][0]])
 
     def test_findall_duplicate_texts(self):
         e = nodes.Element()

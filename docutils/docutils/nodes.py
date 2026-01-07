@@ -245,7 +245,7 @@ class Node:
             visitor.dispatch_departure(self)
         return stop
 
-    def _fast_findall(self, cls: type) -> Iterator:
+    def _fast_findall(self, cls: type|tuple[type]) -> Iterator:
         """Return iterator that only supports instance checks."""
         if isinstance(self, cls):
             yield self
@@ -262,7 +262,7 @@ class Node:
             yield from child._superfast_findall()
 
     def findall(self,
-                condition: type | Callable[[Node], bool] | None = None,
+                condition: type|tuple[type]|Callable[[Node], bool]|None = None,
                 include_self: bool = True,
                 descend: bool = True,
                 siblings: bool = False,
@@ -279,9 +279,9 @@ class Node:
           their descendants (if also `descend` is true), and so on.
 
         If `condition` is not None, the iterator yields only nodes
-        for which ``condition(node)`` is true.  If `condition` is a
-        type ``cls``, it is equivalent to a function consisting
-        of ``return isinstance(node, cls)``.
+        for which ``condition(node)`` is true.
+        If `condition` is a type (or tuple of types) ``cls``, it is equivalent
+        to a function consisting of ``return isinstance(node, cls)``.
 
         If `ascend` is true, assume `siblings` to be true as well.
 
@@ -314,16 +314,16 @@ class Node:
             if condition is None:
                 yield from self._superfast_findall()
                 return
-            elif isinstance(condition, type):
+            elif isinstance(condition, (type, tuple)):
                 yield from self._fast_findall(condition)
                 return
         # Check if `condition` is a class (check for TypeType for Python
         # implementations that use only new-style classes, like PyPy).
-        if isinstance(condition, type):
-            node_class = condition
+        if isinstance(condition, (type, tuple)):
+            class_or_tuple = condition
 
-            def condition(node, node_class=node_class):
-                return isinstance(node, node_class)
+            def condition(node, class_or_tuple=class_or_tuple):
+                return isinstance(node, class_or_tuple)
 
         if include_self and (condition is None or condition(self)):
             yield self
@@ -349,13 +349,14 @@ class Node:
                 else:
                     node = node.parent
 
-    def traverse(self,
-                 condition: type | Callable[[Node], bool] | None = None,
-                 include_self: bool = True,
-                 descend: bool = True,
-                 siblings: bool = False,
-                 ascend: bool = False,
-                 ) -> list:
+    def traverse(
+            self,
+            condition: type|tuple[type]|Callable[[Node], bool]|None = None,
+            include_self: bool = True,
+            descend: bool = True,
+            siblings: bool = False,
+            ascend: bool = False,
+            ) -> list:
         """Return list of nodes following `self`.
 
         For looping, Node.findall() is faster and more memory efficient.
@@ -366,13 +367,14 @@ class Node:
         return list(self.findall(condition, include_self, descend,
                                  siblings, ascend))
 
-    def next_node(self,
-                  condition: type | Callable[[Node], bool] | None = None,
-                  include_self: bool = False,
-                  descend: bool = True,
-                  siblings: bool = False,
-                  ascend: bool = False,
-                  ) -> Node | None:
+    def next_node(
+            self,
+            condition: type|tuple[type]|Callable[[Node], bool]|None = None,
+            include_self: bool = False,
+            descend: bool = True,
+            siblings: bool = False,
+            ascend: bool = False,
+            ) -> Node | None:
         """
         Return the first node in the iterator returned by findall(),
         or None if the iterable is empty.
