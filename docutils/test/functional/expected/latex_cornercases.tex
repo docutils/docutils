@@ -130,8 +130,7 @@
 
 %%% Body
 \begin{document}
-\title{Additional Tests for the LaTeX Writer%
-  \label{additional-tests-for-the-latex-writer}}
+\title{Additional Tests for the LaTeX Writer}
 \author{}
 \date{}
 \maketitle
@@ -143,50 +142,36 @@ trouble for the LaTeX writer.
 \tableofcontents
 
 
-\section{Section heading levels%
-  \label{section-heading-levels}%
-}
+\section{Section heading levels}
 
 
-\section{Level 1%
-  \label{level-1}%
-}
+\section{Level 1}
 
 Nested sections
 
 
-\subsection{Level 2%
-  \label{level-2}%
-}
+\subsection{Level 2}
 
 reach at some level
 
 
-\subsubsection{Level 3%
-  \label{level-3}%
-}
+\subsubsection{Level 3}
 
 (depending on the document class and output format)
 
 
-\paragraph{level 4%
-  \label{level-4}%
-}
+\paragraph{level 4}
 
 a level
 
 
-\subparagraph{level 5%
-  \label{level-5}%
-}
+\subparagraph{level 5}
 
 that is not supported by the output format.
 
 
 \begin{DUclass}{sectionVI}
-\DUtitle{level 6%
-  \label{level-6}%
-}
+\DUtitle{level 6}
 \end{DUclass}
 
 Unsupported in LaTeX and HTML5
@@ -194,32 +179,25 @@ Unsupported in LaTeX and HTML5
 
 
 \begin{DUclass}{sectionVII}
-\DUtitle{level 7%
-  \label{level-7}%
-}
+\DUtitle{level 7}
 \end{DUclass}
 
 Unsupported in HTML4.
 
 
 \begin{DUclass}{sectionVIII}
-\DUtitle{level 8%
-  \label{level-8}%
-}
+\DUtitle{level 8}
 \end{DUclass}
 
 Unsupported in ODT.
 
 
 \section{Section titles with inline markup%
-  \label{section-titles-with-inline-markup}%
   \label{references}%
 }
 
 
-\subsection{\emph{emphasized}, H\textsubscript{2}O, $x^2$, and \hyperref[references]{references}%
-  \label{emphasized-h2o-x-2-and-references}%
-}
+\subsection{\emph{emphasized}, H\textsubscript{2}O, $x^2$, and \hyperref[references]{references}}
 
 
 \subsection{Substitutions work%
@@ -235,9 +213,7 @@ normalization} of the section's reference name.
 % This file is used by the standalone_rst_latex test.
 
 
-\section{Option lists%
-  \label{option-lists}%
-}
+\section{Option lists}
 
 The LaTeX-2e description environment is used for definition lists.
 The definition is continued on the same line as the term, this should
@@ -262,9 +238,7 @@ is contained in a quote
 \end{description}
 
 
-\section{Block Quotes%
-  \label{block-quotes}%
-}
+\section{Block Quotes}
 
 \begin{quote}
 This block quote comes directly after the section heading and is
@@ -291,9 +265,7 @@ Another block quote at the end of the section.
 \end{quote}
 
 
-\section{More Block Quotes%
-  \label{more-block-quotes}%
-}
+\section{More Block Quotes}
 
 \begin{quote}
 Block quote followed by a transition.
@@ -307,9 +279,7 @@ Another block quote.
 \end{quote}
 
 
-\section{Images%
-  \label{images}%
-}
+\section{Images}
 
 Image with 20\% width:
 
@@ -320,9 +290,7 @@ Image with 100\% width:
 \includegraphics[width=1\linewidth]{../../../docs/user/rst/images/title.png}
 
 
-\section{Tables%
-  \label{tables}%
-}
+\section{Tables}
 
 In contrast to HTML, LaTeX does not support line-breaks in tables with
 \textquotedbl{}automatic\textquotedbl{} column widths. Each cell has just one line, paragraphs are
@@ -610,9 +578,7 @@ d
 \end{longtable}
 
 
-\subsection{Nested tables%
-  \label{nested-tables}%
-}
+\subsection{Nested tables}
 
 \setlength{\DUtablewidth}{\dimexpr\linewidth-3\arrayrulewidth\relax}%
 \begin{longtable*}{|p{\DUcolumnwidth{0.700}}|p{\DUcolumnwidth{0.300}}|}
@@ -695,9 +661,7 @@ cell 3, 2
 \end{longtable*}
 
 
-\subsection{TODO%
-  \label{todo}%
-}
+\subsection{TODO}
 
 \begin{itemize}
 \item Tables with multi-paragraph multi-row cells currently fail due to a
@@ -709,9 +673,7 @@ LaTeX limitation (see \url{https://sourceforge.net/p/docutils/bugs/225/}).
 See also \texttt{test/functional/input/data/latex-problematic.rst}.
 
 
-\section{Monospaced non-alphanumeric characters%
-  \label{monospaced-non-alphanumeric-characters}%
-}
+\section{Monospaced non-alphanumeric characters}
 
 These are all ASCII characters except a-zA-Z0-9 and space:
 
@@ -725,9 +687,7 @@ The two lines of non-alphanumeric characters should both have the same
 width as the third line.
 
 
-\section{Non-ASCII characters%
-  \label{non-ascii-characters}%
-}
+\section{Non-ASCII characters}
 
 \begin{longtable}{|l|l|}
 \caption{Punctuation and footnote symbols}\\
@@ -812,9 +772,7 @@ pdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrisch
 \end{itemize}
 
 
-\section{Encoding special characters%
-  \label{encoding-special-characters}%
-}
+\section{Encoding special characters}
 
 The LaTeX Info pages list under \textquotedbl{}2.18 Special Characters\textquotedbl{}
 
@@ -869,9 +827,7 @@ and bar characters (< | >) except for typewriter font \DUroletitlereference{cmtt
 (\texttt{< | >}).
 
 
-\section{Hyperlinks and -targets%
-  \label{hyperlinks-and-targets}%
-}
+\section{Hyperlinks and -targets}
 
 In LaTeX, we must set an explicit anchor (\texttt{\textbackslash{}phantomsection}) for a
 %
@@ -915,9 +871,7 @@ See \hyperref[hypertarget-in-plain-text]{hypertarget in plain text},
 \hyperref[image-label]{image label}.
 
 
-\section{External references%
-  \label{external-references}%
-}
+\section{External references}
 
 Long URLs should be wrapped in the PDF. This can be achieved with the
 \texttt{\textbackslash{}url} command which is used by the LaTeX writer whenever the content

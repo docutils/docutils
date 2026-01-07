@@ -218,9 +218,7 @@ unnumbered section
 \tableofcontents
 
 
-\section{unnumbered section%
-  \label{unnumbered-section}%
-}
+\section{unnumbered section}
 """,
   'requirements': '\\usepackage[T1]{fontenc}\n'
                   '\\setcounter{secnumdepth}{0}\n',
@@ -238,9 +236,7 @@ first section
 \tableofcontents
 
 
-\section{1   first section%
-  \label{first-section}%
-}
+\section{1   first section}
 """,
   'requirements': '\\usepackage[T1]{fontenc}\n'
                   '\\setcounter{secnumdepth}{0}\n',
@@ -259,9 +255,7 @@ first section
 \tableofcontents
 
 
-\section{first section%
-  \label{first-section}%
-}
+\section{first section}
 """,
   'requirements': '\\usepackage[T1]{fontenc}\n'
                   '\\setcounter{secnumdepth}{0}\n',
@@ -279,17 +273,13 @@ section not in local toc
 """,
  {'body': r"""
 
-\section{section with local ToC%
-  \label{section-with-local-toc}%
-}
+\section{section with local ToC}
 
 \mtcsettitle{secttoc}{}
 \secttoc
 
 
-\section{section not in local toc%
-  \label{section-not-in-local-toc}%
-}
+\section{section not in local toc}
 
 \faketableofcontents % for local ToCs
 """,
@@ -432,9 +422,7 @@ This is the *document*.
 """,
  {'body': r"""
 
-\section{This is a \emph{section title}%
-  \label{this-is-a-section-title}%
-}
+\section{This is a \emph{section title}}
 
 This is the \emph{document}.
 """,
@@ -452,10 +440,8 @@ This is the \emph{document}.
   'subtitle': 'This is the \\emph{Subtitle}',
   'title': 'This is the \\emph{Title}',
   'titledata': r"""\title{This is the \emph{Title}%
-  \label{this-is-the-title}%
   \\%
-  \DUdocumentsubtitle{This is the \emph{Subtitle}}%
-  \label{this-is-the-subtitle}}
+  \DUdocumentsubtitle{This is the \emph{Subtitle}}}
 \author{}
 \date{}
 """
@@ -489,11 +475,9 @@ Links to \hyperref[top]{top} and \hyperref[what-for]{what-for}.
   'subtitle': 'for test purposes',
   'title': 'The Document Title',
   'titledata': r"""\title{The Document Title%
-  \label{the-document-title}%
   \label{top}%
   \\%
   \DUdocumentsubtitle{for test purposes}%
-  \label{for-test-purposes}%
   \label{what-for}}
 \author{}
 \date{}
@@ -597,9 +581,7 @@ first chapter
 \tableofcontents
 
 
-\chapter{first chapter%
-  \label{first-chapter}%
-}
+\chapter{first chapter}
 """,
   'head_prefix': '\\documentclass[a4paper]{book}\n',
   'requirements': '\\usepackage[T1]{fontenc}\n'
@@ -860,9 +842,7 @@ section
 no sectnum directive -> suppress section numbers
 
 
-\section{section%
-  \label{section}%
-}
+\section{section}
 """,
   'requirements': '\\usepackage[T1]{fontenc}\n'
                   '\\setcounter{secnumdepth}{0}\n',
@@ -883,9 +863,7 @@ section
 default section numbers -> no requirements
 
 
-\section{section%
-  \label{section}%
-}
+\section{section}
 """,
   }],
 ["""\
@@ -902,9 +880,7 @@ section
 section numbers with custom start and depth
 
 
-\section{section%
-  \label{section}%
-}
+\section{section}
 """,
   'requirements': '\\usepackage[T1]{fontenc}\n'
                   '\\setcounter{secnumdepth}{2}\n'

@@ -61,11 +61,9 @@
 }
 
 \title{reStructuredText Test Document%
-  \label{restructuredtext-test-document}%
   \label{doctitle}%
   \\%
   \DUdocumentsubtitle{Examples of Syntax Constructs}%
-  \label{examples-of-syntax-constructs}%
   \label{subtitle}}
 \author{}
 \date{}
@@ -135,6 +133,7 @@ reStructuredText construct.
 
 \pagebreak[4] % start ToC on new page
 
+\phantomsection\label{table-of-contents}
 \pdfbookmark[1]{Table of Contents}{table-of-contents}
 
 \begin{DUclass}{contents}
@@ -786,6 +785,7 @@ this: %
   \label{directives}%
 }
 
+\phantomsection\label{contents}
 
 \begin{DUclass}{contents}
 \begin{DUclass}{local}
@@ -2127,8 +2127,7 @@ section, “Docutils System Messages”:
 % section should be added by Docutils automatically
 
 
-\section[Docutils System Messages]{\color{red}Docutils System Messages%
-}
+\section[Docutils System Messages]{\color{red}Docutils System Messages}
 
 \raisebox{1em}{\hypertarget{system-message-1}{}}
 \begin{DUclass}{system-message}

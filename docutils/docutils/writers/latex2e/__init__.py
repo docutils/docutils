@@ -1188,6 +1188,13 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.warn = self.document.reporter.warning
         self.error = self.document.reporter.error
 
+        # Set of IDs that are actually used in <reference>'s "refid" attribute
+        # (see `ids_to_labels()`):
+        self.refids = set()
+        for node in document.findall(nodes.reference):
+            if 'refid' in node:
+                self.refids.add(node['refid'])
+
         # Settings
         # ~~~~~~~~
         settings = self.settings
@@ -1258,7 +1265,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
         # Output collection stacks
         # ~~~~~~~~~~~~~~~~~~~~~~~~
-
         # Document parts
         self.head_prefix = [f'\\documentclass[{self.documentoptions}]'
                             f'{{{settings.documentclass}}}']
@@ -1562,7 +1568,10 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def ids_to_labels(self, node, set_anchor=True, protect=False,
                       newline=False, pre_nl=False) -> list[str]:
-        """Return label definitions for all ids of `node`.
+        """Return label definitions for IDs of `node`.
+
+        Make labels for all IDs that are either explicit or referenced in
+        the document (i.e. not for section headings that are not referenced).
 
         If `set_anchor` is True, an anchor is set with \\phantomsection.
         If `protect` is True, the \\label cmd is made robust.
@@ -1571,8 +1580,12 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
         Provisional.
         """
+        explicit_IDs = set(self.document.nameids[name]
+                           for name in node['names']
+                           if self.document.nametypes[name])
         prefix = '\\protect' if protect else ''
-        labels = [f'{prefix}\\label{{{id}}}' for id in node['ids']]
+        labels = [f'{prefix}\\label{{{ID}}}' for ID in node['ids']
+                  if ID in explicit_IDs.union(self.refids)]
         if labels:
             if set_anchor:
                 labels.insert(0, '\\phantomsection')
@@ -3254,15 +3267,12 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             else:
                 self.out.append(r'\%s{' % section_name)
 
-            # label and ToC entry:
-            bookmark = ['']
-            # add sections with unsupported level to toc and pdfbookmarks?
-            ## if level > len(self.d_class.sections):
-            ##     section_title = self.encode(node.astext())
-            ##     bookmark.append(r'\addcontentsline{toc}{%s}{%s}' %
-            ##               (section_name, section_title))
-            bookmark += self.ids_to_labels(node.parent, set_anchor=False)
-            self.context.append('%\n  '.join(bookmark) + '%\n}\n')
+            # label(s) and ToC entry:
+            labels = self.ids_to_labels(node.parent, set_anchor=False)
+            if labels:
+                self.context.append('%\n  '.join(('', *labels)) + '%\n}\n')
+            else:
+                self.context.append('}\n')
             if (level > len(self.d_class.sections)
                 and not self.settings.legacy_class_functions):
                 self.context[-1] += '\\end{DUclass}\n'
@@ -3298,8 +3308,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
         # labels and PDF bookmark (sidebar entry)
         self.out.append('\n')  # start new paragraph
-        if len(node['names']) > 1:  # don't add labels just for the auto-id
-            self.out += self.ids_to_labels(node, newline=True)
+        self.out += self.ids_to_labels(node, newline=True)
         if (isinstance(node.next_node(), nodes.title)
             and 'local' not in node['classes']
             and self.settings.documentclass != 'memoir'):

@@ -139,10 +139,6 @@ Writers
 
 * "latex2e" writer:
 
-  - Only write ``\label`` commands for explicit IDs and IDs that are
-    referenced in the current document (i.e. not for un-referenced
-    section titles) in Docutils 0.23.
-
   - Change default of use_latex_citations_ setting to True
     in Docutils 1.0.
 
@@ -297,6 +293,11 @@ rST parser:
   - Problems with the "include" directive are reported as ERROR, not SEVERE.
   - The "include" directive options :start-after: and :end-before: may now
     also be used without value (standing for an empty line).
+
+LaTeX writer:
+  - Only write ``\label`` commands for explicit IDs and IDs that are
+    referenced in the current document (i.e. not for un-referenced
+    section titles).
 
 Removed objects
   `parsers.rst.directives.tables.CSVTable.check_requirements()`

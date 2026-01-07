@@ -129,34 +129,46 @@ A paragraph.
 Foo (some raw text)
 same paragraph.
 """],
-# images and figures
-["""
-.. image:: larch-mini.jpg
-   :target: larch.jpg
-   :name: the-larch
-   :class: currently ignored
-   :align: center
-""",
-r"""
-\phantomsection\label{the-larch}
-\noindent\makebox[\linewidth][c]{\href{larch.jpg}{\includegraphics{larch-mini.jpg}}}
-"""],
+# figures and images
 ["""\
-.. _fig:larch:
+.. figure:: parrot.png
+   :figclass: figureclass
+   :figname: fig-ure
 
-.. figure:: larch-mini.jpg
-   :target: larch.jpg
-   :name: the-larch
+   .. class:: f-caption-class
+   .. _f-caption:
 
-   The larch
+   A figure with caption
+
+   .. class:: legend-class
+   .. _le-gend:
+
+   A figure legend
+
+.. image:: parrot.png
+   :class: imgclass TODO ignored!
+   :name: i-mage
+   :target: example.org/parrots
+
+See i-mage_ and fig-ure_ with f-caption_ and le-gend_.
 """,
 r"""
-\phantomsection\label{fig-larch}
+\phantomsection\label{fig-ure}
+\begin{DUclass}{figureclass}
 \begin{figure}
-\phantomsection\label{the-larch}
-\noindent\makebox[\linewidth][c]{\href{larch.jpg}{\includegraphics{larch-mini.jpg}}}
-\caption{The larch}
+\noindent\makebox[\linewidth][c]{\includegraphics{parrot.png}}
+\caption{\label{f-caption}\DUrole{f-caption-class}{A figure with caption}}
+\begin{DUlegend}
+\phantomsection\label{le-gend}
+\DUrole{legend-class}{A figure legend}
+\end{DUlegend}
 \end{figure}
+\end{DUclass}
+
+\phantomsection\label{i-mage}
+\href{example.org/parrots}{\includegraphics{parrot.png}}
+
+See \hyperref[i-mage]{i-mage} and \hyperref[fig-ure]{fig-ure} with \hyperref[f-caption]{f-caption} and \hyperref[le-gend]{le-gend}.
 """],
 # tables
 # ======
@@ -328,40 +340,16 @@ A paragraph with _`inline target`.
 
 .. class:: custom paragraph
 
-Next paragraph.
+Links to `block target`_ and `inline target`_.
 """,
 r"""
 A paragraph with %
 \phantomsection\label{inline-target}inline target.
 
 \phantomsection\label{block-target}
-\DUrole{custom}{\DUrole{paragraph}{Next paragraph.}}
+\DUrole{custom}{\DUrole{paragraph}{Links to \hyperref[block-target]{block target} and \hyperref[inline-target]{inline target}.}}
 """],
-# admonition
-["""
-.. class:: cls1
-.. _label1:
-.. hint::
-   :name: label2
-   :class: cls2
-
-   Don't forget to breathe.
-""",
-r"""
-\phantomsection\label{label2}\label{label1}
-\begin{DUclass}{cls2}
-\begin{DUclass}{cls1}
-\begin{DUclass}{hint}
-\begin{DUadmonition}
-\DUtitle{Hint}
-
-Don't forget to breathe.
-\end{DUadmonition}
-\end{DUclass}
-\end{DUclass}
-\end{DUclass}
-"""],
-# block quote
+# block-quote
 ["""
 .. class:: cls1
 .. _label1:
@@ -369,9 +357,11 @@ Don't forget to breathe.
    Exlicit is better than implicit.
 
    .. class:: attribute-cls cute
-   .. _a-tribution:
+   .. _an attribution:
 
    -- Zen of Python
+
+See quote label1_ with `an attribution`_.
 """,
 r"""
 \phantomsection\label{label1}
@@ -380,7 +370,7 @@ r"""
 Exlicit is better than implicit.
 \nopagebreak
 
-\phantomsection\label{a-tribution}
+\phantomsection\label{an-attribution}
 \begin{DUclass}{attribute-cls}
 \begin{DUclass}{cute}
 \raggedleft —Zen of Python
@@ -388,8 +378,10 @@ Exlicit is better than implicit.
 \end{DUclass}
 \end{quote}
 \end{DUclass}
+
+See quote \hyperref[label1]{label1} with \hyperref[an-attribution]{an attribution}.
 """],
-# bullet list
+# lists
 ["""
 .. class:: cls1
 .. _bullet1:
@@ -400,20 +392,7 @@ Exlicit is better than implicit.
   .. _b-item:
 
 * second bullet list item
-""",
-r"""
-\phantomsection\label{bullet1}
-\begin{DUclass}{cls1}
-\begin{itemize}
-\item list item
 
-\phantomsection\label{b-item}
-\item second bullet list item
-\end{itemize}
-\end{DUclass}
-"""],
-# definition list
-["""
 .. class:: def-list-class
 .. _def-list:
 
@@ -425,8 +404,54 @@ definition
 
 term
   definition
+
+.. class:: cls1
+.. _enumerated1:
+
+#. list item
+
+   .. class:: e-item-class
+   .. _e-item:
+
+#. enumerated list item
+
+.. class:: fieldlist-class
+.. _f-list:
+
+:field: list
+
+  .. class:: field-class
+  .. _f-list-item:
+
+:name: body
+
+.. class:: o-list-class
+.. _o-list:
+
+--an  option list
+
+  .. class:: option-class
+  .. _o-item:
+
+--another  option
+
+See bullet1_, b-item_,
+def-list_, def-item_,
+enumerated1_, e-item_,
+f-list_, f-list-item_,
+o-list_, and o-item_.
 """,
 """
+\\phantomsection\\label{bullet1}
+\\begin{DUclass}{cls1}
+\\begin{itemize}
+\\item list item
+
+\\phantomsection\\label{b-item}
+\\item second bullet list item
+\\end{itemize}
+\\end{DUclass}
+
 \\phantomsection\\label{def-list}
 \\begin{DUclass}{def-list-class}
 \\begin{description}
@@ -438,66 +463,60 @@ list
 definition
 \\end{description}
 \\end{DUclass}
-"""],
-# enumerated list
-["""
-.. class:: cls1
-.. _enumerated1:
 
-#. list item
+\\phantomsection\\label{enumerated1}
+\\begin{DUclass}{cls1}
+\\begin{enumerate}
+\\item list item
 
-   .. class:: e-item-class
-   .. _e-item:
+\\phantomsection\\label{e-item}
+\\item enumerated list item
+\\end{enumerate}
+\\end{DUclass}
 
-#. enumerated list item
-""",
-r"""
-\phantomsection\label{enumerated1}
-\begin{DUclass}{cls1}
-\begin{enumerate}
-\item list item
-
-\phantomsection\label{e-item}
-\item enumerated list item
-\end{enumerate}
-\end{DUclass}
-"""],
-# field list
-["""\
-Not a docinfo.
-
-.. class:: fieldlist-class
-.. _f-list:
-
-:field: list
-
-  .. class:: field-class
-  .. _f-list-item:
-
-:name: body
-""",
-r"""
-Not a docinfo.
-
-\phantomsection\label{f-list}
-\begin{DUclass}{fieldlist-class}
-\begin{DUfieldlist}
-\item[{field:}]
+\\phantomsection\\label{f-list}
+\\begin{DUclass}{fieldlist-class}
+\\begin{DUfieldlist}
+\\item[{field:}]
 list
 
-\phantomsection\label{f-list-item}
-\item[{name:}]
+\\phantomsection\\label{f-list-item}
+\\item[{name:}]
 body
-\end{DUfieldlist}
-\end{DUclass}
+\\end{DUfieldlist}
+\\end{DUclass}
+
+\\phantomsection\\label{o-list}
+\\begin{DUclass}{o-list-class}
+\\begin{DUoptionlist}
+\\item[-{}-an]  option list
+\\phantomsection\\label{o-item}
+\\item[-{}-another]  option
+\\end{DUoptionlist}
+\\end{DUclass}
+
+See \\hyperref[bullet1]{bullet1}, \\hyperref[b-item]{b-item},
+\\hyperref[def-list]{def-list}, \\hyperref[def-item]{def-item},
+\\hyperref[enumerated1]{enumerated1}, \\hyperref[e-item]{e-item},
+\\hyperref[f-list]{f-list}, \\hyperref[f-list-item]{f-list-item},
+\\hyperref[o-list]{o-list}, and \\hyperref[o-item]{o-item}.
 """],
-# line block
+# line block and literal block
 ["""\
 .. class:: lineblock-class
 .. _line-block:
 
 | line block
 | second line
+
+.. class:: cls1
+.. _block1:
+
+::
+
+   1^2_3
+
+See line-block_ and block1_.
 """,
 r"""
 \phantomsection\label{line-block}
@@ -507,17 +526,7 @@ r"""
 \item[] second line
 \end{DUlineblock}
 \end{DUclass}
-"""],
-# literal block
-["""\
-.. class:: cls1
-.. _block1:
 
-::
-
-   1^2_3
-""",
-r"""
 \phantomsection\label{block1}
 \begin{DUclass}{cls1}
 \begin{quote}
@@ -526,28 +535,8 @@ r"""
 \end{alltt}
 \end{quote}
 \end{DUclass}
-"""],
-# option list
-["""\
-.. class:: o-list-class
-.. _o-list:
 
---an  option list
-
-  .. class:: option-class
-  .. _o-item:
-
---another  option
-""",
-r"""
-\phantomsection\label{o-list}
-\begin{DUclass}{o-list-class}
-\begin{DUoptionlist}
-\item[-{}-an]  option list
-\phantomsection\label{o-item}
-\item[-{}-another]  option
-\end{DUoptionlist}
-\end{DUclass}
+See \hyperref[line-block]{line-block} and \hyperref[block1]{block1}.
 """],
 # table with IDs and custom + special class values
 ["""\
@@ -561,6 +550,8 @@ r"""
    = =
    Y N
    = =
+
+Refer to the table with either label1_ or label2_.
 """,
 r"""
 \phantomsection\label{label2}\label{label1}
@@ -571,6 +562,8 @@ Y & N \\
 \end{longtable*}
 \end{DUclass}
 \end{DUclass}
+
+Refer to the table with either \hyperref[label1]{label1} or \hyperref[label2]{label2}.
 """],
 # directives
 ["""\
@@ -588,69 +581,18 @@ Y & N \\
    Container paragraph 1
 
    Container paragraph 2
-""",
-r"""
-\phantomsection\label{com-pound}
-\begin{DUclass}{compound}
-\begin{DUclass}{compoundclass}
-Compound paragraph 1
 
-Compound paragraph 2
-\end{DUclass}
-\end{DUclass}
+.. class:: cls1
+.. _label1:
+.. hint::
+   :name: label2
+   :class: cls2
 
-\phantomsection\label{con-tainer}
-\begin{DUclass}{containerclass}
-Container paragraph 1
+   Don't forget to breathe.
 
-Container paragraph 2
-\end{DUclass}
-"""],
-# figures and images
-["""\
-.. figure:: parrot.png
-   :figclass: figureclass
-   :figname: fig-ure
-
-   .. class:: f-caption-class
-   .. _f-caption:
-
-   A figure with caption
-
-   .. class:: legend-class
-   .. _le-gend:
-
-   A figure legend
-
-.. image:: parrot.png
-   :class: imgclass TODO ignored!
-   :name: i-mage
-   :target: example.org/parrots
-""",
-r"""
-\phantomsection\label{fig-ure}
-\begin{DUclass}{figureclass}
-\begin{figure}
-\noindent\makebox[\linewidth][c]{\includegraphics{parrot.png}}
-\caption{\label{f-caption}\DUrole{f-caption-class}{A figure with caption}}
-\begin{DUlegend}
-\phantomsection\label{le-gend}
-\DUrole{legend-class}{A figure legend}
-\end{DUlegend}
-\end{figure}
-\end{DUclass}
-
-\phantomsection\label{i-mage}
-\href{example.org/parrots}{\includegraphics{parrot.png}}
-"""],
-["""\
 .. math:: x = 2^4
    :class: mathclass
    :name: math-block
-
-.. note:: a specific admonition
-   :class: noteclass
-   :name: my-note
 
 .. _my-raw:
 .. raw:: latex pseudoxml xml
@@ -669,8 +611,42 @@ r"""
    :name: to-pic
 
    topic content
+
+See hint with label1_ and label2_,
+com-pound_, con-tainer_,
+math-block_, my-raw_,
+side-bar_, and to-pic_.
 """,
-r"""%
+r"""
+\phantomsection\label{com-pound}
+\begin{DUclass}{compound}
+\begin{DUclass}{compoundclass}
+Compound paragraph 1
+
+Compound paragraph 2
+\end{DUclass}
+\end{DUclass}
+
+\phantomsection\label{con-tainer}
+\begin{DUclass}{containerclass}
+Container paragraph 1
+
+Container paragraph 2
+\end{DUclass}
+
+\phantomsection\label{label2}\label{label1}
+\begin{DUclass}{cls2}
+\begin{DUclass}{cls1}
+\begin{DUclass}{hint}
+\begin{DUadmonition}
+\DUtitle{Hint}
+
+Don't forget to breathe.
+\end{DUadmonition}
+\end{DUclass}
+\end{DUclass}
+\end{DUclass}
+%
 \phantomsection
 \DUrole{mathclass}{%
 \begin{equation*}
@@ -678,17 +654,6 @@ x = 2^4
 \label{math-block}
 \end{equation*}
 }
-\phantomsection\label{my-note}
-\begin{DUclass}{noteclass}
-\begin{DUclass}{note}
-\begin{DUadmonition}
-\DUtitle{Note}
-
-a specific admonition
-\end{DUadmonition}
-\end{DUclass}
-\end{DUclass}
-
 \phantomsection\label{my-raw}\DUrole{rawclass}{\LaTeX}
 
 \phantomsection\label{side-bar}
@@ -710,6 +675,11 @@ topic content
 \end{quote}
 \end{DUclass}
 \end{DUclass}
+
+See hint with \hyperref[label1]{label1} and \hyperref[label2]{label2},
+\hyperref[com-pound]{com-pound}, \hyperref[con-tainer]{con-tainer},
+\hyperref[math-block]{math-block}, \hyperref[my-raw]{my-raw},
+\hyperref[side-bar]{side-bar}, and \hyperref[to-pic]{to-pic}.
 """],
 ])
 
@@ -726,9 +696,7 @@ r"""
 some text
 
 
-\section{first section%
-  \label{first-section}%
-}
+\section{first section}
 """],
 ])
 
