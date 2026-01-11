@@ -800,15 +800,22 @@ __ mailto:cben@users.sf.net
 What's the official MIME type for reStructuredText data?
 --------------------------------------------------------
 
-While there is no registered MIME type for reStructuredText, the
-"official unofficial" standard MIME type is "text/x-rst". [#]_  This was
-invented for the build system for PEPs (Python Enhancement Proposals),
-and it's used by the python.org web site build system.
+There is no official MIME type.
+The IANA lists `text/prs.fallenstein.rst`_ as MIME type
+for `reStructuredText` in the `"personal or vanity"`__
+`Media Type Registration Tree`__.
+Docutils recommends "text/x-rst" [#]_
+(unless you require a registered type).
 
 Also see `What's the standard filename extension for a
 reStructuredText file?`_
 
 .. [#] The "x-" prefix means it's an unregistered MIME type.
+
+.. _text/prs.fallenstein.rst:
+   https://www.iana.org/assignments/media-types/text/prs.fallenstein.rst
+__ https://datatracker.ietf.org/doc/html/rfc2048#section-2.1.3
+__ https://datatracker.ietf.org/doc/html/rfc2048#section-2.1
 
 
 How can I specify an image grid?
@@ -847,17 +854,17 @@ HTML Writer
 What is the status of the HTML Writer?
 --------------------------------------
 
-The default HTML Writer module, `html4css1`_, is
-a proof-of-concept reference implementation.  While it is a complete
-implementation, some aspects of the HTML it produces may be outdated or
-incompatible with older browsers or specialized applications (such as
-web templating).
+The default HTML Writer module, `html4css1`_ is a complete
+implementation but the HTML variant it produces is outdated.
 
-The `html5 writer`_ generates semantic HTML output compatible with HTML5.
+The `html5 writer`_ generates valid XML that conforms to HTML5
+(`HTML Living standard`_).
+
 For the full selection see `Docutils HTML writers`_
 
 .. _html4css1: docs/user/html.html#html4css1
 .. _HTML5 writer: docs/user/html.html#html5
+.. _HTML Living standard: https://html.spec.whatwg.org/multipage/
 .. _Docutils HTML writers: docs/user/html.html
 
 
