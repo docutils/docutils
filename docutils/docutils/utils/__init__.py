@@ -838,7 +838,7 @@ class DependencyList:
         """
         Close the output file.
         """
-        if self.file is not sys.stdout:
+        if self.file is not None and self.file is not sys.stdout:
             self.file.close()
         self.file = None
 
