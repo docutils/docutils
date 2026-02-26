@@ -66,7 +66,7 @@ def desc_index_text(desctype, currmodule, name):
     elif desctype == 'method':
         try:
             clsname, methname = name.rsplit('.', 1)
-        except:
+        except Exception:
             if currmodule:
                 return '%s() (in module %s)' % (name, currmodule)
             else:
@@ -78,7 +78,7 @@ def desc_index_text(desctype, currmodule, name):
     elif desctype == 'attribute':
         try:
             clsname, attrname = name.rsplit('.', 1)
-        except:
+        except Exception:
             if currmodule:
                 return '%s (in module %s)' % (name, currmodule)
             else:

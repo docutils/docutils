@@ -38,7 +38,7 @@ class AntiSpam(object):
             try:
                 f = urllib.urlopen(DOWNLOAD_URL)
                 data = f.read()
-            except:
+            except Exception:
                 pass
             else:
                 lines = [l.strip() for l in data.splitlines()
