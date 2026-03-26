@@ -88,7 +88,16 @@ class Parser(docutils.parsers.Parser):
     settings_spec = docutils.parsers.Parser.settings_spec + (
         'reStructuredText Parser Options',
         None,
-        (('Recognize and link to standalone PEP references (like "PEP 258").',
+        (('Keep identifiers backwards compatible. Default.',
+          ['--legacy-ids'],
+          {'action': 'store_true',
+           'validator': frontend.validate_boolean,
+           'default': True}),
+         ('Explicit targets use identifiers matching the reference name.',
+          ['--matching-ids'],
+          {'action': 'store_false',
+           'dest': 'legacy_ids'}),
+         ('Recognize and link to standalone PEP references (like "PEP 258").',
           ['--pep-references'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Base URL for PEP references '

@@ -28,6 +28,10 @@ Release 0.23b.dev (unpublished)
     <target> elements when testing for a <transition> at the begin or end
     of a <section> or the <document>.
 
+* docutils/parsers/rst/__init__.py
+
+  - New configuration setting `legacy_ids`_.
+
 * docutils/parsers/rst/directives/body.py
 
   - Add source and line info to <rubric> elements.
@@ -57,7 +61,7 @@ Release 0.23b.dev (unpublished)
 
 * docutils/transforms/misc.py:
 
-  - Use `nodes.transition.validate_position() to warn about transitions
+  - Use `nodes.transition.validate_position()` to warn about transitions
     at the beginning or end of the document or a section.
 
 * docutils/writers/html5_polyglot/__init__.py
@@ -4846,6 +4850,7 @@ test/test_rst); and all modifications required to make it all work.
 .. _language: docs/user/config.html#language
 .. _latex_preamble: docs/user/config.html#latex-preamble
 .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
+.. _legacy_ids: docs/user/config.html#legacy-ids
 .. _legacy_column_widths: docs/user/config.html#legacy-column-widths
 .. _literal_block_env: docs/user/config.html#literal-block-env
 .. _math_output: docs/user/config.html#math-output

@@ -95,6 +95,9 @@ Generic Parser Options
 
 reStructuredText Parser Options
 -------------------------------
+--legacy-ids            Keep identifiers backwards compatible. Default.
+--matching-ids          Explicit targets use identifiers matching the
+                        reference name.
 --pep-references        Recognize and link to standalone PEP references (like
                         "PEP 258").
 --pep-base-url=<URL>    Base URL for PEP references (default

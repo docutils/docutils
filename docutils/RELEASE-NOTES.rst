@@ -89,6 +89,9 @@ Parsers
 * The "rst" parser will warn if a `"figure"`_ directive is missing both
   caption and legend in Docutils 1.0.
 
+* The `legacy_ids`_ configuration setting default will change to False
+  in Docutils 2.0
+
 Writers
 -------
 
@@ -305,9 +308,12 @@ LaTeX writer:
   - Support the "semantic inline markup roles" from the ``html-roles.txt``
     `standard definition file`_.
 
+Configuration changes
+  - New setting `legacy_ids`_.
+
 Removed objects
   `parsers.rst.directives.tables.CSVTable.check_requirements()`
-     not required with Python 3
+     not required with Python 3.
 
 
 Release 0.22.4 (2025-12-18)
@@ -1607,6 +1613,7 @@ Release 0.3.5 (2004-07-29)
 .. _input_encoding: docs/user/config.html#input-encoding
 .. _[latex writers]: docs/user/config.html#latex-writers
 .. _legacy_column_widths: docs/user/config.html#legacy-column-widths
+.. _legacy_ids: docs/user/config.html#legacy-ids
 .. _text_references: docs/user/config.html#text-references
 .. _math_output: docs/user/config.html#math-output
 .. _old-format configuration files:

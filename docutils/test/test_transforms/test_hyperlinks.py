@@ -1038,6 +1038,64 @@ Duplicate manual footnote labels, with reference ([1]_):
         <paragraph>
             Duplicate target name, cannot be used as a unique reference: "1".
 """],
+["""\
+An explicit target _`foo` overrides a homonymous implicit target.
+
+foo
+---
+
+The reference foo_ points to the explicit target.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        An explicit target \n\
+        <target ids="foo" names="foo">
+            foo
+         overrides a homonymous implicit target.
+    <section dupnames="foo" ids="foo-1">
+        <title>
+            foo
+        <system_message backrefs="foo-1" level="1" line="4" source="test data" type="INFO">
+            <paragraph>
+                Duplicate implicit target name: "foo".
+        <paragraph>
+            The reference \n\
+            <reference name="foo" refid="foo">
+                foo
+             points to the explicit target.
+"""],
+["""\
+foo
+---
+
+If an implicit target precedes a homonymous explicit target _`foo`,
+the explicit target takes over the reference name but not the identifier.
+
+The reference foo_ points to the explicit target. However, referencing from
+an external document requires the non-obvious fragment identifier "#foo-1".
+""",
+"""\
+<document source="test data">
+    <section dupnames="foo" ids="foo">
+        <title>
+            foo
+        <system_message backrefs="foo-1" level="1" line="5" source="test data" type="INFO">
+            <paragraph>
+                Target name overrides implicit target name "foo".
+        <paragraph>
+            If an implicit target precedes a homonymous explicit target \n\
+            <target ids="foo-1" names="foo">
+                foo
+            ,
+            the explicit target takes over the reference name but not the identifier.
+        <paragraph>
+            The reference \n\
+            <reference name="foo" refid="foo-1">
+                foo
+             points to the explicit target. However, referencing from
+            an external document requires the non-obvious fragment identifier "#foo-1".
+"""],
 ])
 
 

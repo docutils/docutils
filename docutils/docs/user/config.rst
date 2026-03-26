@@ -840,6 +840,19 @@ especially suited for languages that do not use whitespace to separate words
 
 New in Docutils 0.13.
 
+legacy_ids
+~~~~~~~~~~
+Keep element identifiers_ compatible to Docutils ≤ 0.22.
+
+In case of a name conflict with an `implicit target`_ (section heading),
+identifiers_ may have a disambiguating number added to the normalized
+`reference name`_.
+
+:Default: True; will change to False in Docutils 2.0.
+:Option:  ``--legacy-ids``, ``--matching-ids``.
+
+New in Docutils 0.23.
+
 pep_references
 ~~~~~~~~~~~~~~
 Recognize and link to standalone PEP references (like "PEP 258").
@@ -1821,7 +1834,7 @@ automatically loaded.
 reference_label
 ~~~~~~~~~~~~~~~
 Per default the LaTeX writer uses ``\hyperref`` for `hyperlink
-references`_ to internal__ or implicit__ targets.
+references`_ to internal__ or `implicit targets`_.
 Specify an alternative reference command name, e.g., "ref" or "pageref"
 to get the section number or the page number as reference text.
 
@@ -1839,10 +1852,7 @@ to get the section number or the page number as reference text.
 *Default*: "" (use ``\hyperref``).  *Option*: ``--reference-label``.
 
 __ ../ref/rst/restructuredtext.html#internal-hyperlink-targets
-__ ../ref/rst/restructuredtext.html#implicit-hyperlink-targets
 __ ../dev/todo.html#object-numbering-and-object-references
-.. _hyperlink references: ../ref/rst/restructuredtext.html#hyperlink-references
-.. _interpreted text role: ../ref/rst/restructuredtext.html#interpreted-text
 
 section_enumerator_separator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2638,6 +2648,7 @@ If the first line matches the second line is ignored.
 .. _Docutils Generic document type definition:
 .. _Document Tree: ../ref/doctree.html
 .. _class attribute: ../ref/doctree.html#classes
+.. _identifiers: ../ref/doctree.html#identifiers
 .. _title attribute: ../ref/doctree.html#title-attribute
 .. _"uri" attribute: ../ref/doctree.html#uri
 
@@ -2686,14 +2697,20 @@ If the first line matches the second line is ignored.
 .. _citations: ../ref/rst/restructuredtext.html#citations
 .. _document title: ../ref/rst/restructuredtext.html#document-title
 .. _enumerated lists: ../ref/rst/restructuredtext.html#enumerated-lists
+.. _explicit target:  ../ref/rst/restructuredtext.html#explicit-hyperlink-targets
 .. _field lists: ../ref/rst/restructuredtext.html#field-lists
 .. _field names: ../ref/rst/restructuredtext.html#field-names
 .. _footnotes: ../ref/rst/restructuredtext.html#footnotes
 .. _footnote references: ../ref/rst/restructuredtext.html#footnote-references
+.. _hyperlink references: ../ref/rst/restructuredtext.html#hyperlink-references
+.. _implicit target:
+.. _implicit targets:  ../ref/rst/restructuredtext.html#implicit-hyperlink-targets
+.. _interpreted text role: ../ref/rst/restructuredtext.html#interpreted-text
 .. _inline markup recognition rules:
     ../ref/rst/restructuredtext.html#inline-markup-recognition-rules
 .. _literal blocks: ../ref/rst/restructuredtext.html#literal-blocks
 .. _option lists: ../ref/rst/restructuredtext.html#option-lists
+.. _reference name: ../ref/rst/restructuredtext.html#reference-names
 .. _tables: ../ref/rst/restructuredtext.html#tables
 
 .. _Docutils HTML writers: html.html
