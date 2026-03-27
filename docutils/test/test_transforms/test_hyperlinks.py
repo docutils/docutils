@@ -29,19 +29,25 @@ from docutils.utils import new_document
 class TransformTestCase(unittest.TestCase):
     maxDiff = None
 
+    transforms = (PropagateTargets, AnonymousHyperlinks, IndirectHyperlinks,
+                  ExternalTargets, InternalTargets, DanglingReferences,
+                  TestMessages)
+
     def test_transforms(self):
         parser = Parser()
-        settings = get_default_settings(Parser)
-        settings.warning_stream = ''
-        for name, (transforms, cases) in totest.items():
+        default_settings = get_default_settings(Parser)
+        default_settings.warning_stream = ''
+        for name, (settings_overrides, cases) in totest.items():
+            settings = default_settings.copy()
+            for k, v in settings_overrides.items():
+                setattr(settings, k, v)
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
-                    document = new_document('test data', settings.copy())
+                    document = new_document('test data', settings)
                     parser.parse(case_input, document)
                     # Don't do a ``populate_from_components()`` because that
                     # would enable the Transformer's default transforms.
-                    document.transformer.add_transforms(transforms)
-                    document.transformer.add_transform(TestMessages)
+                    document.transformer.add_transforms(self.transforms)
                     document.transformer.apply_transforms()
                     output = document.pformat()
                     self.assertEqual(case_expected, output)
@@ -52,9 +58,7 @@ totest = {}
 # Exhaustive listing of hyperlink variations: every combination of
 # target/reference, direct/indirect, internal/external, and named/anonymous,
 # plus embedded URIs.
-totest['exhaustive_hyperlinks'] = ((PropagateTargets, AnonymousHyperlinks,
-                                    IndirectHyperlinks, ExternalTargets,
-                                    InternalTargets, DanglingReferences), [
+totest['exhaustive_hyperlinks'] = ({}, [
 ["""\
 direct_ external
 
@@ -575,9 +579,7 @@ See `Element \\<a>`_, `Element <b\\>`_, and `Element <c>\\ `_.
 """],
 ])
 
-totest['hyperlinks'] = ((PropagateTargets, AnonymousHyperlinks,
-                         IndirectHyperlinks, ExternalTargets,
-                         InternalTargets, DanglingReferences), [
+totest['hyperlinks legacy'] = ({'legacy_ids': True}, [
 ["""\
 .. _internal hyperlink:
 
@@ -1095,6 +1097,42 @@ an external document requires the non-obvious fragment identifier "#foo-1".
                 foo
              points to the explicit target. However, referencing from
             an external document requires the non-obvious fragment identifier "#foo-1".
+"""],
+])
+
+totest['hyperlinks'] = ({'legacy_ids': False}, [
+["""\
+foo
+---
+
+With legacy_ids = False, an explicit target _`foo` takes over the
+reference name and identifier of a homonymous implicit target.
+
+The reference foo_ points to the explicit target.
+Referencing from an external document can be done
+using the matching fragment identifier "#foo".
+""",
+"""\
+<document source="test data">
+    <section dupnames="foo">
+        <title>
+            foo
+        <system_message backrefs="foo" level="1" line="5" source="test data" type="INFO">
+            <paragraph>
+                Target name overrides implicit target name "foo".
+        <paragraph>
+            With legacy_ids = False, an explicit target \n\
+            <target ids="foo" names="foo">
+                foo
+             takes over the
+            reference name and identifier of a homonymous implicit target.
+        <paragraph>
+            The reference \n\
+            <reference name="foo" refid="foo">
+                foo
+             points to the explicit target.
+            Referencing from an external document can be done
+            using the matching fragment identifier "#foo".
 """],
 ])
 

@@ -940,8 +940,8 @@ class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
         if node.resolved or not node.hasattr('refname'):
             return
         refname = node['refname']
-        id = self.document.nameids.get(refname)
-        if id is not None:
+        id = self.document.nameids.get(refname, '')
+        if id:
             # target found, set refid
             del node['refname']
             node['refid'] = id
@@ -949,11 +949,12 @@ class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
             node.resolved = True
             return
         # Apply component-specific resolving functions (cf. TransformSpec):
+        # (will be removed in Docutils 1.0)
         for resolver_function in self.unknown_reference_resolvers:
             if resolver_function(node):
                 return
         # Report unresolved references:
-        if refname in self.document.nameids:
+        if id is None:
             msg = self.document.reporter.error(
                 'Duplicate target name, cannot be used as a unique '
                 f'reference: "{refname}".', base_node=node)

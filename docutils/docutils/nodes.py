@@ -1890,15 +1890,18 @@ class document(Root, Element):
         self.refids: dict[str, list[Element]] = {}
         """(Incomplete) Mapping of ids to lists of referencing nodes."""
 
+        self.names: dict[str, Element|None] = {}
+        """Mapping of names to nodes (or ``None`` if name is a duplicate)."""
+
+        self.ids: dict[str, Element] = {}
+        """Mapping of ids to nodes."""
+
         self.nameids: dict[str, str] = {}
         """Mapping of names to unique id's."""
 
         self.nametypes: dict[str, bool] = {}
         """Mapping of names to hyperlink type. True: explicit, False: implicit.
         """
-
-        self.ids: dict[str, Element] = {}
-        """Mapping of ids to nodes."""
 
         self.footnote_refs: dict[str, list[footnote_reference]] = {}
         """Mapping of footnote labels to lists of footnote_reference nodes."""
@@ -1973,19 +1976,35 @@ class document(Root, Element):
                msgnode: Element | None = None,
                suggested_prefix: str = '',
                ) -> str:
-        if node['ids']:
-            # register and check for duplicates
-            for id in node['ids']:
-                self.ids.setdefault(id, node)
-                if self.ids[id] is not node:
-                    msg = self.reporter.error(f'Duplicate ID: "{id}" used by '
-                                              f'{self.ids[id].starttag()} '
-                                              f'and {node.starttag()}',
-                                              base_node=node)
-                    if msgnode is not None:
-                        msgnode += msg
-            return id
-        # generate and set id
+        """
+        Check/set identifiers of element `node`. Return last identifier.
+
+        Check `node`s identifiers for duplicates,
+        create a new identifier if there are none.
+        Update `document.ids` and `document.nameids`.
+
+        Provisional.
+        """
+        if not node['ids']:
+            node['ids'].append(self.create_id(node, suggested_prefix))
+        # register and check for duplicates
+        for id in node['ids']:
+            self.ids.setdefault(id, node)
+            if self.ids[id] is not node:
+                msg = self.reporter.error(f'Duplicate ID: "{id}" used by '
+                                          f'{self.ids[id].starttag()} '
+                                          f'and {node.starttag()}',
+                                          base_node=node)
+                if msgnode is not None:
+                    msgnode += msg
+        for name in node['names']:
+            self.nameids[name] = id
+        return id
+
+    def create_id(self, node: Element, suggested_prefix: str = '') -> str:
+        # Internal auxiliary method for set_id():
+        # generate and return a suitable identifier for `node`.
+        # See also make_id()
         id_prefix = self.settings.id_prefix
         auto_id_prefix = self.settings.auto_id_prefix
         base_id = ''
@@ -2004,6 +2023,8 @@ class document(Root, Element):
                 # disambiguate name-derived ID
                 # TODO: remove second condition after announcing change
                 prefix = id + '-'
+            elif node['dupnames'] and make_id(node['dupnames'][0]):
+                prefix = make_id(node['dupnames'][0]) + '-'
             else:
                 prefix = id_prefix + auto_id_prefix
                 if prefix.endswith('%'):
@@ -2014,8 +2035,6 @@ class document(Root, Element):
                 id = f'{prefix}{self.id_counter[prefix]}'
                 if id not in self.ids:
                     break
-        node['ids'].append(id)
-        self.ids[id] = node
         return id
 
     def set_name_id_map(self,
@@ -2024,36 +2043,54 @@ class document(Root, Element):
                         msgnode: Element | None = None,
                         explicit: bool = False,
                         ) -> None:
+        """Deprecated. Will be removed in Docutils 1.0."""
+        warnings.warn('nodes.document.set_name_id_map() will be removed'
+                      ' in Docutils 1.0.', DeprecationWarning, stacklevel=2)
+        self.note_names(node, msgnode, explicit)
+        for name in node['names']:
+            self.nameids[name] = id
+
+    def set_duplicate_name(self,
+                           node: Element,
+                           name: str,
+                           msgnode: Element,
+                           explicit: bool,
+                           ) -> None:
         """
-        Update the name/id mappings.
+        Handle name conflicts according to the `rST specification`__.
 
-        `self.nameids` maps names to IDs. The value ``None`` indicates
-        that the name is a "dupname" (i.e. there are already at least
-        two targets with the same name and type).
+        Called by `self.note_names()` when the reference name `name`
+        of the element `node` is already registered in `self.names`.
 
-        `self.nametypes` maps names to booleans representing
-        hyperlink target type (True==explicit, False==implicit).
+        `self.names` maps names to elements.  The value ``None`` indicates
+        that the name is a "dupname" (i.e. the document contains two or
+        more elements with the same name and target type).
 
-        The following state transition table shows how `self.nameids` items
-        ("id") and `self.nametypes` items ("type") change with new input
-        (a call to this method), and what actions are performed:
+        `self.nametypes` maps names to booleans representing the target type
+        (True = "explicit", False = "implicit").
 
-        ========  ====  ========  ====  ========  ======== =======  ======
-         Input      Old State      New State            Action      Notes
-        --------  --------------  --------------  ----------------  ------
-        type      id    type      id    type      dupname  report
-        ========  ====  ========  ====  ========  ======== =======  ======
-        explicit                  new   explicit
-        implicit                  new   implicit
-        explicit  old   explicit  None  explicit  new,old  WARNING  [#ex]_
-        implicit  old   explicit  old   explicit  new      INFO     [#ex]_
-        explicit  old   implicit  new   explicit  old      INFO     [#ex]_
-        implicit  old   implicit  None  implicit  new,old  INFO     [#ex]_
-        explicit  None  explicit  None  explicit  new      WARNING
-        implicit  None  explicit  None  explicit  new      INFO
+        The following state transition table shows how the values
+        of `self.names` ("name") and `self.nametypes` ("type") items
+        with key `name` change and which actions are performed.
+
+        "Old" is the element with conflicting reference name,
+        "new" is the element specified by the argument `node`.
+        The "Input type" is specified by the argument `explicit`.
+
+        ========  ====  ========  ====  ========  ===============  =======
+        Input     Old State       New State       Action
+        --------  --------------  --------------  ------------------------
+        type      name  type      name  type      invalidate [#]_  report
+        ========  ====  ========  ====  ========  ===============  =======
+        explicit  old   explicit  None  explicit  new,old [#ex]_   WARNING
+        implicit  old   explicit  old   explicit  new              INFO
+        explicit  old   implicit  new   explicit  old              INFO
+        implicit  old   implicit  None  implicit  new,old [#ex]_   INFO
+        explicit  None  explicit  None  explicit  new              WARNING
+        implicit  None  explicit  None  explicit  new              INFO
         explicit  None  implicit  new   explicit
-        implicit  None  implicit  None  implicit  new      INFO
-        ========  ====  ========  ====  ========  ======== =======  ======
+        implicit  None  implicit  None  implicit  new              INFO
+        ========  ====  ========  ====  ========  ===============  =======
 
         .. [#] When "invalidating" an element, `name` is transferred from
            the element's "name" attribute to its "dupnames" attribute.
@@ -2064,32 +2101,15 @@ class document(Root, Element):
         __ https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html
            #implicit-hyperlink-targets
 
-        Provisional. There will be changes to prefer explicit reference names
-        as base for an element's ID.
+        Provisional.
         """
-        for name in tuple(node['names']):
-            if name in self.nameids:
-                self.set_duplicate_name_id(node, id, name, msgnode, explicit)
-                # attention: modifies node['names']
-            else:
-                self.nameids[name] = id
-                self.nametypes[name] = explicit
-
-    def set_duplicate_name_id(self,
-                              node: Element,
-                              id: str,
-                              name: str,
-                              msgnode: Element,
-                              explicit: bool,
-                              ) -> None:
-        old_id = self.nameids[name]  # None if name is only dupname
+        old_node = self.names[name]  # None if name is only dupname
         old_explicit = self.nametypes[name]
-        old_node = self.ids.get(old_id)
         level = 0  # system message level: 1-info, 2-warning
 
         self.nametypes[name] = old_explicit or explicit
 
-        if old_id is not None and (
+        if old_node is not None and (
             'refname' in node and node['refname'] == old_node.get('refname')
             or 'refuri' in node and node['refuri'] == old_node.get('refuri')
             ):
@@ -2103,12 +2123,13 @@ class document(Root, Element):
                 level = 2
                 s = f'Duplicate explicit target name: "{name}".'
                 dupname(node, name)
-                if old_id is not None:
+                if old_node is not None:
                     dupname(old_node, name)
+                    self.names[name] = None
                     self.nameids[name] = None
             else:  # new explicit, old implicit -> override
-                self.nameids[name] = id
-                if old_id is not None:
+                self.names[name] = node
+                if old_node is not None:
                     level = 1
                     s = f'Target name overrides implicit target name "{name}".'
                     dupname(old_node, name)
@@ -2116,37 +2137,58 @@ class document(Root, Element):
             level = 1
             s = f'Duplicate implicit target name: "{name}".'
             dupname(node, name)
-            if old_id is not None and not old_explicit:
+            if old_node is not None and not old_explicit:
                 dupname(old_node, name)
+                self.names[name] = None
                 self.nameids[name] = None
-
+                self.set_id(old_node)  # set id to get running numbers right
         if level:
-            backrefs = [id]
             # don't add backref id for empty targets (not shown in output)
             if isinstance(node, target) and 'refuri' in node:
                 backrefs = []
+            else:
+                backrefs = [self.set_id(node)]
             msg = self.reporter.system_message(level, s, backrefs=backrefs,
                                                base_node=node)
             # try appending near to the problem:
             if msgnode is not None and 'Body' in repr(msgnode.content_model):
                 msgnode += msg
 
+    def note_names(self,
+                   node: Element,
+                   msgnode: Element|None = None,
+                   explicit: bool = False,
+                   ) -> None:
+        """
+        Register the reference names of the element `node`.
+
+        Update `self.names` and `self.nametypes`
+        for each name in the "names" attribute of `node`.
+        In case of name conflicts, call `self.set_duplicate_name()`.
+        """
+        for name in tuple(node['names']):
+            if name in self.names and self.names[name] != node:
+                self.set_duplicate_name(node, name, msgnode, explicit)
+                # attention: modifies node['names']
+            else:
+                self.names[name] = node
+                self.nametypes.setdefault(name, explicit)
+
     def has_name(self, name: str) -> bool:
-        return name in self.nameids
+        # TODO: deprecate? (use ``name in document.names``)
+        return name in self.names
 
     # "note" here is an imperative verb: "take note of".
-    def note_implicit_target(
-            self, target: Element, msgnode: Element | None = None) -> None:
-        # TODO: Postpone ID creation and register reference name instead of ID?
-        id = self.set_id(target, msgnode)
-        self.set_name_id_map(target, id, msgnode, explicit=False)
+    def note_implicit_target(self, target: Element,
+                             msgnode: Element|None = None) -> None:
+        self.note_names(target, msgnode, explicit=False)
+        if getattr(self.settings, "legacy_ids", True):
+            self.set_id(target, msgnode)
 
-    def note_explicit_target(
-            self, target: Element, msgnode: Element | None = None) -> None:
-        # TODO: if the id matching the name is applied to an implicid target,
-        # transfer it to this target and put a "disambiguated" id on the other.
-        id = self.set_id(target, msgnode)
-        self.set_name_id_map(target, id, msgnode, explicit=True)
+    def note_explicit_target(self, target: Element,
+                             msgnode: Element|None = None) -> None:
+        self.note_names(target, msgnode, explicit=True)
+        self.set_id(target, msgnode)
 
     def note_refname(self, node: Element) -> None:
         self.refnames.setdefault(node['refname'], []).append(node)

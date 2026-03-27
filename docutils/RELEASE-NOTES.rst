@@ -183,6 +183,9 @@ Removals
   `writers.latex2e.LaTeXTranslator.visit_docinfo_item()`
   (ignored since Docutils 0.22) in Docutils 0.24.
 
+* Remove `nodes.set_name_id_map()` in Docutils 1.0
+  (not used since Docutils 0.23).
+
 * Remove `parsers.rst.directives.CSVTable.HeaderDialect`
   in Docutils 1.0.
 
@@ -311,9 +314,21 @@ LaTeX writer:
 Configuration changes
   - New setting `legacy_ids`_.
 
+New objects
+  `nodes.document.names`:
+    Internal attribute mapping `reference names`_ to the
+    referenced elements (or ``None`` if the name is a duplicate).
+  `nodes.document.note_names()`:
+    Register an element's names, check for duplicates.
+  `nodes.document.set_duplicate_name()`
+    Called by `nodes.document.note_names()` to handle duplicate names.
+    Provisional.
+
 Removed objects
   `parsers.rst.directives.tables.CSVTable.check_requirements()`
      not required with Python 3.
+  `nodes.document.set_duplicate_name_id()`
+     internal method, replaced by `nodes.document.set_duplicate_name()`.
 
 
 Release 0.22.4 (2025-12-18)
@@ -1581,6 +1596,7 @@ Release 0.3.5 (2004-07-29)
 .. _Docutils XML: docs/ref/doctree.html
 .. _"colwidth" attribute: docs/ref/doctree.html#colwidth
 .. _<doctest_block>: docs/ref/doctree.html#doctest-block
+.. _reference names:  docs/ref/doctree.html#reference-names
 .. _<target>: docs/ref/doctree.html#target
 
 .. _"class": docs/ref/rst/directives.html#class

@@ -28,6 +28,16 @@ Release 0.23b.dev (unpublished)
     <target> elements when testing for a <transition> at the begin or end
     of a <section> or the <document>.
 
+  - If legacy_ids_ is False, `note_implicit_target()` does not generate
+    an ID. This allows an explicit target to use the matching ID in case
+    of a name conflict.
+
+    - The new internal attribute `document.names` maps reference names to
+      the referenced elements (or ``None`` if the name is a duplicate).
+    - New method `document.note_names()`.
+    - `document.set_id()` also updates the `document.nameids` map.
+    - `document.set_duplicate_name()` replaces `set_duplicate_name_id()`.
+
 * docutils/parsers/rst/__init__.py
 
   - New configuration setting `legacy_ids`_.
