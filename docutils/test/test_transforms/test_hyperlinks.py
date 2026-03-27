@@ -292,7 +292,7 @@ __ ztarget_
     <target dupnames="ztarget" refid="ztarget">
     <paragraph ids="ztarget">
         First
-    <system_message backrefs="ztarget-1" level="2" line="5" source="test data" type="WARNING">
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "ztarget".
     <target dupnames="ztarget" refid="ztarget-1">

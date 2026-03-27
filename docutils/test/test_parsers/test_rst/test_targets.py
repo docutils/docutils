@@ -265,7 +265,7 @@ do not conflict. The reference name can be used in a link_.
             targets
          (same refname):
     <target ids="link" names="link" refname="targets">
-    <system_message backrefs="link-1" level="1" line="5" source="test data" type="INFO">
+    <system_message level="1" line="5" source="test data" type="INFO">
         <paragraph>
             Duplicate name "link" for external target "targets".
     <target dupnames="link" ids="link-1" refname="targets">
@@ -323,7 +323,7 @@ Paragraph.
     <section dupnames="title" ids="title">
         <title>
             Title
-        <system_message backrefs="title-1" level="1" line="6" source="test data" type="INFO">
+        <system_message level="1" line="6" source="test data" type="INFO">
             <paragraph>
                 Target name overrides implicit target name "title".
         <target ids="title-1" names="title">
@@ -375,13 +375,13 @@ Third.
     <target dupnames="title" ids="title">
     <paragraph>
         First.
-    <system_message backrefs="title-1" level="2" line="7" source="test data" type="WARNING">
+    <system_message level="2" line="7" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "title".
     <target dupnames="title" ids="title-1">
     <paragraph>
         Second.
-    <system_message backrefs="title-2" level="2" line="11" source="test data" type="WARNING">
+    <system_message level="2" line="11" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "title".
     <target dupnames="title" ids="title-2">
@@ -464,7 +464,7 @@ Explicit internal target.
                     Duplicate explicit target name: "target".
             <paragraph>
                 Autonumber-labeled footnote target.
-        <system_message backrefs="target-3" level="2" line="12" source="test data" type="WARNING">
+        <system_message level="2" line="12" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "target".
         <target dupnames="target" ids="target-3">

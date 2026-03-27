@@ -1300,7 +1300,7 @@ No clash with anonymous reference `link <tg1_>`__.
         <target ids="tg2" names="tg2">
             tg2
         .
-    <system_message backrefs="link-1" level="1" line="6" source="test data" type="INFO">
+    <system_message level="1" line="6" source="test data" type="INFO">
         <paragraph>
             Duplicate implicit target name: "link".
     <paragraph>

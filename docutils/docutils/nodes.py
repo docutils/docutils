@@ -2144,7 +2144,7 @@ class document(Root, Element):
                 self.set_id(old_node)  # set id to get running numbers right
         if level:
             # don't add backref id for empty targets (not shown in output)
-            if isinstance(node, target) and 'refuri' in node:
+            if isinstance(node, target) and not node.children:
                 backrefs = []
             else:
                 backrefs = [self.set_id(node)]
