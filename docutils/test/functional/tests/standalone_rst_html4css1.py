@@ -6,6 +6,7 @@ test_destination = "standalone_rst_html4css1.html"
 writer = "html4css1"
 settings_overrides = {
     'sectsubtitle_xform': True,
+    'legacy_ids': True,
     # location of stylesheets (relative to ``docutils/test/``)
     'stylesheet_dirs': ('functional/input/data', ),
     }

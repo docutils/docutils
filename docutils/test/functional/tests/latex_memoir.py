@@ -8,6 +8,7 @@ settings_overrides = {
     'use_latex_docinfo': 1,
     'documentclass': "memoir",
     'template': "titlingpage.tex",
+    'legacy_ids': True,
     # test the legacy class functions (since 0.18 default is False )
     'legacy_class_functions': True,
     'legacy_column_widths': True,

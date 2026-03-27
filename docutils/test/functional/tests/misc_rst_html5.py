@@ -8,6 +8,7 @@ settings_overrides = {
     # location of stylesheets (relative to ``docutils/test/``)
     'stylesheet_dirs': ('functional/input/data', ),
     'stylesheet_path': 'minimal.css,responsive.css',
+    'legacy_ids': False,
     'smart_quotes': 'yes',
     'image_loading': 'embed',
     'toc_backlinks': 'top',

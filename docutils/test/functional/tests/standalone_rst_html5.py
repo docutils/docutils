@@ -6,6 +6,7 @@ test_destination = "standalone_rst_html5.html"
 writer = "html5"
 settings_overrides = {
     'sectsubtitle_xform': True,
+    'legacy_ids': False,
     # "smart" quotes:
     # 'smart_quotes': 'yes',
     # location of stylesheets (relative to ``docutils/test/``)

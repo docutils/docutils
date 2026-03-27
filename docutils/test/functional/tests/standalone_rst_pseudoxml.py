@@ -6,6 +6,7 @@ test_destination = "standalone_rst_pseudoxml.txt"
 writer = "pseudoxml"
 settings_overrides = {
     'sectsubtitle_xform': True,
+    'legacy_ids': False,
     # enable INFO-level system messages in this test:
     'report_level': 1,
     }

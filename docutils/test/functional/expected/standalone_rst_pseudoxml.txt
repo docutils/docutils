@@ -211,13 +211,13 @@
                         <bullet_list classes="auto-toc">
                             <list_item>
                                 <paragraph>
-                                    <reference ids="toc-entry-20" refid="duplicate-target-names">
+                                    <reference ids="toc-entry-20" refid="duplicate-target-names-1">
                                         <generated classes="sectnum">
                                             2.13.1   
                                         Duplicate Target Names
                             <list_item>
                                 <paragraph>
-                                    <reference ids="toc-entry-21" refid="duplicate-target-names-1">
+                                    <reference ids="toc-entry-21" refid="duplicate-target-names-2">
                                         <generated classes="sectnum">
                                             2.13.2   
                                         Duplicate Target Names
@@ -1159,7 +1159,7 @@
                     `hyperlink reference without a target`_
                 , which generates an
                 error.
-            <section dupnames="duplicate\ target\ names" ids="duplicate-target-names">
+            <section dupnames="duplicate\ target\ names" ids="duplicate-target-names-1">
                 <title auto="1" refid="toc-entry-20">
                     <generated classes="sectnum">
                         2.13.1   
@@ -1168,12 +1168,12 @@
                     Duplicate names in section headers or other implicit targets will
                     generate "info" (level-1) system messages.  Duplicate names in
                     explicit targets will generate "warning" (level-2) system messages.
-            <section dupnames="duplicate\ target\ names" ids="duplicate-target-names-1">
+            <section dupnames="duplicate\ target\ names" ids="duplicate-target-names-2">
                 <title auto="1" refid="toc-entry-21">
                     <generated classes="sectnum">
                         2.13.2   
                     Duplicate Target Names
-                <system_message backrefs="duplicate-target-names-1" level="1" line="437" source="functional/input/data/standard.rst" type="INFO">
+                <system_message backrefs="duplicate-target-names-2" level="1" line="437" source="functional/input/data/standard.rst" type="INFO">
                     <paragraph>
                         Duplicate implicit target name: "duplicate target names".
                 <paragraph>
@@ -1925,7 +1925,7 @@
                     , and 
                     <reference name="references" refuri="http://www.python.org/">
                         references
-                    <target ids="references" names="references" refuri="http://www.python.org/">
+                    <target names="references" refuri="http://www.python.org/">
                     .
             <section ids="code" names="code">
                 <title auto="1" refid="toc-entry-52">
