@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
-from docutils.transforms.references import Substitutions
+from docutils.transforms.references import SectionIDs, Substitutions
 from docutils.transforms.universal import TestMessages
 from docutils.utils import new_document
 
@@ -46,7 +46,7 @@ class TransformTestCase(unittest.TestCase):
 
 totest = {}
 
-totest['section_numbers'] = ((Substitutions,), [
+totest['section_numbers'] = ((SectionIDs, Substitutions), [
 ["""\
 .. sectnum::
 

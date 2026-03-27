@@ -21,7 +21,7 @@ from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
 from docutils.transforms.references import PropagateTargets, \
      AnonymousHyperlinks, IndirectHyperlinks, ExternalTargets, \
-     InternalTargets, DanglingReferences
+     InternalTargets, DanglingReferences, SectionIDs
 from docutils.transforms.universal import TestMessages
 from docutils.utils import new_document
 
@@ -31,7 +31,7 @@ class TransformTestCase(unittest.TestCase):
 
     transforms = (PropagateTargets, AnonymousHyperlinks, IndirectHyperlinks,
                   ExternalTargets, InternalTargets, DanglingReferences,
-                  TestMessages)
+                  SectionIDs, TestMessages)
 
     def test_transforms(self):
         parser = Parser()
@@ -1100,7 +1100,9 @@ an external document requires the non-obvious fragment identifier "#foo-1".
 """],
 ])
 
-totest['hyperlinks'] = ({'legacy_ids': False}, [
+totest['hyperlinks'] = ({'legacy_ids': False},
+                        # all but the last sample compile as before
+                        totest['hyperlinks legacy'][1][:-1] + [
 ["""\
 foo
 ---
@@ -1114,7 +1116,7 @@ using the matching fragment identifier "#foo".
 """,
 """\
 <document source="test data">
-    <section dupnames="foo">
+    <section dupnames="foo" ids="foo-1">
         <title>
             foo
         <system_message backrefs="foo" level="1" line="5" source="test data" type="INFO">

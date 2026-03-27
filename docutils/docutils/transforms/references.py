@@ -14,8 +14,28 @@ from docutils import nodes, utils
 from docutils.transforms import Transform
 
 
-class PropagateTargets(Transform):
+class SectionIDs(Transform):
+    """
+    Add identifiers to sections.
 
+    If the "legacy_ids" configuration setting is False, the rST parser
+    does not generate identifiers for implicit targets (e.g. sections)
+    in order to give explicit targets preferential access to identifiers
+    matching their reference name.
+
+    However, the `parts.Contents` transform and most writers
+    expect sections to have an identifier, so this transform adds them.
+    """
+    default_priority = 240
+
+    def apply(self) -> None:
+        if getattr(self.document.settings, "legacy_ids", True):
+            return
+        for node in self.document.findall(nodes.section):
+            self.document.set_id(node)
+
+
+class PropagateTargets(Transform):
     """
     Propagate empty internal targets to the next element.
 
@@ -222,22 +242,26 @@ class IndirectHyperlinks(Transform):
             self.resolve_indirect_references(target)
 
     def resolve_indirect_target(self, target) -> None:
+        # indirect targets have either a refname or refid attribute
         refname = target.get('refname')
-        if refname is None:
-            reftarget_id = target['refid']
+        refid = target.get('refid')
+        if refid:
+            reftarget = self.document.ids.get(refid)
         else:
-            reftarget_id = self.document.nameids.get(refname)
-            if not reftarget_id:
-                # Check the unknown_reference_resolvers
-                for resolver_function in \
-                        self.document.transformer.unknown_reference_resolvers:
-                    if resolver_function(target):
-                        break
-                else:
-                    self.nonexistent_indirect_target(target)
-                return
-        reftarget = self.document.ids[reftarget_id]
-        reftarget.note_referenced_by(id=reftarget_id)
+            reftarget = self.document.names.get(refname)
+            refid = self.document.nameids.get(refname)
+            if reftarget and not refid:
+                refid = self.document.set_id(reftarget)
+        if not reftarget:
+            # Check the unknown_reference_resolvers
+            for resolver_function in \
+                self.document.transformer.unknown_reference_resolvers:
+                if resolver_function(target):
+                    break
+            else:
+                self.nonexistent_indirect_target(target)
+            return
+        reftarget.note_referenced_by(id=refid)
         if (isinstance(reftarget, nodes.target)
             and not reftarget.resolved
             and reftarget.hasattr('refname')):
@@ -256,7 +280,7 @@ class IndirectHyperlinks(Transform):
             self.document.note_refid(target)
         else:
             if reftarget['ids']:
-                target['refid'] = reftarget_id
+                target['refid'] = refid
                 self.document.note_refid(target)
             else:
                 self.nonexistent_indirect_target(target)
@@ -266,7 +290,7 @@ class IndirectHyperlinks(Transform):
         target.resolved = True
 
     def nonexistent_indirect_target(self, target) -> None:
-        if target['refname'] in self.document.nameids:
+        if self.document.names.get(target['refname'], '') is None:
             self.indirect_target_error(target, 'which is a duplicate, and '
                                        'cannot be used as a unique reference')
         else:

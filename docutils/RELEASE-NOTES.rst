@@ -323,6 +323,8 @@ New objects
   `nodes.document.set_duplicate_name()`
     Called by `nodes.document.note_names()` to handle duplicate names.
     Provisional.
+  `transforms.SectionIDs`:
+    Ensure all sections have an identifier_.
 
 Removed objects
   `parsers.rst.directives.tables.CSVTable.check_requirements()`
@@ -1595,6 +1597,7 @@ Release 0.3.5 (2004-07-29)
 .. _Docutils Document Model:
 .. _Docutils XML: docs/ref/doctree.html
 .. _"colwidth" attribute: docs/ref/doctree.html#colwidth
+.. _identifier: docs/ref/doctree.html#identifiers
 .. _<doctest_block>: docs/ref/doctree.html#doctest-block
 .. _reference names:  docs/ref/doctree.html#reference-names
 .. _<target>: docs/ref/doctree.html#target

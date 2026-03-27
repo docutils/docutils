@@ -86,6 +86,8 @@ class Contents(Transform):
     default_priority = 720
 
     def apply(self) -> None:
+        # ensure the "ToC topic" wrapper element has an identifier:
+        self.toc_id = self.document.set_id(self.startnode.parent)
         # let the writer (or output software) build the contents list?
         toc_by_writer = getattr(self.document.settings, 'use_latex_toc', False)
         # TODO: handle "generate_oowriter_toc" setting of the "ODT" writer.
@@ -100,7 +102,6 @@ class Contents(Transform):
                 startnode = startnode.parent
         else:
             startnode = self.document
-        self.toc_id = self.startnode.parent['ids'][0]
         if 'backlinks' in details:
             self.backlinks = details['backlinks']
         else:

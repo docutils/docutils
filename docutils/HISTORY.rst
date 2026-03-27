@@ -41,6 +41,7 @@ Release 0.23b.dev (unpublished)
 * docutils/parsers/rst/__init__.py
 
   - New configuration setting `legacy_ids`_.
+  - Load new transform `references.SectionIDs`.
 
 * docutils/parsers/rst/directives/body.py
 
@@ -73,6 +74,10 @@ Release 0.23b.dev (unpublished)
 
   - Use `nodes.transition.validate_position()` to warn about transitions
     at the beginning or end of the document or a section.
+
+* docutils/transforms/references.py:
+
+  - New transform `SectionIDs`: ensure all sections have an "identifier".
 
 * docutils/writers/html5_polyglot/__init__.py
 

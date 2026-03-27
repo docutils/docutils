@@ -57,6 +57,8 @@ misc_.ClassAttribute                `"class"`_ (d/p)              _`210`
 
 references_.Substitutions           standalone_ (r), pep_ (r)     _`220`
 
+references_.SectionIDs              rst_ (p)                      _`240`
+
 references_.PropagateTargets        standalone_ (r), pep_ (r)     _`260`
 
 frontmatter.\ DocTitle_             standalone_ (r)               _`320`
@@ -220,7 +222,8 @@ parsers.Parser
   .. _rst:
 
 parsers.rst.Parser
-  universal.SmartQuotes                 (855_)
+  | references.SectionIDs               (240_)
+  | universal.SmartQuotes               (855_)
 
   .. _writers:
 
