@@ -787,6 +787,20 @@ inserted instead.
 New in Docutils 0.17.
 
 
+legacy_ids
+----------
+Keep element identifiers_ compatible to Docutils ≤ 0.22.
+
+In case of a name conflict with an `implicit target`_ (section heading),
+identifiers_ may have a disambiguating number added to the normalized
+`reference name`_.
+
+:Default: True; will change to False in Docutils 2.0.
+:Option:  ``--legacy-ids``, ``--matching-ids``.
+
+New in Docutils 0.23.
+
+
 raw_enabled
 -----------
 
@@ -839,19 +853,6 @@ especially suited for languages that do not use whitespace to separate words
 :Options: ``--character-level-inline-markup``, ``--word-level-inline-markup``.
 
 New in Docutils 0.13.
-
-legacy_ids
-~~~~~~~~~~
-Keep element identifiers_ compatible to Docutils ≤ 0.22.
-
-In case of a name conflict with an `implicit target`_ (section heading),
-identifiers_ may have a disambiguating number added to the normalized
-`reference name`_.
-
-:Default: True; will change to False in Docutils 2.0.
-:Option:  ``--legacy-ids``, ``--matching-ids``.
-
-New in Docutils 0.23.
 
 pep_references
 ~~~~~~~~~~~~~~

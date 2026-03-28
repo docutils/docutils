@@ -38,9 +38,12 @@ Release 0.23b.dev (unpublished)
     - `document.set_id()` also updates the `document.nameids` map.
     - `document.set_duplicate_name()` replaces `set_duplicate_name_id()`.
 
-* docutils/parsers/rst/__init__.py
+* docutils/parsers/__init__.py
 
   - New configuration setting `legacy_ids`_.
+
+* docutils/parsers/rst/__init__.py
+
   - Load new transform `references.SectionIDs`.
 
 * docutils/parsers/rst/directives/body.py
