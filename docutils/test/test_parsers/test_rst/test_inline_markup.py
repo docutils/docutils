@@ -29,6 +29,7 @@ class ParserTestCase(unittest.TestCase):
         parser = Parser()
         settings = get_default_settings(Parser)
         settings.warning_stream = ''
+        settings.legacy_ids = False
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
@@ -991,7 +992,7 @@ totest['embedded_uris'] = [
     <paragraph>
         <reference name="phrase reference" refuri="http://example.com">
             phrase reference
-        <target ids="phrase-reference" names="phrase\\ reference" refuri="http://example.com">
+        <target names="phrase\\ reference" refuri="http://example.com">
 """],
 ["""\
 `anonymous reference <http://example.com>`__
@@ -1111,7 +1112,7 @@ Relative URIs' reference text can be omitted:
     <paragraph>
         <reference name="reference" refuri="reference">
             reference
-        <target ids="reference" names="reference" refuri="reference">
+        <target names="reference" refuri="reference">
     <paragraph>
         <reference name="anonymous" refuri="anonymous">
             anonymous
@@ -1130,7 +1131,7 @@ Escape trailing low-line char in URIs:
     <paragraph>
         <reference name="reference_" refuri="reference_">
             reference_
-        <target ids="reference" names="reference_" refuri="reference_">
+        <target names="reference_" refuri="reference_">
     <paragraph>
         <reference name="anonymous_" refuri="anonymous_">
             anonymous_
@@ -1149,7 +1150,7 @@ Escape other char in URIs:
     <paragraph>
         <reference name="reference:1" refuri="reference:1">
             reference:1
-        <target ids="reference-1" names="reference:1" refuri="reference:1">
+        <target names="reference:1" refuri="reference:1">
     <paragraph>
         <reference name="anonymouscall" refuri="anonymouscall">
             anonymouscall
@@ -1180,7 +1181,7 @@ Embedded URI: named `<file.txt>`_ and anonymous `<file.html>`__.
         Embedded URI: named \n\
         <reference name="file.txt" refuri="file.txt">
             file.txt
-        <target dupnames="file.txt" ids="file-txt-1" refuri="file.txt">
+        <target dupnames="file.txt" refuri="file.txt">
          and anonymous \n\
         <reference name="file.html" refuri="file.html">
             file.html
@@ -1197,7 +1198,7 @@ totest['embedded_aliases'] = [
     <paragraph>
         <reference name="phrase reference" refname="alias">
             phrase reference
-        <target ids="phrase-reference" names="phrase\\ reference" refname="alias">
+        <target names="phrase\\ reference" refname="alias">
 """],
 ["""\
 `anonymous reference <alias_>`__
@@ -1307,11 +1308,11 @@ No clash with anonymous reference `link <tg1_>`__.
         References with embedded alias: \n\
         <reference name="link" refname="tg1">
             link
-        <target dupnames="link" ids="link" refname="tg1">
+        <target dupnames="link" ids="link-1" refname="tg1">
          and \n\
         <reference name="link" refname="tg2">
             link
-        <target dupnames="link" ids="link-1" refname="tg2">
+        <target dupnames="link" refname="tg2">
         .
     <paragraph>
         No clash with anonymous reference \n\

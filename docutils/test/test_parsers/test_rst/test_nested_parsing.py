@@ -150,6 +150,7 @@ class ParserTestCase(unittest.TestCase):
         register_directive('fresh-current', FreshParseIntoCurrentNode)
         parser = rst.Parser()
         settings = get_default_settings(rst.Parser)
+        settings.legacy_ids = False
         settings.warning_stream = ''
         settings.halt_level = 5
         for name, cases in totest.items():
@@ -202,19 +203,19 @@ skipping2.2.1
 """,
 """\
 <document source="test data">
-    <section ids="sec1" names="sec1">
+    <section names="sec1">
         <title>
             sec1
-        <section ids="sec1-1" names="sec1.1">
+        <section names="sec1.1">
             <title>
                 sec1.1
-            <section ids="nested1-1-1" names="nested1.1.1">
+            <section names="nested1.1.1">
                 <title>
                     nested1.1.1
-                <section ids="nested1-1-1-1" names="nested1.1.1.1">
+                <section names="nested1.1.1.1">
                     <title>
                         nested1.1.1.1
-    <section ids="sec2" names="sec2">
+    <section names="sec2">
         <title>
             sec2
         <system_message level="3" line="16" source="test data" type="ERROR">
@@ -225,10 +226,10 @@ skipping2.2.1
                 ***********
             <paragraph>
                 Established title styles: = - * ~
-        <section ids="nested2-1" names="nested2.1">
+        <section names="nested2.1">
             <title>
                 nested2.1
-        <section ids="nested2-2" names="nested2.2">
+        <section names="nested2.2">
             <title>
                 nested2.2
             <system_message level="3" line="22" source="test data" type="ERROR">
@@ -243,7 +244,7 @@ skipping2.2.1
                     The parent of level 1 sections cannot be reached. The parser is at section level 2 but the current node has only 1 parent section(s).
                     One reason may be a high level section used in a directive that parses its content into a base node not attached to the document
                     (up to Docutils 0.21, these sections were silently dropped).
-        <section ids="sec2-2" names="sec2.2">
+        <section names="sec2.2">
             <title>
                 sec2.2
             <system_message level="3" line="27" source="test data" type="ERROR">
@@ -271,13 +272,13 @@ This paragraph belongs to the last nested section.
 """,
 """\
 <document source="test data">
-    <section ids="nested1" names="nested1">
+    <section names="nested1">
         <title>
             nested1
-    <section ids="nested2" names="nested2">
+    <section names="nested2">
         <title>
             nested2
-        <section ids="nested2-1" names="nested2.1">
+        <section names="nested2.1">
             <title>
                 nested2.1
             <paragraph>
@@ -299,10 +300,10 @@ This paragraph belongs to the last nested section.
     <note>
         <paragraph>
             The next directive is parsed with "nested_list_parse()".
-    <section ids="nested1" names="nested1">
+    <section names="nested1">
         <title>
             nested1
-        <section ids="nested1-1" names="nested1.1">
+        <section names="nested1.1">
             <title>
                 nested1.1
             <paragraph>
@@ -348,25 +349,25 @@ sec2.2
 """,
 """\
 <document source="test data">
-    <section ids="sec1" names="sec1">
+    <section names="sec1">
         <title>
             sec1
-        <section ids="sec1-1" names="sec1.1">
+        <section names="sec1.1">
             <title>
                 sec1.1
             <note>
                 <paragraph>
                     The next directive is parsed with "nested_list_parse()".
-            <section ids="nc1-1-1" names="nc1.1.1">
+            <section names="nc1.1.1">
                 <title>
                     nc1.1.1
-        <section ids="nc1-2" names="nc1.2">
+        <section names="nc1.2">
             <title>
                 nc1.2
-    <section ids="nc2" names="nc2">
+    <section names="nc2">
         <title>
             nc2
-        <section ids="sec2-2" names="sec2.2">
+        <section names="sec2.2">
             <title>
                 sec2.2
 """],
@@ -388,23 +389,23 @@ sec2
 """,
 """\
 <document source="test data">
-    <section ids="sec1" names="sec1">
+    <section names="sec1">
         <title>
             sec1
-        <section ids="sec1-1" names="sec1.1">
+        <section names="sec1.1">
             <title>
                 sec1.1
-            <section ids="nested-section1-1-1" names="nested-section1.1.1">
+            <section names="nested-section1.1.1">
                 <title>
                     nested-section1.1.1
             <paragraph>
                 This paragraph belongs to the last nested section (sic!).
-    <section ids="sec2" names="sec2">
+    <section names="sec2">
         <title>
             sec2
     <system_message level="2" line="10" source="test data" type="WARNING">
         <paragraph>
-            Element <section ids="sec1-1" names="sec1.1"> invalid:
+            Element <section names="sec1.1"> invalid:
               Child element <paragraph> not allowed at this position.
 """],
 # Even if the base node is a <section>, it does not show up in
@@ -421,7 +422,7 @@ sec1
 """,
 """\
 <document source="test data">
-    <section ids="sec1" names="sec1">
+    <section names="sec1">
         <title>
             sec1
         <system_message level="3" line="5" source="test data" type="ERROR">
@@ -479,13 +480,13 @@ sec1
                 ============
         <paragraph>
             The <section> base node is discarded.
-        <section ids="invalid-section-sic" names="invalid\\ section\\ (sic!)">
+        <section names="invalid\\ section\\ (sic!)">
             <title>
                 invalid section (sic!)
     <system_message level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Element <block_quote> invalid:
-              Child element <section ids="invalid-section-sic" names="invalid\\ section\\ (sic!)"> not allowed at this position.
+              Child element <section names="invalid\\ section\\ (sic!)"> not allowed at this position.
 """],
 # Nested parsing with new title style hierarchy
 ["""\
@@ -526,48 +527,48 @@ sec2.2.1
 """,
 """\
 <document source="test data">
-    <section ids="sec1" names="sec1">
+    <section names="sec1">
         <title>
             sec1
-        <section ids="sec1-1" names="sec1.1">
+        <section names="sec1.1">
             <title>
                 sec1.1
-            <section ids="fresh1-1-1" names="fresh1.1.1">
+            <section names="fresh1.1.1">
                 <title>
                     fresh1.1.1
-                <section ids="fresh1-1-1-1" names="fresh1.1.1.1">
+                <section names="fresh1.1.1.1">
                     <title>
                         fresh1.1.1.1
-    <section ids="sec2" names="sec2">
+    <section names="sec2">
         <title>
             sec2
-        <section ids="fresh2-1" names="fresh2.1">
+        <section names="fresh2.1">
             <title>
                 fresh2.1
             <paragraph>
                 New title styles with every directive.
-            <section ids="fresh2-1-1" names="fresh2.1.1">
+            <section names="fresh2.1.1">
                 <title>
                     fresh2.1.1
-            <section ids="fresh2-1-2" names="fresh2.1.2">
+            <section names="fresh2.1.2">
                 <title>
                     fresh2.1.2
-                <section ids="fresh2-1-2-1" names="fresh2.1.2.1">
+                <section names="fresh2.1.2.1">
                     <title>
                         fresh2.1.2.1
         <paragraph>
             This text belongs into the last nested section (sic!).
-        <section ids="sec2-2" names="sec2.2">
+        <section names="sec2.2">
             <title>
                 sec2.2
             <paragraph>
                 Document-wide title styles unchanged
-            <section ids="sec2-2-1" names="sec2.2.1">
+            <section names="sec2.2.1">
                 <title>
                     sec2.2.1
     <system_message level="2" line="27" source="test data" type="WARNING">
         <paragraph>
-            Element <section ids="sec2" names="sec2"> invalid:
+            Element <section names="sec2"> invalid:
               Child element <paragraph> not allowed at this position.
 """],
 # Nested parsing into current node with new title style hierarchy
@@ -592,24 +593,24 @@ sec1.2
 """,
 """\
 <document source="test data">
-    <section ids="sec1" names="sec1">
+    <section names="sec1">
         <title>
             sec1
-        <section ids="sec1-1" names="sec1.1">
+        <section names="sec1.1">
             <title>
                 sec1.1
-            <section ids="fc1-1-1" names="fc1.1.1">
+            <section names="fc1.1.1">
                 <title>
                     fc1.1.1
-            <section ids="fc1-1-2" names="fc1.1.2">
+            <section names="fc1.1.2">
                 <title>
                     fc1.1.2
-                <section ids="fc1-1-2-1" names="fc1.1.2.1">
+                <section names="fc1.1.2.1">
                     <title>
                         fc1.1.2.1
                     <paragraph>
                         This text belongs into the last nested section.
-        <section ids="sec1-2" names="sec1.2">
+        <section names="sec1.2">
             <title>
                 sec1.2
 """],

@@ -29,6 +29,7 @@ class ParserTestCase(unittest.TestCase):
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
+        settings.legacy_ids = False
         settings.warning_stream = ''
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
@@ -238,7 +239,7 @@ See the example_
         See the \n\
         <reference name="example" refuri="example.rst">
             example
-        <target ids="example" names="example" refuri="example.rst">
+        <target names="example" refuri="example.rst">
     <paragraph>
         See the \n\
         <reference name="example" refname="example">
@@ -292,15 +293,15 @@ Paragraph.
 <document source="test data">
     <paragraph>
         Duplicate implicit targets.
-    <section dupnames="title" ids="title">
+    <section dupnames="title" ids="title-1">
         <title>
             Title
         <paragraph>
             Paragraph.
-    <section dupnames="title" ids="title-1">
+    <section dupnames="title" ids="title-2">
         <title>
             Title
-        <system_message backrefs="title-1" level="1" line="9" source="test data" type="INFO">
+        <system_message backrefs="title-2" level="1" line="9" source="test data" type="INFO">
             <paragraph>
                 Duplicate implicit target name: "title".
         <paragraph>
@@ -320,13 +321,13 @@ Paragraph.
 <document source="test data">
     <paragraph>
         Duplicate implicit/explicit targets.
-    <section dupnames="title" ids="title">
+    <section dupnames="title">
         <title>
             Title
         <system_message level="1" line="6" source="test data" type="INFO">
             <paragraph>
                 Target name overrides implicit target name "title".
-        <target ids="title-1" names="title">
+        <target ids="title" names="title">
         <paragraph>
             Paragraph.
 """],
@@ -343,11 +344,11 @@ Title
 <document source="test data">
     <paragraph>
         Duplicate implicit/directive targets.
-    <section dupnames="title" ids="title">
+    <section dupnames="title">
         <title>
             Title
-        <note ids="title-1" names="title">
-            <system_message backrefs="title-1" level="1" line="7" source="test data" type="INFO">
+        <note ids="title" names="title">
+            <system_message backrefs="title" level="1" line="7" source="test data" type="INFO">
                 <paragraph>
                     Target name overrides implicit target name "title".
             <paragraph>
@@ -445,21 +446,21 @@ Explicit internal target.
 <document source="test data">
     <paragraph>
         Duplicate targets:
-    <section dupnames="target" ids="target">
+    <section dupnames="target">
         <title>
             Target
         <paragraph>
             Implicit section header target.
-        <citation dupnames="target" ids="target-1">
+        <citation dupnames="target" ids="target">
             <label>
                 TARGET
-            <system_message backrefs="target-1" level="1" line="8" source="test data" type="INFO">
+            <system_message backrefs="target" level="1" line="8" source="test data" type="INFO">
                 <paragraph>
                     Target name overrides implicit target name "target".
             <paragraph>
                 Citation target.
-        <footnote auto="1" dupnames="target" ids="target-2">
-            <system_message backrefs="target-2" level="2" line="10" source="test data" type="WARNING">
+        <footnote auto="1" dupnames="target" ids="target-1">
+            <system_message backrefs="target-1" level="2" line="10" source="test data" type="WARNING">
                 <paragraph>
                     Duplicate explicit target name: "target".
             <paragraph>
@@ -467,21 +468,21 @@ Explicit internal target.
         <system_message level="2" line="12" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "target".
-        <target dupnames="target" ids="target-3">
+        <target dupnames="target" ids="target-2">
         <paragraph>
             Explicit internal target.
         <system_message level="2" line="16" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "target".
-        <target dupnames="target" ids="target-4" refuri="Explicit_external_target">
+        <target dupnames="target" ids="target-3" refuri="Explicit_external_target">
         <line_block>
             <line>
                 Do not insert <system_message> element for duplicate
             <line>
-                <target dupnames="target" ids="target-5">
+                <target dupnames="target" ids="target-4">
                     target
                 , if this results in an invalid doctree.
-        <rubric dupnames="target" ids="target-6">
+        <rubric dupnames="target" ids="target-5">
             directive with target
         <field_list>
             <field>
@@ -492,7 +493,7 @@ Explicit internal target.
                         with
             <field>
                 <field_name>
-                    <target dupnames="target" ids="target-7">
+                    <target dupnames="target" ids="target-6">
                         target
                 <field_body>
                     <paragraph>

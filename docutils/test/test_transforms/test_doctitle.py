@@ -46,6 +46,7 @@ class TransformTestCase(unittest.TestCase):
     def test_transforms(self):
         parser = Parser()
         settings = get_default_settings(Parser)
+        settings.legacy_ids = False
         settings.warning_stream = ''
         register_directive('add-name-to-title', AddNameToDocumentTitle)
         for name, (transforms, cases) in totest.items():
@@ -74,7 +75,7 @@ Title
 Paragraph.
 """,
 """\
-<document ids="title" names="title" source="test data" title="Title">
+<document names="title" source="test data" title="Title">
     <title>
         Title
     <comment xml:space="preserve">
@@ -88,7 +89,7 @@ Title
 Paragraph (no blank line).
 """,
 """\
-<document ids="title" names="title" source="test data" title="Title">
+<document names="title" source="test data" title="Title">
     <title>
         Title
     <paragraph>
@@ -106,7 +107,7 @@ Paragraph.
 <document source="test data">
     <paragraph>
         Paragraph.
-    <section ids="title" names="title">
+    <section names="title">
         <title>
             Title
         <paragraph>
@@ -124,10 +125,10 @@ Subtitle
 Test title, subtitle, and title metadata.
 """,
 """\
-<document ids="title" names="title" source="test data" title="Another Title">
+<document names="title" source="test data" title="Another Title">
     <title>
         Title
-    <subtitle ids="subtitle" names="subtitle">
+    <subtitle names="subtitle">
         Subtitle
     <paragraph>
         Test title, subtitle, and title metadata.
@@ -139,7 +140,7 @@ Title
 Test short underline.
 """,
 """\
-<document ids="title" names="title" source="test data" title="Title">
+<document names="title" source="test data" title="Title">
     <title>
         Title
     <system_message level="2" line="2" source="test data" type="WARNING">
@@ -161,7 +162,7 @@ The system_message should move after the document title
 (it was before the beginning of the section).
 """,
 """\
-<document ids="long-title" names="long\\ title" source="test data" title="Long    Title">
+<document names="long\\ title" source="test data" title="Long    Title">
     <title>
         Long    Title
     <system_message level="2" line="1" source="test data" type="WARNING">
@@ -192,19 +193,19 @@ Title 3
 Paragraph 3.
 """,
 """\
-<document ids="title-1" names="title\\ 1" source="test data" title="Title 1">
+<document names="title\\ 1" source="test data" title="Title 1">
     <title>
         Title 1
     <comment xml:space="preserve">
         Test multiple second-level titles.
     <paragraph>
         Paragraph 1.
-    <section ids="title-2" names="title\\ 2">
+    <section names="title\\ 2">
         <title>
             Title 2
         <paragraph>
             Paragraph 2.
-    <section ids="title-3" names="title\\ 3">
+    <section names="title\\ 3">
         <title>
             Title 3
         <paragraph>
@@ -221,7 +222,7 @@ This title should be the document title despite the
 substitution_definition.
 """,
 """\
-<document ids="title" names="title" source="test data" title="Title">
+<document names="title" source="test data" title="Title">
     <title>
         Title
     <substitution_definition names="foo">
@@ -253,15 +254,15 @@ Another Subtitle
 <document source="test data">
     <paragraph>
         (Because of this paragraph, the following is not a doc title.)
-    <section ids="section-title" names="section\\ title">
+    <section names="section\\ title">
         <title>
             Section Title
-        <subtitle ids="subtitle" names="subtitle">
+        <subtitle names="subtitle">
             Subtitle
-        <section ids="another-section" names="another\\ section">
+        <section names="another\\ section">
             <title>
                 Another Section
-            <subtitle ids="another-subtitle" names="another\\ subtitle">
+            <subtitle names="another\\ subtitle">
                 Another Subtitle
 """],
 ["""\
@@ -276,7 +277,7 @@ bottom.
 
 """,
 """\
-<document ids="title" names="Name title" source="test data" title="Title">
+<document names="Name title" source="test data" title="Title">
     <title>
         Title
     <paragraph>

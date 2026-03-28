@@ -27,6 +27,7 @@ class ParserTestCase(unittest.TestCase):
         parser = Parser()
         settings = get_default_settings(Parser)
         settings.warning_stream = ''
+        settings.legacy_ids = False
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
@@ -51,7 +52,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="contents" names="contents">
+    <topic classes="contents" names="contents">
         <title>
             Contents
         <pending>
@@ -64,7 +65,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="table-of-contents" names="table\\ of\\ contents">
+    <topic classes="contents" names="table\\ of\\ contents">
         <title>
             Table of Contents
         <pending>
@@ -78,7 +79,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="table-of-contents" names="table\\ of\\ contents">
+    <topic classes="contents" names="table\\ of\\ contents">
         <title>
             Table of Contents
         <pending>
@@ -93,7 +94,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="table-of-contents" names="table\\ of\\ contents">
+    <topic classes="contents" names="table\\ of\\ contents">
         <title>
             Table
             of
@@ -108,7 +109,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="table-of-contents" names="table\\ of\\ contents">
+    <topic classes="contents" names="table\\ of\\ contents">
         <title>
             <emphasis>
                 Table
@@ -127,7 +128,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents local" ids="contents" names="contents">
+    <topic classes="contents local" names="contents">
         <pending>
             .. internal attributes:
                  .transform: docutils.transforms.parts.Contents
@@ -158,7 +159,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents local" ids="table-of-contents" names="table\\ of\\ contents">
+    <topic classes="contents local" names="table\\ of\\ contents">
         <title>
             Table of Contents
         <pending>
@@ -251,7 +252,7 @@ totest['contents'] = [
     <sidebar>
         <title>
             containing contents
-        <topic classes="contents" ids="contents" names="contents">
+        <topic classes="contents" names="contents">
             <title>
                 Contents
             <pending>

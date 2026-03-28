@@ -44,6 +44,7 @@ class ParserTestCase(unittest.TestCase):
         settings = get_default_settings(Parser)
         settings.warning_stream = ''
         settings.halt_level = 5
+        settings.legacy_ids = False
         for name, cases in totest.items():
             if name == 'with transforms':
                 continue  # see test_publish() below
@@ -146,10 +147,10 @@ A paragraph.
 """,
 """\
 <document source="test data">
-    <section ids="include-test" names="include\\ test">
+    <section names="include\\ test">
         <title>
             Include Test
-        <section ids="inclusion-1" names="inclusion\\ 1">
+        <section names="inclusion\\ 1">
             <title>
                 Inclusion 1
             <paragraph>
@@ -173,7 +174,7 @@ A paragraph.
 """,
 f"""\
 <document source="test data">
-    <section ids="include-test" names="include\\ test">
+    <section names="include\\ test">
         <title>
             Include Test
         <literal_block classes="test" ids="my-name" names="my\\ name" source="{include1}" xml:space="preserve">
@@ -332,7 +333,7 @@ A paragraph.
 """,
 """\
 <document source="test data">
-    <section ids="include-test" names="include\\ test">
+    <section names="include\\ test">
         <title>
             Include Test
         <system_message level="3" line="4" source="test data" type="ERROR">
@@ -356,10 +357,10 @@ A paragraph.
 """,
 f"""\
 <document source="test data">
-    <section ids="include-test" names="include\\ test">
+    <section names="include\\ test">
         <title>
             Include Test
-        <section dupnames="inclusion\\ 1" ids="inclusion-1">
+        <section dupnames="inclusion\\ 1" ids="inclusion-1-1">
             <title>
                 Inclusion 1
             <paragraph>
@@ -367,10 +368,10 @@ f"""\
                 <literal>
                     test_include.py
                 .
-        <section dupnames="inclusion\\ 1" ids="inclusion-1-1">
+        <section dupnames="inclusion\\ 1" ids="inclusion-1-2">
             <title>
                 Inclusion 1
-            <system_message backrefs="inclusion-1-1" level="1" line="2" source="{include1}" type="INFO">
+            <system_message backrefs="inclusion-1-2" level="1" line="2" source="{include1}" type="INFO">
                 <paragraph>
                     Duplicate implicit target name: "inclusion 1".
             <paragraph>
@@ -395,10 +396,10 @@ A paragraph.
 """,
 f"""\
 <document source="test data">
-    <section ids="include-test" names="include\\ test">
+    <section names="include\\ test">
         <title>
             Include Test
-        <section dupnames="inclusion\\ 1" ids="inclusion-1">
+        <section dupnames="inclusion\\ 1" ids="inclusion-1-1">
             <title>
                 Inclusion 1
             <paragraph>
@@ -407,10 +408,10 @@ f"""\
                     test_include.py
                 .
             <transition>
-        <section dupnames="inclusion\\ 1" ids="inclusion-1-1">
+        <section dupnames="inclusion\\ 1" ids="inclusion-1-2">
             <title>
                 Inclusion 1
-            <system_message backrefs="inclusion-1-1" level="1" line="2" source="{include1}" type="INFO">
+            <system_message backrefs="inclusion-1-2" level="1" line="2" source="{include1}" type="INFO">
                 <paragraph>
                     Duplicate implicit target name: "inclusion 1".
             <paragraph>
@@ -516,7 +517,7 @@ f"""\
 <document source="test data">
     <paragraph>
         In test data
-    <section ids="section" names="section">
+    <section names="section">
         <title>
             Section
         <paragraph>
@@ -637,7 +638,7 @@ f"""\
             Substitution definition "bad" empty or invalid.
         <literal_block xml:space="preserve">
             .. |bad| unicode:: 0x11111111
-    <section dupnames="hi" ids="hi">
+    <section dupnames="hi" ids="hi-1">
         <title>
             hi
         <block_quote>
@@ -648,10 +649,10 @@ f"""\
                 Block quote ends without a blank line; unexpected unindent.
         <paragraph>
             error
-    <section dupnames="hi" ids="hi-1">
+    <section dupnames="hi" ids="hi-2">
         <title>
             hi
-        <system_message backrefs="hi-1" level="1" line="10" source="{include10}" type="INFO">
+        <system_message backrefs="hi-2" level="1" line="10" source="{include10}" type="INFO">
             <paragraph>
                 Duplicate implicit target name: "hi".
         <system_message level="3" line="12" source="{include10}" type="ERROR">
@@ -708,7 +709,7 @@ f"""\
                 .. admonition::
                 \n\
                    without title and content following a blank line
-    <section ids="section-underline-too-short" names="section\\ underline\\ too\\ short">
+    <section names="section\\ underline\\ too\\ short">
         <title>
             section underline too short
         <system_message level="2" line="36" source="{include10}" type="WARNING">
@@ -877,15 +878,15 @@ Name clash: The included file uses the same section title.
 """,
 f"""\
 <document source="test data">
-    <section dupnames="inclusion\\ 1" ids="inclusion-1">
+    <section dupnames="inclusion\\ 1" ids="inclusion-1-1">
         <title>
             Inclusion 1
         <paragraph>
             Name clash: The included file uses the same section title.
-        <section dupnames="inclusion\\ 1" ids="inclusion-1-1">
+        <section dupnames="inclusion\\ 1" ids="inclusion-1-2">
             <title>
                 Inclusion 1
-            <system_message backrefs="inclusion-1-1" level="1" line="2" source="{include1}" type="INFO">
+            <system_message backrefs="inclusion-1-2" level="1" line="2" source="{include1}" type="INFO">
                 <paragraph>
                     Duplicate implicit target name: "inclusion 1".
             <paragraph>
@@ -1567,7 +1568,7 @@ A paragraph.
 <document source="test data">
     <paragraph>
         Include Markdown source.
-    <section depth="1" ids="section-1">
+    <section depth="1">
         <title>
             Title 1
         <paragraph>

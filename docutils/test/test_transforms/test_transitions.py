@@ -31,6 +31,7 @@ class TransformTestCase(unittest.TestCase):
     def test_transforms(self):
         parser = rst.Parser()
         settings = get_default_settings(rst.Parser)
+        settings.legacy_ids = False
         settings.warning_stream = ''
         for name, (transforms, cases) in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
@@ -87,16 +88,16 @@ Some text.
 """,
 """\
 <document source="test data">
-    <section ids="section-1" names="section\\ 1">
+    <section names="section\\ 1">
         <title>
             Section 1
-        <section ids="subsection-1" names="subsection\\ 1">
+        <section names="subsection\\ 1">
             <title>
                 Subsection 1
             <paragraph>
                 A transition at the end of a section is moved behind the section.
     <transition>
-    <section ids="section-2" names="section\\ 2">
+    <section names="section\\ 2">
         <title>
             Section 2
         <paragraph>
@@ -117,7 +118,7 @@ Paragraph.
     <paragraph>
         A paragraph.
     <transition>
-    <section ids="section-1" names="section\\ 1">
+    <section names="section\\ 1">
         <title>
             Section 1
         <paragraph>
@@ -222,7 +223,7 @@ Some text before the transition.
 <document source="test data">
     <paragraph>
         Sections with transitions at beginning and end.
-    <section ids="section-1" names="section\\ 1">
+    <section names="section\\ 1">
         <title>
             Section 1
         <transition>
@@ -231,7 +232,7 @@ Some text before the transition.
                 Transition at the start of the section.
         <comment xml:space="preserve">
             Comment after transition.
-    <section ids="section-2" names="section\\ 2">
+    <section names="section\\ 2">
         <title>
             Section 2
         <paragraph>
@@ -341,7 +342,7 @@ Section 2
 """,
 """\
 <document source="test data">
-    <section ids="section-1" names="section\\ 1">
+    <section names="section\\ 1">
         <title>
             Section 1
         <transition>
@@ -353,7 +354,7 @@ Section 2
     <system_message level="2" line="8" source="test data" type="WARNING">
         <paragraph>
             At least one body element should separate transitions.
-    <section ids="section-2" names="section\\ 2">
+    <section names="section\\ 2">
         <title>
             Section 2
 """],
