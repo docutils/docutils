@@ -57,7 +57,7 @@ misc_.ClassAttribute                `"class"`_ (d/p)              _`210`
 
 references_.Substitutions           standalone_ (r), pep_ (r)     _`220`
 
-references_.SectionIDs              rst_ (p)                      _`240`
+references_.SectionIDs              standalone_ (r), pep_ (r)     _`240`
 
 references_.PropagateTargets        standalone_ (r), pep_ (r)     _`260`
 
@@ -186,6 +186,7 @@ readers.ReReader:
 
 readers.standalone.Reader:
   | references.Substitutions            (220_)
+  | references.SectionIDs               (240_)
   | references.PropagateTargets         (260_)
   | frontmatter.\ DocTitle_             (320_)
   | frontmatter.\ DocInfo_              (340_)
@@ -202,6 +203,7 @@ readers.standalone.Reader:
 
 readers.pep.Reader:
   | references.Substitutions            (220_)
+  | references.SectionIDs               (240_)
   | references.PropagateTargets         (260_)
   | peps.Headers                        (360_)
   | peps.Contents                       (380_)
@@ -222,7 +224,6 @@ parsers.Parser
   .. _rst:
 
 parsers.rst.Parser
-  | references.SectionIDs               (240_)
   | universal.SmartQuotes               (855_)
 
   .. _writers:

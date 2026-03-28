@@ -6,11 +6,16 @@
 Standalone file Reader for the reStructuredText markup syntax.
 """
 
-__docformat__ = 'reStructuredText'
+from __future__ import annotations
 
+__docformat__ = 'reStructuredText'
 
 from docutils import frontend, readers
 from docutils.transforms import frontmatter, references, misc
+
+TYPE_CHECKING = False
+if TYPE_CHECKING:
+    from docutils.transforms import Transform
 
 
 class Reader(readers.Reader):
@@ -48,9 +53,10 @@ class Reader(readers.Reader):
     config_section = 'standalone reader'
     config_section_dependencies = ('readers',)
 
-    def get_transforms(self):
+    def get_transforms(self) -> list[type[Transform]]:
         return super().get_transforms() + [
             references.Substitutions,
+            references.SectionIDs,
             references.PropagateTargets,
             frontmatter.DocTitle,
             frontmatter.SectionSubTitle,

@@ -42,7 +42,7 @@ Release 0.23b.dev (unpublished)
 
   - New configuration setting `legacy_ids`_.
 
-* docutils/parsers/rst/__init__.py
+* docutils/readers/standalone.py
 
   - Load new transform `references.SectionIDs`.
 

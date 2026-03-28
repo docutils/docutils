@@ -75,7 +75,7 @@ import docutils.parsers
 import docutils.statemachine
 from docutils.parsers.rst import roles, states
 from docutils import frontend, nodes
-from docutils.transforms import references, universal
+from docutils.transforms import universal
 
 
 class Parser(docutils.parsers.Parser):
@@ -160,8 +160,7 @@ class Parser(docutils.parsers.Parser):
         self.inliner = inliner
 
     def get_transforms(self):
-        return [*super().get_transforms(),
-                references.SectionIDs, universal.SmartQuotes]
+        return super().get_transforms() + [universal.SmartQuotes]
 
     def parse(self, inputstring, document) -> None:
         """Parse `inputstring` and populate `document`, a document tree."""
