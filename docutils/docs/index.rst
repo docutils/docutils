@@ -130,7 +130,7 @@ Docutils-general:
   * `Docutils Generic DTD <ref/docutils.dtd>`__
   * `OASIS XML Exchange Table Model Declaration Module
     <ref/soextblx.dtd>`__ (CALS tables DTD module)
-  * `Docutils Design Specification`_ (PEP 258)
+  * `Docutils Design Specification <peps/pep-0258.html>`_ (PEP 258)
 
 reStructuredText_:
   * `An Introduction to reStructuredText <ref/rst/introduction.html>`__
@@ -148,31 +148,16 @@ reStructuredText_:
 .. _peps:
 
 Python Enhancement Proposals
-  * `PEP 256: Docstring Processing System Framework`__ is a high-level
-    generic proposal.  [:PEP:`256` in the `master repository`_]
-  * `PEP 257: Docstring Conventions`__ addresses docstring style and
-    touches on content.  [:PEP:`257` in the `master repository`_]
-  * `PEP 258: Docutils Design Specification`__ is an overview of the
-    architecture of Docutils.  It documents design issues and
-    implementation details.  [:PEP:`258` in the `master repository`_]
-  * `PEP 287: reStructuredText Docstring Format`__ proposes a standard
-    markup syntax.  [:PEP:`287` in the `master repository`_]
+  * :PEP:`258` `Docutils Design Specification` is an overview of
+    the architecture of Docutils.  It documents design issues and
+    implementation details.  (`local copy <peps/pep-0258.html>`__)
+  * :PEP:`257` `Docstring Conventions` addresses docstring style and
+    touches on content (`local copy <peps/pep-0257.html>`__)
+  * :PEP:`287` `reStructuredText Docstring Format`
+    proposes a standard markup syntax (`local copy <peps/pep-0287.html>`__)
 
-  Please note that PEPs in the `master repository`_ developed
-  independent from the local versions after submission.
-
-  __ peps/pep-0256.html
-  __ peps/pep-0257.html
-  .. _PEP 258:
-  .. _Docutils Design Specification:
-  __ peps/pep-0258.html
-  __ peps/pep-0287.html
-  .. _master repository: https://peps.python.org
-
-Prehistoric:
-  `Setext Documents Mirror`__
-
-  __ https://docutils.sourceforge.io/mirror/setext.html
+  Please note that, after submission, the submitted PEPs developed
+  independent from the local versions.
 
 
 .. _api:
@@ -191,12 +176,6 @@ The `Docutils Design Specification`_ (PEP 258) is a must-read for any
 Docutils developer.
 
 
-Docutils Enhancement Proposals
-==============================
-
-* `Enhancement Proposal Index <eps/index.html>`__
-
-
 .. _howto:
 
 Instructions for Developers
@@ -212,6 +191,14 @@ Instructions for Developers
 * `Creating reStructuredText Interpreted Text Roles
   <howto/rst-roles.html>`__
 
+
+Docutils Enhancement Proposals
+==============================
+
+`Index <eps/index.html>`__
+
+| EP 1 — `Docutils EP Purpose and Guidelines <eps/ep-001.html>`_
+| EP 10 — `Public API and Backwards Compatibility Policy <eps/ep-010.html>`_
 
 .. _dev:
 
@@ -234,11 +221,19 @@ reStructuredText_:
   * `Problems With StructuredText <dev/rst/problems.html>`__
 
 Suspended projects and plans:
+  * :PEP:`256` `Docstring Processing System Framework`
+    (`local copy <peps/pep-0256.html>`__)
   * `Docstring Semantics <dev/semantics.html>`__ (incomplete)
   * `Python Source Reader <dev/pysource.html>`_ (incomplete)
   * `Docutils Python DTD <dev/pysource.dtd>`_
   * `Plan for Enthought API Documentation Tool <dev/enthought-plan.html>`_
   * `Enthought API Documentation Tool RFP <dev/enthought-rfp.html>`_
+
+Prehistoric:
+  `Setext Documents Mirror`__
+
+  __ https://docutils.sourceforge.io/mirror/setext.html
+
 
 .. Emacs settings
 
