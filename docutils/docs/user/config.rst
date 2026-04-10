@@ -244,15 +244,15 @@ auto_id_prefix
 --------------
 
 Prefix for identifiers_ of elements without a `reference name`_
-(after an eventual id_prefix_).  The value is not subjected to
-the `identifier normalization`_ so users must ensure it conforms
-to the restrictions on identifiers in the output format.
+(after an eventual id_prefix_).
 
-A trailing "%" is replaced with the `Doctree element name`_;
-a number is added for disambiguation.
+The value is not subjected to the `identifier normalization`_ so users
+must ensure it conforms to the restrictions on identifiers in the output
+format.  A trailing "%" is replaced with the Doctree_ element name;
+a number is added for disambiguation. With the default, the third
+`anonymous hyperlink target`_, for example, would get the ID "target-3".
 
-
-:Default: "%" (changed from "id" in Docutils 0.18).
+:Default: "%" (use Doctree element name; changed from "id" in Docutils 0.18).
 :Option:  ``--auto-id-prefix`` (hidden, intended mainly for programmatic use).
 
 .. _identifier normalization:
@@ -2648,7 +2648,7 @@ If the first line matches the second line is ignored.
 .. _Docutils Document Tree:
 .. _Docutils Generic document type definition:
 .. _Document Tree: ../ref/doctree.html
-.. _Doctree element name: ../ref/doctree.html#element-reference
+.. _Doctree: ../ref/doctree.html
 .. _class attribute: ../ref/doctree.html#classes
 .. _identifiers: ../ref/doctree.html#identifiers
 .. _reference name:
@@ -2690,6 +2690,8 @@ If the first line matches the second line is ignored.
 .. _table of contents: ../ref/rst/directives.html#table-of-contents
 
 .. RestructuredText Markup Specification
+.. _anonymous hyperlink target:
+    ../ref/rst/restructuredtext.html#anonymous-hyperlinks
 .. _auto-symbol footnotes:
     ../ref/rst/restructuredtext.html#auto-symbol-footnotes
 .. _abstract:

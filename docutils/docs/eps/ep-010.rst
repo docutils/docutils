@@ -198,29 +198,29 @@ Rejected Ideas
 .. Why certain ideas that were brought while discussing this proposal were not
    ultimately pursued.
 
-* Use type annotations as an indication of status in the public API.
+Use type annotations as an indication of status in the public API.
 
-  - There is no known precedence for this approach.
-  - Type annotations may be helpful also for non-public code.
+- There is no known precedence for this approach.
+- Type annotations may be helpful also for non-public code.
 
-* Use Calendar Versioning (CalVer).
+Use Calendar Versioning (CalVer).
 
-  - Would be a break from current versioning without clear advantages.
+- Would be a break from current versioning without clear advantages.
 
-* Allow breaking API changes in *minor* versions after prior announcement
-  and a deprecation period.
+Allow breaking API changes in *minor* versions after prior announcement
+and a deprecation period.
 
-  - Breaks the principle of least surprise.
+- Breaks the principle of least surprise.
 
-* Mark all internal objects with a prefix underscore.
+Mark all internal objects with a prefix underscore.
 
-  - May needlessly break applications using internal objects.
+- May needlessly break applications using internal objects.
 
-* Use the ``__all__`` attribute to declare modules, classes, and
-  functions that form the public API.
+Use the ``__all__`` attribute to declare modules, classes, and
+functions that form the public API.
 
-  - This may be done later to improve "pydoc" output, but should not hold
-    up the declaration of a Backwards Compatibility Policy.
+- This may be done later to improve "pydoc" output, but should not hold
+  up the declaration of a Backwards Compatibility Policy.
 
 
 Open Issues
