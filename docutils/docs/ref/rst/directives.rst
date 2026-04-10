@@ -1910,11 +1910,13 @@ and stripping
 * trailing hyphens.
 
 For example ``"Rot.Gelb&Grün::2008+"`` becomes ``"rot-gelb-grun-2008"`` and
-``"1000_Steps!"`` becomes ``"steps"``.
+``"1000_Steps!"`` becomes ``"steps"`` while both ``"2026-04-04"`` and
+``"λογος"`` become the empty string ``""`` (identifiers_ will use an
+auto-generated string instead).
 
 .. topic:: Rationale:
 
-    Identifier keys must be valid in all supported output formats.
+    Identifier keys must be valid in all supported output formats. [#]_
 
     For HTML 4.1 + CSS1 compatibility, identifiers should have no
     underscores, colons, or periods.  Hyphens may be used.
@@ -1928,7 +1930,7 @@ For example ``"Rot.Gelb&Grün::2008+"`` becomes ``"rot-gelb-grun-2008"`` and
 
           -- https://www.w3.org/TR/html401/types.html#type-name
 
-    - The `CSS1 spec`_ defines identifiers based on the "name" token
+    - The CSS1_ spec defines identifiers based on the "name" token
       ("flex" tokenizer notation below)::
 
           unicode     \\[0-9a-f]{1,4}
@@ -1946,6 +1948,19 @@ For example ``"Rot.Gelb&Grün::2008+"`` becomes ``"rot-gelb-grun-2008"`` and
     ``[A-Za-z][-A-Za-z0-9]*``. Docutils adds a normalization by
     downcasing and merge of consecutive hyphens.
 
+    .. [#] HTML4.1__, CSS1_, HTML5__, `polyglot HTML`__, LaTeX__, ODT__,
+       manpage, and XML__.
+
+    __ https://www.w3.org/TR/html401/types.html#type-name
+    __ https://html.spec.whatwg.org/multipage/dom.html
+       #global-attributes:the-id-attribute-2
+    __ https://www.w3.org/TR/html-polyglot/#id-attribute
+    __ https://tex.stackexchange.com/questions/18311/
+       what-are-the-valid-names-as-labels
+    __ https://help.libreoffice.org/6.3/en-US/text/swriter/01/04040000.html
+       ?DbPAR=WRITER#bm_id4974211
+    __ https://www.w3.org/TR/REC-xml/#sec-attribute-types
+
     .. [#] CSS identifiers may use underscores ("_") directly in
        `CSS Level 1`__, `CSS2.1`__, CSS2.2__, and CSS3__.
 
@@ -1955,7 +1970,7 @@ For example ``"Rot.Gelb&Grün::2008+"`` becomes ``"rot-gelb-grun-2008"`` and
        __ https://www.w3.org/TR/css-syntax-3/#typedef-ident-token
 
     .. _HTML 4.01 spec: https://www.w3.org/TR/html401/
-    .. _CSS1 spec: https://www.w3.org/TR/REC-CSS1
+    .. _CSS1: https://www.w3.org/TR/REC-CSS1
 
 
 .. _role:

@@ -243,12 +243,14 @@ Settings in the "[general]" section are always applied.
 auto_id_prefix
 --------------
 
-Prefix prepended to all auto-generated `identifier keys` generated within
-the document, after id_prefix_. Ensure the value conforms to the
-restrictions on identifiers in the output format, as it is not subjected to
-the `identifier normalization`_.
+Prefix for identifiers_ of elements without a `reference name`_
+(after an eventual id_prefix_).  The value is not subjected to
+the `identifier normalization`_ so users must ensure it conforms
+to the restrictions on identifiers in the output format.
 
-A trailing "%" is replaced with the tag name (new in Docutils 0.16).
+A trailing "%" is replaced with the `Doctree element name`_;
+a number is added for disambiguation.
+
 
 :Default: "%" (changed from "id" in Docutils 0.18).
 :Option:  ``--auto-id-prefix`` (hidden, intended mainly for programmatic use).
@@ -409,10 +411,14 @@ See also report_level_.
 id_prefix
 ---------
 
-Prefix prepended to all identifier keys generated within the document.
-Ensure the value conforms to the restrictions on identifiers in the output
-format, as it is not subjected to the `identifier normalization`_.
-See also auto_id_prefix_.
+Prefix prepended to all identifiers_. See also auto_id_prefix_.
+
+Use cases include tagging of all Docutils-generated element IDs and
+enabling leading numerals in `reference names`_ to pass the
+`identifier normalization`_.
+
+Users must ensure the value conforms to the restrictions on identifiers in
+the output format, as it is not subjected to the `identifier normalization`_.
 
 :Default: "" (no prefix).
 :Option: ``--id-prefix`` (hidden, intended mainly for programmatic use).
@@ -438,7 +444,7 @@ strict
     Raise an exception in case of an encoding error.
 replace
     Replace malformed data with the official Unicode replacement
-    character, U+FFFD.
+    character � (U+FFFD).
 ignore
     Ignore malformed data and continue without further notice.
 
@@ -852,8 +858,6 @@ especially suited for languages that do not use whitespace to separate words
 :Default: False.
 :Options: ``--character-level-inline-markup``, ``--word-level-inline-markup``.
 
-New in Docutils 0.13.
-
 pep_references
 ~~~~~~~~~~~~~~
 Recognize and link to standalone PEP references (like "PEP 258").
@@ -929,8 +933,6 @@ Example:
 
 :Default: SmartQuotes' `pre-defined quote sets`_.
 :Option:  ``--smartquotes-locales``.
-
-New in Docutils 0.14.
 
 .. [#] If more than one character per quote is required (e.g. padding in
        French quotes), a colon-separated list may be used for the quote set.
@@ -1496,8 +1498,6 @@ See also field_name_limit_.
 The `HTML5 Writer`_ generates valid XML that is compatible with `HTML5`_.
 It shares all settings defined in the `[html writers]`_
 `configuration section`_.
-
-New in Docutils 0.13.
 
 .. _HTML5 Writer: html.html#html5-polyglot
 .. _HTML5: https://www.w3.org/TR/2014/REC-html5-20141028/
@@ -2648,8 +2648,11 @@ If the first line matches the second line is ignored.
 .. _Docutils Document Tree:
 .. _Docutils Generic document type definition:
 .. _Document Tree: ../ref/doctree.html
+.. _Doctree element name: ../ref/doctree.html#element-reference
 .. _class attribute: ../ref/doctree.html#classes
 .. _identifiers: ../ref/doctree.html#identifiers
+.. _reference name:
+.. _reference names: ../ref/doctree.html#reference-names
 .. _title attribute: ../ref/doctree.html#title-attribute
 .. _"uri" attribute: ../ref/doctree.html#uri
 
@@ -2711,7 +2714,6 @@ If the first line matches the second line is ignored.
     ../ref/rst/restructuredtext.html#inline-markup-recognition-rules
 .. _literal blocks: ../ref/rst/restructuredtext.html#literal-blocks
 .. _option lists: ../ref/rst/restructuredtext.html#option-lists
-.. _reference name: ../ref/rst/restructuredtext.html#reference-names
 .. _tables: ../ref/rst/restructuredtext.html#tables
 
 .. _Docutils HTML writers: html.html

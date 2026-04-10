@@ -5759,28 +5759,16 @@ _`Identifiers`
   Identifiers are used in the ids_, refid_, and backrefs_ attributes
   (`%ids.type`_, `%idref.type`_, or `%idrefs.type`_) [#id-vc]_.
 
-  Docutils employs the `identifier normalization`_ to comply with
-  restrictions in the supported output formats (HTML4.1__, HTML5__,
-  `polyglot HTML`__, LaTeX__, ODT__, manpage, XML__).
-
   Identifiers cannot be specified directly in reStructuredText.
-  Docutils generates them from `reference names`_ or from the
-  `"auto_id_prefix"`_ (prepending the `"id_prefix"`_ and
-  appending numbers for disambiguation if required).
+  Docutils generates them from `reference names`_ (applying the
+  `identifier normalization`_ to comply with restrictions in the
+  supported output formats) or the `"auto_id_prefix"`_.
+  If specified, Docutils prepends the `"id_prefix"`_.
+  Numbers may be appended for disambiguation if required.
 
   .. [#id-vc] The `Docutils Generic DTD`_ cannot use the ID, IDREF,
      and IDREFS standard types because elements do not adhere
      to the `One ID per Element Type`_ validity constraint.
-
-  __ https://www.w3.org/TR/html401/types.html#type-name
-  __ https://html.spec.whatwg.org/multipage/dom.html
-     #global-attributes:the-id-attribute-2
-  __ https://www.w3.org/TR/html-polyglot/#id-attribute
-  __ https://tex.stackexchange.com/questions/18311/
-     what-are-the-valid-names-as-labels
-  __ https://help.libreoffice.org/6.3/en-US/text/swriter/01/04040000.html
-     ?DbPAR=WRITER#bm_id4974211
-  __ `XML attribute types`_
 
 _`Phrasing content`
   is text data that may be intermixed with `inline elements`_
@@ -5815,13 +5803,19 @@ _`Pseudo-XML`
   .. _reference name:
 
 _`Reference names`
-  are identifiers assigned in the markup.
+  are assigned in the markup and used for internal cross-references and
+  as base of element identifiers_.
 
   Reference names are used in the name_, names_, refname_, and dupnames_
   attributes (`%refname.type`_ or `%refnames.type`_).
 
-  Reference names may consist of any text.
-  Whitespace is normalized. [#whitespace-normalization]_
+  Reference names may consist of any text,
+  whitespace is normalized. [#whitespace-normalization]_
+  (Identifiers_ have additional constraints.)
+
+  In reStructuredText, `reference names <rST reference names_>`__
+  originate from `internal hyperlink targets`_, a directive's `name
+  option`_, or the element's title or content.
 
   .. _namespace:
 
@@ -5830,11 +5824,6 @@ _`Reference names`
   Only `\<substitution_definition>`_ and `\<substitution_reference>`_
   elements use a distinct namespace with `case-sensitive but forgiving`_
   matching of reference names.
-
-  In reStructuredText, `reference names <rST reference names_>`__
-  originate from `internal hyperlink targets`_, a directive's `name
-  option`_, or the element's title or content and are used for internal
-  cross-references.
 
   .. [#whitespace-normalization] Adjacent spaces, horizontal or vertical
      tabs, newlines, carriage returns, or form feeds, are replaced by a
