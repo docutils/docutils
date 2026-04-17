@@ -2023,7 +2023,8 @@ class document(Root, Element):
                 # disambiguate name-derived ID
                 # TODO: remove second condition after announcing change
                 prefix = id + '-'
-            elif node['dupnames'] and make_id(node['dupnames'][0]):
+            elif (node['dupnames'] and auto_id_prefix.endswith('%')
+                  and make_id(node['dupnames'][0])):
                 prefix = make_id(node['dupnames'][0]) + '-'
             else:
                 prefix = id_prefix + auto_id_prefix
