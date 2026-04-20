@@ -212,7 +212,7 @@ class PyLaTeXTranslator(LaTeXTranslator):
     def depart_definition_list_item(self, node):
         try:
             self.body.append(self.context.pop())
-        except:
+        except Exception:
             self.body.append("% WARN definition list without classifier\n")
             
 

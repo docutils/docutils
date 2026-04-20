@@ -7,7 +7,7 @@ __revision__ = "$Revision$"[11:-2]
 import locale
 try:
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 import sys

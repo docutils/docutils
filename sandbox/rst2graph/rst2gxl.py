@@ -31,7 +31,7 @@ __docformat__ = 'reStructuredText'
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 import docutils
@@ -47,7 +47,7 @@ import os.path
 try:
     from pygraphviz import AGraph
     pygraphvizAvail = True
-except:
+except Exception:
     pygraphvizAvail = False
 
 description = ('Generates GXL from standalone reStructuredText sources.  '
@@ -251,7 +251,7 @@ class GraphTranslator(nodes.GenericNodeVisitor):
                 try:
                     if int(wantedTable) == self._tablesSeen:
                         return True
-                except:
+                except Exception:
                     if wantedTable == title:
                         return True
         return False

@@ -470,7 +470,7 @@ class StandaloneHTMLBuilder(Builder):
             try:
                 targetmtime = path.getmtime(path.join(self.outdir,
                                                       filename[:-4] + '.html'))
-            except:
+            except Exception:
                 targetmtime = 0
             if path.getmtime(path.join(self.srcdir, filename)) > targetmtime:
                 yield filename
@@ -530,7 +530,7 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
             try:
                 targetmtime = path.getmtime(path.join(self.outdir,
                                                       filename[:-4] + '.fpickle'))
-            except:
+            except Exception:
                 targetmtime = 0
             if path.getmtime(path.join(self.srcdir, filename)) > targetmtime:
                 yield filename
