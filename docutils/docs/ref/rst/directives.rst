@@ -398,7 +398,7 @@ In addition, the following options are recognized:
 
     __ `class option`_
 
-``figname`` : text_
+``name`` : text_
     Add *text* to the `names attribute`_ of the <figure> element
     (the "name_" option is applied to the nested <image>).
     New in Docutils 0.22.
