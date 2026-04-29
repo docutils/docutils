@@ -1731,7 +1731,7 @@ Footnotes
 `````````
 
 :Doctree elements: `\<footnote>`_, `\<label>`_
-:Config settings:  footnote_references_
+:Config settings:  `footnote_references <footnote_references setting_>`__
 :See also:         `footnote references`_
 
 Each footnote consists of an explicit markup start (:literal:`.. \ `),
@@ -2993,7 +2993,7 @@ Footnote References
 
 :Doctree element:  `\<footnote_reference>`_
 :Start/End string: ``[``   ``]_``
-:Config settings:  footnote_references_,
+:Config settings:  `footnote_references <footnote_references setting_>`__
                    trim_footnote_reference_space_
 :See also:         footnotes_
 
@@ -3011,8 +3011,8 @@ For example::
 footnote reference. To remove the whitespace from the output, use an
 escaped whitespace character (see `Escaping Mechanism`_) or set the
 trim_footnote_reference_space_ configuration setting.
-Leading whitespace is removed by default, if the footnote_references_
-setting is "superscript".
+Leading whitespace is removed by default, if the `footnote_references
+setting`_ is "superscript".
 
 
 Citation References
@@ -3259,7 +3259,7 @@ Markup errors are handled according to the specification in
 
 .. _character_level_inline_markup:
     ../../user/config.html#character-level-inline-markup
-.. _footnote_references:
+.. _footnote_references setting:
     ../../user/config.html#footnote-references
 .. _language_code: ../../user/config.html#language-code
 .. _output encoding error handler:

@@ -772,10 +772,12 @@ file_insertion_enabled
 Enable directives inserting the contents of external files,
 such as `"include"`_ directive or the `"raw"`_ and `"csv-table"`_
 directives with option "url" or "file".
-A "warning" system message (including the directive text) is inserted
-instead.  (See also raw_enabled_ for another security-relevant setting.)
 
-:Default: True.
+If disabled, a "warning" system message (including the directive text) is
+inserted instead.  (See also raw_enabled_ for another security-relevant
+setting.)
+
+:Default: True (enabled).
 :Options: ``--file-insertion-enabled``, ``--no-file-insertion``.
 
 
@@ -795,6 +797,7 @@ New in Docutils 0.17.
 
 legacy_ids
 ----------
+
 Keep element identifiers_ compatible to Docutils ≤ 0.22.
 
 In case of a name conflict with an `implicit target`_ (section heading),
@@ -810,11 +813,14 @@ New in Docutils 0.23.
 raw_enabled
 -----------
 
-Enable the `"raw" directive`_.  A "warning" system message
-(including the directive text) is inserted instead.  See also
-file_insertion_enabled_ for another security-relevant setting.
+Enable the `"raw" directive`_.
 
-*Default*: True.  *Options*: ``--raw-enabled``, ``--no-raw``.
+If disabled, a "warning" system message (including the directive text) is
+inserted instead.  See also file_insertion_enabled_ for another
+security-relevant setting.
+
+:Default: True (enabled).
+:Options: ``--raw-enabled``, ``--no-raw``.
 
 
 validate
@@ -2039,6 +2045,7 @@ title`__.
 
 __ latex.html#document-title
 __ latex.html#document-info
+
 
 use_latex_toc
 ~~~~~~~~~~~~~

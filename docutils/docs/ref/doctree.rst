@@ -4541,11 +4541,13 @@ _`%yesorno`
     Python data type: ``bool``.
 
 
+.. _common attribute:
+
 Common Attributes
 =================
 
 Through the `%basic.atts`_ parameter entity, all elements except `\<meta>`_
-support the attributes ids_, names_ or dupnames_, source_, and classes_.
+support the attributes classes_, dupnames_, ids_, names_, and source_.
 
 
 ---------------------
@@ -4760,9 +4762,9 @@ or the text between option arguments (typically either "," or " ").
 
 Attribute type: `%refnames.type`_.  Default value: none.
 
-``dupnames`` replaces the `names`_ attribute when there has been
-a naming conflict.
-It is one of the `common attributes`_, shared by all Docutils elements.
+``dupnames`` is a `common attribute`_, shared by all Docutils elements.
+`Reference names`_ are moved from the `names`_ attribute to ``dupnames``
+in case of a naming conflict.
 
 
 ``enumtype``
@@ -4819,9 +4821,10 @@ The ``height`` attribute is used in the `\<image>`_ element.
 
 Attribute type: `%ids.type`_.  Default value: none.
 
-The ``ids`` attribute is a space separated list containing one or more
-unique `identifiers`_, typically assigned by the system.
-It is one of the `common attributes`_, shared by all Docutils elements.
+``ids`` is one of *two* attributes for element identification (the
+other is names_).  It is a space separated list containing one or
+more unique `identifiers`_, typically assigned by the system.
+``ids`` is a `common attribute`_, shared by all Docutils elements.
 
 An XPath_ expression to select the element with identifier `test` is ::
 
@@ -4935,23 +4938,22 @@ The attribute will no longer be used with <reference> elements in Docutils 1.0.
 
 Attribute type: `%refnames.type`_.  Default value: none.
 
-The ``names`` attribute is a space-separated list containing `reference
+``names`` is one of *two* attributes for element identification (the
+other is ids_).  It is a space-separated list containing `reference
 names`_ of an element (spaces inside a name are backslash-escaped).
-It is one of the `common attributes`_, shared by all Docutils elements.
+``names`` is a `common attribute`_, shared by all Docutils elements.
 
 .. _reference name removal:
 
 Each reference name must be unique in its namespace_;
-if there are name conflicts (two or more elements want to use the same
-name), the affected name will be transferred to the `dupnames`_ attribute on
-the duplicate element(s). The element can no longer be used as hyperlink
-target. [#]_
+if two or more elements want to use the same name, the affected name
+will be transferred to the `dupnames`_ attribute on the duplicate
+element(s) [#]_ and can no longer be used in hyperlinks. [#]_
 
-An element may have both ``names`` and ``dupnames`` attributes,
-if the ``dupnames`` are from conflicting `implicit hyperlink targets`_
-and the ``names`` from `explicit hyperlink targets`_ or a directive's
-`name option`_.
-
+.. [#] An element may have both ``names`` and ``dupnames`` attributes,
+   if the ``dupnames`` are from conflicting `implicit hyperlink targets`_
+   and the ``names`` from `explicit hyperlink targets`_ or a directive's
+   `name option`_.
 .. [#] See `Implicit Hyperlink Targets`_ for details of conflict resolution.
 
 

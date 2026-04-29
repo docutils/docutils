@@ -305,11 +305,9 @@ HTML5 writer:
     __ docs/ref/rst/restructuredtext.html#explicit-hyperlink-targets
 
 LaTeX writer:
-  - Only write ``\label`` commands for explicit IDs and IDs that are
-    referenced in the current document (i.e. not for un-referenced
-    section titles).
-  - Support the "semantic inline markup roles" from the ``html-roles.txt``
-    `standard definition file`_.
+  - Do not write ``\label`` commands for section titles and other
+    implicit targets if there is no matching reference in the document.
+  - Support `semantic inline markup roles`_.
 
 Configuration changes
   - New setting `legacy_ids`_.
@@ -1617,6 +1615,8 @@ Release 0.3.5 (2004-07-29)
 .. _"code" role: docs/ref/rst/roles.html#code
 .. _standard definition file:
 .. _standard definition files: docs/ref/rst/definitions.html
+.. _semantic inline markup roles:
+    docs/ref/rst/definitions.html#semantic-inline-markup-roles
 .. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
 
 .. _configuration settings: docs/user/config.html

@@ -1096,19 +1096,6 @@ Example 1:
 
     (play with the ``\footnotemargin`` setting),
 
-  * redefine ``\DUfootnotetext`` inserting `\hangindent`::
-
-      \newcommand{\DUfootnotetext}[4]{%
-        \begingroup%
-        \renewcommand{\thefootnote}{%
-          \protect\raisebox{1em}{\protect\hypertarget{#1}{}}%
-          \protect\hyperlink{#2}{#3}}%
-          \footnotetext{\hangindent=2em #4}%
-        \endgroup%
-      }
-
-    (adapt the ``\hangindent`` value).
-
 Example 2:
   Footnote marks in normal font size, not superscript::
 
@@ -1120,12 +1107,11 @@ Example 2:
 Example 3:
   Place the footnote text where it appears in the source document (instead
   of at the page bottom). This can be used to get the effect of endnotes
-  (needs the hanging_ package)::
+  (requires the hanging_ package)::
 
      \usepackage{hanging}
      \newcommand{\DUfootnotetext}[4]{%
-       \par\noindent\raisebox{1em}{\hypertarget{#1}{}}%
-       \hyperlink{#2}{#3}%
+       \par\noindent\phantomsection\label{#1}\hyperlink{#2}{#3}
        \hangpara{\parindent}{1}#4%
      }
 
@@ -2199,21 +2185,20 @@ the BUGS_ documentation and the `SourceForge Bug Tracker`_.
 .. _SourceForge Bug Tracker: https://sourceforge.net/p/docutils/bugs/
 
 
-Footnotes and citations
-```````````````````````
+Citations
+`````````
 
-Initially both were implemented using figure floats, because hyperlinking
+Initially citations were implemented using figure floats, because hyperlinking
 back and forth seemed to be impossible. Later the `figure directive`_ was
 added that puts images into figure floats.
 
-This results in footnotes, citations, and figures possibly being mixed at
-page foot.
+This results in citations and figures possibly being mixed at page foot.
 
-Workaround:
+Solution:
   Select citation handling with the use_latex_citations_ setting.
 
-If ``use-latex-citations`` is used, a bibliography is inserted right at
-the end of the document. *This should be customizable*.
+If ``use_latex_citations`` is True, a bibliography is inserted right at
+the end of the document. *TODO: This should be customizable*.
 
 If ``use-latex-citations`` is used adjacent citation references (separated
 only by a single space or a newline) are combined to a single citation

@@ -88,8 +88,10 @@ Release 0.23b.dev (unpublished)
 
 * docutils/writers/latex2e/*
 
-  - Default styling for "semantic inline markup roles" from the
-    ``html-roles.txt`` standard definition file.
+  - Do not write ``\label`` commands for section titles and other
+    implicit targets if there is no matching reference in the document.
+  - Default styling for "semantic inline markup roles"
+    (cf. ``html-roles.txt`` standard definition file).
 
 
 Release 0.22.4 (2025-12-18)
