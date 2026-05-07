@@ -2381,6 +2381,9 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             raise nodes.SkipNode
 
     def depart_footnote(self, node) -> None:
+        # prevent overlap with next note if footnote ends with "admonition":
+        if isinstance(node[-1], nodes.Admonition):
+            self.out.append('\\smallskip')
         if not self.latex_footnotes:
             self.out.append('}\n')
 
