@@ -2417,6 +2417,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.footnote_queue.append(href)
             footnote_cmd = '%\n\\footnote'
             if isinstance(node.parent, nodes.title):
+                if isinstance(node.parent.parent, nodes.section):
+                    self.out.append('%\n\\texorpdfstring{')
                 footnote_cmd = '%\n \\protect\\footnote'
             add_label = target['names'] and self.document.refnames.get(
                                                 target['names'][0], [])
@@ -2440,7 +2442,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
                 # subsequent items have their reference already set:
                 footnote_cmd = '%\n\\refstepcounter{footnote}\\footnotetext'
                 add_label = True
-            raise nodes.SkipNode  # ignore content (footnote number/symbol)
+            raise nodes.SkipChildren  # ignore content (footnote number/symbol)
 
     def depart_footnote_reference(self, node) -> None:
         if not self.latex_footnotes:
@@ -2448,6 +2450,9 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         elif not isinstance(self.document.ids[node['refid']], nodes.footnote):
             self.depart_reference(node)
             self.out.append('}')
+        elif isinstance(node.parent.parent, nodes.section
+                        ) and isinstance(node.parent, nodes.title):
+            self.out.append('}{}')
 
     # footnote/citation label
     def label_delim(self, node, bracket, superscript):
