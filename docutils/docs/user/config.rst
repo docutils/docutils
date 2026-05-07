@@ -1719,10 +1719,10 @@ See also `embed_stylesheet [html writers]`_.
 footnote_references
 ~~~~~~~~~~~~~~~~~~~
 Format for `footnote references`_: one of "superscript" or "brackets".
-See also `footnote_references [html writers]`_.
 
-Overrides also trim_footnote_reference_space_,
-if the parser supports this option. [#override]_
+Ignored if latex_footnotes_ is True.
+Sets the default for trim_footnote_reference_space_.
+See also `footnote_references [html writers]`_.
 
 *Default*: "superscript".  *Option*: ``--footnote-references``.
 
@@ -1767,6 +1767,8 @@ is prepended.
 .. _hyperref TeX package: https://ctan.org/pkg/hyperref/
 
 
+.. _docutils_footnotes:
+
 latex_footnotes
 ~~~~~~~~~~~~~~~
 
@@ -1778,7 +1780,7 @@ in `Generating LaTeX with Docutils`.
 :Default: False (use footnote numbers/symbols appointed by Docutils).
 :Options: ``--latex-footnotes``, ``--docutils-footnotes``.
 
-New in Docutils 0.23.
+New in Docutils 0.23. Replaces `docutils_footnotes`.
 
 
 latex_preamble

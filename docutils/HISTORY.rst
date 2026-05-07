@@ -2324,8 +2324,8 @@ Release 0.7 (2010-07-07)
   - Use the ``\url`` command for URLs (breaks long URLs instead of
     writing into the margin).
   - Preserve runs of spaces in `inline literals`__.
-  - Deprecate `figure_footnotes`_ setting.
-  - Rename `use_latex_footnotes`_ setting to `docutils_footnotes`_.
+  - Deprecate `figure_footnotes` setting.
+  - Rename `use_latex_footnotes` setting to `docutils_footnotes`_.
   - New `latex_preamble`_ setting.
   - Use PDF standard fonts (Times/Helvetica/Courier) as default.
   - Fix hyperlink targets (labels) for images, figures, and tables.
@@ -4898,7 +4898,6 @@ test/test_rst); and all modifications required to make it all work.
 .. _traceback: docs/user/config.html#traceback
 .. _use_bibtex: docs/user/config.html#use-bibtex
 .. _use_latex_abstract: docs/user/config.html#use-latex-abstract
-.. _use_latex_footnotes: docs/user/config.html#use-latex-footnotes
 .. _use_latex_toc: docs/user/config.html#use-latex-toc
 .. _view_mode: docs/user/config.html#view-mode
 
