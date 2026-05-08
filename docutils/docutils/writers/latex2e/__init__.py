@@ -2367,14 +2367,11 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             except IndexError:
                 backref = node['ids'][0]  # no backref, use self-ref instead
             self.provide_fallback('footnotes')
-            num = node[0].astext()
+            label = self.encode(node[0].astext())
             if self.settings.footnote_references == 'brackets':
-                num = '[%s]' % num
-            self.out.append('%%\n\\DUfootnotetext{%s}{%s}{%s}{' %
-                            (node['ids'][0], backref, self.encode(num)))
-            # prevent spurious whitespace if footnote starts with paragraph:
-            if len(node) > 1 and isinstance(node[1], nodes.paragraph):
-                self.out.append('%')
+                label = '[%s]' % label
+            self.out.append('%%\n\\DUfootnotetext{%s}{%s}{%s}{%%' %
+                            (node['ids'][0], backref, label))
         elif not self.footnote_queue:
             # latex-footnotes: set only scheduled footnotes
             # (see `visit_footnote_reference()`)
@@ -2390,14 +2387,12 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def visit_footnote_reference(self, node) -> None:
         href = node['refid']
         if not self.latex_footnotes:
-            format = self.settings.footnote_references
-            if format == 'brackets':
+            if self.settings.footnote_references == 'brackets':
                 self.append_hypertargets(node)
                 self.out.append('\\hyperlink{%s}{[' % href)
                 self.context.append(']}')
             else:
-                if not self.fallback_stylesheet:
-                    self.fallbacks['footnotes'] = PreambleCmds.footnotes
+                self.provide_fallback('footnotes')
                 self.out.append(r'\DUfootnotemark{%s}{%s}{' %
                                 (node['ids'][0], href))
                 self.context.append('}')

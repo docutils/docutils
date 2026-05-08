@@ -98,21 +98,21 @@ Paragraphs may contain footnote references (manually numbered
 \raisebox{1em}{\hypertarget{footnote-reference-1}{}}\hyperlink{footnote-1}{[1]}, anonymous auto-numbered \raisebox{1em}{\hypertarget{footnote-reference-2}{}}\hyperlink{footnote-2}{[3]}, labeled auto-numbered \raisebox{1em}{\hypertarget{footnote-reference-3}{}}\hyperlink{label}{[2]}, or
 symbolic \raisebox{1em}{\hypertarget{footnote-reference-4}{}}\hyperlink{footnote-3}{[*]}) or citation references (\cite{CIT2002}, \cite{DU2015}).
 %
-\DUfootnotetext{footnote-1}{footnote-reference-1}{{[}1{]}}{%
+\DUfootnotetext{footnote-1}{footnote-reference-1}{[1]}{%
 A footnote contains body elements, consistently indented by at
 least 1 space.
 
 This is the footnote's second paragraph.
 }
 %
-\DUfootnotetext{label}{footnote-reference-3}{{[}2{]}}{%
+\DUfootnotetext{label}{footnote-reference-3}{[2]}{%
 Footnotes may be numbered, either manually (as in \raisebox{1em}{\hypertarget{footnote-reference-5}{}}\hyperlink{footnote-1}{[1]}) or
 automatically using a \textquotedbl{}\#\textquotedbl{}-prefixed label.  This footnote has a
 label so it can be referred to from multiple places, both as a
 footnote reference (\raisebox{1em}{\hypertarget{footnote-reference-6}{}}\hyperlink{label}{[2]}) and as a \hyperref[label]{hyperlink reference}.
 }
 %
-\DUfootnotetext{footnote-2}{footnote-reference-2}{{[}3{]}}{%
+\DUfootnotetext{footnote-2}{footnote-reference-2}{[3]}{%
 This footnote is numbered automatically and anonymously using a
 label of \textquotedbl{}\#\textquotedbl{} only.
 
@@ -121,16 +121,16 @@ This is the second paragraph.
 And this is the third paragraph.
 }
 %
-\DUfootnotetext{footnote-3}{footnote-reference-4}{{[}*{]}}{%
+\DUfootnotetext{footnote-3}{footnote-reference-4}{[*]}{%
 Footnotes may also use symbols, specified with a \textquotedbl{}*\textquotedbl{} label.
 Here's a reference to the next footnote: \raisebox{1em}{\hypertarget{footnote-reference-7}{}}\hyperlink{footnote-4}{[†]}.
 }
 %
-\DUfootnotetext{footnote-4}{footnote-reference-7}{{[}†{]}}{%
+\DUfootnotetext{footnote-4}{footnote-reference-7}{[†]}{%
 This footnote shows the next symbol in the sequence.
 }
 %
-\DUfootnotetext{footnote-5}{footnote-5}{{[}4{]}}{%
+\DUfootnotetext{footnote-5}{footnote-5}{[4]}{%
 Here's an unreferenced footnote, with a reference to a
 nonexistent footnote: \raisebox{1em}{\hypertarget{footnote-reference-8}{}}\hyperlink{footnote-6}{[5]}.
 }
@@ -140,14 +140,14 @@ nonexistent footnote: \raisebox{1em}{\hypertarget{footnote-reference-8}{}}\hyper
 
 Here's a reference to the above, \cite{CIT2002}.
 %
-\DUfootnotetext{footnote-6}{footnote-reference-8}{{[}5{]}}{%
+\DUfootnotetext{footnote-6}{footnote-reference-8}{[5]}{%
 this footnote is missing in the standard example document.
 }
 
 Footnotes may contain block elements like lists  \raisebox{1em}{\hypertarget{footnote-reference-9}{}}\hyperlink{footnote-7}{[6]} \raisebox{1em}{\hypertarget{footnote-reference-10}{}}\hyperlink{list-note}{[7]} \raisebox{1em}{\hypertarget{footnote-reference-11}{}}\hyperlink{footnote-8}{[8]},
 admonitions \raisebox{1em}{\hypertarget{footnote-reference-12}{}}\hyperlink{footnote-9}{[9]}, or tables \raisebox{1em}{\hypertarget{footnote-reference-13}{}}\hyperlink{footnote-10}{[10]}.
 %
-\DUfootnotetext{footnote-7}{footnote-reference-9}{{[}6{]}}{
+\DUfootnotetext{footnote-7}{footnote-reference-9}{[6]}{%
 \begin{enumerate}
 \item An ordered list
 
@@ -155,7 +155,7 @@ admonitions \raisebox{1em}{\hypertarget{footnote-reference-12}{}}\hyperlink{foot
 \end{enumerate}
 }
 %
-\DUfootnotetext{list-note}{footnote-reference-10}{{[}7{]}}{
+\DUfootnotetext{list-note}{footnote-reference-10}{[7]}{%
 \begin{itemize}
 \item An unordered list (bullet list)
 
@@ -165,7 +165,7 @@ admonitions \raisebox{1em}{\hypertarget{footnote-reference-12}{}}\hyperlink{foot
 And a trailing paragraph.
 }
 %
-\DUfootnotetext{footnote-8}{footnote-reference-11}{{[}8{]}}{
+\DUfootnotetext{footnote-8}{footnote-reference-11}{[8]}{%
 \begin{DUfieldlist}
 \item[{Field:}]
 list
@@ -175,7 +175,7 @@ list
 \end{DUfieldlist}
 }
 %
-\DUfootnotetext{footnote-9}{footnote-reference-12}{{[}9{]}}{
+\DUfootnotetext{footnote-9}{footnote-reference-12}{[9]}{%
 \begin{DUclass}{note}
 \begin{DUadmonition}
 \DUtitle{Note}
@@ -185,7 +185,7 @@ This is a note in a note.
 \end{DUclass}
 \smallskip}
 %
-\DUfootnotetext{footnote-10}{footnote-reference-13}{{[}10{]}}{
+\DUfootnotetext{footnote-10}{footnote-reference-13}{[10]}{%
 \setlength{\DUtablewidth}{\dimexpr\linewidth-3\arrayrulewidth\relax}%
 \begin{longtable*}{|p{\DUcolumnwidth{0.150}}|p{\DUcolumnwidth{0.250}}|}
 \hline

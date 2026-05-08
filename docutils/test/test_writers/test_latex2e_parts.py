@@ -184,7 +184,7 @@ Und damit \foreignlanguage{spanish}{basta}!
 paragraph
 }
 %
-\DUfootnotetext{footnote-2}{footnote-2}{2}{
+\DUfootnotetext{footnote-2}{footnote-2}{2}{%
 \begin{enumerate}
 \item enumeration
 \end{enumerate}
