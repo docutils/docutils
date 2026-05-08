@@ -1366,12 +1366,12 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         if self.fallback_stylesheet:
             stylesheet_list.remove('docutils')
             if settings.legacy_class_functions:
-                # docutils.sty is incompatible with legacy functions
+                # docutils.sty is incompatible with legacy class functions
                 self.fallback_stylesheet = False
             else:
                 # require a minimal version:
                 self.fallbacks['_docutils.sty'] = (
-                    r'\usepackage{docutils}[2025-12-10]')
+                    r'\usepackage{docutils}[2026-05-06]')
 
         self.stylesheet = [self.stylesheet_call(path)
                            for path in stylesheet_list]
@@ -2387,15 +2387,17 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def visit_footnote_reference(self, node) -> None:
         href = node['refid']
         if not self.latex_footnotes:
+            if isinstance(node.parent, nodes.title):
+                if isinstance(node.parent.parent, nodes.section):
+                    self.out.append('\\texorpdfstring{')
+                self.out.append('\\protect')
             if self.settings.footnote_references == 'brackets':
-                self.append_hypertargets(node)
-                self.out.append('\\hyperlink{%s}{[' % href)
-                self.context.append(']}')
+                self.provide_fallback('bracket_footnoterefs')
+                cmd = r'\DUbracketfootnotemark'
             else:
                 self.provide_fallback('footnotes')
-                self.out.append(r'\DUfootnotemark{%s}{%s}{' %
-                                (node['ids'][0], href))
-                self.context.append('}')
+                cmd = r'\DUfootnotemark'
+            self.out.append(r'%s{%s}{%s}{' % (cmd, node['ids'][0], href))
         else:  # latex-footnotes
             target = self.document.ids[href]
             if not isinstance(target, nodes.footnote):
@@ -2444,12 +2446,13 @@ class LaTeXTranslator(writers.DoctreeTranslator):
 
     def depart_footnote_reference(self, node) -> None:
         if not self.latex_footnotes:
-            self.out.append(self.context.pop())
+            self.out.append('}')
         elif not isinstance(self.document.ids[node['refid']], nodes.footnote):
             self.depart_reference(node)
             self.out.append('}')
-        elif isinstance(node.parent.parent, nodes.section
-                        ) and isinstance(node.parent, nodes.title):
+            return
+        if isinstance(node.parent.parent, nodes.section
+                      ) and isinstance(node.parent, nodes.title):
             self.out.append('}{}')
 
     # footnote/citation label

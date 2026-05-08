@@ -86,13 +86,20 @@ Release 0.23b.dev (unpublished)
 
   - Use a section's last "ids" attribute for the "section-self-link".
 
-* docutils/writers/latex2e/*
+* docutils/writers/latex2e/__init__.py
 
   - Do not write ``\label`` commands for section titles and other
     implicit targets if there is no matching reference in the document.
+  - Prevent LaTeX errors with footnotes in titles.
+  - Implement ``--latex-footnotes``. The "docutils_footnotes" setting is
+    renamed to latex_footnotes_, the command line options remain unchanged.
+
+* docutils/write/latex2e/docutils.sty
+
   - Default styling for "semantic inline markup roles"
     (cf. ``html-roles.txt`` standard definition file).
-  - Implement the latex_footnotes_ configuration setting.
+  - New command ``\DUbracketfootnotemark`` to render footnote references
+    with brackets.
 
 
 Release 0.22.4 (2025-12-18)

@@ -46,6 +46,12 @@
     }
 \fi
 
+% use full-size footnotemarks with brackets
+\providecommand*{\DUbracketfootnotemark}[3]{%
+  \raisebox{1em}{\hypertarget{#1}{}}%
+  \hyperref[#2]{[#3]}%
+}
+
 % field list environment (for separate configuration of `field lists`)
 \ifdefined\DUfieldlist
 \else
@@ -95,8 +101,8 @@
 \maketitle
 
 Paragraphs may contain footnote references (manually numbered
-\raisebox{1em}{\hypertarget{footnote-reference-1}{}}\hyperlink{footnote-1}{[1]}, anonymous auto-numbered \raisebox{1em}{\hypertarget{footnote-reference-2}{}}\hyperlink{footnote-2}{[3]}, labeled auto-numbered \raisebox{1em}{\hypertarget{footnote-reference-3}{}}\hyperlink{label}{[2]}, or
-symbolic \raisebox{1em}{\hypertarget{footnote-reference-4}{}}\hyperlink{footnote-3}{[*]}) or citation references (\cite{CIT2002}, \cite{DU2015}).
+\DUbracketfootnotemark{footnote-reference-1}{footnote-1}{1}, anonymous auto-numbered \DUbracketfootnotemark{footnote-reference-2}{footnote-2}{3}, labeled auto-numbered \DUbracketfootnotemark{footnote-reference-3}{label}{2}, or
+symbolic \DUbracketfootnotemark{footnote-reference-4}{footnote-3}{*}) or citation references (\cite{CIT2002}, \cite{DU2015}).
 %
 \DUfootnotetext{footnote-1}{footnote-reference-1}{[1]}{%
 A footnote contains body elements, consistently indented by at
@@ -106,10 +112,10 @@ This is the footnote's second paragraph.
 }
 %
 \DUfootnotetext{label}{footnote-reference-3}{[2]}{%
-Footnotes may be numbered, either manually (as in \raisebox{1em}{\hypertarget{footnote-reference-5}{}}\hyperlink{footnote-1}{[1]}) or
+Footnotes may be numbered, either manually (as in \DUbracketfootnotemark{footnote-reference-5}{footnote-1}{1}) or
 automatically using a \textquotedbl{}\#\textquotedbl{}-prefixed label.  This footnote has a
 label so it can be referred to from multiple places, both as a
-footnote reference (\raisebox{1em}{\hypertarget{footnote-reference-6}{}}\hyperlink{label}{[2]}) and as a \hyperref[label]{hyperlink reference}.
+footnote reference (\DUbracketfootnotemark{footnote-reference-6}{label}{2}) and as a \hyperref[label]{hyperlink reference}.
 }
 %
 \DUfootnotetext{footnote-2}{footnote-reference-2}{[3]}{%
@@ -123,7 +129,7 @@ And this is the third paragraph.
 %
 \DUfootnotetext{footnote-3}{footnote-reference-4}{[*]}{%
 Footnotes may also use symbols, specified with a \textquotedbl{}*\textquotedbl{} label.
-Here's a reference to the next footnote: \raisebox{1em}{\hypertarget{footnote-reference-7}{}}\hyperlink{footnote-4}{[†]}.
+Here's a reference to the next footnote: \DUbracketfootnotemark{footnote-reference-7}{footnote-4}{†}.
 }
 %
 \DUfootnotetext{footnote-4}{footnote-reference-7}{[†]}{%
@@ -132,14 +138,14 @@ This footnote shows the next symbol in the sequence.
 %
 \DUfootnotetext{footnote-5}{footnote-5}{[4]}{%
 Here's an unreferenced footnote, with a reference to a
-nonexistent footnote: \raisebox{1em}{\hypertarget{footnote-reference-8}{}}\hyperlink{footnote-9}{[5]}.
+nonexistent footnote: \DUbracketfootnotemark{footnote-reference-8}{footnote-9}{5}.
 }
 
 
-\section{Body elements in footnotes \raisebox{1em}{\hypertarget{footnote-reference-9}{}}\hyperlink{note-note}{[9]}}
+\section{Body elements in footnotes \texorpdfstring{\protect\DUbracketfootnotemark{footnote-reference-9}{note-note}{9}}{}}
 
-Footnotes may contain block elements like lists  \raisebox{1em}{\hypertarget{footnote-reference-10}{}}\hyperlink{footnote-6}{[6]} \raisebox{1em}{\hypertarget{footnote-reference-11}{}}\hyperlink{list-note}{[7]} \raisebox{1em}{\hypertarget{footnote-reference-12}{}}\hyperlink{footnote-7}{[8]},
-admonitions \raisebox{1em}{\hypertarget{footnote-reference-13}{}}\hyperlink{note-note}{[9]}, or tables \raisebox{1em}{\hypertarget{footnote-reference-14}{}}\hyperlink{footnote-8}{[10]}.
+Footnotes may contain block elements like lists  \DUbracketfootnotemark{footnote-reference-10}{footnote-6}{6} \DUbracketfootnotemark{footnote-reference-11}{list-note}{7} \DUbracketfootnotemark{footnote-reference-12}{footnote-7}{8},
+admonitions \DUbracketfootnotemark{footnote-reference-13}{note-note}{9}, or tables \DUbracketfootnotemark{footnote-reference-14}{footnote-8}{10}.
 %
 \DUfootnotetext{footnote-6}{footnote-reference-10}{[6]}{%
 \begin{enumerate}
@@ -202,7 +208,7 @@ footnote
 This footnote is missing in the standard example document.
 }
 
-This \raisebox{1em}{\hypertarget{footnote-reference-15}{}}\hyperlink{list-note}{[7]} is a second reference to the footnote containing
+This \DUbracketfootnotemark{footnote-reference-15}{list-note}{7} is a second reference to the footnote containing
 a bullet list.
 
 A second reference to \cite{CIT2002}.

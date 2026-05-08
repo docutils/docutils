@@ -22,7 +22,7 @@
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{docutils}
-  [2025-12-10 macros for Docutils LaTeX output]
+  [2026-05-06 macros for Docutils LaTeX output]
 
 % Helpers
 % -------
@@ -136,6 +136,14 @@
     \protect\hyperlink{#2}{#3}}%
   \footnotetext{#4}%
   \endgroup%
+}
+
+% bracket_footnoterefs::
+
+% use full-size footnotemarks with brackets
+\providecommand*{\DUbracketfootnotemark}[3]{%
+  \raisebox{1em}{\hypertarget{#1}{}}%
+  \hyperref[#2]{[#3]}%
 }
 
 % inline::
