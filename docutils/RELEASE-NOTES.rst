@@ -290,6 +290,9 @@ Misc
 Release 0.23b.dev (unpublished)
 ===============================
 
+General:
+  - Define `public API and backwards compatibility policy`_.
+
 rST parser:
   - Problems with the "include" directive are reported as ERROR, not SEVERE.
   - The "include" directive options :start-after: and :end-before: may now
@@ -1660,3 +1663,5 @@ Release 0.3.5 (2004-07-29)
 .. _rst2html5: docs/user/tools.html#rst2html5
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
 .. _buildhtml.py: docs/user/tools.html#buildhtml-py
+
+.. _public API and backwards compatibility policy: docs/eps/ep-010.html

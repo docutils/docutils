@@ -6,14 +6,16 @@ EP 10 — Public API and Backwards Compatibility Policy
 
 :Authors: Günter Milde, Adam Turner
 :Discussions-To: https://sourceforge.net/p/docutils/feature-requests/89/
-:Status: Draft
+:Status: Active
 :Type: Process
 :Created: 2025-04-22
 :Docutils-Version: 0.23
+:Resolution: `2026-04-09
+  <https://sourceforge.net/p/docutils/feature-requests/89/#a268>`__
 
 :Abstract:
-  This document suggests a definition of the public API provided by the
-  Docutils project and the backwards compatibility policy.
+  This document defines the public API provided by the
+  Docutils project and its backwards compatibility policy.
 
 .. contents::
 
@@ -99,16 +101,15 @@ Docutils' public API includes:
 
 * the `reStructuredText Markup Specification` [restructuredtext]_,
 
-* `the Docutils Document Tree` [doctree]_
-  and the `Docutils Generic Document Type Definition` [docutils.dtd]_,
+* the `Docutils Document Model` [doctree]_ [docutils.dtd]_,
 
-* names, command-line arguments and behaviour of
-  the *"console_scripts" entry points* [tools]_ [settings]_,
+* names and behaviour of the `Front End Tools`
+  ("console_scripts" entry points) [tools]_,
 
 * the core ``docutils`` Python package API:
 
   - the "publisher" interface for programmatic use [publisher]_,
-
+  - the runtime settings [settings]_,
   - component interfaces as defined by the abstract base classes
     `docutils.readers.Reader`, `docutils.parsers.Parser`,
     `docutils.writer.Writer`, and `docutils.transform.Transform`,
@@ -130,8 +131,33 @@ Exemptions:
   |provisional|_ or *internal*.
 * All **undocumented** objects should be assumed to be internal. [#]_
 
+.. tip::
+
+   To find out if an object from the *docutils* package is safe to use,
+   look up its docstring and the docstring of its parent(s). [*]_
+
+   If there is no documentation or the documentation says *provisional* or
+   *internal*, the name, behaviour, and existence of the object is not
+   guaranteed to be stable.
+
+   Code relying on non-public objects should be made robust using
+   public alternatives. If there is a no such alternative or the
+   required change would be a problem, `contact the Docutils
+   developers`__ or file a `feature request`_.
+
+   .. [*] `Attribute docstrings`_ are not shown by pydoc_.
+      To find out whether attributes have a docstring, check the source.
+
+   __ https://docutils.sourceforge.io/docs/user/mailing-lists.html
+   .. _feature request: https://sourceforge.net/p/docutils/feature-requests/
+   .. _attribute docstrings:
+      https://peps.python.org/pep-0258/#attribute-docstrings
+   .. _pydoc: https://docs.python.org/3/library/pydoc.html
+
 .. [#] Cf. `Backwards Compatibility Rules`_ in :PEP:`387` and
        `Public and Internal Interfaces`_ in :PEP:`8`.
+
+
 .. |provisional| replace:: *provisional*
 
 
@@ -151,45 +177,6 @@ Security Implications
 
 If required, critical bug fixes may change the public API without advance
 warning.
-
-
-How to Teach This
-=================
-
-.. How to teach users, new and experienced,
-   how to apply the proposal to their work.
-
-* Copy the backwards compatibility declaration to the `Docutils Project
-  Policies`_. Link back to the `public API`_ specification in this document.
-
-* Complete the API documentation and keep it up to date.
-
-  - maintain and extend the `API Reference Material for Client-Developers`_
-
-  - Fix/enhance/add docstrings to improve the output of `pydoc`_.
-
-* Put the following text at a suitable place in the documentation:
-
-     To find out if an object from the "docutils" package is safe to use,
-     look up its docstring and the docstring of its parent(s) [#]_.
-
-     If there is no documentation or the documentation says *provisional* or
-     *internal*, the name, behaviour, and existence of the object is not
-     guaranteed to be stable.
-
-     Code relying on non-public objects should be made robust using
-     public alternatives. If there is a no such alternative or the
-     required change would be a problem, `contact the Docutils
-     developers`__ or file a `feature request`_.
-
-     .. [#] `Attribute docstrings`_ are not shown by pydoc_. To find out
-        whether attributes have a docstring, check the source.
-
-     .. _attribute docstrings:
-         https://peps.python.org/pep-0258/#attribute-docstrings
-     .. _pydoc: https://docs.python.org/3/library/pydoc.html
-     __ https://docutils.sourceforge.io/docs/user/mailing-lists.html
-     .. _feature request: https://sourceforge.net/p/docutils/feature-requests/
 
 
 Rejected Ideas
@@ -219,7 +206,7 @@ Mark all internal objects with a prefix underscore.
 Use the ``__all__`` attribute to declare modules, classes, and
 functions that form the public API.
 
-- This may be done later to improve "pydoc" output, but should not hold
+- This may be done later to improve "pydoc_" output, but should not hold
   up the declaration of a Backwards Compatibility Policy.
 
 
@@ -233,7 +220,8 @@ Open Issues
   There are many objects that were not intended for public use but are
   still used by downstream projects.
 
-  Cf. the `Docutils Project Policies`_
+  Before the switch to semantic versioning, the `Docutils Project Policies`_
+  contained the lines:
 
     When Docutils reaches version 1.0, the major APIs will be considered
     frozen.
@@ -261,6 +249,8 @@ Open Issues
 
   - nicely format rST docstrings
   - include attribute docstrings (ignored by pydoc_).
+
+  .. _pydoc: https://docs.python.org/3/library/pydoc.html
 
 
 References

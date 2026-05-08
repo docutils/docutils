@@ -345,16 +345,15 @@ See also the `Docutils Release Procedure`_
 based on collections.namedtuple_. It is modelled on `sys.version_info`_
 and has the following attributes:
 
-major : non-negative integer
-    **Major releases** (x.0, e.g. 1.0) will be rare, and will
-    represent major changes in API, functionality, or commitment.  The
-    major number will be bumped to 1 when the project is
-    feature-complete, and may be incremented later if there is a major
-    change in the design or API.  When Docutils reaches version 1.0,
-    the major APIs will be considered frozen.
+_`major` : non-negative integer
+    **Major releases** (x.0, e.g. 1.0) contain changes in
+    the `public API`_, functionality, or commitment.
+    The major number will be bumped to 1 when the project is
+    feature-complete, and incremented later if there are
+    backwards-incompatible changes.
     For details, see the `backwards compatibility policy`_.
 
-minor : non-negative integer
+_`minor` : non-negative integer
     Releases that change the minor number (x.y, e.g. 0.5) will be
     **feature releases**; new features from the `Docutils core`_ will
     be included.
@@ -474,39 +473,36 @@ Policy History
   `Feature Request #50`_ and the `discussion on docutils-devel`__ from
   May 28 to June 20 2017.
 
-  .. _Feature Request #50:
-     https://sourceforge.net/p/docutils/feature-requests/50/
-  __ https://sourceforge.net/p/docutils/mailman/message/35903816/
+* The policy was updated in May 2026 to comply with the rules of
+  `Semantic Versioning`_ (cf. `EP 10`__).
+
+.. _Feature Request #50:
+   https://sourceforge.net/p/docutils/feature-requests/50/
+__ https://sourceforge.net/p/docutils/mailman/message/35903816/
+.. _Semantic Versioning: https://semver.org/
+__ ../eps/ep-010.html#backwards-compatibility
 
 
 Backwards Compatibility Policy
 ==============================
 
-.. note:: The backwards compatibility policy outlined below is a stub.
+Beginning with version 1.0, Docutils will follow the rules of `Semantic
+Versioning`_: All incompatible changes to the `public API`_ require
+increasing the `major`_ part of the version specifier. Backwards
+compatible changes can be done in `minor`_ releases.
 
-Docutils' backwards compatibility policy follows the rules for Python in
-:PEP:`387`.
+* A majority of the projects depending on Docutils does this indirectly,
+  via the Sphinx_ document processor.
 
-* The scope of the public API is laid out at the start of the `backwards
-  compatibility rules`_.
-
-* The rules for `making incompatible changes`_ apply.
-
-A majority of projects depends on Docutils indirectly, via the Sphinx_
-document processor.
-
-* Sphinx developers should be given the chance to fix or work around a
+  Sphinx developers should be given the chance to fix or work around a
   DeprecationWarning_ in the Sphinx development version before a new
   Docutils version is released. Otherwise, use a PendingDeprecationWarning_.
 
-Changes that may affect end-users (e.g. by requiring changes to the
-configuration file or potentially breaking custom style sheets) should be
-announced with a FutureWarning_.
+* Changes that may affect end-users (e.g. by requiring changes to the
+  configuration file or potentially breaking custom style sheets) should
+  be announced with a FutureWarning_.
 
-.. _backwards compatibility rules:
-   https://peps.python.org/pep-0387/#backwards-compatibility-rules
-.. _making incompatible changes:
-   https://peps.python.org/pep-0387/#making-incompatible-changes
+.. _public API: ../eps/ep-010.html#public-api
 .. _Sphinx: https://www.sphinx-doc.org/
 .. _DeprecationWarning:
    https://docs.python.org/3/library/exceptions.html#DeprecationWarning

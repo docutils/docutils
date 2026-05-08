@@ -165,6 +165,9 @@ Python Enhancement Proposals
 API Reference Material for Client-Developers
 ============================================
 
+The scope of Docutils' `Public API <eps/ep-010.html#public-api>`__
+is defined in Enhancement Proposal 10.
+
 `The Docutils Publisher <api/publisher.html>`__
   entry points for using Docutils as a library
 `Docutils Runtime Settings <api/runtime-settings.html>`__
@@ -192,13 +195,15 @@ Instructions for Developers
   <howto/rst-roles.html>`__
 
 
+.. _eps:
+
 Docutils Enhancement Proposals
 ==============================
 
 `Index <eps/index.html>`__
 
-| EP 1 — `Docutils EP Purpose and Guidelines <eps/ep-001.html>`_
-| EP 10 — `Public API and Backwards Compatibility Policy <eps/ep-010.html>`_
+* `EP 1 <eps/ep-001.html>`_ — `Docutils EP Purpose and Guidelines`
+* `EP 10 <eps/ep-010.html>`_ — `Public API and Backwards Compatibility Policy`
 
 .. _dev:
 
