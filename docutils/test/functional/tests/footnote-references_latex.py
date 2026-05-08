@@ -1,6 +1,6 @@
 # Source and destination file names
-test_source = "data/footnote-targets.rst"
-test_destination = "latex_footnotes.tex"
+test_source = "data/footnote-references.rst"
+test_destination = "footnote-references_latex.tex"
 
 # Keyword parameters passed to publish_file()
 writer = "latex"
