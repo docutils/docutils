@@ -3,6 +3,10 @@
 \usepackage{cmap} % fix search and cut-and-paste in Acrobat
 \usepackage[T1]{fontenc}
 \setcounter{secnumdepth}{0}
+\usepackage{longtable,ltcaption,array}
+\setlength{\extrarowheight}{2pt}
+\newlength{\DUtablewidth} % internal use in tables
+\newcommand{\DUcolumnwidth}[1]{\dimexpr#1\DUtablewidth-2\tabcolsep\relax}
 
 %%% Custom LaTeX preamble
 % PDF Standard Fonts
@@ -13,6 +17,38 @@
 %%% User specified packages and stylesheets
 
 %%% Fallback definitions for Docutils-specific commands
+
+% class handling for environments (block-level elements)
+% \begin{DUclass}{spam} tries \DUCLASSspam and
+% \end{DUclass}{spam} tries \endDUCLASSspam
+\ifdefined\DUclass
+\else % poor man's "provideenvironment"
+  \newenvironment{DUclass}[1]%
+    {% "#1" does not work in end-part of environment.
+     \def\DocutilsClassFunctionName{DUCLASS#1}
+     \csname \DocutilsClassFunctionName \endcsname}%
+    {\csname end\DocutilsClassFunctionName \endcsname}%
+\fi
+
+% admonition environment (specially marked topic)
+\ifdefined\DUadmonition
+\else % poor man's "provideenvironment"
+  \newbox{\DUadmonitionbox}
+  \newenvironment{DUadmonition}%
+    {\begin{center}
+       \begin{lrbox}{\DUadmonitionbox}
+         \begin{minipage}{0.9\linewidth}
+    }%
+    {    \end{minipage}
+       \end{lrbox}
+       \fbox{\usebox{\DUadmonitionbox}}
+     \end{center}
+    }
+\fi
+
+% title for topics, admonitions, unsupported section levels, and sidebar
+\providecommand*{\DUtitle}[1]{%
+  \smallskip\noindent\textbf{#1}\smallskip}
 
 % hyperlinks:
 \ifdefined\hypersetup
@@ -26,70 +62,92 @@
 \begin{document}
 
 
-\section{Test features of rST footnotes%
-\texorpdfstring{%
- \protect\footnote{\label{top}%
-  referenced from a section title
-}}{}}
+\section{Test features of rST footnotes}
 
 \emph{Numbered} footnotes%
 \footnote{\label{exi}%
-  autonumber-label
+  autonumber-label footnote
 }%
 \footnote{\label{footnote-2}%
-  auto-numbered (skipping 2)
+  auto-numbered footnote (skipping 2)
 }%
 \footnote{\label{footnote-1}%
-  manually numbered
-}%
-\footnote{%
-  second auto-numbered (skipping \hyperref[footnote-1]{4} and \hyperref[section-2]{5})
+  manually numbered footnote
 } may be referenced more than
 once and also via hyperlink references:
 
-\begin{description}
-\item[{autonumber label\footref{exi}}] 
-Reference name is the \emph{label} (without \#),
-\hyperref[exi]{exi}, not the number (both \texttt{1\_} and \texttt{{[}1{]}\_} fail).
-
-\item[{manually numbered\footref{footnote-1}}] 
-Reference name is the specified number, \hyperref[footnote-1]{4}.
-
-\item[{auto-numbered\footref{footnote-2}}] 
-Reference name is the auto-assigned number, \hyperref[footnote-2]{3}
-(caution: the assigned number may change if another
-auto-numbered footnote is added or removed).
-\end{description}
-
 \emph{Symbol} footnotes%
 \footnote{%
-  auto-symbol with nested footnotes\footref{footnote-6}\footref{footnote-7}
+  auto-symbol footnote\footref{footnote-4}\footref{footnote-5}
 }%
-\refstepcounter{footnote}\footnotetext{\label{footnote-6}%
-  referenced from the first auto-symbol footnote
+\refstepcounter{footnote}\footnotetext{\label{footnote-4}%
+  auto-numbered footnote referenced from the first auto-symbol footnote
+  (skipping \hyperref[footnote-1]{4} and \hyperref[section-2]{5})
 }%
-\refstepcounter{footnote}\footnotetext{\label{footnote-7}%
-  referenced from the first auto-symbol footnote, too
-}%
-\footnote{%
-  second auto-symbol
+\refstepcounter{footnote}\footnotetext{\label{footnote-5}%
+  auto-symbol footnote referenced from the first auto-symbol footnote
 } do not have a reference name.
 They can only be referenced once and only with a footnote-reference.
 
-The markup characters for auto-labeled footnotes \textquotedbl{}%
-\phantomsection\label{target-1}*\textquotedbl{} and \textquotedbl{}%
-\phantomsection\label{target-2}\#\textquotedbl{} and
-the symbols selected by auto-symbol footnotes \textquotedbl{}%
-\phantomsection\label{target-3}†\textquotedbl{} do not become
-reference names. (They can be used in other hyperref targets allowing
-links to \hyperref[target-1]{*}, \hyperref[target-2]{\#} and \hyperref[target-3]{†}.)
+\setlength{\DUtablewidth}{\dimexpr1\linewidth-3\arrayrulewidth\relax}%
+\begin{longtable}{|p{\DUcolumnwidth{0.342}}|p{\DUcolumnwidth{0.658}}|}
+\caption{Numbered footnotes%
+ \protect\footnote{\label{tab}%
+  autonumber-label footnote referenced from a table title
+  (missing with \textquotedbl{}latex-footnotes\textquotedbl{}).
+}}\\
+\hline
+
+autonumber label\footref{exi}
+ & 
+Reference name is the \emph{label} (\hyperref[exi]{exi}),
+not the number (both \texttt{1\_} and \texttt{{[}1{]}\_} fail).
+ \\
+\hline
+
+auto-numbered\footref{footnote-2}
+ & 
+Reference name is the Docutils-assigned
+number (\hyperref[footnote-2]{3}).%
+\footnote{\label{unstable}%
+  \begin{DUclass}{caution}
+  \begin{DUadmonition}
+  \DUtitle{Caution!}
+  
+  The assigned number may change if numbered
+  footnotes are added, removed or rearranged.
+  \end{DUadmonition}
+  \end{DUclass}
+  \smallskip
+}%
+\footnote{\label{latex}%
+  Numbers assigned by LaTeX may differ from the
+  numbers assigned manually or by Docutils.
+}
+ \\
+\hline
+
+manually numbered\footref{footnote-1}
+ & 
+Reference name is the specified number
+(\hyperref[footnote-1]{4}).\footref{latex}
+ \\
+\hline
+\end{longtable}
 
 
-\section{4}
+\section{Name Conflicts%
+\texorpdfstring{%
+ \protect\footnote{\label{sec}%
+  autonumber-label footnote referenced from a section title
+}}{}}
 
-An \emph{implicit} target with conflicting refname (like this section) is
-overwritten by manually numbered footnotes\footref{footnote-1} and footnotes with
-autonumber-label\footref{exi}. An INFO is generated.
+
+\subsection{4}
+
+An \emph{implicit} target with conflicting refname (like this section and the
+next) is overwritten by manually numbered footnotes\footref{footnote-1} and footnotes
+with autonumber-label\footref{exi}.  An INFO is generated.
 
 Hyperlink references to \hyperref[footnote-1]{4} and \hyperref[exi]{exi} point to the footnotes, not the
 sections.
@@ -99,22 +157,39 @@ sections.
 
 Numbers of manually numbered footnotes and autonumber-labels
 cannot be used in \emph{explicit} targets:
-\texttt{\_`4`} and \texttt{\_`exi`} lead to a \textquotedbl{}duplicate target name\textquotedbl{} ERROR .
+\texttt{\_`4`} and \texttt{\_`exi`} would lead to a \textquotedbl{}duplicate target name\textquotedbl{} ERROR .
+
+The markup characters for auto-labeled footnotes \textquotedbl{}%
+\phantomsection\label{target-1}*\textquotedbl{} and \textquotedbl{}%
+\phantomsection\label{target-2}\#\textquotedbl{} and
+the symbols selected by auto-symbol footnotes \textquotedbl{}%
+\phantomsection\label{target-3}†\textquotedbl{} do not become
+reference names. They can be used in other hyperref targets allowing
+links to \hyperref[target-1]{*}, \hyperref[target-2]{\#} and \hyperref[target-3]{†}.
 
 
-\section{5%
+\subsection{5%
   \label{section-2}%
 }
 
-Both, explicit and implicit targets with a number as reference name
-(e.g. the inline target \textquotedbl{}%
-\phantomsection\label{target-4}2\textquotedbl{} and the section title \textquotedbl{}5\textquotedbl{} above)
-cause a gap in footnote auto-numbering. The number can be used in a
+Both, explicit and implicit targets with a number as reference name (e.g.
+the inline target \textquotedbl{}%
+\phantomsection\label{target-4}2\textquotedbl{} and the section title \textquotedbl{}5\textquotedbl{} above) cause a gap in
+footnote auto-numbering.\footref{latex}  The number can be used in a
 footnote-reference although it does not refer to a footnote!\textsuperscript{\hyperref[section-2]{5}}\textsuperscript{\hyperref[target-4]{2}}
 
-\begin{description}
-\item[{TODO:}] 
-Emit a warning if a footnote-reference refers to something else?
-\end{description}
+\begin{DUclass}{admonition-todo}
+\begin{DUadmonition}
+\DUtitle{TODO%
+ \protect\footnote{%
+  auto-number footnote referenced from admonition title
+}}
+
+Emit a warning if a footnote-reference refers to something else?%
+\footnote{%
+  auto-symbol footnote referenced from admonition text
+}
+\end{DUadmonition}
+\end{DUclass}
 
 \end{document}
