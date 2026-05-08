@@ -87,7 +87,8 @@ As appropriate, it *may* contain
 
 :Docutils-Version: Number of the first release including the new feature.
 :Post-History: List of past discussion threads and/or issue tickets.
-:Type:     One of "Standard" (default), "Informational", "Process".
+:Type:     One of "Standard" (default), "Informational", "Process"
+           (cf. `PEP Types`_).
 :Topic:    Special topic (affected component or part), e.g.
            "reStructuredText", "Document Model", "HTML output", …
 :Requires: Number(s) of EP(s) this proposal depends on.
@@ -426,7 +427,7 @@ Enhancement Proposals in _`other projects`
 .. _PEPs: https://peps.python.org/
 .. _PEP review & resolution:
     https://peps.python.org/pep-0001/#pep-review-resolution
-
+.. _PEP types: https://peps.python.org/pep-0001/#pep-types
 .. _feature-requests 111:
     https://sourceforge.net/p/docutils/feature-requests/111/
 .. _sandbox: https://docutils.sourceforge.io/sandbox/README.html
