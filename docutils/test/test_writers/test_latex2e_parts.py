@@ -180,11 +180,11 @@ Und damit \foreignlanguage{spanish}{basta}!
 .. [2] 1. enumeration
 """,
  {'body': r"""%
-\DUfootnotetext{footnote-1}{footnote-1}{1}{%
+\DUfootnotetext{footnote-1}{}{1}{%
 paragraph
 }
 %
-\DUfootnotetext{footnote-2}{footnote-2}{2}{%
+\DUfootnotetext{footnote-2}{}{2}{%
 \begin{enumerate}
 \item enumeration
 \end{enumerate}

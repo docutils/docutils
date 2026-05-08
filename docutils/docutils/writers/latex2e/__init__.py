@@ -2365,7 +2365,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             try:
                 backref = node['backrefs'][0]
             except IndexError:
-                backref = node['ids'][0]  # no backref, use self-ref instead
+                backref = ''  # no backref, keep empty
             self.provide_fallback('footnotes')
             label = self.encode(node[0].astext())
             if self.settings.footnote_references == 'brackets':

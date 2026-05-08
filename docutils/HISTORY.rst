@@ -91,6 +91,7 @@ Release 0.23b.dev (unpublished)
   - Do not write ``\label`` commands for section titles and other
     implicit targets if there is no matching reference in the document.
   - Prevent LaTeX errors with footnotes in titles.
+  - Improve rendering of unreferenced footnotes.
   - Implement ``--latex-footnotes``. The "docutils_footnotes" setting is
     renamed to latex_footnotes_, the command line options remain unchanged.
 

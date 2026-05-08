@@ -1088,6 +1088,7 @@ is handled by LaTeX:
   `symbol footnotes`_, by default all footnotes are numbered.
 * Footnotes are sorted and numbered in the order of the `footnote references`.
 * There is no backlink from footnote to footnote reference.
+* Unreferenced footnotes are silently ignored!
 
 .. important::
    LaTeX footnotes in figures and table captions `are dropped`__.
