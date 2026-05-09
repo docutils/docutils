@@ -14,8 +14,8 @@
 .. contents::
 
 
-Release 0.23b.dev (unpublished)
-===============================
+Release 0.23rc1 (2026-05-09)
+============================
 
 * docutils/frontend.py
 
