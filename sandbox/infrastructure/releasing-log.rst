@@ -10,6 +10,48 @@
 Notes on what happend while releasing.
 
 
+Release 0.23.rc1 (2026-05-09)
+=============================
+
+* checkout current code
+* run: tox -epy313 : OK
+* set_version 0.23.rc1
+* run: tox -epy311
+* set_version 0.23rc1, no dot before rc1
+* run: tox -epy311
+* fix the version_info release=True, releaselevel=final, serial=0
+* run: tox -epy39 : OK
+* Check README, HISTORY and RELEASE-NOTES titles.
+* check: svn di
+* svn commit 
+* check for swap files: ``find . -name \*.sw\*``
+* build wheel and tgz
+* test tgz and wheel locally
+* update code in working directory
+* tox 39 ... 313
+* upload to pypi: dist/docutils-0.23rc1*
+* remove wheels from cache::
+
+    find .cache/pip/wheels -name docutils\*whl
+
+* test wheel from pypi, ignore missing HISTORY.rst
+* test src.tgz from pypi, ignore missing HISTORY::
+
+    pip install --pre --no-binary docutils docutils
+
+* in working directory
+* set_version 0.23rc2.dev
+* tox -ep312
+* check README.rst
+* docutils/HISTORY.rst: add title "Release 0.23rc2.dev (unpublished)"
+* docutils/RELEASE-NOTES.rst: add title "Release 0.23rc2.dev (unpublished)"
+* svn di
+* commit
+* tox py39 ... 314 : OK
+* run: sandbox/infrastructure/docutils-update.local
+* send notification emails
+
+
 Release 0.22.4 (2025-12-18)
 ===========================
 
