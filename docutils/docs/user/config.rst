@@ -807,7 +807,7 @@ identifiers_ may have a disambiguating number added to the normalized
 :Default: True; will change to False in Docutils 2.0.
 :Option:  ``--legacy-ids``, ``--matching-ids``.
 
-New in Docutils 0.23.
+New in Docutils 0.23. Provisional.
 
 
 raw_enabled

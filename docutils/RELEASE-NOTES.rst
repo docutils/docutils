@@ -132,6 +132,12 @@ Writers
   - Use normal font size and colour for informal titles of type "rubric"
     in Docutils 1.0.
 
+  - Use more specific CSS selectors for styling <aside> elements as
+    topic, sidebar, admonition, or system-message in Docutils 1.0.
+    (Styling just based on the "class" value leads to problems with
+    other elements using "topic" as class value, e.g.
+    a docinfo item "topic" in Enhancement Reports.)
+
   - Remove option ``--embed-images`` (obsoleted by "image_loading_")
     in Docutils 2.0.
 
@@ -287,14 +293,8 @@ Misc
    __ https://packages.debian.org/source/trixie/python-docutils
 
 
-Release 0.23rc2.dev (unpublished)
-=================================
-
-.
-
-
-Release 0.23rc1 (2026-05-09)
-============================
+Release 0.23 (unpublished)
+==========================
 
 General:
   - Define `public API and backwards compatibility policy`_.
@@ -309,7 +309,7 @@ rST parser:
 
 HTML5 writer:
   - If a section has several IDs, use the last one (from the first
-    `explicit target`__) as self-link_.
+    preceding `explicit target`__) as self-link_.
 
     __ docs/ref/rst/restructuredtext.html#explicit-hyperlink-targets
 
@@ -319,7 +319,7 @@ LaTeX writer:
   - Support `semantic inline markup roles`_.
 
 Configuration changes
-  - New setting `legacy_ids`_.
+  - New setting `legacy_ids`_ (provisional).
   - The new setting `latex_footnotes`_ replaces "docutils_footnotes"
     (ignored since Docutils 0.13.1).  The command line option
     ``--docutils-footnotes`` is kept and sets latex_footnotes_ to False.
@@ -329,7 +329,7 @@ New objects
     Internal attribute mapping `reference names`_ to the
     referenced elements (or ``None`` if the name is a duplicate).
   `nodes.document.note_names()`:
-    Register an element's names, check for duplicates.
+    Register an element's reference name(s), check for duplicates.
   `nodes.document.set_duplicate_name()`
     Called by `nodes.document.note_names()` to handle duplicate names.
     Provisional.

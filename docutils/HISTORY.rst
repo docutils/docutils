@@ -14,14 +14,8 @@
 .. contents::
 
 
-Release 0.23rc2.dev (unpublished)
-=================================
-
-.
-
-
-Release 0.23rc1 (2026-05-09)
-============================
+Release 0.23 (unpublished)
+==========================
 
 * docutils/frontend.py
 
@@ -46,7 +40,7 @@ Release 0.23rc1 (2026-05-09)
 
 * docutils/parsers/__init__.py
 
-  - New configuration setting `legacy_ids`_.
+  - New configuration setting `legacy_ids`_ (provisional).
 
 * docutils/readers/standalone.py
 
