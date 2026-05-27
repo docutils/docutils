@@ -10,6 +10,83 @@
 Notes on what happend while releasing.
 
 
+Release 0.23 (2026-05-27)
+=========================
+
+* checkout current code
+* run: tox -epy314 OK
+* set_version 0.23
+* run: tox -epy311 FAIL
+* fix the version_info release=True, releaselevel=final, serial=0
+* run: tox -epy312 OK
+* Check README, HISTORY and RELEASE-NOTES titles.
+* check: svn di
+* svn commit 
+* check for swap files: ``find . -name \*.sw\*``
+* build wheel and tgz (python3.14 ubuntu 26.04)
+* check tgz for .tox leftovers
+* test tgz and wheel in local venv
+* update code in working directory
+* tag #.# (Note: only directory docutils is copied)::
+
+    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.23 \
+             -m "tagging release 0.23"
+
+* check on sourceforge: https://sourceforge.net/p/docutils/code/HEAD/tree/tags/
+* update code in build directory
+* update code in working directory
+* upload to pypi
+* remove wheels from cache::
+
+    find .cache/pip/wheels -name docutils\*whl
+
+* test wheel from pypi, ignore missing HISTORY.rst
+* test src.tgz from pypi, ignore missing HISTORY::
+
+    pip install --no-binary docutils docutils
+
+* update code in working directory (just for the check)
+* run tox : pass 39, 310, 311, 313, 314
+* upload source and generated html to sf-htdocs/#.# ::
+
+    mkdir tmp1
+    cd tmp1
+    tar xzvf ../dist/docutils-0.23.tar.gz
+    cd docutils-0.23/
+    python3 tools/buildhtml.py .
+    find . -name \*.pyc -exec rm -v {} \;
+    find . -name __pycache__ -exec rmdir -v {} \;
+    rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/0.23
+
+* Check https://docutils.sourceforge.io/0.23/
+* Check web/index.rst for necessary corrections.
+
+* Release to sourceforge.
+
+  - Upload docutils-0.23.tar.gz and release notes to sourceforge.
+  - Upload RELEASE_NOTES.rst as README.rst.
+  - Select docutils-0.23.tar.gz as default for all OS.
+
+* update working directory
+* set_version 0.24b1.dev
+* tox -epy39 
+
+  fails : in functional/output/standalone_rst_latex.tex
+    is a width 0.23
+
+* svn diff , revert the specfic tex tests
+* tox -epy39 310 311 312 313 314 OK
+
+* docutils/HISTORY.rst: add title "Release 0.24b1.dev (unpublished)"
+* docutils/RELEASE-NOTES.rst: add title "Release 0.24b1.dev (unpublished)"
+* Check README, HISTORY and RELEASE-NOTES titles.
+* svn di
+* commit working directory
+* run: sandbox/infrastructure/docutils-update.local
+* send notification emails
+
+
 Release 0.23.rc1 (2026-05-09)
 =============================
 
