@@ -293,8 +293,8 @@ Misc
    __ https://packages.debian.org/source/trixie/python-docutils
 
 
-Release 0.23 (unpublished)
-==========================
+Release 0.23 (2026-05-27)
+=========================
 
 General:
   - Define `public API and backwards compatibility policy`_.
