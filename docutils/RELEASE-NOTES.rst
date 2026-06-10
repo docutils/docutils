@@ -20,6 +20,12 @@ For a more detailed list of changes, please see the Docutils `HISTORY`_.
 Future changes
 ==============
 
+Requirements
+------------
+
+- Drop support for Python 3.9 and 3.10 in Docutils 2.0.
+
+
 Command line interface
 ----------------------
 
@@ -83,8 +89,9 @@ Document Tree / Docutils DTD
 Parsers
 -------
 
-* The "rst" parser will warn, if a directive that does not take arguments
-  has content above and below directive options in Docutils 0.23.
+* The "rst" parser will issue an INFO, if a directive that does not take
+  arguments has content above and below directive options in
+  Docutils 0.24 or later.
 
 * The "rst" parser will warn if a `"figure"`_ directive is missing both
   caption and legend in Docutils 1.0.
