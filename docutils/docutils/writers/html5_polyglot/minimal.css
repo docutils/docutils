@@ -218,10 +218,10 @@ table.align-left, table.align-center, table.align-right {
 }
 
 /* Text Blocks */
-.topic { margin: 1em 2em; }
-.sidebar,
-.admonition,
-.system-message {
+aside.topic { margin: 1em 2em; }
+aside.sidebar,
+aside.admonition,
+aside.system-message {
   margin: 1em 2em;
   border: thin solid;
   padding: 0.5em 1em;

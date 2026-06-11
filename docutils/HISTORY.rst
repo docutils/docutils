@@ -29,9 +29,12 @@ Release 1.0b1.dev (unpublished)
 
   - Remove `length_units` (replaced by the tuple CSS3_LENGTH_UNITS).
 
-* docutils/writers/html5_polyglot/minimal.css
+* docutils/writers/html5_polyglot/*
 
-  - Use normal font size and colour for informal titles of type "rubric".
+  - Use normal font size and colour in CSS for informal titles of type "rubric".
+  - Use more specific CSS selectors for styling <aside> elements to avoid
+    problems with other elements using "topic" as class value, e.g. a docinfo
+    item "topic" in Enhancement Reports.
 
 * docutils/writers/latex2e/__init__.py
 

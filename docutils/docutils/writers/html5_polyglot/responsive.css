@@ -51,7 +51,7 @@ sup, sub { /* avoid additional inter-line space for lines with sup/sub */
 
 /* Vertical Space (Parskip) */
 p, ol, ul, dl, li,
-.topic,
+aside.topic,
 .footnote, .citation,
 div > math,
 table {
@@ -64,7 +64,7 @@ dl > dd, details > p:last-child {
 }
 
 /* Indented Blocks */
-blockquote, figure, .topic {
+blockquote, figure, aside.topic {
   margin: 1em 2%;
   padding-left: 1em;
 }

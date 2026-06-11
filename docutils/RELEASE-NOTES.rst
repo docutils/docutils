@@ -136,12 +136,6 @@ Writers
   - Change the default value of the initial_header_level_ setting to "auto"
     (<h2> if there is a document title, else <h1>) in Docutils 1.0.
 
-  - Use more specific CSS selectors for styling <aside> elements as
-    topic, sidebar, admonition, or system-message in Docutils 1.0.
-    (Styling just based on the "class" value leads to problems with
-    other elements using "topic" as class value, e.g.
-    a docinfo item "topic" in Enhancement Reports.)
-
   - Remove option ``--embed-images`` (obsoleted by "image_loading_")
     in Docutils 2.0.
 
@@ -289,6 +283,8 @@ Release 1.0b1.dev (unpublished)
 
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
+  - Use more specific CSS selectors for styling <aside> elements as
+    topic, sidebar, admonition, or system-message.
 
 Removed objects
   `io.BinaryFileOutput` and `core.publish_cmdline_to_binary()`
