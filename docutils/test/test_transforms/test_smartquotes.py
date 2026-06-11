@@ -249,7 +249,7 @@ Do not drop characters from intra-word inline markup like
                     literal
                 ” text
                 and links to “
-                <reference name="targets" refname="targets">
+                <reference refname="targets">
                     targets
                 ”.
         <list_item>
@@ -302,7 +302,7 @@ Do not convert context-character at inline-tag boundaries
             literal
         \u202f» text
         and links to «\u202f
-        <reference name="targets" refname="targets">
+        <reference refname="targets">
             targets
         \u202f».
     <paragraph classes="language-fr-ch-x-altquot">

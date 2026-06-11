@@ -403,7 +403,7 @@ Term : `reference`_
             <term>
                 Term
             <classifier>
-                <reference name="reference" refname="reference">
+                <reference refname="reference">
                     reference
             <definition>
                 <paragraph>
@@ -421,7 +421,7 @@ Term : a `reference`_ in text : second
                 Term
             <classifier>
                 a \n\
-                <reference name="reference" refname="reference">
+                <reference refname="reference">
                     reference
                  in text
             <classifier>

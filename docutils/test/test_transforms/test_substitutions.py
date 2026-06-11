@@ -263,12 +263,12 @@ Substitution reference with |reference-in-content|.
     <paragraph>
         Substitution reference with \n\
         text and \n\
-        <reference name="hyperlink-reference" refname="hyperlink-reference">
+        <reference refname="hyperlink-reference">
             hyperlink-reference
         .
     <substitution_definition names="reference-in-content">
         text and \n\
-        <reference name="hyperlink-reference" refname="hyperlink-reference">
+        <reference refname="hyperlink-reference">
             hyperlink-reference
 """],
 ])

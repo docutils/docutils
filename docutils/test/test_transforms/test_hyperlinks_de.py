@@ -75,7 +75,7 @@ Target_ should propagate past the system_message to set "id" on note.
 f"""\
 <document source="test data">
     <paragraph>
-        <reference name="Target" refid="target">
+        <reference refid="target">
             Target
          should propagate past the system_message to set "id" on note.
     <target refid="target">

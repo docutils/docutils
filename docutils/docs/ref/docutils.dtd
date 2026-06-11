@@ -630,7 +630,6 @@ following caveats:
      "name" will be removed from the ATTLIST in Docutils 1.0 -->
 <!ELEMENT reference %text.model;>
 <!ATTLIST reference
-    name      CDATA     #IMPLIED
     %basic.atts;
     %reference.atts;
     %anonymous.att;>

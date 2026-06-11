@@ -2371,7 +2371,7 @@ class block_quote(General, Element):
 
 class reference(General, Inline, Referential, TextElement):
     valid_attributes: Final = Element.valid_attributes + (
-        'anonymous', 'name', 'refid', 'refname', 'refuri')
+        'anonymous', 'refid', 'refname', 'refuri')
 
 
 # Lists

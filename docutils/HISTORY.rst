@@ -31,9 +31,21 @@ Release 1.0b1.dev (unpublished)
 
   - Remove `BinaryFileOutput` (deprecated since Docutils 0.20).
 
+* docutils/nodes.py
+
+  - Remove "name" from `reference.valid_attributes`.
+
 * docutils/parsers/rst/directives/__init__.py
 
   - Remove `length_units` (replaced by the tuple CSS3_LENGTH_UNITS).
+
+* docutils/parsers/rst/directives/images.py
+
+  - Do not add "name" attribute to `<reference>` wrapper elements.
+
+* docutils/parsers/rst/states.py
+
+  - Do not add "name" attribute to `<reference>` elements.
 
 * docutils/writers/html5_polyglot/*
 

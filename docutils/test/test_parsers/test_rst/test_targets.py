@@ -240,12 +240,12 @@ See the example_
         Duplicate external targets (embedded/explicit, same URIs):
     <paragraph>
         See the \n\
-        <reference name="example" refuri="example.rst">
+        <reference refuri="example.rst">
             example
         <target names="example" refuri="example.rst">
     <paragraph>
         See the \n\
-        <reference name="example" refname="example">
+        <reference refname="example">
             example
     <system_message level="1" line="7" source="test data" type="INFO">
         <paragraph>
@@ -275,7 +275,7 @@ do not conflict. The reference name can be used in a link_.
     <target dupnames="link" ids="link-1" refname="targets">
     <paragraph>
         do not conflict. The reference name can be used in a \n\
-        <reference name="link" refname="link">
+        <reference refname="link">
             link
         .
 """],
@@ -546,12 +546,12 @@ See the example_
         Duplicate external targets (embedded/explicit, same URIs):
     <paragraph>
         See the \n\
-        <reference name="example" refuri="example.rst">
+        <reference refuri="example.rst">
             example
         <target ids="example" names="example" refuri="example.rst">
     <paragraph>
         See the \n\
-        <reference name="example" refname="example">
+        <reference refname="example">
             example
     <system_message level="1" line="7" source="test data" type="INFO">
         <paragraph>
@@ -921,12 +921,12 @@ See the example_
         Duplicate external targets (embedded/explicit, same URIs):
     <paragraph>
         See the \n\
-        <reference name="example" refuri="example.rst">
+        <reference refuri="example.rst">
             example
         <target ids="example" names="example" refuri="example.rst">
     <paragraph>
         See the \n\
-        <reference name="example" refname="example">
+        <reference refname="example">
             example
     <system_message level="1" line="7" source="test data" type="INFO">
         <paragraph>
@@ -956,7 +956,7 @@ do not conflict. The reference name can be used in a link_.
     <target dupnames="link" ids="id1" refname="targets">
     <paragraph>
         do not conflict. The reference name can be used in a \n\
-        <reference name="link" refname="link">
+        <reference refname="link">
             link
         .
 """],

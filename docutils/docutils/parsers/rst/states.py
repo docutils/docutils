@@ -954,8 +954,7 @@ class Inliner:
             rawtext = unescape(escaped, True)
 
         refname = normalize_name(unescaped)
-        reference = nodes.reference(rawsource, text,
-                                    name=whitespace_normalize_name(unescaped))
+        reference = nodes.reference(rawsource, text)
         reference[0].rawsource = rawtext
 
         node_list = [reference]
@@ -1083,8 +1082,7 @@ class Inliner:
         referencename = match.group('refname')
         refname = normalize_name(referencename)
         referencenode = nodes.reference(
-            referencename + match.group('refend'), referencename,
-            name=whitespace_normalize_name(referencename))
+            referencename + match.group('refend'), referencename)
         referencenode[0].rawsource = referencename
         if anonymous:
             referencenode['anonymous'] = True

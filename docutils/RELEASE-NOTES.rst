@@ -46,8 +46,6 @@ Command line interface
 Document Tree / Docutils DTD
 ----------------------------
 
-* Drop the ``name`` attribute from <reference> nodes in Docutils 1.0.
-
 * Use the ``%tbl.table.att`` parameter entity instead of ``%bodyatt``
   to customize the <table> element's attribute list in Docutils 1.0.
 
@@ -273,6 +271,9 @@ Misc
 Release 1.0b1.dev (unpublished)
 ===============================
 
+Document Tree / Docutils DTD:
+  - Drop the ``name`` attribute from <reference> nodes.
+
 Configuration changes:
   - Accept the short option ``-o`` for ``--output``.
 
@@ -282,6 +283,8 @@ Configuration changes:
 
     For the rationale, see https://clig.dev/#arguments-and-flags and
     https://sourceforge.net/p/docutils/feature-requests/36/
+
+* Drop the ``name`` attribute from <reference> nodes in Docutils 1.0.
 
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".

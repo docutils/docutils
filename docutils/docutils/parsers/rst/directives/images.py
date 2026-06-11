@@ -21,7 +21,7 @@ except ImportError:
         PIL = None
 
 from docutils import nodes
-from docutils.nodes import fully_normalize_name, whitespace_normalize_name
+from docutils.nodes import fully_normalize_name
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives, states
 from docutils.parsers.rst.roles import normalize_options
@@ -88,8 +88,7 @@ class Image(Directive):
                 reference_node = nodes.reference(refuri=data)
             elif target_type == 'refname':
                 reference_node = nodes.reference(
-                    refname=fully_normalize_name(data),
-                    name=whitespace_normalize_name(data))
+                    refname=fully_normalize_name(data))
                 reference_node.indirect_reference_name = data
                 self.state.document.note_refname(reference_node)
             else:                           # malformed target

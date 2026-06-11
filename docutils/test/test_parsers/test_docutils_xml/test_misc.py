@@ -72,7 +72,7 @@ totest['hyperlinks'] = ({},  # resolve hyperlinks
 [
 ["""\
 <document source="test data">
-    <paragraph>A <reference anonymous="1" name="link">link</reference> to Docutils.</paragraph>
+    <paragraph>A <reference anonymous="1">link</reference> to Docutils.</paragraph>
     <target anonymous="1" ids="target-1" refuri="http://docutils.sourceforge.io"/>
 </document>
 """,
@@ -80,7 +80,7 @@ totest['hyperlinks'] = ({},  # resolve hyperlinks
 <document source="test data">
     <paragraph>
         A \n\
-        <reference anonymous="1" name="link" refuri="http://docutils.sourceforge.io">
+        <reference anonymous="1" refuri="http://docutils.sourceforge.io">
             link
          to Docutils.
     <target anonymous="1" ids="target-1" refuri="http://docutils.sourceforge.io">

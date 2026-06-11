@@ -98,7 +98,7 @@ totest['container'] = [
     <container ids="my-name" names="my\\ name">
         <paragraph>
             The name argument allows hyperlinks to \n\
-            <reference name="my name" refname="my name">
+            <reference refname="my name">
                 my name
             .
 """],

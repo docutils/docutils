@@ -66,7 +66,7 @@ A "References" section should be generated.
 <document source="test data">
     <paragraph>
         A target exists, here's the \n\
-        <reference name="reference" refname="reference">
+        <reference refname="reference">
             reference
          \n\
         <footnote_reference auto="1" ids="footnote-reference-1" refname="TARGET_NOTE: footnote-1">

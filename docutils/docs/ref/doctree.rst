@@ -2629,7 +2629,7 @@ Pseudo-XML_ fragment from simple parsing::
     <literal_block xml:space="preserve">
         if parsed_literal:
             text = 'is parsed for
-        <reference name="reStructuredText" refid="restructuredtext">
+        <reference refid="restructuredtext">
             reStructuredText
          markup'
             spaces_and_linebreaks = 'are preserved'
@@ -3203,7 +3203,7 @@ to another element of the document or to an external ressource.
 :Parents:    all elements employing `%body.elements`_, `%text.model`_,
              or `%structure.model`_ in their content models
 :Children:   text data plus `inline elements`_ (`%text.model`_)
-:Attributes: anonymous_, name_ (deprecated), refid_, refname_, refuri_, and
+:Attributes: anonymous_, refid_, refname_, refuri_, and
              the `common attributes`_.
 
 .. [#] See the `"target-notes" directive`_.
@@ -4926,11 +4926,9 @@ Default value: none.
 The ``name`` attribute in the `\<meta>`_ element accepts `NMTOKEN`_ values.
 The output format may limit valid values to a set of keywords (EnumeratedType_).
 
-The ``name`` attribute in the `\<reference>`_ element holds the
-`reference name`_ of the referenced element.  Whitespace is normalized
-but case is preserved.
-
-The attribute will no longer be used with <reference> elements in Docutils 1.0.
+In Docutils versions < 1.0, `\<reference>`_ elements could contain a
+``name`` attribute with the whitespace-normalized (but not downcased)
+text content of the element.
 
 
 ``names``

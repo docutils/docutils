@@ -614,7 +614,7 @@ ref_
 """\
 <document source="test data">
     <paragraph>
-        <reference name="ref" refname="ref">
+        <reference refname="ref">
             ref
 """],
 ["""\
@@ -624,10 +624,10 @@ l'ref_ and l\u2019ref_ with apostrophe
 <document source="test data">
     <paragraph>
         l'
-        <reference name="ref" refname="ref">
+        <reference refname="ref">
             ref
          and l\u2019
-        <reference name="ref" refname="ref">
+        <reference refname="ref">
             ref
          with apostrophe
 """],
@@ -642,21 +642,21 @@ but not 'ref ref'_, "ref ref"_, \u2018ref ref\u2019_,
 <document source="test data">
     <paragraph>
         quoted '
-        <reference name="ref" refname="ref">
+        <reference refname="ref">
             ref
         ', quoted "
-        <reference name="ref" refname="ref">
+        <reference refname="ref">
             ref
         ",
         quoted \u2018
-        <reference name="ref" refname="ref">
+        <reference refname="ref">
             ref
         \u2019, quoted \u201c
-        <reference name="ref" refname="ref">
+        <reference refname="ref">
             ref
         \u201d,
         quoted \xab
-        <reference name="ref" refname="ref">
+        <reference refname="ref">
             ref
         \xbb,
         but not 'ref ref'_, "ref ref"_, \u2018ref ref\u2019_,
@@ -668,7 +668,7 @@ ref__
 """\
 <document source="test data">
     <paragraph>
-        <reference anonymous="1" name="ref">
+        <reference anonymous="1">
             ref
 """],
 ["""\
@@ -678,10 +678,10 @@ l'ref__ and l\u2019ref__ with apostrophe
 <document source="test data">
     <paragraph>
         l'
-        <reference anonymous="1" name="ref">
+        <reference anonymous="1">
             ref
          and l\u2019
-        <reference anonymous="1" name="ref">
+        <reference anonymous="1">
             ref
          with apostrophe
 """],
@@ -696,21 +696,21 @@ but not 'ref ref'__, "ref ref"__, \u2018ref ref\u2019__,
 <document source="test data">
     <paragraph>
         quoted '
-        <reference anonymous="1" name="ref">
+        <reference anonymous="1">
             ref
         ', quoted "
-        <reference anonymous="1" name="ref">
+        <reference anonymous="1">
             ref
         ",
         quoted \u2018
-        <reference anonymous="1" name="ref">
+        <reference anonymous="1">
             ref
         \u2019, quoted \u201c
-        <reference anonymous="1" name="ref">
+        <reference anonymous="1">
             ref
         \u201d,
         quoted \xab
-        <reference anonymous="1" name="ref">
+        <reference anonymous="1">
             ref
         \xbb,
         but not 'ref ref'__, "ref ref"__, \u2018ref ref\u2019__,
@@ -723,19 +723,19 @@ but not _ref_ or __attr__ or object.__attr__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="ref" refname="ref">
+        <reference refname="ref">
             ref
         , \n\
-        <reference name="r" refname="r">
+        <reference refname="r">
             r
         , \n\
-        <reference name="r_e-f" refname="r_e-f">
+        <reference refname="r_e-f">
             r_e-f
         , -
-        <reference name="ref" refname="ref">
+        <reference refname="ref">
             ref
         , and \n\
-        <reference anonymous="1" name="anonymousref">
+        <reference anonymous="1">
             anonymousref
         ,
         but not _ref_ or __attr__ or object.__attr__
@@ -749,7 +749,7 @@ totest['phrase_references'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference name="phrase reference" refname="phrase reference">
+        <reference refname="phrase reference">
             phrase reference
 """],
 ["""\
@@ -759,10 +759,10 @@ l'`phrase reference`_ and l\u2019`phrase reference`_ with apostrophe
 <document source="test data">
     <paragraph>
         l'
-        <reference name="phrase reference" refname="phrase reference">
+        <reference refname="phrase reference">
             phrase reference
          and l\u2019
-        <reference name="phrase reference" refname="phrase reference">
+        <reference refname="phrase reference">
             phrase reference
          with apostrophe
 """],
@@ -776,22 +776,22 @@ quoted \xab`phrase reference`_\xbb
 <document source="test data">
     <paragraph>
         quoted '
-        <reference name="phrase reference" refname="phrase reference">
+        <reference refname="phrase reference">
             phrase reference
         ', quoted "
-        <reference name="phrase reference" refname="phrase reference">
+        <reference refname="phrase reference">
             phrase reference
         ",
         quoted \u2018
-        <reference name="phrase reference" refname="phrase reference">
+        <reference refname="phrase reference">
             phrase reference
         \u2019,
         quoted \u201c
-        <reference name="phrase reference" refname="phrase reference">
+        <reference refname="phrase reference">
             phrase reference
         \u201d,
         quoted \xab
-        <reference name="phrase reference" refname="phrase reference">
+        <reference refname="phrase reference">
             phrase reference
         \xbb
 """],
@@ -804,19 +804,19 @@ quoted \xab`phrase reference`_\xbb
 """\
 <document source="test data">
     <paragraph>
-        <reference name="'phrase reference'" refname="'phrase reference'">
+        <reference refname="'phrase reference'">
             'phrase reference'
          with quotes, \n\
-        <reference name=""phrase reference"" refname=""phrase reference"">
+        <reference refname=""phrase reference"">
             "phrase reference"
          with quotes,
-        <reference name="\u2018phrase reference\u2019" refname="\u2018phrase reference\u2019">
+        <reference refname="\u2018phrase reference\u2019">
             \u2018phrase reference\u2019
          with quotes,
-        <reference name="\u201cphrase reference\u201d" refname="\u201cphrase reference\u201d">
+        <reference refname="\u201cphrase reference\u201d">
             \u201cphrase reference\u201d
          with quotes,
-        <reference name="\xabphrase reference\xbb" refname="\xabphrase reference\xbb">
+        <reference refname="\xabphrase reference\xbb">
             \xabphrase reference\xbb
          with quotes
 """],
@@ -826,7 +826,7 @@ quoted \xab`phrase reference`_\xbb
 """\
 <document source="test data">
     <paragraph>
-        <reference anonymous="1" name="anonymous reference">
+        <reference anonymous="1">
             anonymous reference
 """],
 ["""\
@@ -836,10 +836,10 @@ l'`anonymous reference`__ and l\u2019`anonymous reference`__ with apostrophe
 <document source="test data">
     <paragraph>
         l'
-        <reference anonymous="1" name="anonymous reference">
+        <reference anonymous="1">
             anonymous reference
          and l\u2019
-        <reference anonymous="1" name="anonymous reference">
+        <reference anonymous="1">
             anonymous reference
          with apostrophe
 """],
@@ -853,22 +853,22 @@ quoted \xab`anonymous reference`__\xbb
 <document source="test data">
     <paragraph>
         quoted '
-        <reference anonymous="1" name="anonymous reference">
+        <reference anonymous="1">
             anonymous reference
         ', quoted "
-        <reference anonymous="1" name="anonymous reference">
+        <reference anonymous="1">
             anonymous reference
         ",
         quoted \u2018
-        <reference anonymous="1" name="anonymous reference">
+        <reference anonymous="1">
             anonymous reference
         \u2019,
         quoted \u201c
-        <reference anonymous="1" name="anonymous reference">
+        <reference anonymous="1">
             anonymous reference
         \u201d,
         quoted \xab
-        <reference anonymous="1" name="anonymous reference">
+        <reference anonymous="1">
             anonymous reference
         \xbb
 """],
@@ -881,19 +881,19 @@ quoted \xab`anonymous reference`__\xbb
 """\
 <document source="test data">
     <paragraph>
-        <reference anonymous="1" name="'anonymous reference'">
+        <reference anonymous="1">
             'anonymous reference'
          with quotes, \n\
-        <reference anonymous="1" name=""anonymous reference"">
+        <reference anonymous="1">
             "anonymous reference"
          with quotes,
-        <reference anonymous="1" name="\u2018anonymous reference\u2019">
+        <reference anonymous="1">
             \u2018anonymous reference\u2019
          with quotes,
-        <reference anonymous="1" name="\u201canonymous reference\u201d">
+        <reference anonymous="1">
             \u201canonymous reference\u201d
          with quotes,
-        <reference anonymous="1" name="\xabanonymous reference\xbb">
+        <reference anonymous="1">
             \xabanonymous reference\xbb
          with quotes
 """],
@@ -904,7 +904,7 @@ across lines`_
 """\
 <document source="test data">
     <paragraph>
-        <reference name="phrase reference across lines" refname="phrase reference across lines">
+        <reference refname="phrase reference across lines">
             phrase reference
             across lines
 """],
@@ -914,7 +914,7 @@ across lines`_
 """\
 <document source="test data">
     <paragraph>
-        <reference name="phrase`_ reference" refname="phrase`_ reference">
+        <reference refname="phrase`_ reference">
             phrase`_ reference
 """],
 ["""\
@@ -958,7 +958,7 @@ Invalid phrase reference:
         <problematic ids="problematic-1" refid="system-message-1">
             `
         phrase \n\
-        <reference name="reference" refname="reference">
+        <reference refname="reference">
             reference
          without closing backquote
     <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
@@ -974,7 +974,7 @@ Invalid phrase reference:
         <problematic ids="problematic-1" refid="system-message-1">
             `
         anonymous phrase \n\
-        <reference anonymous="1" name="reference">
+        <reference anonymous="1">
             reference
          without closing backquote
     <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
@@ -990,7 +990,7 @@ totest['embedded_uris'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference name="phrase reference" refuri="http://example.com">
+        <reference refuri="http://example.com">
             phrase reference
         <target names="phrase\\ reference" refuri="http://example.com">
 """],
@@ -1000,7 +1000,7 @@ totest['embedded_uris'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference name="anonymous reference" refuri="http://example.com">
+        <reference refuri="http://example.com">
             anonymous reference
 """],
 ["""\
@@ -1010,7 +1010,7 @@ totest['embedded_uris'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference name="embedded URI on next line" refuri="http://example.com">
+        <reference refuri="http://example.com">
             embedded URI on next line
 """],
 ["""\
@@ -1020,7 +1020,7 @@ long/path>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="embedded URI across lines" refuri="http://example.com/long/path">
+        <reference refuri="http://example.com/long/path">
             embedded URI across lines
 """],
 ["""\
@@ -1030,7 +1030,7 @@ long/path /and  /whitespace>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="embedded URI with whitespace" refuri="http://example.com/long/path/and/whitespace">
+        <reference refuri="http://example.com/long/path/and/whitespace">
             embedded URI with whitespace
 """],
 [r"""
@@ -1042,10 +1042,10 @@ long/path\ and/some\ escaped\ whitespace>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="embedded URI with escaped whitespace" refuri="http://example.com/a long/path and/some escaped whitespace">
+        <reference refuri="http://example.com/a long/path and/some escaped whitespace">
             embedded URI with escaped whitespace
     <paragraph>
-        <reference name="omitted reference text with escaped whitespace" refuri="omitted reference text with escaped whitespace">
+        <reference refuri="omitted reference text with escaped whitespace">
             omitted reference text with escaped whitespace
 """],
 ["""\
@@ -1057,10 +1057,10 @@ long/path\ and/some\ escaped\ whitespace>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="embedded email address" refuri="mailto:jdoe@example.com">
+        <reference refuri="mailto:jdoe@example.com">
             embedded email address
     <paragraph>
-        <reference name="embedded email address broken across lines" refuri="mailto:jdoe@example.com">
+        <reference refuri="mailto:jdoe@example.com">
             embedded email address broken across lines
 """],
 [r"""
@@ -1079,22 +1079,22 @@ See `HTML Anchors: \<a>`_.
 """\
 <document source="test data">
     <paragraph>
-        <reference anonymous="1" name="embedded URI with too much whitespace < http://example.com/ long/path /and /whitespace >">
+        <reference anonymous="1">
             embedded URI with too much whitespace < http://example.com/
             long/path /and  /whitespace >
     <paragraph>
-        <reference anonymous="1" name="embedded URI with too much whitespace at end <http://example.com/ long/path /and /whitespace >">
+        <reference anonymous="1">
             embedded URI with too much whitespace at end <http://example.com/
             long/path /and  /whitespace >
     <paragraph>
-        <reference anonymous="1" name="embedded URI with no preceding whitespace<http://example.com>">
+        <reference anonymous="1">
             embedded URI with no preceding whitespace<http://example.com>
     <paragraph>
-        <reference anonymous="1" name="escaped URI <http://example.com>">
+        <reference anonymous="1">
             escaped URI <http://example.com>
     <paragraph>
         See \n\
-        <reference name="HTML Anchors: <a>" refname="html anchors: <a>">
+        <reference refname="html anchors: <a>">
             HTML Anchors: <a>
         .
 """],
@@ -1110,11 +1110,11 @@ Relative URIs' reference text can be omitted:
     <paragraph>
         Relative URIs' reference text can be omitted:
     <paragraph>
-        <reference name="reference" refuri="reference">
+        <reference refuri="reference">
             reference
         <target names="reference" refuri="reference">
     <paragraph>
-        <reference name="anonymous" refuri="anonymous">
+        <reference refuri="anonymous">
             anonymous
 """],
 [r"""
@@ -1129,11 +1129,11 @@ Escape trailing low-line char in URIs:
     <paragraph>
         Escape trailing low-line char in URIs:
     <paragraph>
-        <reference name="reference_" refuri="reference_">
+        <reference refuri="reference_">
             reference_
         <target names="reference_" refuri="reference_">
     <paragraph>
-        <reference name="anonymous_" refuri="anonymous_">
+        <reference refuri="anonymous_">
             anonymous_
 """],
 ["""\
@@ -1148,11 +1148,11 @@ Escape other char in URIs:
     <paragraph>
         Escape other char in URIs:
     <paragraph>
-        <reference name="reference:1" refuri="reference:1">
+        <reference refuri="reference:1">
             reference:1
         <target names="reference:1" refuri="reference:1">
     <paragraph>
-        <reference name="anonymouscall" refuri="anonymouscall">
+        <reference refuri="anonymouscall">
             anonymouscall
 """],
 ["""\
@@ -1179,11 +1179,11 @@ Embedded URI: named `<file.txt>`_ and anonymous `<file.html>`__.
             Duplicate implicit target name: "file.txt".
     <paragraph>
         Embedded URI: named \n\
-        <reference name="file.txt" refuri="file.txt">
+        <reference refuri="file.txt">
             file.txt
         <target dupnames="file.txt" refuri="file.txt">
          and anonymous \n\
-        <reference name="file.html" refuri="file.html">
+        <reference refuri="file.html">
             file.html
         .
 """],
@@ -1196,7 +1196,7 @@ totest['embedded_aliases'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference name="phrase reference" refname="alias">
+        <reference refname="alias">
             phrase reference
         <target names="phrase\\ reference" refname="alias">
 """],
@@ -1206,7 +1206,7 @@ totest['embedded_aliases'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference name="anonymous reference" refname="alias">
+        <reference refname="alias">
             anonymous reference
 """],
 ["""\
@@ -1216,7 +1216,7 @@ totest['embedded_aliases'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference name="embedded alias on next line" refname="alias">
+        <reference refname="alias">
             embedded alias on next line
 """],
 ["""\
@@ -1226,7 +1226,7 @@ phrase_>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="embedded alias across lines" refname="alias phrase">
+        <reference refname="alias phrase">
             embedded alias across lines
 """],
 ["""\
@@ -1236,7 +1236,7 @@ long  phrase_>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="embedded alias with whitespace" refname="alias long phrase">
+        <reference refname="alias long phrase">
             embedded alias with whitespace
 """],
 ["""\
@@ -1245,7 +1245,7 @@ long  phrase_>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="embedded alias with whitespace" refname="embedded alias with whitespace">
+        <reference refname="embedded alias with whitespace">
             embedded alias with whitespace
 """],
 [r"""
@@ -1256,10 +1256,10 @@ long  phrase_>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference anonymous="1" name="no embedded alias (whitespace inside bracket) < alias_ >">
+        <reference anonymous="1">
             no embedded alias (whitespace inside bracket) < alias_ >
     <paragraph>
-        <reference anonymous="1" name="no embedded alias (no preceding whitespace)<alias_>">
+        <reference anonymous="1">
             no embedded alias (no preceding whitespace)<alias_>
 """],
 [r"""
@@ -1268,7 +1268,7 @@ long  phrase_>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="anonymous reference" refname="aliaswith\\ escaped :characters">
+        <reference refname="aliaswith\\ escaped :characters">
             anonymous reference
 """],
 [r"""
@@ -1277,7 +1277,7 @@ long  phrase_>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="anonymous reference" refname="aliaswith\\ escaped :characters">
+        <reference refname="aliaswith\\ escaped :characters">
             anonymous reference
 """],
 ["""\
@@ -1306,17 +1306,17 @@ No clash with anonymous reference `link <tg1_>`__.
             Duplicate implicit target name: "link".
     <paragraph>
         References with embedded alias: \n\
-        <reference name="link" refname="tg1">
+        <reference refname="tg1">
             link
         <target dupnames="link" ids="link-1" refname="tg1">
          and \n\
-        <reference name="link" refname="tg2">
+        <reference refname="tg2">
             link
         <target dupnames="link" refname="tg2">
         .
     <paragraph>
         No clash with anonymous reference \n\
-        <reference name="link" refname="tg1">
+        <reference refname="tg1">
             link
         .
 """],
@@ -1610,7 +1610,7 @@ Substitution reference with |mix|.
         .
     <substitution_definition names="mix">
         text and \n\
-        <reference name="hyperlink-reference" refname="hyperlink-reference">
+        <reference refname="hyperlink-reference">
             hyperlink-reference
 """],
 ]

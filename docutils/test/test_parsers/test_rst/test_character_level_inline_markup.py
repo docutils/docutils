@@ -259,29 +259,29 @@ beware of _ref_ or __attr__ or object.__attr__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="ref" refname="ref">
+        <reference refname="ref">
             ref
         , \n\
-        <reference name="r" refname="r">
+        <reference refname="r">
             r
         , \n\
-        <reference name="r_e-f" refname="r_e-f">
+        <reference refname="r_e-f">
             r_e-f
         , -
-        <reference name="ref" refname="ref">
+        <reference refname="ref">
             ref
         , and \n\
-        <reference anonymous="1" name="anonymousref">
+        <reference anonymous="1">
             anonymousref
         ,
         beware of _
-        <reference name="ref" refname="ref">
+        <reference refname="ref">
             ref
          or __
-        <reference anonymous="1" name="attr">
+        <reference anonymous="1">
             attr
          or object.__
-        <reference anonymous="1" name="attr">
+        <reference anonymous="1">
             attr
 """],
 ]
@@ -301,14 +301,14 @@ Escape chars in URIs:
     <paragraph>
         Escape chars in URIs:
     <paragraph>
-        <reference name="reference:1" refuri="reference:1">
+        <reference refuri="reference:1">
             reference:1
         <target ids="reference-1" names="reference:1" refuri="reference:1">
     <paragraph>
-        <reference name="anonymous\\call" refuri="anonymous\\call">
+        <reference refuri="anonymous\\call">
             anonymous\\call
     <paragraph>
-        <reference name="anonymous_call" refuri="anonymous_call">
+        <reference refuri="anonymous_call">
             anonymous_call
 """],
 ]
@@ -421,7 +421,7 @@ http://example.com/rST_for_all.html
         /whatever
         <reference refuri="http://example.com/">
             http://example.com/
-        <reference name="rST_for" refname="rst_for">
+        <reference refname="rst_for">
             rST_for
         all.html
     <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="8" source="test data" type="WARNING">
@@ -438,7 +438,7 @@ __This__ is an anonymous reference with simple-inline-markup.
 <document source="test data">
     <paragraph>
         __
-        <reference anonymous="1" name="This">
+        <reference anonymous="1">
             This
          is an anonymous reference with simple-inline-markup.
 """],

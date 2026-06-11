@@ -333,11 +333,11 @@ System messages are no longer inserted between <line>s:
         System messages are no longer inserted between <line>s:
     <line_block>
         <line>
-            <reference name="uff" refuri="test1">
+            <reference refuri="test1">
                 uff
             <target dupnames="uff" ids="uff" refuri="test1">
         <line>
-            <reference name="uff" refuri="test2">
+            <reference refuri="test2">
                 uff
             <target dupnames="uff" ids="uff-1" refuri="test2">
 """],

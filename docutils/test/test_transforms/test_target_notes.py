@@ -65,7 +65,7 @@ A reference to a target_.
     <target ids="target" names="target" refuri="http://example.org">
     <paragraph>
         A reference to a \n\
-        <reference name="target" refuri="http://example.org">
+        <reference refuri="http://example.org">
             target
          \n\
         <footnote_reference auto="1" ids="footnote-reference-1" refid="footnote-1">
@@ -87,7 +87,7 @@ A reference to a target_.
     <target ids="target" names="target" refuri="http://example.org">
     <paragraph>
         A reference to a \n\
-        <reference name="target" refuri="http://example.org">
+        <reference refuri="http://example.org">
             target
         <inline classes="custom">
              \n\
