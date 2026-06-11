@@ -54,6 +54,10 @@ Release 1.0b1.dev (unpublished)
   - Do not add "name" attribute to `<reference>` elements
     nor set the internal attribute `indirect_reference_name`.
 
+* docutils/utils/__init__.py
+
+  - Remove `decode_path()` and `get_stylesheet_reference()`.
+
 * docutils/writers/html5_polyglot/*
 
   - Use normal font size and colour in CSS for informal titles of type "rubric".

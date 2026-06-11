@@ -167,9 +167,6 @@ Removals
 * Remove `nodes.set_name_id_map()` in Docutils 1.0 or later
   (not used since Docutils 0.23).
 
-* Remove `utils.decode_path()` and `utils.get_stylesheet_reference()`
-  in Docutils 1.0.
-
 * Remove support for the `recommonmark parser`_ in Docutils 1.0.
   Recommonmark is unmaintained since 2021 and deprecated in favour
   of the `MyST parser`_.
@@ -294,10 +291,14 @@ Removed objects:
       deprecated since Docutils 0.20.
   `parsers.rst.directives.length_units`
       Use the tuple `parsers.rst.directives.CSS3_LENGTH_UNITS`.
+  `utils.decode_path()`
+      not required with Python 3.
+  `utils.get_stylesheet_reference()`
+      Use `utils.get_stylesheet_list()`.
   `writers.latex2e.LaTeXTranslator.visit_docinfo_item()` "name" argument
-      ignored/deprecated since Docutils 0.22.
+      ignored and deprecated since Docutils 0.22.
   `writers.latex2e.SortableDict`
-      not used, deprecated since Docutils 0.22.
+      not used and deprecated since Docutils 0.22.
 
 
 Release 0.23 (2026-05-27)

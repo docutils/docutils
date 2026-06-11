@@ -273,23 +273,6 @@ class HelperFunctionTests(unittest.TestCase):
         self.assertEqual(utils.column_width('dâ'), 2)  # pre-composed
         self.assertEqual(utils.column_width('dâ'), 2)  # combining
 
-    def test_decode_path(self):
-        try:
-            bytes_filename = 'späm'.encode(sys.getfilesystemencoding())
-        except UnicodeEncodeError:
-            bytes_filename = b'spam'
-        bytespath = utils.decode_path(bytes_filename)
-        unipath = utils.decode_path('späm')
-        defaultpath = utils.decode_path(None)
-        if bytes_filename != b'spam':  # skip if ä cannot be encoded
-            self.assertEqual(bytespath, 'späm')
-        self.assertEqual(unipath, 'späm')
-        self.assertEqual(defaultpath, '')
-        self.assertTrue(isinstance(bytespath, str))
-        self.assertTrue(isinstance(unipath, str))
-        self.assertTrue(isinstance(defaultpath, str))
-        self.assertRaises(ValueError, utils.decode_path, 13)
-
     def test_relative_path(self):
         # Build and return a path to `target`, relative to `source`:
         # Use '/' as path sep in result.

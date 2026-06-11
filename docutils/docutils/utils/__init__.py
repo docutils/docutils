@@ -16,7 +16,6 @@ import os.path
 import re
 import sys
 import unicodedata
-import warnings
 from pathlib import PurePath, Path
 
 from docutils import ApplicationError, DataError
@@ -372,31 +371,6 @@ def assemble_option_dict(option_list: list[tuple[str, str|None]],
 class NameValueError(DataError): pass
 
 
-def decode_path(path: str|bytes|None) -> str:
-    """
-    Ensure `path` is Unicode. Return `str` instance.
-
-    Decode file/path string in a failsafe manner if not already done.
-
-    Deprecated. Will be removed in Docutils 1.0.
-    """
-    if isinstance(path, str):
-        return path
-    if path is None:
-        return ''
-    try:
-        path = path.decode(sys.getfilesystemencoding(), 'strict')
-    except AttributeError:
-        raise ValueError('`path` value must be a String or ``None``, '
-                         f'not {path!r}')
-    except UnicodeDecodeError:
-        try:
-            path = path.decode('utf-8', 'strict')
-        except UnicodeDecodeError:
-            path = path.decode('ascii', 'replace')
-    return path
-
-
 def extract_name_value(line):
     """
     Return a list of (name, value) from a line of the form "name=value ...".
@@ -560,30 +534,6 @@ def relative_path(source: StrPath|None, target: StrPath) -> str:
     target_parts.reverse()
     parts = ['..'] * (len(source_parts) - 1) + target_parts
     return '/'.join(parts)
-
-
-def get_stylesheet_reference(settings: Values,
-                             relative_to: StrPath|None = None
-                             ) -> str:
-    """
-    Retrieve a stylesheet reference from the settings object.
-
-    Deprecated. Will be removed in Docutils 1.0.
-    Use get_stylesheet_list() instead to enable specification of multiple
-    stylesheets as a comma-separated list.
-    """
-    warnings.warn('utils.get_stylesheet_reference()'
-                  ' is obsoleted by utils.get_stylesheet_list()'
-                  ' and will be removed in Docutils 2.0.',
-                  DeprecationWarning, stacklevel=2)
-    if settings.stylesheet_path:
-        assert not settings.stylesheet, (
-            'stylesheet and stylesheet_path are mutually exclusive.')
-        if relative_to is None:
-            relative_to = settings.output_path
-        return relative_path(relative_to, settings.stylesheet_path)
-    else:
-        return settings.stylesheet
 
 
 # Return 'stylesheet' or 'stylesheet_path' arguments as list.
