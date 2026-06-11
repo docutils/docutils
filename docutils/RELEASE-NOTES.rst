@@ -186,9 +186,6 @@ Removals
   in Docutils 1.0.  Use a transform_,
   see `transforms.references.CitationReferences` for an example.
 
-* Remove the internal attribute `nodes.Targetable.indirect_reference_name`
-  in Docutils 1.0. (Was required for MoinMoin <= 1.9.)
-
 * Don't call `transforms.references.DanglingReferences` and
   `transforms.references.DanglingReferencesVisitor` in Docutils 1.0;
   remove them in Docutils 2.0. [rationale__]
@@ -284,8 +281,6 @@ Configuration changes:
     For the rationale, see https://clig.dev/#arguments-and-flags and
     https://sourceforge.net/p/docutils/feature-requests/36/
 
-* Drop the ``name`` attribute from <reference> nodes in Docutils 1.0.
-
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
   - Use more specific CSS selectors for styling <aside> elements as
@@ -294,6 +289,8 @@ HTML5 writer:
 Removed objects:
   `io.BinaryFileOutput` and `core.publish_cmdline_to_binary()`
       deprecated since Docutils 0.20.
+  `nodes.Targetable.indirect_reference_name`
+      internal attribute, was required by the Python-2-only MoinMoin <= 1.9.
   `writers.latex2e.SortableDict`
       deprecated since Docutils 0.22.
   `parsers.rst.directives.length_units`

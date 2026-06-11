@@ -34,6 +34,7 @@ Release 1.0b1.dev (unpublished)
 * docutils/nodes.py
 
   - Remove "name" from `reference.valid_attributes`.
+  - Remove the internal attribute `Targetable.indirect_reference_name`.
 
 * docutils/parsers/rst/directives/__init__.py
 
@@ -41,11 +42,13 @@ Release 1.0b1.dev (unpublished)
 
 * docutils/parsers/rst/directives/images.py
 
-  - Do not add "name" attribute to `<reference>` wrapper elements.
+  - Do not add "name" attribute to `<reference>` elements
+    nor set the internal attribute `indirect_reference_name`.
 
 * docutils/parsers/rst/states.py
 
-  - Do not add "name" attribute to `<reference>` elements.
+  - Do not add "name" attribute to `<reference>` elements
+    nor set the internal attribute `indirect_reference_name`.
 
 * docutils/writers/html5_polyglot/*
 

@@ -1478,14 +1478,6 @@ class Targetable(Resolvable):
     """Cross-reference targets (incoming hyperlink)."""
     referenced: int = 0
 
-    indirect_reference_name: str | None = None
-    """Holds the whitespace_normalized_name (contains mixed case) of a target.
-
-    This was required for MoinMoin <= 1.9 compatibility.
-
-    Deprecated, will be removed in Docutils 1.0.
-    """
-
 
 class Titular:
     """Title, sub-title, or informal heading (rubric)."""

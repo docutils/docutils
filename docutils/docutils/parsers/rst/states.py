@@ -927,8 +927,6 @@ class Inliner:
                 aliastype = 'name'
                 alias = normalize_name(unescape(aliastext[:-1]))
                 target = nodes.target(match.group(1), refname=alias)
-                target.indirect_reference_name = whitespace_normalize_name(
-                                                    unescape(aliastext[:-1]))
             else:
                 aliastype = 'uri'
                 # remove unescaped whitespace
@@ -2081,7 +2079,6 @@ class Body(RSTState):
         target_type, data = self.parse_target(block, block_text, lineno)
         if target_type == 'refname':
             target = nodes.target(block_text, '', refname=normalize_name(data))
-            target.indirect_reference_name = data
             self.add_target(target_name, '', target, lineno)
             self.document.note_indirect_target(target)
             return target
