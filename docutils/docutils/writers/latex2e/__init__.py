@@ -477,27 +477,6 @@ class Babel:
 # Building blocks for the latex preamble
 # --------------------------------------
 
-class SortableDict(dict):  # NoQA: FURB189
-    """Dictionary with additional sorting methods
-
-    Deprecated. Will be removed in Docutils 0.24.
-    """
-
-    def __init__(self, *args, **kwargs):
-        warnings.warn('`writers.latex2e.SortableDict` is obsolete'
-                      ' and will be removed in Docutils 0.24.',
-                      DeprecationWarning, stacklevel=2)
-        super().__init__(*args, **kwargs)
-
-    def sortedkeys(self):
-        """Return sorted list of keys"""
-        return sorted(self.keys())
-
-    def sortedvalues(self):
-        """Return list of values sorted by keys"""
-        return [self[key] for key in self.sortedkeys()]
-
-
 # PreambleCmds
 # `````````````
 # A container for LaTeX code snippets that can be
@@ -1986,12 +1965,8 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.docinfo.append('\\end{tabularx}\n'
                                 '\\end{center}\n')
 
-    def visit_docinfo_item(self, node, name=None) -> None:
+    def visit_docinfo_item(self, node) -> None:
         # auxiliary method, called by the visitors of "bibliographic elements"
-        if name is not None:
-            warnings.warn('visit_docinfo_item(): argument "name" is obsolete'
-                          ' and will be removed in Docutils 0.24',
-                          DeprecationWarning, stacklevel=2)
         if self.use_latex_docinfo and isinstance(node, self.TITLEDATA_NODES):
             self.push_output_collector([])  # see depart_docinfo_item()
         else:

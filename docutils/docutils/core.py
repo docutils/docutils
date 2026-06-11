@@ -625,50 +625,6 @@ def publish_from_doctree(document, destination_path=None,
     return publisher.publish(enable_exit_status=enable_exit_status)
 
 
-def publish_cmdline_to_binary(reader=None, reader_name='standalone',
-                              parser=None, parser_name='restructuredtext',
-                              writer=None, writer_name='pseudoxml',
-                              settings=None,
-                              settings_spec=None,
-                              settings_overrides=None,
-                              config_section=None,
-                              enable_exit_status=True,
-                              argv=None,
-                              usage=default_usage,
-                              description=default_description,
-                              destination=None,
-                              destination_class=io.BinaryFileOutput):
-    """
-    Set up & run a `Publisher` for command-line-based file I/O (input and
-    output file paths taken automatically from the command line).
-    Also return the output as `bytes`.
-
-    This is just like publish_cmdline, except that it uses
-    io.BinaryFileOutput instead of io.FileOutput.
-
-    Parameters: see `publish_programmatically()` for the remainder.
-
-    - `argv`: Command-line argument list to use instead of ``sys.argv[1:]``.
-    - `usage`: Usage string, output if there's a problem parsing the command
-      line.
-    - `description`: Program description, output for the "--help" option
-      (along with command-line option descriptions).
-
-    Deprecated. Use `publish_cmdline()` (works with `bytes` since
-    Docutils 0.20). Will be removed in Docutils 0.24.
-    """
-    warnings.warn('"publish_cmdline_to_binary()" is obsoleted'
-                  ' by "publish_cmdline()" and will be removed'
-                  ' in Docutils 0.24.', DeprecationWarning, stacklevel=2)
-    publisher = Publisher(reader, parser, writer, settings=settings,
-                          destination_class=destination_class)
-    publisher.set_components(reader_name, parser_name, writer_name)
-    output = publisher.publish(
-        argv, usage, description, settings_spec, settings_overrides,
-        config_section=config_section, enable_exit_status=enable_exit_status)
-    return output
-
-
 def _name_arg_warning(*name_args) -> None:
     for component, name_arg in zip(('reader', 'parser', 'writer'), name_args):
         if name_arg is not None:

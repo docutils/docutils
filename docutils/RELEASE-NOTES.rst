@@ -183,19 +183,6 @@ __ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
 Removals
 --------
 
-* Remove `io.BinaryFileOutput` and `core.publish_cmdline_to_binary()`
-  in Docutils 0.24.
-
-* Remove `writers.latex2e.SortableDict` in Docutils 0.24.
-
-* Remove `parsers.rst.directives.length_units` in Docutils 0.24.
-  Use `parsers.rst.directives.CSS3_LENGTH_UNITS`.  Mind that this
-  is a tuple, not a list.
-
-* Remove the "name" argument from
-  `writers.latex2e.LaTeXTranslator.visit_docinfo_item()`
-  (ignored since Docutils 0.22) in Docutils 0.24.
-
 * Remove `nodes.set_name_id_map()` in Docutils 1.0
   (not used since Docutils 0.23).
 
@@ -303,7 +290,15 @@ Misc
 Release 0.24b1.dev (unpublished)
 ================================
 
-.
+Removed objects
+  `io.BinaryFileOutput` and `core.publish_cmdline_to_binary()`
+      deprecated since Docutils 0.20.
+  `writers.latex2e.SortableDict`
+      deprecated since Docutils 0.22.
+  `parsers.rst.directives.length_units`
+      Use the tuple `parsers.rst.directives.CSS3_LENGTH_UNITS`.
+  `writers.latex2e.LaTeXTranslator.visit_docinfo_item()` "name" argument
+      ignored/deprecated since Docutils 0.22.
 
 
 Release 0.23 (2026-05-27)

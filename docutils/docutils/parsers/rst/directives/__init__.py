@@ -253,9 +253,6 @@ Corresponds to the `length units in CSS3`__.
 __ https://www.w3.org/TR/css-values-3/#lengths
 """
 
-length_units = [*CSS3_LENGTH_UNITS]
-"""Deprecated, will be removed in Docutils 0.24 or equivalent."""
-
 
 def get_measure(argument, units):
     """

@@ -22,7 +22,7 @@ from docutils import TransformSpec
 
 TYPE_CHECKING = False
 if TYPE_CHECKING:
-    from typing import Any, BinaryIO, ClassVar, Final, Literal, TextIO
+    from typing import BinaryIO, ClassVar, Final, Literal, TextIO
 
     from docutils import nodes
     from docutils.nodes import StrPath
@@ -490,7 +490,7 @@ class FileOutput(Output):
 
     mode: Literal['w', 'a', 'x', 'wb', 'ab', 'xb', 'bw', 'ba', 'bx'] = 'w'
     """The mode argument for `open()`."""
-    # 'wb' for binary (e.g. OpenOffice) files (see also `BinaryFileOutput`).
+    # 'wb' for binary (e.g. OpenOffice) files.
     # (Do not use binary mode ('wb') for text files, as this prevents the
     # conversion of newlines to the system specific default.)
 
@@ -611,23 +611,6 @@ class FileOutput(Output):
         if self.destination not in (sys.stdout, sys.stderr):
             self.destination.close()
             self.opened = False
-
-
-class BinaryFileOutput(FileOutput):
-    """
-    A version of docutils.io.FileOutput which writes to a binary file.
-
-    Deprecated. Use `FileOutput` (works with `bytes` since Docutils 0.20).
-    Will be removed in Docutils 0.24.
-    """
-    # Used by core.publish_cmdline_to_binary() which is also deprecated.
-    mode = 'wb'
-
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        warnings.warn('"BinaryFileOutput" is obsoleted by "FileOutput"'
-                      ' and will be removed in Docutils 0.24.',
-                      DeprecationWarning, stacklevel=2)
-        super().__init__(*args, **kwargs)
 
 
 class StringInput(Input):

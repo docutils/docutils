@@ -17,7 +17,23 @@
 Release 0.24b1.dev (unpublished)
 ================================
 
-.
+* docutils/core.py
+
+  - Remove `core.publish_cmdline_to_binary()` (deprecated since Docutils 0.20).
+
+* docutils/io.py
+
+  - Remove `BinaryFileOutput` (deprecated since Docutils 0.20).
+
+* docutils/parsers/rst/directives/__init__.py
+
+  - Remove `length_units` (replaced by the tuple CSS3_LENGTH_UNITS).
+
+* docutils/writers/latex2e/__init__.py
+
+  - Remove `writers.latex2e.SortableDict` (deprecated since Docutils 0.22).
+  - Remove the "name" argument from `LaTeXTranslator.visit_docinfo_item()`
+    (ignored since Docutils 0.22).
 
 
 Release 0.23 (2026-05-27)
