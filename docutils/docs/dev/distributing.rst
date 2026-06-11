@@ -41,7 +41,7 @@ Docutils has the following dependencies:
   well as included source code files (with the "code" option to the include_
   directive).
 
-* Docutils can use the `pycmark`_, `myst`_, or `recommonmark`_ parsers to
+* Docutils can use the `pycmark`_ or `myst`_ parsers to
   process input in the Markdown format (since Docutils 0.19).
 
 .. _Python Imaging Library:
@@ -50,7 +50,6 @@ Docutils has the following dependencies:
 .. _Pygments: https://pygments.org/
 .. _pycmark: https://pypi.org/project/pycmark/
 .. _myst: https://pypi.org/project/myst-docutils
-.. _recommonmark: https://pypi.org/project/recommonmark/
 
 .. _code directives: ../ref/rst/directives.html#code
 .. _include: ../ref/rst/directives.html#include

@@ -102,7 +102,7 @@ are installed:
 * The `Pygments`_ package provides syntax highlight of "code" directives
   and roles.
 
-* The `myst`_, `pycmark`_, or `recommonmark`_ parsers can be used to
+* The `myst`_ or `pycmark`_ parsers can be used to
   parse input in "Markdown" (CommonMark_) format.
 
 The `Docutils Link List <docs/user/links.html>`__ records projects that
@@ -114,7 +114,6 @@ users of Docutils and reStructuredText may find useful.
 .. _Pygments: https://pypi.org/project/Pygments/
 .. _myst: https://pypi.org/project/myst-docutils/
 .. _pycmark: https://pypi.org/project/pycmark/
-.. _recommonmark: https://github.com/rtfd/recommonmark
 .. _CommonMark: https://spec.commonmark.org/0.30/
 
 

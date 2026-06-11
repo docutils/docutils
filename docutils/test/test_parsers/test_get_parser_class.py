@@ -22,7 +22,7 @@ if str(DOCUTILS_ROOT) not in sys.path:
 from docutils.core import publish_string       # noqa: E402
 from docutils.parsers import get_parser_class  # noqa: E402
 try:
-    md_parser_class = get_parser_class('recommonmark')
+    md_parser_class = get_parser_class('myst')
 except ImportError:
     md_parser_class = None
 
@@ -50,14 +50,14 @@ class GetParserClassTestCase(unittest.TestCase):
         # raises ImportError on failure
 
 
-@unittest.skipUnless(md_parser_class is None, '"recommonmark" module found.')
-class RecommonmarkMissingTests(unittest.TestCase):
+@unittest.skipUnless(md_parser_class is None, '"myst" module found.')
+class MystMissingTests(unittest.TestCase):
 
     def test_missing_parser_message(self):
         # match multiline message (?s) = re.DOTALL "." also matches newline
         with self.assertRaisesRegex(
-            ImportError, '(?s)requires the.*package .*recommonmark'):
-            publish_string('test data', parser='recommonmark')
+            ImportError, '(?s)Parser "myst" not found.*myst_parser'):
+            publish_string('test data', parser='myst')
 
 
 if __name__ == '__main__':

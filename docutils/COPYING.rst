@@ -103,8 +103,6 @@ The exceptions to the `Public Domain Dedication`_ above are:
 
 * | docutils/__main__.py,
   | docutils/parsers/commonmark_wrapper.py,
-  | docutils/parsers/recommonmark_wrapper.py,
-  | docutils/utils/error_reporting.py,
   | docutils/utils/math/__init__.py,
   | docutils/utils/math/latex2mathml.py,
   | docutils/utils/math/tex2mathml_extern.py,
@@ -114,7 +112,6 @@ The exceptions to the `Public Domain Dedication`_ above are:
   | docutils/writers/html5_polyglot/\*.css,
   | docutils/writers/latex2e/docutils.sty,
   | docutils/writers/xetex/__init__.py,
-  | test/test_parsers/test_recommonmark/\*.py,
   | test/test_parsers/test_rst/test_directives/test__init__.py,
   | test/test_parsers/test_rst/test_directives/test_code_parsing.py,
   | test/test_parsers/test_rst/test_line_length_limit_default.py,

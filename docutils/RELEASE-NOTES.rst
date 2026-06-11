@@ -167,13 +167,6 @@ Removals
 * Remove `nodes.set_name_id_map()` in Docutils 1.0 or later
   (not used since Docutils 0.23).
 
-* Remove support for the `recommonmark parser`_ in Docutils 1.0.
-  Recommonmark is unmaintained since 2021 and deprecated in favour
-  of the `MyST parser`_.
-
-  .. _recommonmark parser: docs/user/config.html#recommonmark-parser
-  .. _MyST parser: docs/user/config.html#myst-parser
-
 * Remove the input_encoding_ auto-detection code in Docutils 1.0.
 
 * Remove the "TransformSpec.unknown_reference_resolvers" hook chain
@@ -287,6 +280,9 @@ Removed objects:
       use `io.FileOutput` (works with `bytes` since Docutils 0.20).
   `nodes.Targetable.indirect_reference_name`
       internal attribute for the Python-2-only MoinMoin <= 1.9.
+  `parsers.recommonmark_wrapper`
+      wrapper module for the 3rd party recommonmark_ parser. Recommonmark is
+      unmaintained since 2021 and deprecated in favour of the MyST_ parser.
   `parsers.rst.directives.CSVTable.HeaderDialect`
       deprecated since Docutils 0.20.
   `parsers.rst.directives.length_units`

@@ -104,7 +104,6 @@ PARSER_ALIASES = {  # short names for known parsers
                   'docutils_xml': 'docutils.parsers.docutils_xml',
                   'xml': 'docutils.parsers.docutils_xml',
                   # 3rd-party Markdown parsers
-                  'recommonmark': 'docutils.parsers.recommonmark_wrapper',
                   'myst': 'myst_parser.docutils_',
                   # 'pycmark': works out of the box
                   # dispatcher for 3rd-party Markdown parsers

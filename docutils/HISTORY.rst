@@ -36,6 +36,19 @@ Release 1.0b1.dev (unpublished)
   - Remove "name" from `reference.valid_attributes`.
   - Remove the internal attribute `Targetable.indirect_reference_name`.
 
+* docutils/parsers/__init__.py
+
+  - Remove `recommonmark` from `PARSER_ALIASES`.
+
+* docutils/parsers/commonmark_wrapper.py
+
+  - Remove `recommonmark` from `commonmark_parser_names`.
+
+* docutils/parsers/recommonmark_wrapper.py
+
+  - Removed. (Recommonmark is unmaintained since 2021 and deprecated in
+    favour of the MyST parser.)
+
 * docutils/parsers/rst/directives/__init__.py
 
   - Remove `length_units` (replaced by the tuple CSS3_LENGTH_UNITS).

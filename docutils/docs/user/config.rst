@@ -1010,22 +1010,6 @@ Currently no configuration settings.
 .. _pycmark: https://pypi.org/project/pycmark/
 
 
-[recommonmark parser]
----------------------
-
-Parser for Markdown (CommonMark_)
-provided by the 3rd party package recommonmark_.
-
-.. admonition:: Deprecated
-
-   Depends on deprecated 3rd-party package recommonmark_.
-   Support will be removed in Docutils 1.0.
-
-Currently no configuration settings.
-
-.. _recommonmark: https://pypi.org/project/recommonmark/
-
-
 [xml parser]
 ------------
 
@@ -2433,13 +2417,10 @@ or the import name of a plug-in parser module. [#]_
 *Default*: "rst".
 *Option*: ``--parser``
 
-.. [#] Docutils recognizes the aliases
-   "`pycmark <[pycmark parser]_>`__", "`myst <[myst parser]_>`__",
-   and "`recommonmark <[recommonmark parser]_>`__" (deprecated) and selects
-   the corresponding 3rd-party Markdown parser (if it is installed).
-   The aliases "markdown" and "commonmark" select the first available
-   parser from this list.
-
+.. [#] Docutils recognizes the aliases "`pycmark <[pycmark parser]_>`__"
+   and "`myst <[myst parser]_>`__" and selects the corresponding
+   3rd-party Markdown parser (if it is installed). The aliases "markdown"
+   and "commonmark" select the first available parser from this list.
 
 .. _writer [docutils application]:
 

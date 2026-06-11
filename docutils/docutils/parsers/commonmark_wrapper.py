@@ -19,7 +19,6 @@ parser packages:
 
 :pycmark:       https://pypi.org/project/pycmark/
 :myst:          https://pypi.org/project/myst-docutils/
-:recommonmark:  https://pypi.org/project/recommonmark/ (deprecated)
 
 The first parser class that can be successfully imported is mapped to
 `commonmark_wrapper.Parser`.
@@ -31,7 +30,7 @@ the API is not settled and may change with any minor Docutils version.
 import docutils.parsers
 
 
-commonmark_parser_names = ('pycmark', 'myst', 'recommonmark')
+commonmark_parser_names = ('pycmark', 'myst')
 """Names of compatible drop-in CommonMark parsers"""
 
 Parser = None
