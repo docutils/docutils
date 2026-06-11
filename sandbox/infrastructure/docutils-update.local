@@ -253,11 +253,11 @@ for htmlfile in `find . -name '*.html'` ; do
             if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
                 if [ "${base:0:4}" == "pep-" ] ; then
                     print_feedback "$txtfile (PEP)"
-                    python $lib/tools/rstpep2html.py --config=$dir/docutils.conf $txtfile $htmlfile
+                    python $lib/tools/rstpep2html.py --config=$dir/docutils.conf $txtfile --output=$htmlfile
                     haschanges=1
                 else
                     print_feedback "$txtfile"
-                    python $lib/tools/rst2html5.py --config=$dir/docutils.conf $txtfile $htmlfile
+                    python $lib/tools/rst2html5.py --config=$dir/docutils.conf $txtfile --output=$htmlfile
                     haschanges=1
                 fi
             fi
