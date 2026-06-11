@@ -29,6 +29,10 @@ Release 1.0b1.dev (unpublished)
 
   - Remove `length_units` (replaced by the tuple CSS3_LENGTH_UNITS).
 
+* docutils/writers/html5_polyglot/minimal.css
+
+  - Use normal font size and colour for informal titles of type "rubric".
+
 * docutils/writers/latex2e/__init__.py
 
   - Remove `writers.latex2e.SortableDict` (deprecated since Docutils 0.22).

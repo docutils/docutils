@@ -22,17 +22,12 @@
 /* titles */
 p.topic-title,
 p.admonition-title,
-p.system-message-title {
-  font-weight: bold;
-}
+p.system-message-title,
 p.sidebar-title,
 p.rubric {
   font-weight: bold;
-  font-size: larger;
 }
-p.rubric {
-  color: maroon;
-}
+p.sidebar-title { font-size: larger; }
 p.subtitle,
 p.section-subtitle,
 p.sidebar-subtitle {

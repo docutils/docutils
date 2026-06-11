@@ -136,9 +136,6 @@ Writers
   - Change the default value of the initial_header_level_ setting to "auto"
     (<h2> if there is a document title, else <h1>) in Docutils 1.0.
 
-  - Use normal font size and colour for informal titles of type "rubric"
-    in Docutils 1.0.
-
   - Use more specific CSS selectors for styling <aside> elements as
     topic, sidebar, admonition, or system-message in Docutils 1.0.
     (Styling just based on the "class" value leads to problems with
@@ -289,6 +286,9 @@ Misc
 
 Release 1.0b1.dev (unpublished)
 ===============================
+
+HTML5 writer:
+  - Use normal font size and colour for informal titles of type "rubric".
 
 Removed objects
   `io.BinaryFileOutput` and `core.publish_cmdline_to_binary()`
