@@ -287,8 +287,8 @@ Misc
    __ https://packages.debian.org/source/trixie/python-docutils
 
 
-Release 0.24b1.dev (unpublished)
-================================
+Release 1.0b1.dev (unpublished)
+===============================
 
 Removed objects
   `io.BinaryFileOutput` and `core.publish_cmdline_to_binary()`

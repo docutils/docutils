@@ -85,7 +85,7 @@ if TYPE_CHECKING:
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.24b1.dev'
+__version__ = '1.0b1.dev'
 """Docutils version identifier (complies with PEP 440)::
 
     major.minor[.micro][releaselevel[serial]][.dev]
@@ -157,8 +157,8 @@ class VersionInfo(namedtuple('VersionInfo',
 
 
 __version_info__ = VersionInfo(
-    major=0,
-    minor=24,
+    major=1,
+    minor=0,
     micro=0,
     releaselevel='beta',  # one of 'alpha', 'beta', 'candidate', 'final'
     serial=1,  # pre-release number (0 for final releases and snapshots)

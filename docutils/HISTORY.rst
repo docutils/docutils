@@ -14,8 +14,8 @@
 .. contents::
 
 
-Release 0.24b1.dev (unpublished)
-================================
+Release 1.0b1.dev (unpublished)
+===============================
 
 * docutils/core.py
 

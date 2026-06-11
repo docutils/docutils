@@ -96,7 +96,7 @@ class WriterPublishTestCase(unittest.TestCase):
 
 
 document_start = r""".\" Man page generated from reStructuredText
-.\" by the Docutils 0.24b1.dev manpage writer.
+.\" by the Docutils 1.0b1.dev manpage writer.
 .
 """
 
