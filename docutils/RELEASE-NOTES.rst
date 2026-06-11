@@ -40,8 +40,6 @@ Command line interface
     Use ``--output=DESTINATION`` (cf. the "output_path_" configuration setting)
     or output redirection.
 
-  * Accept the short option ``-o`` for ``--output`` in Docutils 1.0
-
   * Accept more than one source document in Docutils 2.0
 
   For the rationale, see https://clig.dev/#arguments-and-flags.
@@ -281,12 +279,15 @@ Misc
 Release 1.0b1.dev (unpublished)
 ===============================
 
+Configuration changes:
+  - Accept the short option ``-o`` for ``--output``.
+
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
   - Use more specific CSS selectors for styling <aside> elements as
     topic, sidebar, admonition, or system-message.
 
-Removed objects
+Removed objects:
   `io.BinaryFileOutput` and `core.publish_cmdline_to_binary()`
       deprecated since Docutils 0.20.
   `writers.latex2e.SortableDict`
@@ -322,13 +323,13 @@ LaTeX writer:
     implicit targets if there is no matching reference in the document.
   - Support `semantic inline markup roles`_.
 
-Configuration changes
+Configuration changes:
   - New setting `legacy_ids`_ (provisional).
   - The new setting `latex_footnotes`_ replaces "docutils_footnotes"
     (ignored since Docutils 0.13.1).  The command line option
     ``--docutils-footnotes`` is kept and sets latex_footnotes_ to False.
 
-New objects
+New objects:
   `nodes.document.names`:
     Internal attribute mapping `reference names`_ to the
     referenced elements (or ``None`` if the name is a duplicate).
@@ -340,7 +341,7 @@ New objects
   `transforms.SectionIDs`:
     Ensure all sections have an identifier_.
 
-Removed objects
+Removed objects:
   `parsers.rst.directives.tables.CSVTable.check_requirements()`
      not required with Python 3.
   `nodes.document.set_duplicate_name_id()`
@@ -416,7 +417,7 @@ reStructuredText:
   __ https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html
      #implicit-hyperlink-targets
 
-Document Tree / Docutils DTD
+Document Tree / Docutils DTD:
   - Allow multiple <term> elements in a `\<definition_list_item>`__
     (third-party writers may need adaption).
   - The first element in a <figure> may also be a <reference>
@@ -424,7 +425,7 @@ Document Tree / Docutils DTD
 
   __ docs/ref/doctree.html#definition-list-item
 
-Configuration changes
+Configuration changes:
   - Make MathML the default math_output_ for the "html5" writer.
   - Change the default input_encoding_ from ``None`` (auto-detect) to "utf-8".
   - Drop short options ``-i`` and ``-o``.
@@ -490,7 +491,7 @@ New objects
      `uri2path()` auxiliary method.
      Provisional.
 
-Removed objects
+Removed objects:
   `core.Publisher.setup_option_parser()`
      internal, obsolete,
   `frontend.ConfigParser.get_section()`
@@ -510,18 +511,18 @@ Removed objects
   `utils.Reporter.set_conditions()`
      obsolete, set attributes via configuration settings or directly.
 
-Removed localisations
+Removed localisations:
   Mistranslations of the "admonition" directive name:
      Use "advies" (af), "varsel" (da), "warnhinweis" (de), "aviso" (es),
      "sciigo" (eo), "annonce" (fr), "avviso" (it), "advies" (nl),
      "zauważenie" (pl) (introduced in Docutils 0.21)
      or the English name "admonition".
 
-New files
+New files:
   ``docutils/parsers/rst/include/html-roles.txt``
      `Standard definition file`_ for additional roles matching HTML tags.
 
-Removed files
+Removed files:
   ``tools/rst2odt_prepstyles.py``
      Obsoleted by `writers.odf_odt.prepstyles`.
   ``docutils/utils/roman.py``

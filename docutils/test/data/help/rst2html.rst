@@ -12,7 +12,7 @@ Options
 =======
 General Docutils Options
 ------------------------
---output-path=<destination>, --output=<destination>
+--output=<destination>, -o <destination>
                         Output destination name. Obsoletes the <destination>
                         positional argument. Default: None (stdout).
 --title=<title>         Specify the document title as metadata.

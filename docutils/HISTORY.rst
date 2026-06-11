@@ -21,6 +21,10 @@ Release 1.0b1.dev (unpublished)
 
   - Remove `core.publish_cmdline_to_binary()` (deprecated since Docutils 0.20).
 
+* docutils/frontend.py
+
+  - Accept the short option ``-o`` for ``--output``.
+
 * docutils/io.py
 
   - Remove `BinaryFileOutput` (deprecated since Docutils 0.20).

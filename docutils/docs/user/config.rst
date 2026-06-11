@@ -491,10 +491,11 @@ Obsoletes the second `positional argument`_ and the internal
 `_destination`_ setting (cf. `Future changes`_ in the RELEASE-NOTES).
 
 :Default: None (write to stdout).
-:Options: ``--output-path``, ``--output``.
+:Options: ``--output``, ``-o``.
 
 New in Docutils 0.20.
 Renamed from "_`output`" to "output_path" in Docutils 0.22.
+Added short option ``-o`` in Docutils 1.0.
 
 
 output_encoding
