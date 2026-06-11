@@ -45,6 +45,10 @@ Release 1.0b1.dev (unpublished)
   - Do not add "name" attribute to `<reference>` elements
     nor set the internal attribute `indirect_reference_name`.
 
+* docutils/parsers/rst/directives/tables.py
+
+  - Remove class `HeaderDialect` (not used/deprecated since Docutils 0.20).
+
 * docutils/parsers/rst/states.py
 
   - Do not add "name" attribute to `<reference>` elements

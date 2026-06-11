@@ -164,11 +164,8 @@ __ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
 Removals
 --------
 
-* Remove `nodes.set_name_id_map()` in Docutils 1.0
+* Remove `nodes.set_name_id_map()` in Docutils 1.0 or later
   (not used since Docutils 0.23).
-
-* Remove `parsers.rst.directives.CSVTable.HeaderDialect`
-  in Docutils 1.0.
 
 * Remove `utils.decode_path()` and `utils.get_stylesheet_reference()`
   in Docutils 1.0.
@@ -287,16 +284,20 @@ HTML5 writer:
     topic, sidebar, admonition, or system-message.
 
 Removed objects:
-  `io.BinaryFileOutput` and `core.publish_cmdline_to_binary()`
-      deprecated since Docutils 0.20.
+  `core.publish_cmdline_to_binary()`
+      use `core.publish_cmdline()` (works with `bytes` since Docutils 0.20).
+  `io.BinaryFileOutput`
+      use `io.FileOutput` (works with `bytes` since Docutils 0.20).
   `nodes.Targetable.indirect_reference_name`
-      internal attribute, was required by the Python-2-only MoinMoin <= 1.9.
-  `writers.latex2e.SortableDict`
-      deprecated since Docutils 0.22.
+      internal attribute for the Python-2-only MoinMoin <= 1.9.
+  `parsers.rst.directives.CSVTable.HeaderDialect`
+      deprecated since Docutils 0.20.
   `parsers.rst.directives.length_units`
       Use the tuple `parsers.rst.directives.CSS3_LENGTH_UNITS`.
   `writers.latex2e.LaTeXTranslator.visit_docinfo_item()` "name" argument
       ignored/deprecated since Docutils 0.22.
+  `writers.latex2e.SortableDict`
+      not used, deprecated since Docutils 0.22.
 
 
 Release 0.23 (2026-05-27)

@@ -13,7 +13,6 @@ __docformat__ = 'reStructuredText'
 import csv
 from urllib.request import urlopen
 from urllib.error import URLError
-import warnings
 
 from docutils import nodes, statemachine
 from docutils.io import FileInput, StringInput
@@ -220,41 +219,6 @@ class CSVTable(Table):
             if 'escape' in options:
                 self.doublequote = False
                 self.escapechar = options['escape']
-            super().__init__()
-
-    class HeaderDialect(csv.Dialect):
-        """
-        CSV dialect used for the "header" option data.
-
-        Deprecated. Will be removed in Docutils 1.0.
-        """
-        # The separate HeaderDialect was introduced in revision 2294
-        # (2004-06-17) in the sandbox before the "csv-table" directive moved
-        # to the trunk in r2309. Discussion in docutils-devel around this time
-        # did not mention a rationale (part of the discussion was in private
-        # mail).
-        # This is in conflict with the documentation, which always said:
-        # "Must use the same CSV format as the main CSV data."
-        # and did not change in this aspect.
-        #
-        # Maybe it was intended to have similar escape rules for rST and CSV,
-        # however with the current implementation this means we need
-        # `\\` for rST markup and ``\\\\`` for a literal backslash
-        # in the "option" header but ``\`` and ``\\`` in the header-lines and
-        # table cells of the main CSV data.
-        delimiter = ','
-        quotechar = '"'
-        escapechar = '\\'
-        doublequote = False
-        skipinitialspace = True
-        strict = True
-        lineterminator = '\n'
-        quoting = csv.QUOTE_MINIMAL
-
-        def __init__(self) -> None:
-            warnings.warn('CSVTable.HeaderDialect will be removed '
-                          'in Docutils 1.0',
-                          DeprecationWarning, stacklevel=2)
             super().__init__()
 
     def process_header_option(self):
