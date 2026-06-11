@@ -42,10 +42,10 @@ Docutils does not do any checks before writing to a file:
 * Files may be **written to any location** accessible to the process.
 * There are **no restrictions to** the **file names**.
 
-Special care must be taken when allowing users to configure the `output`_
+Special care must be taken when allowing users to configure the `output_path`_
 (or `_destination`_), `warning_stream`_, or `record_dependencies`_ settings.
 
-.. _output: ../user/config.html#output
+.. _output_path: ../user/config.html#output-path
 .. _`_destination`: ../user/config.html#destination
 .. _warning_stream: ../user/config.html#warning-stream
 .. _record_dependencies: ../user/config.html#record-dependencies

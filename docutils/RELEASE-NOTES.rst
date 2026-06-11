@@ -29,20 +29,14 @@ Requirements
 Command line interface
 ----------------------
 
-* The _`command-line usage pattern` will change:
+* Accept more than one source document in Docutils 2.0
 
   .. code:: diff
 
        - COMMAND [OPTIONS] [SOURCE [DESTINATION]]
        + COMMAND [OPTIONS] [SOURCE [SOURCE2 [...]]]
 
-  * Stop accepting the DESTINATION positional argument in Docutils 1.0.
-    Use ``--output=DESTINATION`` (cf. the "output_path_" configuration setting)
-    or output redirection.
 
-  * Accept more than one source document in Docutils 2.0
-
-  For the rationale, see https://clig.dev/#arguments-and-flags.
 
 * The `front end tools`_ will use argparse_ for command line parsing
   in Docutils 2.0 or later.
@@ -281,6 +275,13 @@ Release 1.0b1.dev (unpublished)
 
 Configuration changes:
   - Accept the short option ``-o`` for ``--output``.
+
+  - Drop the <destination> positional argument.
+    Use ``--output=<destination>`` (cf. the "output_path_" configuration setting)
+    or output redirection.
+
+    For the rationale, see https://clig.dev/#arguments-and-flags and
+    https://sourceforge.net/p/docutils/feature-requests/36/
 
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
@@ -682,9 +683,7 @@ Release 0.20 (2023-05-04)
     Place common settings in section `[latex writers]`_.
 
   - New configuration setting "output_".  Obsoletes the ``<destination>``
-    positional argument (cf. `future changes`__).
-
-    __ `command-line usage pattern`_
+    positional argument.
 
 * `utils.find_file_in_dirs()` now returns a POSIX path also on Windows;
   `utils.get_stylesheet_list()` no longer converts ``\`` to ``/``.

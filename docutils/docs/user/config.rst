@@ -2516,10 +2516,10 @@ For command-line use, set the DOCUTILSCONFIG_ variable.
 
 _destination
 ~~~~~~~~~~~~
-Path to the output file, set from `positional arguments`_.
+Path to the output file.
 
 Deprecated, obsoleted by the output_path_ setting.  Will be removed
-in Docutils 2.0 (cf. `Future changes`_ in the RELEASE-NOTES).
+in Docutils 2.0.
 
 *Default*: None (stdout).  *Option*: ``--output``.
 

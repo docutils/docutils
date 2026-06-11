@@ -228,8 +228,8 @@ class Publisher:
                 self.settings.output_path = self.settings.output
             if (self.settings.output_path and self.settings._destination
                 and self.settings.output_path != self.settings._destination):
-                raise SystemExit('The --output-path option obsoletes the '
-                                 'second positional argument (DESTINATION). '
+                raise SystemExit('`settings.output_path` obsoletes '
+                                 '`settings._destination`. '
                                  'You cannot use them together.')
             if self.settings.output_path is None:
                 self.settings.output_path = self.settings._destination
@@ -395,10 +395,10 @@ and the command line used.""", file=self._stderr)
                __version__, sys.version.split()[0]))
 
 
-default_usage = '%prog [options] [<source> [<destination>]]'
+default_usage = '%prog [options] [<source>]'
 default_description = (
     'Reads from <source> (default is stdin) '
-    'and writes to <destination> (default is stdout).  '
+    'and writes to stdout (but see --output below).  '
     'See https://docutils.sourceforge.io/docs/user/config.html '
     'for a detailed settings reference.')
 

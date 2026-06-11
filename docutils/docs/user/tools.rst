@@ -26,31 +26,39 @@ a set of small front ends, each specialized for a specific
    Docutils front-end tool names, install details and the set of
    auto-installed tools changed in Docutils 0.21 (see the RELEASE-NOTES_).
 
+   The command line usage pattern will change over the next releases.
+   See `Future changes`_ in the RELEASE-NOTES.
+
 .. _usage pattern:
 
 Most [#]_ front-end tools have common options and the same command-line
 usage pattern::
 
-    <toolname> [options] [<source> [<destination>]]
+    toolname [options] [source]
 
 See `the tools`_ below for concrete examples.
 
-Each tool has a "``--help``" option which lists the
+Each tool has a ``--help`` option which lists the
 `command-line options`_ and arguments it supports.
 Processing can also be customized with `configuration files`_.
 
-The two arguments, "source" and "destination", are optional.  If only
-one argument (source) is specified, the standard output (stdout) is
-used for the destination.  If no arguments are specified, the standard
-input (stdin) is used for the source.
+The postional argument, "source", is optional.  If no argument is
+specified, the standard input (stdin) is used for the source.
+
+Output is written to the standard output by default.
+An output file can be specified with redirection or the
+``--output`` (or ``-o``) option. ::
+
+       toolname [options] [source] > destination
+
+.. tip::
+   If input and output directory differ, use the ``--output`` option
+   instead of output redirection so that Docutils can adapt links to
+   stylesheets and other objects in the output, e.g., ::
+
+     docutils test.rst --output=_build/html/test.html
 
 .. [#] The exception is buildhtml.py_.
-
-.. note::
-   The command line usage pattern will change over the next releases.
-
-   See `Future changes`_ in the RELEASE-NOTES.
-
 
 .. _RELEASE-NOTES: ../../RELEASE-NOTES.html
 .. _future changes: ../../RELEASE-NOTES.html#future-changes
@@ -90,7 +98,7 @@ docutils
 
 Since Docutils 0.19, you can start the generic front end like::
 
-    docutils test.rst > test.html
+    docutils test.rst --output test.html
 
 Alternatively, use Python's ``-m`` option, or the ``docutils-cli.py``
 script in the ``tools/`` directory.
@@ -101,11 +109,11 @@ The generic front end allows combining "reader", "parser", and
 For example, to process a Markdown_ file "``test.md``" into
 Pseudo-XML_::
 
-    docutils --parser=markdown --writer=pseudoxml test.md > test.rst
+    docutils --parser=markdown --writer=pseudoxml test.md > test.txt
 
 Another example is converting a reStructuredText PEP_ source into a HTML preview [#]_::
 
-    docutils --reader=pep --writer=pep_html pep-0287.rst > pep-0287.html
+    docutils --reader=pep --writer=pep_html pep-0287.rst -o pep-0287.html
 
 The pep_html_ writer makes use of a "``pep-html-template``" file and
 the "``pep.css``" stylesheet (both in the ``docutils/writers/pep_html/``
@@ -170,13 +178,13 @@ below).
 For example, to process a reStructuredText file "``test.rst``" into
 HTML::
 
-    rst2html test.rst > test.html
+    rst2html test.rst -o test.html
 
 Now open the "``test.html``" file in your favourite browser to see the
 results.  To get a footer with a link to the source file, date & time
 of processing, and links to the Docutils project, add some options::
 
-    rst2html --source-link --time --generator test.rst > test.html
+    rst2html --source-link --time --generator test.rst -o test.html
 
 
 Stylesheets
@@ -391,7 +399,7 @@ The ``rst2latex`` front end reads standalone reStructuredText
 source files and produces LaTeX_ output. For example, to process a
 reStructuredText file "``test.rst``" into LaTeX::
 
-    rst2latex test.rst > test.tex
+    rst2latex test.rst -o test.tex
 
 The output file "``test.tex``" should then be processed with ``latex``
 or ``pdflatex`` to get a document in DVI, PostScript or PDF format for
@@ -417,7 +425,7 @@ files and produces `LaTeX` output for processing with Unicode-aware
 TeX engines (`LuaTeX`_ or `XeTeX`_). For example, to process a
 reStructuredText file "``test.rst``" into LaTeX::
 
-    rst2xetex test.rst > test.tex
+    rst2xetex test.rst -o test.tex
 
 The output file "``test.tex``" should then be processed with ``xelatex`` or
 ``lualatex`` to get a document in PDF format for printing or on-screen

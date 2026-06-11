@@ -178,15 +178,8 @@ class ConvenienceFunctionTests(unittest.TestCase):
         # pass IOErrors to calling application if `traceback` is True
         with self.assertRaises(docutils.io.OutputError):
             core.publish_cmdline(argv=[(DATA_ROOT/'include.rst').as_posix(),
-                                       'nonexisting/path'],
+                                       '-o nonexisting/path'],
                                  settings_overrides={'traceback': True})
-
-    def test_destination_output_conflict(self):
-        # Exit if positional argument and --output option conflict.
-        settings = {'output_path': 'out_name'}
-        with self.assertRaises(SystemExit):
-            core.publish_cmdline(argv=['-', 'dest_name'],
-                                 settings_overrides=settings)
 
     def test_publish_string_input_encoding(self):
         """Test handling of encoded input."""

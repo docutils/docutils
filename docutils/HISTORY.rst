@@ -23,7 +23,9 @@ Release 1.0b1.dev (unpublished)
 
 * docutils/frontend.py
 
-  - Accept the short option ``-o`` for ``--output``.
+  - Accept the short option ``-o`` for ``--output`` (settings.output_path).
+  - Drop the second positional argument <destination>.
+    Solves feature-request #36.
 
 * docutils/io.py
 

@@ -691,8 +691,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
     settings_spec = (
         'General Docutils Options',
         None,
-        (('Output destination name. Obsoletes the <destination> '
-          'positional argument. Default: None (stdout).',
+        (('Output destination name.  Default: None (stdout).',
           ['--output', '-o'], {'metavar': '<destination>',
                                'dest': 'output_path'}),
          ('Specify the document title as metadata.',
@@ -994,29 +993,27 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         return settings.__dict__
 
     def check_values(self, values: Values, args: list[str]) -> Values:
-        """Store positional arguments as runtime settings."""
+        """Store positional arguments as runtime settings.
+
+        Provisional. Handling of positional arguments will change
+        in Docutils 2.0 (see RELEASE-NOTES).
+        """
         values._source, values._destination = self.check_args(args)
         make_paths_absolute(values.__dict__, self.relative_path_settings)
         values._config_files = self.config_files
         return values
 
-    def check_args(self, args: list[str]) -> tuple[str|None, str|None]:
-        # provisional: argument handling will change, see RELEASE_NOTES
-        source = destination = None
+    def check_args(self, args: list[str]) -> tuple[str|None]:
+        # internal, provisional:
+        # will be removed in Docutils 2.0 when multiple sources are allowed.
+        source = None
         if args:
             source = args.pop(0)
             if source == '-':           # means stdin
                 source = None
         if args:
-            destination = args.pop(0)
-            if destination == '-':      # means stdout
-                destination = None
-        if args:
-            self.error('Maximum 2 arguments allowed.')
-        if source and source == destination:
-            self.error('Do not specify the same file for both source and '
-                       'destination.  It will clobber the source file.')
-        return source, destination
+            self.error('Only 1 argument allowed.')
+        return source, None
 
     def get_default_values(self) -> Values:
         """Needed to get custom `Values` instances."""

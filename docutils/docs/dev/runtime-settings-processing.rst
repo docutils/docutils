@@ -176,9 +176,8 @@ the Publisher convenience function `publish_cmdline()`_.
    So command-line options have priority over configuration file
    settings.
 
-9. The `<source>` and `<destination>` command-line arguments
-   are also parsed, and assigned to ``publisher.settings._source``
-   and ``publisher.settings._destination`` respectively.
+9. The `<source>` command-line argument is also parsed, and assigned to
+   ``publisher.settings._source``.
 
 10. ``publisher.publish()`` calls ``publisher.set_io()`` with no arguments.
     If either ``publisher.source`` or ``publisher.destination`` are not
@@ -195,7 +194,8 @@ the Publisher convenience function `publish_cmdline()`_.
       is used.
 
     ``publisher.set_destination()``
-      does the same job for the destination. (the default
+      does the same job for the destination (the destination path is
+      taken from ``publisher.settings.output_path`` and the default
       ``publisher.destination_class`` is ``docutils.io.FileOutput``).
 
     .. _accessing the runtime settings:
