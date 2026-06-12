@@ -110,59 +110,13 @@ class HelperTests(unittest.TestCase):
 
 class InputTests(unittest.TestCase):
 
-    def test_bom_handling(self):
-        # Provisional:
-        # default input encoding will change to UTF-8 in Docutils 0.22
-        source = '\ufeffdata\n\ufeff blah\n'
-        expected = 'data\n\ufeff blah\n'  # only leading ZWNBSP removed
-        input_ = du_io.StringInput(source=source.encode('utf-16-be'),
-                                   encoding=None)
-        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
-            self.assertEqual(expected, input_.read())
-        input_ = du_io.StringInput(source=source.encode('utf-16-le'),
-                                   encoding=None)
-        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
-            self.assertEqual(expected, input_.read())
-        input_ = du_io.StringInput(source=source.encode('utf-8'),
-                                   encoding=None)
-        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
-            self.assertEqual(expected, input_.read())
-        # With `str` input all ZWNBSPs are still there.
-        input_ = du_io.StringInput(source=source)
-        self.assertEqual(source, input_.read())
-
-    def test_encoding_declaration(self):
-        input_ = du_io.StringInput(source=b"""\
-.. -*- coding: ascii -*-
-data
-blah
-""", encoding=None)
-        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
-            data = input_.read()  # noqa: F841
-        self.assertEqual('ascii', input_.successful_encoding)
-        input_ = du_io.StringInput(source=b"""\
-#! python
-# -*- coding: ascii -*-
-print("hello world")
-""", encoding=None)
-        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
-            data = input_.read()  # noqa: F841
-        self.assertEqual('ascii', input_.successful_encoding)
-        input_ = du_io.StringInput(source=b"""\
-#! python
-# extraneous comment; prevents coding slug from being read
-# -*- coding: ascii -*-
-print("hello world")
-""")
-        self.assertNotEqual(input_.successful_encoding, 'ascii')
-
     def test_decode_unicode(self):
         # With the special value "unicode" or "Unicode":
         uniinput = du_io.Input(encoding='unicode')
         # keep unicode instances as-is
         self.assertEqual('ja', uniinput.decode('ja'))
-        # raise AssertionError if data is not a `str` instance
-        with self.assertRaises(AssertionError):
+        # raise error if data is not a `str` instance
+        with self.assertRaises(LookupError):
             uniinput.decode(b'ja')
 
 
@@ -269,52 +223,10 @@ class ErrorOutputTests(unittest.TestCase):
 
 class FileInputTests(unittest.TestCase):
 
-    # test input encoding auto-detection:
-    #
-    # Up to Docutils 0.18, auto-detection was not used under Python 3
-    # unless reading a file with Python's default encoding failed
-
-    def test_bom_utf_8(self):
-        """Drop optional BOM from utf-8 encoded files.
-        """
-        with warnings.catch_warnings():
-            if SUPPRESS_ENCODING_WARNING:
-                warnings.filterwarnings('ignore', category=EncodingWarning)
-            source = du_io.FileInput(source_path=DATA_ROOT/'utf-8-sig.rst',
-                                     encoding=None)
-        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
-            self.assertTrue(source.read().startswith('Grüße'))
-
-    def test_bom_utf_16(self):
-        """Drop BOM from utf-16 encoded files, use correct encoding.
-        """
-        # Assert correct decoding, BOM is gone.
-        with warnings.catch_warnings():
-            if SUPPRESS_ENCODING_WARNING:
-                warnings.filterwarnings('ignore', category=EncodingWarning)
-            source = du_io.FileInput(source_path=DATA_ROOT/'utf-16-le-sig.rst',
-                                     encoding=None)
-        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
-            self.assertTrue(source.read().startswith('Grüße'))
-
-    def test_coding_slug(self):
-        """Use self-declared encoding.
-        """
-        with warnings.catch_warnings():
-            if SUPPRESS_ENCODING_WARNING:
-                warnings.filterwarnings('ignore', category=EncodingWarning)
-            source = du_io.FileInput(source_path=DATA_ROOT/'latin2.rst',
-                                     encoding=None)
-        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
-            self.assertTrue(source.read().endswith('škoda\n'))
-
     def test_fallback_utf8(self):
-        """Try 'utf-8', if encoding is not specified in the source."""
-        with warnings.catch_warnings():
-            if SUPPRESS_ENCODING_WARNING:
-                warnings.filterwarnings('ignore', category=EncodingWarning)
-            source = du_io.FileInput(source_path=DATA_ROOT/'utf8.rst',
-                                     encoding=None)
+        """Use 'utf-8', if encoding is specified as ``None``."""
+        source = du_io.FileInput(source_path=DATA_ROOT/'utf8.rst',
+                                 encoding=None)
         self.assertEqual('Grüße\n', source.read())
 
     def test_readlines(self):

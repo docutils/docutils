@@ -167,8 +167,6 @@ Removals
 * Remove `nodes.set_name_id_map()` in Docutils 2.0
   (not used since Docutils 0.23).
 
-* Remove the input_encoding_ auto-detection code in Docutils 1.0.
-
 * Remove the "TransformSpec.unknown_reference_resolvers" hook chain
   in Docutils 1.0.  Use a transform_,
   see `transforms.references.CitationReferences` for an example.
@@ -258,6 +256,10 @@ Release 1.0b1.dev (unpublished)
 Document Tree / Docutils DTD:
   - Drop the `name` attribute from <reference> nodes.
 
+Configuration changes:
+  - `Auto-detection`_ of the input encoding is no longer supported.
+    The input_encoding_ value ``None`` now stands for "utf-8".
+
 Command line interface:
   - Option ``-o`` sets the `output file path <output_path_>`__
     (shortcut for ``--output``).
@@ -274,11 +276,20 @@ Removed objects:
       Use `core.publish_cmdline()` (works with `bytes` since Docutils 0.20).
   `io.BinaryFileOutput`
       Use `io.FileOutput` (works with `bytes` since Docutils 0.20).
+  `io.Input.byte_order_marks`
+      ..
+  `io.Input.coding_slug`
+      ..
+  `io.Input.successful_encoding`
+      ..
+  `io.Input.determine_encoding_from_data()`
+      No longer required as encoding detection is dropped.
   `nodes.Targetable.indirect_reference_name`
       Internal attribute for the Python-2-only MoinMoin <= 1.9.
   `parsers.recommonmark_wrapper`
       Wrapper module for the no longer maintained 3rd party
       recommonmark_ parser.
+      See the parser_ setting documentation for alternatives.
   `parsers.rst.directives.CSVTable.HeaderDialect`
       deprecated since Docutils 0.20.
   `parsers.rst.directives.length_units`
@@ -1629,6 +1640,7 @@ Release 0.3.5 (2004-07-29)
 .. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
 
 .. _configuration settings: docs/user/config.html
+.. _auto-detection: docs/user/config.html#auto-detect
 .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 .. _datestamp: docs/user/config.html#datestamp
 .. _embed_images: docs/user/config.html#embed-images
@@ -1649,6 +1661,7 @@ Release 0.3.5 (2004-07-29)
     docs/user/config.html#old-format-configuration-files
 .. _output:
 .. _output_path: docs/user/config.html#output-path
+.. _parser: docs/user/config.html#parser
 .. _reference_label: docs/user/config.html#reference-label
 .. _root_prefix: docs/user/config.html#root-prefix
 .. _self-link: docs/user/config.html#section-self-link

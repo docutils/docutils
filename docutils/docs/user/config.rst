@@ -429,7 +429,7 @@ input_encoding
 
 The text encoding [#encodings]_ for input.
 
-:Default: utf-8 (changed from None (auto-detect_) in Docutils 0.22).
+:Default: utf-8 (changed from "auto-detect_" in Docutils 0.22).
 :Option: ``--input-encoding`` (shortcut ``-i`` removed in Docutils 0.22).
 
 
@@ -2597,45 +2597,11 @@ pep_template           [pep_html writer] template
 Input Encoding Auto-Detection
 -----------------------------
 
-Up to Docutils 0.21, the input_encoding_ default value was ``None`` and
-the actual input encoding detected from a `Unicode byte order mark` (BOM_)
-or an `encoding declaration`_ in the source.
-
-The default input encoding changed to "utf-8" in Docutils 0.22.
-Currently, auto-detection can be selected with an input_encoding_ value
-``None`` (rsp. an empty string in a configuration file).
-However, **this feature** is deprecated and **will be removed** in
-Docutils 1.0.  See the `inspecting_codecs`_ package for a replacement.
-
-Encoding Declaration
-~~~~~~~~~~~~~~~~~~~~
-
-Input encoding auto-detection scans the source for an
-*encoding declaration* inspired by :PEP:`263`:
-
-A comment like ::
-
-  .. text encoding: <encoding name>
-
-on the first or second line defines `<encoding name>`
-as the source's input encoding.
-
-Examples: (using formats recognized by popular editors) ::
-
-    .. -*- mode: rst -*-
-       -*- coding: latin1 -*-
-
-or::
-
-    .. vim: set fileencoding=cp737 :
-
-More precisely, the first and second line are searched for the following
-regular expression::
-
-    coding[:=]\s*([-\w.]+)
-
-The first group of this expression is then interpreted as encoding name.
-If the first line matches the second line is ignored.
+Up to Docutils 0.23, *input encoding auto-detection* could be selected
+with an input_encoding_ value ``None``. The actual input encoding was
+detected from a `Unicode byte order mark` (BOM) or an "encoding
+declaration" in the source.  This feature was removed in Docutils 1.0.
+See the `inspecting_codecs`_ package for a replacement.
 
 
 .. References
@@ -2736,5 +2702,4 @@ If the first line matches the second line is ignored.
 .. _codecs: https://docs.python.org/3/library/codecs.html
 .. _standard encodings:
     https://docs.python.org/3/library/codecs.html#standard-encodings
-.. _BOM: https://docs.python.org/3/library/codecs.html#codecs.BOM
 .. _inspecting_codecs: https://codeberg.org/milde/inspecting-codecs

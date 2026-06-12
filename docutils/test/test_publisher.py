@@ -196,15 +196,6 @@ class ConvenienceFunctionTests(unittest.TestCase):
                                      settings_overrides=settings)
         self.assertEqual(expected, output)
 
-        # encoding declaration in source (used if input_encoding is None)
-        # input encoding detection will be removed in Docutils 1.0
-        source = '.. encoding: latin1\n\nGrüße'
-        settings['input_encoding'] = None
-        with self.assertWarnsRegex(DeprecationWarning, 'auto-detection'):
-            output = core.publish_string(source.encode('latin1'),
-                                         settings_overrides=settings)
-        self.assertTrue(output.endswith('Grüße\n'))
-
     def test_publish_string_output_encoding(self):
         settings = self.settings | {'output_encoding': 'latin1'}
         settings['output_encoding_error_handler'] = 'replace'

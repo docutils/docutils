@@ -14,7 +14,6 @@ __docformat__ = 'reStructuredText'
 import codecs
 import locale
 import os
-import re
 import sys
 import warnings
 
@@ -95,7 +94,7 @@ class Input(TransformSpec):
         self,
         source: str | TextIO | nodes.document | None = None,
         source_path: StrPath | None = None,
-        encoding: str | Literal['unicode'] | None = 'utf-8',
+        encoding: str | None = 'utf-8',
         error_handler: str | None = 'strict',
     ) -> None:
         self.encoding = encoding
@@ -113,9 +112,6 @@ class Input(TransformSpec):
         if not source_path:
             self.source_path = self.default_source_path
 
-        self.successful_encoding = None
-        """The encoding that successfully decoded the source data."""
-
     def __repr__(self) -> str:
         return '%s: source=%r, source_path=%r' % (self.__class__, self.source,
                                                   self.source_path)
@@ -129,101 +125,10 @@ class Input(TransformSpec):
         Decode `data` if required.
 
         Return Unicode `str` instances unchanged (nothing to decode).
-
-        If `self.encoding` is None, determine encoding from data
-        or try UTF-8 and the locale's preferred encoding.
-        The client application should call ``locale.setlocale()`` at the
-        beginning of processing::
-
-            locale.setlocale(locale.LC_ALL, '')
-
-        Raise UnicodeError if unsuccessful.
-
-        Provisional: encoding detection will be removed in Docutils 1.0.
         """
         if isinstance(data, str):
             return data  # nothing to decode
-        if self.encoding:
-            # We believe the user/application when the encoding is
-            # explicitly given.
-            assert self.encoding.lower() != 'unicode', (
-                'input encoding is "unicode" but `data` is no `str` instance')
-            encoding_candidates = [self.encoding]
-        else:
-            with warnings.catch_warnings():
-                warnings.filterwarnings('ignore', category=DeprecationWarning)
-                data_encoding = self.determine_encoding_from_data(data)
-            if data_encoding:
-                # `data` declares its encoding with  "magic comment" or BOM,
-                encoding_candidates = [data_encoding]
-            else:
-                # Apply heuristics if the encoding is not specified.
-                # Start with UTF-8, because that only matches
-                # data that *IS* UTF-8:
-                encoding_candidates = ['utf-8']
-                # If UTF-8 fails, fall back to the locale's preferred encoding:
-                if sys.version_info[:2] >= (3, 11):
-                    fallback = locale.getencoding()
-                else:
-                    fallback = locale.getpreferredencoding(do_setlocale=False)
-                if fallback and fallback.lower() != 'utf-8':
-                    encoding_candidates.append(fallback)
-        if not self.encoding and encoding_candidates[0] != 'utf-8':
-            warnings.warn('Input encoding auto-detection will be removed and '
-                          'the encoding values None and "" become invalid '
-                          'in Docutils 1.0.', DeprecationWarning, stacklevel=2)
-        for enc in encoding_candidates:
-            try:
-                decoded = str(data, enc, self.error_handler)
-                self.successful_encoding = enc
-                return decoded
-            except (UnicodeError, LookupError) as err:
-                # keep exception instance for use outside of the "for" loop.
-                error = err
-        raise UnicodeError(
-            'Unable to decode input data.  Tried the following encodings: '
-            f'{", ".join(repr(enc) for enc in encoding_candidates)}.\n'
-            f'({error_string(error)})')
-
-    coding_slug: ClassVar[re.Pattern[bytes]] = re.compile(
-        br'coding[:=]\s*([-\w.]+)'
-    )
-    """Encoding declaration pattern."""
-
-    byte_order_marks: ClassVar[tuple[tuple[bytes, str], ...]] = (
-        (codecs.BOM_UTF32_BE, 'utf-32'),
-        (codecs.BOM_UTF32_LE, 'utf-32'),
-        (codecs.BOM_UTF8, 'utf-8-sig'),
-        (codecs.BOM_UTF16_BE, 'utf-16'),
-        (codecs.BOM_UTF16_LE, 'utf-16'),
-    )
-    """Sequence of (start_bytes, encoding) tuples for encoding detection.
-    The first bytes of input data are checked against the start_bytes strings.
-    A match indicates the given encoding.
-
-    Internal. Will be removed in Docutils 1.0.
-    """
-
-    def determine_encoding_from_data(self, data: bytes) -> str | None:
-        """
-        Try to determine the encoding of `data` by looking *in* `data`.
-        Check for a byte order mark (BOM) or an encoding declaration.
-
-        Deprecated. Will be removed in Docutils 1.0.
-        """
-        warnings.warn('docutils.io.Input.determine_encoding_from_data() '
-                      'will be removed in Docutils 1.0.',
-                      DeprecationWarning, stacklevel=2)
-        # check for a byte order mark:
-        for start_bytes, encoding in self.byte_order_marks:
-            if data.startswith(start_bytes):
-                return encoding
-        # check for an encoding declaration pattern in first 2 lines of file:
-        for line in data.splitlines()[:2]:
-            match = self.coding_slug.search(line)
-            if match:
-                return match.group(1).decode('ascii')
-        return None
+        return str(data, self.encoding or 'utf-8', self.error_handler)
 
     def isatty(self) -> bool:
         """Return True, if the input source is connected to a TTY device."""

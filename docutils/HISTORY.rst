@@ -30,6 +30,10 @@ Release 1.0b1.dev (unpublished)
 
 * docutils/io.py
 
+  - Remove input-encoding "auto-detection":
+    `Input.byte_order_marks`, `Input.coding_slug`,
+    `Input.successful_encoding`, and
+    `Input.determine_encoding_from_data()`.
   - Remove `BinaryFileOutput`. Use `FileOutput`
     (works with `bytes` since Docutils 0.20).
 
