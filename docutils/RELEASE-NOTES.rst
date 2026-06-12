@@ -164,7 +164,7 @@ __ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
 Removals
 --------
 
-* Remove `nodes.set_name_id_map()` in Docutils 1.0 or later
+* Remove `nodes.set_name_id_map()` in Docutils 2.0
   (not used since Docutils 0.23).
 
 * Remove the input_encoding_ auto-detection code in Docutils 1.0.
@@ -256,17 +256,13 @@ Release 1.0b1.dev (unpublished)
 ===============================
 
 Document Tree / Docutils DTD:
-  - Drop the ``name`` attribute from <reference> nodes.
+  - Drop the `name` attribute from <reference> nodes.
 
-Configuration changes:
-  - Accept the short option ``-o`` for ``--output``.
-
-  - Drop the <destination> positional argument.
-    Use ``--output=<destination>`` (cf. the "output_path_" configuration setting)
-    or output redirection.
-
-    For the rationale, see https://clig.dev/#arguments-and-flags and
-    https://sourceforge.net/p/docutils/feature-requests/36/
+Command line interface:
+  - Option ``-o`` sets the `output file path <output_path_>`__
+    (shortcut for ``--output``).
+  - Drop the ``<destination>`` positional argument.
+    Use ``-o <destination>`` or output redirection.
 
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
@@ -275,26 +271,26 @@ HTML5 writer:
 
 Removed objects:
   `core.publish_cmdline_to_binary()`
-      use `core.publish_cmdline()` (works with `bytes` since Docutils 0.20).
+      Use `core.publish_cmdline()` (works with `bytes` since Docutils 0.20).
   `io.BinaryFileOutput`
-      use `io.FileOutput` (works with `bytes` since Docutils 0.20).
+      Use `io.FileOutput` (works with `bytes` since Docutils 0.20).
   `nodes.Targetable.indirect_reference_name`
-      internal attribute for the Python-2-only MoinMoin <= 1.9.
+      Internal attribute for the Python-2-only MoinMoin <= 1.9.
   `parsers.recommonmark_wrapper`
-      wrapper module for the 3rd party recommonmark_ parser. Recommonmark is
-      unmaintained since 2021 and deprecated in favour of the MyST_ parser.
+      Wrapper module for the no longer maintained 3rd party
+      recommonmark_ parser.
   `parsers.rst.directives.CSVTable.HeaderDialect`
       deprecated since Docutils 0.20.
   `parsers.rst.directives.length_units`
       Use the tuple `parsers.rst.directives.CSS3_LENGTH_UNITS`.
   `utils.decode_path()`
-      not required with Python 3.
+      Not required with Python 3.
   `utils.get_stylesheet_reference()`
       Use `utils.get_stylesheet_list()`.
   `writers.latex2e.LaTeXTranslator.visit_docinfo_item()` "name" argument
-      ignored and deprecated since Docutils 0.22.
+      ..
   `writers.latex2e.SortableDict`
-      not used and deprecated since Docutils 0.22.
+      Not used and deprecated since Docutils 0.22.
 
 
 Release 0.23 (2026-05-27)

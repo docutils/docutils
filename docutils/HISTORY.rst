@@ -19,7 +19,8 @@ Release 1.0b1.dev (unpublished)
 
 * docutils/core.py
 
-  - Remove `core.publish_cmdline_to_binary()` (deprecated since Docutils 0.20).
+  - Remove `publish_cmdline_to_binary()`. Use `publish_cmdline()`
+    (works with `bytes` output since Docutils 0.20).
 
 * docutils/frontend.py
 
@@ -29,7 +30,8 @@ Release 1.0b1.dev (unpublished)
 
 * docutils/io.py
 
-  - Remove `BinaryFileOutput` (deprecated since Docutils 0.20).
+  - Remove `BinaryFileOutput`. Use `FileOutput`
+    (works with `bytes` since Docutils 0.20).
 
 * docutils/nodes.py
 
