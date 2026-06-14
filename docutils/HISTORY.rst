@@ -17,6 +17,11 @@
 Release 1.0b1.dev (unpublished)
 ===============================
 
+* docutils/__init__.py
+
+  - Remove `TransformSpec.unknown_reference_resolvers`.
+    Use transforms (cf. `transforms.references.CitationReferences`).
+
 * docutils/core.py
 
   - Remove `publish_cmdline_to_binary()`. Use `publish_cmdline()`
@@ -72,6 +77,15 @@ Release 1.0b1.dev (unpublished)
 
   - Do not add "name" attribute to `<reference>` elements
     nor set the internal attribute `indirect_reference_name`.
+
+* docutils/transforms/__init__.py
+
+  - Remove `Transformer.unknown_reference_resolvers`.
+
+* docutils/transforms/references.py
+
+  - Do not call `unknown_reference_resolvers` in
+    `IndirectHyperlinks.resolve_indirect_target()`.
 
 * docutils/utils/__init__.py
 

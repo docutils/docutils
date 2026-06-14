@@ -253,13 +253,7 @@ class IndirectHyperlinks(Transform):
             if reftarget and not refid:
                 refid = self.document.set_id(reftarget)
         if not reftarget:
-            # Check the unknown_reference_resolvers
-            for resolver_function in \
-                self.document.transformer.unknown_reference_resolvers:
-                if resolver_function(target):
-                    break
-            else:
-                self.nonexistent_indirect_target(target)
+            self.nonexistent_indirect_target(target)
             return
         reftarget.note_referenced_by(id=refid)
         if (isinstance(reftarget, nodes.target)
@@ -901,10 +895,25 @@ class CitationReferences(Transform):
 
 
 class DanglingReferences(Transform):
-
     """
     Check for dangling references (incl. footnote & citation) and for
     unreferenced targets.
+
+    Unknown references have a 'refname' attribute which doesn't correspond
+    to any target in the document.  Called when the transforms in
+    `docutils.transforms.references` are unable to find a correct target.
+
+    The list should contain functions which will try to resolve unknown
+    references, with the following signature::
+
+        def reference_resolver(node: nodes.Element) -> bool:
+            '''Returns boolean: true if resolved, false if not.'''
+
+    If the function is able to resolve the reference, it should also remove
+    the 'refname' attribute and mark the node as resolved::
+
+        del node['refname']
+        node.resolved = True
 
     Provisional : pending deprecation
       Docutils readers will add separate transforms for resolving
@@ -917,9 +926,7 @@ class DanglingReferences(Transform):
     default_priority = 850
 
     def apply(self) -> None:
-        visitor = DanglingReferencesVisitor(
-            self.document,
-            self.document.transformer.unknown_reference_resolvers)
+        visitor = DanglingReferencesVisitor(self.document)
         self.document.walk(visitor)
         # *After* resolving all references, check for unreferenced
         # targets:
@@ -952,10 +959,9 @@ class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
     It will be removed in Docutils 2.0.
     """
 
-    def __init__(self, document, unknown_reference_resolvers) -> None:
+    def __init__(self, document, unknown_reference_resolvers=None) -> None:
         nodes.SparseNodeVisitor.__init__(self, document)
         self.document = document
-        self.unknown_reference_resolvers = unknown_reference_resolvers
 
     def unknown_visit(self, node) -> None:
         pass
@@ -972,11 +978,6 @@ class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
             self.document.ids[id].note_referenced_by(id=id)
             node.resolved = True
             return
-        # Apply component-specific resolving functions (cf. TransformSpec):
-        # (will be removed in Docutils 1.0)
-        for resolver_function in self.unknown_reference_resolvers:
-            if resolver_function(node):
-                return
         # Report unresolved references:
         if id is None:
             msg = self.document.reporter.error(

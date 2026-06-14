@@ -167,10 +167,6 @@ Removals
 * Remove `nodes.set_name_id_map()` in Docutils 2.0
   (not used since Docutils 0.23).
 
-* Remove the "TransformSpec.unknown_reference_resolvers" hook chain
-  in Docutils 1.0.  Use a transform_,
-  see `transforms.references.CitationReferences` for an example.
-
 * Don't call `transforms.references.DanglingReferences` and
   `transforms.references.DanglingReferencesVisitor` in Docutils 1.0;
   remove them in Docutils 2.0. [rationale__]
@@ -294,6 +290,11 @@ Removed objects:
       deprecated since Docutils 0.20.
   `parsers.rst.directives.length_units`
       Use the tuple `parsers.rst.directives.CSS3_LENGTH_UNITS`.
+  `Transformer.unknown_reference_resolvers`
+      ..
+  `TransformSpec.unknown_reference_resolvers`
+      Unknown references can be solved in a transform_,
+      see `transforms.references.CitationReferences` for an example.
   `utils.decode_path()`
       Not required with Python 3.
   `utils.get_stylesheet_reference()`

@@ -25,8 +25,6 @@ from __future__ import annotations
 
 __docformat__ = 'reStructuredText'
 
-import warnings
-
 from docutils import languages, ApplicationError, TransformSpec
 
 
@@ -79,12 +77,6 @@ class Transformer(TransformSpec):
         self.transforms = []
         """List of transforms to apply.  Each item is a 4-tuple:
         ``(priority string, transform class, pending node or None, kwargs)``.
-        """
-
-        self.unknown_reference_resolvers = []
-        """List of hook functions which assist in resolving references.
-
-        Deprecated. Will be removed in Docutils 1.0.
         """
 
         self.document = document
@@ -150,33 +142,19 @@ class Transformer(TransformSpec):
 
     def populate_from_components(self, components) -> None:
         """
-        Store each component's default transforms and reference resolvers.
+        Store each component's default transforms.
 
         Transforms are stored with default priorities for later sorting.
-        "Unknown reference resolvers" are sorted and stored.
         Components that don't inherit from `TransformSpec` are ignored.
 
         Also, store components by type name in a mapping for later lookup.
         """
-        resolvers = []
         for component in components:
             if not isinstance(component, TransformSpec):
                 continue
             self.add_transforms(component.get_transforms())
             self.components[component.component_type] = component
-            resolvers.extend(component.unknown_reference_resolvers)
         self.sorted = False  # sort transform list in self.apply_transforms()
-
-        # Sort and add hook functions helping to resolve unknown references.
-        def keyfun(f):
-            return f.priority
-        resolvers.sort(key=keyfun)
-        self.unknown_reference_resolvers += resolvers
-        if self.unknown_reference_resolvers:
-            warnings.warn('The `unknown_reference_resolvers` hook chain '
-                          'will be removed in Docutils 1.0.\n'
-                          'Use a transform to resolve references.',
-                          DeprecationWarning, stacklevel=2)
 
     def apply_transforms(self) -> None:
         """Apply all of the stored transforms, in priority order."""
