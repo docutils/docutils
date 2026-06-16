@@ -87,6 +87,11 @@ Release 1.0b1.dev (unpublished)
   - Do not call `unknown_reference_resolvers` in
     `IndirectHyperlinks.resolve_indirect_target()`.
 
+* docutils/transforms/universal.py
+
+  - Change the default priority of the `SmartQuotes` transform
+    from 855 (very late) to 510 (main).
+
 * docutils/utils/__init__.py
 
   - Remove `decode_path()` and `get_stylesheet_reference()`.
@@ -3178,11 +3183,11 @@ Release 0.3.9 (2005-05-26)
 * docutils/readers/standalone.py:
 
   - Added ``section_subtitles`` setting to activate or deactivate the
-    ``SectSubTitle`` transform.
+    ``SectionSubTitle`` transform.
 
 * docutils/transforms/frontmatter.py:
 
-  - Added SectSubTitle transform to promote titles of lone
+  - Added SectionSubTitle transform to promote titles of lone
     subsections to subtitles.
 
 * docutils/transforms/references.py:

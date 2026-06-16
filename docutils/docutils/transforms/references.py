@@ -900,20 +900,7 @@ class DanglingReferences(Transform):
     unreferenced targets.
 
     Unknown references have a 'refname' attribute which doesn't correspond
-    to any target in the document.  Called when the transforms in
-    `docutils.transforms.references` are unable to find a correct target.
-
-    The list should contain functions which will try to resolve unknown
-    references, with the following signature::
-
-        def reference_resolver(node: nodes.Element) -> bool:
-            '''Returns boolean: true if resolved, false if not.'''
-
-    If the function is able to resolve the reference, it should also remove
-    the 'refname' attribute and mark the node as resolved::
-
-        del node['refname']
-        node.resolved = True
+    to any target in the document.
 
     Provisional : pending deprecation
       Docutils readers will add separate transforms for resolving

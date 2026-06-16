@@ -243,7 +243,7 @@ class SmartQuotes(Transform):
     Also replace multiple dashes with em-dash/en-dash characters.
     """
 
-    default_priority = 855
+    default_priority = 510
 
     nodes_to_skip = (nodes.FixedTextElement, nodes.Special)
     """Do not apply "smartquotes" to instances of these block-level nodes."""

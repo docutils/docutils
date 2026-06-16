@@ -65,7 +65,7 @@ frontmatter.\ DocTitle_             standalone_ (r)               _`320`
 
 frontmatter.\ DocInfo_              standalone_ (r)               _`340`
 
-frontmatter.\ SectSubTitle_         standalone_ (r)               _`350`
+frontmatter.\ SectionSubTitle_      standalone_ (r)               _`350`
 
 peps_.Headers                       pep_ (r)                      _`360`
 
@@ -76,6 +76,8 @@ universal_.StripClassesAndElements  writers_ (w)                  _`420`
 references_.AnonymousHyperlinks     standalone_ (r), pep_ (r)     _`440`
 
 references_.IndirectHyperlinks      standalone_ (r), pep_ (r)     _`460`
+
+universal_.SmartQuotes              rst_ (p)                      _`510`
 
 peps_.TargetNotes                   pep_ (r)                      _`520`
 
@@ -115,7 +117,6 @@ universal_.ExposeInternals          readers_ (r)                  _`840`
 references_.DanglingReferences      standalone_ (r), pep_ (r),    _`850`
                                     *deprecated* [#dangling]_
 
-universal_.SmartQuotes              rst_ (p)                      _`855`
 
 universal_.Messages                 writers_ (w)                  _`860`
 
@@ -132,12 +133,12 @@ misc_.CallBack                      n/a                           _`990`
 ==================================  ============================  ========
 
 Key:
-
-* (r): Reader
-* (w): Writer
-* (d): Directive
-* (t): Transform
-* (/p): Via a `\<pending>`_ element
+  | (r): Reader
+  | (p): Parser
+  | (w): Writer
+  | (d): Directive
+  | (t): Transform
+  | (/p): Via a `\<pending>`_ element
 
 .. [#dangling] `references.DanglingReferences` will be replaced by
    separate transforms for resolving refnames__ to refids__
@@ -190,7 +191,7 @@ readers.standalone.Reader:
   | references.PropagateTargets         (260_)
   | frontmatter.\ DocTitle_             (320_)
   | frontmatter.\ DocInfo_              (340_)
-  | frontmatter.\ SectSubTitle_         (350_)
+  | frontmatter.\ SectionSubTitle_      (350_)
   | references.AnonymousHyperlinks      (440_)
   | references.IndirectHyperlinks       (460_)
   | references.Footnotes                (620_)
@@ -224,7 +225,7 @@ parsers.Parser
   .. _rst:
 
 parsers.rst.Parser
-  | universal.SmartQuotes               (855_)
+  universal.SmartQuotes                 (510_)
 
   .. _writers:
 
@@ -239,8 +240,8 @@ writers.UnfilteredWriter
   .. _latex2e:
 
 writers.latex2e.Writer
-  | writer_aux.Admonitions              (920_)
   | references.CitationReferences       (770_)
+  | writer_aux.Admonitions              (920_)
 
   .. _`_html_base`:
 
@@ -462,8 +463,8 @@ i. More than one top-level section::
    The DocTitle transform is skipped. The document has no title.
 
 
-SectSubTitle
-------------
+SectionSubTitle
+---------------
 
 .. class:: field-indent-12em
 
@@ -472,7 +473,7 @@ SectSubTitle
 :Default priority_: 350_
 :Configuration_ setting: sectsubtitle_xform_ (default: False)
 
-The SectSubTitle transform works like `step 2`_ of the DocTitle_
+The SectionSubTitle transform works like `step 2`_ of the DocTitle_
 transform, but for sections.
 
 For example, ::

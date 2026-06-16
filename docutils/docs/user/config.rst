@@ -1050,7 +1050,7 @@ to document subtitle) by the DocTitle_ transform.
 sectsubtitle_xform
 ~~~~~~~~~~~~~~~~~~
 Enable the promotion of the title of a lone subsection
-to a subtitle by the SectSubTitle_ transform.
+to a subtitle by the SectionSubTitle_ transform.
 
 :Default: False.
 :Options: ``--section-subtitles``, ``--no-section-subtitles``.
@@ -2627,7 +2627,7 @@ See the `inspecting_codecs`_ package for a replacement.
 .. _transform: ../api/transforms.html
 .. _DocInfo:  ../api/transforms.html#docinfo
 .. _DocTitle:  ../api/transforms.html#doctitle
-.. _SectSubTitle:  ../api/transforms.html#sectsubtitle
+.. _SectionSubTitle:  ../api/transforms.html#sectionsubtitle
 
 .. _severity level: ../peps/pep-0258.html#error-handling
 

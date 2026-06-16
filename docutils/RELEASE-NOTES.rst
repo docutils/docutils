@@ -225,9 +225,6 @@ Misc
 
   __ docs/api/publisher.html#string-i-o
 
-* Change the default priority of the `universal.SmartQuotes` transform_
-  from 855 (very late) to 510 (main) in Docutils 1.0.
-
 * Move math format conversion from docutils/utils/math (called from
   docutils/writers/_html_base.py) to a transform_.
 
