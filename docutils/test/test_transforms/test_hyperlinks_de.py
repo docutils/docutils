@@ -21,8 +21,9 @@ from docutils.frontend import get_default_settings
 from docutils.languages import de, get_language
 from docutils.parsers.rst import directives, Parser
 from docutils.transforms.references import (
-         PropagateTargets, AnonymousHyperlinks, IndirectHyperlinks,
-         ExternalTargets, InternalTargets, DanglingReferences)
+        AnonymousHyperlinks, ExternalTargets, IndirectHyperlinks,
+        InternalTargets, MatchReferences, PropagateTargets,
+        ReportDanglingReferences, ReportUnreferencedTargets)
 from docutils.transforms.universal import TestMessages
 from docutils.utils import new_document
 
@@ -61,10 +62,10 @@ class TransformTestCase(unittest.TestCase):
 
 totest = {}
 
-totest['hyperlinks'] = ((PropagateTargets, AnonymousHyperlinks,
-                         IndirectHyperlinks, ExternalTargets,
-                         InternalTargets, DanglingReferences), [
-
+totest['hyperlinks'] = ((PropagateTargets, InternalTargets, ExternalTargets,
+                         AnonymousHyperlinks, IndirectHyperlinks,
+                         MatchReferences, ReportDanglingReferences,
+                         ReportUnreferencedTargets), [
 ["""\
 Target_ should propagate past the system_message to set "id" on note.
 

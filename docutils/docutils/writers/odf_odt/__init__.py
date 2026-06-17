@@ -3457,5 +3457,6 @@ class Reader(standalone.Reader):
     def get_transforms(self):
         transforms = super().get_transforms()
         if not self.settings.create_links:
-            transforms.remove(references.DanglingReferences)
+            transforms.remove(references.ReportDanglingReferences)
+            transforms.remove(references.ReportUnreferencedTargets)
         return transforms

@@ -78,6 +78,11 @@ Release 1.0b1.dev (unpublished)
   - Do not add "name" attribute to `<reference>` elements
     nor set the internal attribute `indirect_reference_name`.
 
+* docutils/readers/standalone.py
+
+  - Update `Reader.get_transforms()` to load the three transforms
+    obsoleting `references.DanglingReferences` (see below).
+
 * docutils/transforms/__init__.py
 
   - Remove `Transformer.unknown_reference_resolvers`.
@@ -86,6 +91,10 @@ Release 1.0b1.dev (unpublished)
 
   - Do not call `unknown_reference_resolvers` in
     `IndirectHyperlinks.resolve_indirect_target()`.
+  - 3 new transforms, `references.MatchReferences`,
+    `references.ReportDanglingReferences` and
+    `references.ReportUnreferencedLinks`,
+    obsolete `references.DanglingReferences`.
 
 * docutils/transforms/universal.py
 
@@ -108,6 +117,11 @@ Release 1.0b1.dev (unpublished)
   - Remove `writers.latex2e.SortableDict` (deprecated since Docutils 0.22).
   - Remove the "name" argument from `LaTeXTranslator.visit_docinfo_item()`
     (ignored since Docutils 0.22).
+
+* docutils/writers/odf_odt/__init__.py
+
+  - Update `Reader.get_transforms()` to remove two of the transforms
+    obsoleting `references.DanglingReferences`.
 
 
 Release 0.23 (2026-05-27)

@@ -19,9 +19,10 @@ if __name__ == '__main__':
 
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
-from docutils.transforms.references import PropagateTargets, \
-     AnonymousHyperlinks, IndirectHyperlinks, ExternalTargets, \
-     InternalTargets, DanglingReferences, SectionIDs
+from docutils.transforms.references import (
+        SectionIDs, PropagateTargets, AnonymousHyperlinks, IndirectHyperlinks,
+        ExternalTargets, InternalTargets, DanglingReferences, MatchReferences,
+        ReportDanglingReferences, ReportUnreferencedTargets)
 from docutils.transforms.universal import TestMessages
 from docutils.utils import new_document
 
@@ -30,7 +31,8 @@ class TransformTestCase(unittest.TestCase):
     maxDiff = None
 
     transforms = (PropagateTargets, AnonymousHyperlinks, IndirectHyperlinks,
-                  ExternalTargets, InternalTargets, DanglingReferences,
+                  ExternalTargets, InternalTargets, MatchReferences,
+                  ReportDanglingReferences, ReportUnreferencedTargets,
                   SectionIDs, TestMessages)
 
     def test_transforms(self):
@@ -51,6 +53,13 @@ class TransformTestCase(unittest.TestCase):
                     document.transformer.apply_transforms()
                     output = document.pformat()
                     self.assertEqual(case_expected, output)
+
+    def test_transform_deprection_warning(self):
+        with self.assertWarnsRegex(DeprecationWarning,
+                                   '.*will be removed in Docutils 2.0.'):
+            document = new_document('test data', get_default_settings(Parser))
+            document.transformer.add_transforms((DanglingReferences, ))
+            document.transformer.apply_transforms()
 
 
 totest = {}

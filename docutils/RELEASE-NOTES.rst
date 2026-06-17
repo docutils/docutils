@@ -167,11 +167,8 @@ Removals
 * Remove `nodes.set_name_id_map()` in Docutils 2.0
   (not used since Docutils 0.23).
 
-* Don't call `transforms.references.DanglingReferences` and
-  `transforms.references.DanglingReferencesVisitor` in Docutils 1.0;
-  remove them in Docutils 2.0. [rationale__]
-
-  __ docs/api/transforms.html#dangling
+* Remove `transforms.references.DanglingReferences` and
+  `transforms.references.DanglingReferencesVisitor` in Docutils 2.0.
 
 * Remove `parsers.rst.roles.set_classes()` and
   `parsers.rst.roles.normalized_role_options()`
@@ -263,6 +260,14 @@ HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
   - Use more specific CSS selectors for styling <aside> elements as
     topic, sidebar, admonition, or system-message.
+
+New objects:
+  `transforms.references.MatchReferences`
+      ..
+  `transforms.references.ReportDanglingReferences`
+      ..
+  `transforms.references.ReportUnreferencedLinks`
+      replacements for `transforms.references.DanglingReferences`.
 
 Removed objects:
   `core.publish_cmdline_to_binary()`

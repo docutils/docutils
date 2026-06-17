@@ -20,9 +20,10 @@ if __name__ == '__main__':
 
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
-from docutils.transforms.references import (PropagateTargets, AnonymousHyperlinks,
-                                            IndirectHyperlinks, ExternalTargets,
-                                            InternalTargets, DanglingReferences)
+from docutils.transforms.references import (
+        AnonymousHyperlinks, ExternalTargets, IndirectHyperlinks,
+        InternalTargets, MatchReferences, PropagateTargets,
+        ReportDanglingReferences, ReportUnreferencedTargets)
 from docutils.transforms.universal import TestMessages
 from docutils.utils import new_document
 
@@ -49,10 +50,9 @@ class TransformTestCase(unittest.TestCase):
 totest = {}
 
 totest['tables_of_contents'] = ((PropagateTargets, AnonymousHyperlinks,
-                                 IndirectHyperlinks,
-                                 ExternalTargets, InternalTargets,
-                                 DanglingReferences,
-    ), [
+                                 IndirectHyperlinks, ExternalTargets,
+                                 InternalTargets, ReportUnreferencedTargets,
+                                 MatchReferences, ReportDanglingReferences), [
 ["""\
 .. _target: http://example.org
 

@@ -10,6 +10,8 @@ from __future__ import annotations
 
 __docformat__ = 'reStructuredText'
 
+import warnings
+
 from docutils import nodes, utils
 from docutils.transforms import Transform
 
@@ -866,6 +868,30 @@ class TargetNotes(Transform):
         return footnote
 
 
+class MatchReferences(Transform):
+    """Match dangling references (incl. footnote & citation refs)."""
+
+    # apply after `Contents` (720) but before `ReportDanglingReferences` (850)
+    default_priority = 730
+
+    def apply(self) -> None:
+        for node in self.document.findall((nodes.reference,
+                                           nodes.footnote_reference,
+                                           nodes.citation_reference)):
+            if node.resolved or 'refname' not in node:
+                continue
+            identifier = self.document.nameids.get(node['refname'])
+            if identifier:
+                # target found, set refid
+                node['refid'] = identifier
+                self.document.ids[identifier].note_referenced_by(id=identifier)
+                # If a transform is able to resolve the reference,
+                # it should # also remove the 'refname' attribute and
+                # mark the node as resolved:
+                del node['refname']
+                node.resolved = True
+
+
 class CitationReferences(Transform):
     """Resolve <citation_references>.
 
@@ -877,99 +903,45 @@ class CitationReferences(Transform):
     # TODO: Bibliography database support for other output formats.
 
     default_priority = 770
-    # Apply between `InternalTargets` (660) and `DanglingReferences` (850)
+    # after `MatchReferences` (730) but before `ReportDanglingReferences` (850)
 
     def apply(self) -> None:
         if not getattr(self.document.settings, 'use_bibtex', []):
             return
         for node in self.document.findall(nodes.citation_reference):
-            # Skip nodes that are resolved or have a matching target
-            # and will be resolved by `DanglingReferences`:
-            # TODO: drop the second condition when `DanglingReferences` is
-            #       replaced by two separate transitions.
-            if node.resolved or self.document.nameids.get(node.get('refname')):
+            if node.resolved:
                 continue
             if node.astext():  # ensure text content (becomes the BibTeX key)
+                # Mark reference as resolved and remove 'refname' attribute
                 node.delattr('refname')
                 node.resolved = True
 
 
-class DanglingReferences(Transform):
+class ReportDanglingReferences(Transform):
     """
-    Check for dangling references (incl. footnote & citation) and for
-    unreferenced targets.
+    Report unresolved references as ERROR.
 
-    Unknown references have a 'refname' attribute which doesn't correspond
+    Unresolved references have a 'refname' attribute which doesn't correspond
     to any target in the document.
-
-    Provisional : pending deprecation
-      Docutils readers will add separate transforms for resolving
-      refnames to refids and for reporting unresolved references
-      instead of this transform (to make space for reference-resolving
-      transforms added by extensions or applications) in Docutils 1.0.
-      This transform will be removed in Docutils 2.0.
     """
-
+    # apply after `MatchReferences` (730) but before `Messages` (860)
     default_priority = 850
 
     def apply(self) -> None:
-        visitor = DanglingReferencesVisitor(self.document)
-        self.document.walk(visitor)
-        # *After* resolving all references, check for unreferenced
-        # targets:
-        for target in self.document.findall(nodes.target):
-            if not target.referenced:
-                if target.get('anonymous'):
-                    # If we have unreferenced anonymous targets, there
-                    # is already an error message about anonymous
-                    # hyperlink mismatch; no need to generate another
-                    # message.
-                    continue
-                if target['names']:
-                    naming = target['names'][0]
-                elif target['ids']:
-                    naming = target['ids'][0]
-                else:
-                    # Hack: Propagated targets always have their refid
-                    # attribute set.
-                    naming = target['refid']
-                self.document.reporter.info(
-                    'Hyperlink target "%s" is not referenced.'
-                    % naming, base_node=target)
+        for node in self.document.findall((nodes.reference,
+                                           nodes.footnote_reference,
+                                           nodes.citation_reference)):
+            if node.resolved or 'refname' not in node:
+                continue
+            self.report_unresolved_reference(node)
 
-
-class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
-    """Provisional : pending deprecation
-
-    This auxiliary class is used by the `DanglingReferences` transform
-    which will no longer be used in Docutils 1.0.
-    It will be removed in Docutils 2.0.
-    """
-
-    def __init__(self, document, unknown_reference_resolvers=None) -> None:
-        nodes.SparseNodeVisitor.__init__(self, document)
-        self.document = document
-
-    def unknown_visit(self, node) -> None:
-        pass
-
-    def visit_reference(self, node) -> None:
-        if node.resolved or not node.hasattr('refname'):
-            return
+    def report_unresolved_reference(self, node):
+        # Replace unresolved reference with <problematic>, add ERROR msg.
         refname = node['refname']
-        id = self.document.nameids.get(refname, '')
-        if id:
-            # target found, set refid
-            del node['refname']
-            node['refid'] = id
-            self.document.ids[id].note_referenced_by(id=id)
-            node.resolved = True
-            return
-        # Report unresolved references:
-        if id is None:
-            msg = self.document.reporter.error(
-                'Duplicate target name, cannot be used as a unique '
-                f'reference: "{refname}".', base_node=node)
+        details = []
+        if self.document.nameids.get(refname, '') is None:
+            msgstr = ('Duplicate target name, cannot be used '
+                      f'as a unique reference: "{refname}".')
         else:
             if '<' in refname or '>' in refname:
                 hint = 'Did you want to embed a URI or alias?'
@@ -987,18 +959,106 @@ class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
                     hint += ('\nWhitespace around the embedded reference'
                              ' is not allowed.')
                 details = [nodes.paragraph('', hint)]
-            else:
-                details = []
-            msg = self.document.reporter.error(
-                      f'Unknown target name: "{refname}".',
-                      *details, base_node=node)
+            msgstr = f'Unknown target name: "{refname}".'
+        msg = self.document.reporter.error(msgstr, *details, base_node=node)
         msgid = self.document.set_id(msg)
         prb = nodes.problematic(node.rawsource, node.rawsource, refid=msgid)
         try:
-            prbid = node['ids'][0]
+            prbid = node['ids'][0]  # re-use node's ID if possible
         except IndexError:
             prbid = self.document.set_id(prb)
         msg.add_backref(prbid)
         node.replace_self(prb)
+
+
+class ReportUnreferencedTargets(Transform):
+    """
+    Add INFO messages reporting unreferenced targets.
+
+    This transform checks for references from the same <document> only. Hence,
+    reported targets may include targets referenced from another document.
+    This makes it unsuited for applications like `Sphinx`, that manage
+    hyperlinks between a set of related documents.
+    """
+    # Apply after `MatchReferences` (730) but before `Messages` (860):
+    default_priority = 855
+
+    def apply(self) -> None:
+        for target in self.document.findall(nodes.target):
+            if target.referenced:
+                continue
+            if target.get('anonymous'):
+                # there is already an error message about anonymous
+                # hyperlink mismatch; no need for another message
+                continue
+            if target['names']:
+                naming = target['names'][0]
+            elif target['ids']:
+                naming = target['ids'][0]
+            else:
+                # Hack: Propagated targets always have their refid
+                # attribute set.
+                naming = target['refid']
+            self.document.reporter.info(
+                f'Hyperlink target "{naming}" is not referenced.',
+                base_node=target)
+
+
+class DanglingReferences(Transform):
+    """
+    Check for dangling references (incl. footnote & citation).
+
+    Try to resolve the references.
+    Report unresolved references as ERROR and unreferenced targets as INFO.
+
+    Obsoleted by `MatchReferences`, `ReportDanglingReferences`, and
+    `ReportUnreferencedTargets`. Will be removed in Docutils 2.0.
+    """
+
+    default_priority = 850
+
+    def __init__(self, document, startnode=None) -> None:
+        warnings.warn('The `references.DanglingReferences` transform will be '
+                      'removed in Docutils 2.0.',
+                      DeprecationWarning, stacklevel=2)
+        super().__init__(document, startnode)
+
+    def apply(self) -> None:
+        visitor = DanglingReferencesVisitor(self.document)
+        self.document.walk(visitor)
+        # *After* resolving all references, check for unreferenced
+        # targets:
+        ReportUnreferencedTargets(self.document).apply()
+
+
+class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
+    """Provisional : pending deprecation
+
+    Auxiliary class for the `DanglingReferences` transform.
+    Not used since Docutils 1.0.  Will be removed in Docutils 2.0.
+    """
+
+    def __init__(self, document, unknown_reference_resolvers=None) -> None:
+        nodes.SparseNodeVisitor.__init__(self, document)
+        self.document = document
+        self.report_dangling_refs = ReportDanglingReferences(self.document)
+
+    def unknown_visit(self, node) -> None:
+        pass
+
+    def visit_reference(self, node) -> None:
+        if node.resolved or not node.hasattr('refname'):
+            return
+        refname = node['refname']
+        id = self.document.nameids.get(refname, '')
+        if id:
+            # target found, set refid
+            del node['refname']
+            node['refid'] = id
+            self.document.ids[id].note_referenced_by(id=id)
+            node.resolved = True
+            return
+        # Report unresolved references:
+        self.report_dangling_refs.report_unresolved_reference(node)
 
     visit_footnote_reference = visit_citation_reference = visit_reference

@@ -50,87 +50,92 @@ the Transformer to apply transforms in order (low to high). The default
 priority can be overridden when adding transforms to the Transformer object.
 
 
-==================================  ============================  ========
-Transform: module.Class             Added By                      Priority
-==================================  ============================  ========
-misc_.ClassAttribute                `"class"`_ (d/p)              _`210`
+=====================================  ============================  ========
+Transform: module.Class                Added By                      Priority
+=====================================  ============================  ========
+misc_.ClassAttribute                   `"class"`_ (d/p)              _`210`
 
-references_.Substitutions           standalone_ (r), pep_ (r)     _`220`
+references_.Substitutions              standalone_ (r), pep_ (r)     _`220`
 
-references_.SectionIDs              standalone_ (r), pep_ (r)     _`240`
+references_.SectionIDs                 standalone_ (r), pep_ (r)     _`240`
 
-references_.PropagateTargets        standalone_ (r), pep_ (r)     _`260`
+references_.PropagateTargets           standalone_ (r), pep_ (r)     _`260`
 
-frontmatter.\ DocTitle_             standalone_ (r)               _`320`
+frontmatter.\ DocTitle_                standalone_ (r)               _`320`
 
-frontmatter.\ DocInfo_              standalone_ (r)               _`340`
+frontmatter.\ DocInfo_                 standalone_ (r)               _`340`
 
-frontmatter.\ SectionSubTitle_      standalone_ (r)               _`350`
+frontmatter.\ SectionSubTitle_         standalone_ (r)               _`350`
 
-peps_.Headers                       pep_ (r)                      _`360`
+peps_.Headers                          pep_ (r)                      _`360`
 
-peps_.Contents                      pep_ (r)                      _`380`
+peps_.Contents                         pep_ (r)                      _`380`
 
-universal_.StripClassesAndElements  writers_ (w)                  _`420`
+universal_.StripClassesAndElements     writers_ (w)                  _`420`
 
-references_.AnonymousHyperlinks     standalone_ (r), pep_ (r)     _`440`
+references_.AnonymousHyperlinks        standalone_ (r), pep_ (r)     _`440`
 
-references_.IndirectHyperlinks      standalone_ (r), pep_ (r)     _`460`
+references_.IndirectHyperlinks         standalone_ (r), pep_ (r)     _`460`
 
-universal_.SmartQuotes              rst_ (p)                      _`510`
+universal_.SmartQuotes                 rst_ (p)                      _`510`
 
-peps_.TargetNotes                   pep_ (r)                      _`520`
+peps_.TargetNotes                      pep_ (r)                      _`520`
 
-references_.TargetNotes             peps.TargetNotes (t/p)          0
+references_.TargetNotes                peps.TargetNotes (t/p)          0
 
-misc_.CallBack                      peps.TargetNotes (t/p)          1
+misc_.CallBack                         peps.TargetNotes (t/p)          1
 
-references_.TargetNotes             `"target-notes"`_ (d/p)       _`540`
+references_.TargetNotes                `"target-notes"`_ (d/p)       _`540`
 
-references_.Footnotes               standalone_ (r), pep_ (r)     _`620`
+references_.Footnotes                  standalone_ (r), pep_ (r)     _`620`
 
-references_.ExternalTargets         standalone_ (r), pep_ (r)     _`640`
+references_.ExternalTargets            standalone_ (r), pep_ (r)     _`640`
 
-references_.InternalTargets         standalone_ (r), pep_ (r)     _`660`
+references_.InternalTargets            standalone_ (r), pep_ (r)     _`660`
 
-parts_.SectNum                      `"sectnum"`_ (d/p)            _`710`
+parts_.SectNum                         `"sectnum"`_ (d/p)            _`710`
 
-parts_.Contents                     `"contents"`_ (d/p),          _`720`
-                                    peps.Contents (t/p)
+parts_.Contents                        `"contents"`_ (d/p),          _`720`
+                                       peps.Contents (t/p)
 
-universal_.StripComments            readers_ (r)                  _`740`
+references_.MatchReferences            standalone_ (r), pep_ (r),    _`730`
 
-peps_.PEPZero                       peps.Headers (t/p)            _`760`
+universal_.StripComments               readers_ (r)                  _`740`
 
-references_.CitationReferences      latex2e_ (w)                  _`770`
+peps_.PEPZero                          peps.Headers (t/p)            _`760`
 
-components.Filter                   *not used*                    _`780`
+references_.CitationReferences         latex2e_ (w)                  _`770`
 
-universal_.Decorations              readers_ (r)                  _`820`
+components.Filter                      *not used*                    _`780`
 
-misc_.Transitions                   standalone_ (r), pep_ (r)     _`830`
+universal_.Decorations                 readers_ (r)                  _`820`
 
-universal_.Validate                 parsers_ (p)                  _`835`
+misc_.Transitions                      standalone_ (r), pep_ (r)     _`830`
 
-universal_.ExposeInternals          readers_ (r)                  _`840`
+universal_.Validate                    parsers_ (p)                  _`835`
 
-references_.DanglingReferences      standalone_ (r), pep_ (r),    _`850`
-                                    *deprecated* [#dangling]_
+universal_.ExposeInternals             readers_ (r)                  _`840`
 
+references_.ReportDanglingReferences   standalone_ (r), pep_ (r)     _`850`
 
-universal_.Messages                 writers_ (w)                  _`860`
+references_.DanglingReferences         *not used, to be removed*       850
+                                       [#dangling]_
 
-universal_.FilterMessages           writers_ (w)                  _`870`
+references_.ReportUnreferencedTargets  standalone_ (r), pep_ (r)     _`855`
 
-universal_.TestMessages             DocutilsTestSupport           _`880`
+universal_.Messages                    writers_ (w)                  _`860`
 
-writer_aux_.Compound                *not used, to be removed*     _`910`
+universal_.FilterMessages              writers_ (w)                  _`870`
 
-writer_aux_.Admonitions             `_html_base`_ (w),            _`920`
-                                    latex2e_ (w)
+universal_.TestMessages                DocutilsTestSupport           _`880`
 
-misc_.CallBack                      n/a                           _`990`
-==================================  ============================  ========
+writer_aux_.Compound                   *not used, to be removed*     _`910`
+
+writer_aux_.Admonitions                `_html_base`_ (w),            _`920`
+                                       latex2e_ (w)
+
+misc_.CallBack                         n/a                           _`990`
+=====================================  ============================  ========
 
 Key:
   | (r): Reader
@@ -140,15 +145,9 @@ Key:
   | (t): Transform
   | (/p): Via a `\<pending>`_ element
 
-.. [#dangling] `references.DanglingReferences` will be replaced by
-   separate transforms for resolving refnames__ to refids__
-   and for reporting unresolved references to make space for
-   reference-resolving transforms added by extensions or applications
-   (cf. `Release Notes`__).
-
-   __ ../ref/doctree.html#refname
-   __ ../ref/doctree.html#refid
-   __ ../../RELEASE-NOTES.html#removals
+.. [#dangling] `references.DanglingReferences` is split into
+   `references.MatchReferences`, `references.ReportDanglingReferences,
+   and `references.ReportUnreferencedTargets` in Docutils 1.0.
 
 
 Transform Priority Range Categories
@@ -197,8 +196,10 @@ readers.standalone.Reader:
   | references.Footnotes                (620_)
   | references.ExternalTargets          (640_)
   | references.InternalTargets          (660_)
+  | references.MatchReferences          (730_)
   | misc.Transitions                    (830_)
-  | references.DanglingReferences       (850_)
+  | references.ReportDanglingReferences (850_)
+  | references.ReportUnreferencedTargets (855_)
 
   .. _pep:
 
@@ -214,8 +215,10 @@ readers.pep.Reader:
   | references.Footnotes                (620_)
   | references.ExternalTargets          (640_)
   | references.InternalTargets          (660_)
+  | references.MatchReferences          (730_)
   | misc.Transitions                    (830_)
-  | references.DanglingReferences       (850_)
+  | references.ReportDanglingReferences (850_)
+  | references.ReportUnreferencedTargets (855_)
 
   .. _parsers:
 
