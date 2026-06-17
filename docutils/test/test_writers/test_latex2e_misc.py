@@ -101,16 +101,11 @@ class WarningsTestCase(unittest.TestCase):
         """Warn about changing defaults."""
         # Warn only if not set (uncommenting should make test fail):
         settings = {'_disable_config': True,
-                    # 'use_latex_citations': False,
                     # 'legacy_column_widths': True,
                     'output_encoding': 'unicode',
                     }
         with self.assertWarnsRegex(FutureWarning,
                                    '"legacy_column_widths" will change'):
-            core.publish_string('warnings test', writer=latex2e.Writer(),
-                                settings_overrides=settings)
-        with self.assertWarnsRegex(FutureWarning,
-                                   '"use_latex_citations" will change'):
             core.publish_string('warnings test', writer=latex2e.Writer(),
                                 settings_overrides=settings)
 

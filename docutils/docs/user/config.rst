@@ -2019,10 +2019,11 @@ Use LaTeX abstract environment for the document's abstract_.
 
 use_latex_citations
 ~~~~~~~~~~~~~~~~~~~
-Use ``\cite`` for citations_.
+Use ``\cite`` commands in a "thebibliography" environment for citations_.
 
-:Default: False (use simulation with figure-floats).
-          The default will change in Docutils 1.0.
+If `False`, use figure floats (might get mixed with real figures).
+
+:Default: True (since Docutils 1.0).
 :Options: ``--use-latex-citations``, ``--figure-citations``.
 
 use_latex_docinfo

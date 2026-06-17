@@ -117,6 +117,7 @@ Release 1.0b1.dev (unpublished)
   - Remove `writers.latex2e.SortableDict` (deprecated since Docutils 0.22).
   - Remove the "name" argument from `LaTeXTranslator.visit_docinfo_item()`
     (ignored since Docutils 0.22).
+  - The "use_latex_citations" setting now defaults to True.
 
 * docutils/writers/odf_odt/__init__.py
 

@@ -155,9 +155,9 @@ LaTeX-Specific Options
 --footnote-references=<format>
                         Format for footnote references: one of "superscript"
                         or "brackets".  Default: "superscript".
---use-latex-citations   Use \cite command for citations. (future default)
+--use-latex-citations   Use \cite command for citations. (default)
 --figure-citations      Use figure floats for citations (might get mixed with
-                        real figures). (provisional default)
+                        real figures).
 --attribution=<format>  Format for block quote attributions: one of "dash"
                         (em-dash prefix), "parentheses"/"parens", or "none".
                         Default: "dash".

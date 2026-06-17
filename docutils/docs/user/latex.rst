@@ -2226,7 +2226,7 @@ Citations
 `````````
 
 Initially citations were implemented using figure floats, because hyperlinking
-back and forth seemed to be impossible. Later the `figure directive`_ was
+back and forth seemed to be impossible. Later the `"figure" directive`_ was
 added that puts images into figure floats.
 
 This results in citations and figures possibly being mixed at page foot.
@@ -2234,15 +2234,19 @@ This results in citations and figures possibly being mixed at page foot.
 Solution:
   Select citation handling with the use_latex_citations_ setting.
 
-If ``use_latex_citations`` is True, a bibliography is inserted right at
-the end of the document. *TODO: This should be customizable*.
+If ``use_latex_citations`` is True (default since Docutils 1.0.),
+a bibliography is inserted right at the end of the document. [#]_
 
 If ``use-latex-citations`` is used adjacent citation references (separated
 only by a single space or a newline) are combined to a single citation
 group, i.e. ``[cite1]_ [cite2]_`` results in ``\cite{cite1,cite2}``.
 The appearance in the output can be configured in a `style sheet`_.
 
-.. _figure directive: ../ref/rst/directives.html#figure
+.. [#] TODO: The insertion point should be customizable (cf. the not yet
+   implemented `"citations" directive`_).
+
+.. _"figure" directive: ../ref/rst/directives.html#figure
+.. _"citations" directive: ../ref/rst/directives.html#citations
 .. _use_latex_citations: config.html#use-latex-citations
 
 

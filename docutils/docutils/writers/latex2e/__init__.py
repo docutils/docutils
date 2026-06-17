@@ -58,12 +58,12 @@ class Writer(writers.Writer):
           {'choices': ['superscript', 'brackets'], 'default': 'superscript',
            'metavar': '<format>',
            'overrides': 'trim_footnote_reference_space'}),
-         ('Use \\cite command for citations. (future default)',
+         ('Use \\cite command for citations. (default)',
           ['--use-latex-citations'],
-          {'default': None, 'action': 'store_true',
+          {'default': True, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Use figure floats for citations '
-          '(might get mixed with real figures). (provisional default)',
+          '(might get mixed with real figures).',
           ['--figure-citations'],
           {'dest': 'use_latex_citations', 'action': 'store_false',
            'validator': frontend.validate_boolean}),
@@ -1181,11 +1181,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         # ~~~~~~~~
         settings = self.settings
         # warn of deprecated settings and changing defaults:
-        if settings.use_latex_citations is None and not settings.use_bibtex:
-            settings.use_latex_citations = False
-            warnings.warn('The default for the setting "use_latex_citations" '
-                          'will change to "True" in Docutils 1.0.',
-                          FutureWarning, stacklevel=7)
         if settings.legacy_column_widths is None:
             settings.legacy_column_widths = True
             warnings.warn('The default for the setting "legacy_column_widths" '
@@ -2103,12 +2098,13 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def append_bibliogaphy(self) -> None:
         # Add bibliography at end of document.
         # TODO insertion point should be configurable.
+        # cf. docs/ref/rst/directives.html#citations
         # Auxiliary function called by `depart_document`.
         if self.bibtex:
             self.out.append('\n\\bibliographystyle{%s}\n' % self.bibtex[0])
             self.out.append('\\bibliography{%s}\n' % ','.join(self.bibtex[1:]))
         elif self.use_latex_citations:
-            # TODO: insert citations at point of definition.
+            # TODO: insert citations at point of future "citations" directive.
             widest_label = ''
             for bibitem in self._bibitems:
                 if len(widest_label) < len(bibitem[0]):

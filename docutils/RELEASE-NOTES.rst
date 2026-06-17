@@ -131,9 +131,6 @@ Writers
 
 * "latex2e" writer:
 
-  - Change default of use_latex_citations_ setting to True
-    in Docutils 1.0.
-
   - Change default of legacy_column_widths_ setting to False
     in Docutils 1.0.
 
@@ -249,6 +246,7 @@ Document Tree / Docutils DTD:
 Configuration changes:
   - `Auto-detection`_ of the input encoding is no longer supported.
     The input_encoding_ value ``None`` now stands for "utf-8".
+  - The use_latex_citations_ setting now defaults to True.
 
 Command line interface:
   - Option ``-o`` sets the `output file path <output_path_>`__
