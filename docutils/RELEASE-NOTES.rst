@@ -131,9 +131,6 @@ Writers
 
 * "latex2e" writer:
 
-  - Change default of legacy_column_widths_ setting to False
-    in Docutils 1.0.
-
   - The `default length unit`__ will change from "bp" (DTP point)
     to "px" (pixel unit) in Docutils 1.0.
 
@@ -247,6 +244,7 @@ Configuration changes:
   - `Auto-detection`_ of the input encoding is no longer supported.
     The input_encoding_ value ``None`` now stands for "utf-8".
   - The use_latex_citations_ setting now defaults to True.
+  - The legacy_column_widths_ setting now defaults to False.
 
 Command line interface:
   - Option ``-o`` sets the `output file path <output_path_>`__

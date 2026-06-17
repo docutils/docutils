@@ -240,8 +240,7 @@ LaTeX-Specific Options
 --new-class-functions   Use \DUrole and "DUclass" wrappers for class values.
                         Place admonition content in an environment. (default)
 --legacy-column-widths  Use legacy algorithm to determine table column widths.
-                        (provisional default)
 --new-column-widths     Use new algorithm to determine table column widths.
-                        (future default)
+                        (default)
 --docutils-footnotes    Footnotes with numbers/symbols by Docutils. (default)
 --latex-footnotes       Footnotes with numbers by LaTeX.

@@ -95,23 +95,23 @@ class PublishTestCase(unittest.TestCase):
         self.assertIn(r'\tableofcontents', result)
 
 
-class WarningsTestCase(unittest.TestCase):
-
-    def test_future_warnings(self):
-        """Warn about changing defaults."""
-        # Warn only if not set (uncommenting should make test fail):
-        settings = {'_disable_config': True,
-                    # 'legacy_column_widths': True,
-                    'output_encoding': 'unicode',
-                    }
-        with self.assertWarnsRegex(FutureWarning,
-                                   '"legacy_column_widths" will change'):
-            core.publish_string('warnings test', writer=latex2e.Writer(),
-                                settings_overrides=settings)
-
-    # def test_deprecation_warnings(self):
-    #     with self.assertWarnsRegex(DeprecationWarning, 'will be removed'):
-    #         ...
+# class WarningsTestCase(unittest.TestCase):
+#
+#     def test_future_warnings(self):
+#         """Warn about changing defaults."""
+#         # Warn only if not set (uncommenting should make test fail):
+#         settings = {'_disable_config': True,
+#                     # 'legacy_column_widths': True,
+#                     'output_encoding': 'unicode',
+#                     }
+#         with self.assertWarnsRegex(FutureWarning,
+#                                    '"legacy_column_widths" will change'):
+#             core.publish_string('warnings test', writer=latex2e.Writer(),
+#                                 settings_overrides=settings)
+#
+#     # def test_deprecation_warnings(self):
+#     #     with self.assertWarnsRegex(DeprecationWarning, 'will be removed'):
+#     #         ...
 
 
 if __name__ == '__main__':

@@ -214,14 +214,12 @@ class Writer(writers.Writer):
           {'dest': 'legacy_class_functions',
            'action': 'store_false',
            'validator': frontend.validate_boolean}),
-         ('Use legacy algorithm to determine table column widths. '
-          '(provisional default)',
+         ('Use legacy algorithm to determine table column widths. ',
           ['--legacy-column-widths'],
-          {'default': None,
+          {'default': False,
            'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Use new algorithm to determine table column widths. '
-          '(future default)',
+         ('Use new algorithm to determine table column widths. (default)',
           ['--new-column-widths'],
           {'dest': 'legacy_column_widths',
            'action': 'store_false',
@@ -1181,11 +1179,6 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         # ~~~~~~~~
         settings = self.settings
         # warn of deprecated settings and changing defaults:
-        if settings.legacy_column_widths is None:
-            settings.legacy_column_widths = True
-            warnings.warn('The default for the setting "legacy_column_widths" '
-                          'will change to "False" in Docutils 1.0.)',
-                          FutureWarning, stacklevel=7)
         if settings.use_verbatim_when_possible is not None:
             warnings.warn(
                 'The configuration setting "use_verbatim_when_possible" '

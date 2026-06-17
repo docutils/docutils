@@ -1804,7 +1804,7 @@ table width and keeps the ratio of specified column widths.
 Custom table and/or column widths can be set with the respective options
 of the `"table" directive`_. See also `Generating LaTeX with Docutils`__.
 
-:Default: True (will change to False in Docutils 1.0).
+:Default: False (since Docutils 1.0).
 :Options: ``--legacy-column-widths``, ``--new-column-widths``.
 
 New in Docutils 0.18.
