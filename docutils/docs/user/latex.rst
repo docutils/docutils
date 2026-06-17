@@ -103,9 +103,8 @@ with the following peculiarities:
   the `DTP point` must be specified as "bp", while "pt" is interpreted as
   `TeX point`.
 
-* The **default length unit** (added by the latex writer to length values
-  without unit) is the `DTP point` "**bp**".  It will change to "px" in
-  Docutils 1.0.
+The *default length unit* (added to length values without unit) changed
+from "bp" to "px" in Docutils 1.0.
 
 The TeX units:
 

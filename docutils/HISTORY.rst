@@ -114,6 +114,7 @@ Release 1.0b1.dev (unpublished)
 
 * docutils/writers/latex2e/__init__.py
 
+  - Change the default `length unit`_ from "bp" (DTP point) to "px".
   - Remove `writers.latex2e.SortableDict` (deprecated since Docutils 0.22).
   - Remove the "name" argument from `LaTeXTranslator.visit_docinfo_item()`
     (ignored since Docutils 0.22).
@@ -590,8 +591,6 @@ Release 0.22 (2025-07-29)
 
   - Removed. Use ``python -m docutils.writers.odf_odt.prepstyles``.
 
-.. _length units: docs/ref/rst/restructuredtext.html#length-units
-
 
 Release 0.21.2 (2024-04-23)
 ===========================
@@ -869,8 +868,6 @@ Release 0.20 (2023-05-09)
     `bibliographic field`_ instead of rising an error
     (generally, such names are `parsed as enumerated list`__).
 
-    .. _bibliographic field:
-        docs/ref/rst/restructuredtext.html#bibliographic-fields
     __ docs/ref/rst/restructuredtext.html#enumerated-lists
 
 * docutils/transforms/references.py
@@ -1572,12 +1569,10 @@ Release 0.16 (2020-01-16)
   - Dropped support for Python 2.6, 3.3 and 3.4
   - Docutils now supports Python 2.7 and Python 3.5+ natively
     (without conversion by `2to3`).
-  - Keep `backslash escapes`__ in the document tree. Backslash characters in
+  - Keep `backslash escapes`_ in the document tree. Backslash characters in
     text are be represented by NULL characters in the `text` attribute of
     Doctree nodes and removed in the writing stage by the node's
     `astext()` method.
-
-  __ https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#escaping-mechanism
 
 * docs/ref/docutils.dtd
 
@@ -2443,7 +2438,7 @@ Release 0.7 (2010-07-07)
     admonitions.
   - Use the ``\url`` command for URLs (breaks long URLs instead of
     writing into the margin).
-  - Preserve runs of spaces in `inline literals`__.
+  - Preserve runs of spaces in `inline literals`_.
   - Deprecate `figure_footnotes` setting.
   - Rename `use_latex_footnotes` setting to `docutils_footnotes`_.
   - New `latex_preamble`_ setting.
@@ -2457,8 +2452,6 @@ Release 0.7 (2010-07-07)
   - Fix numbering depth with LaTeX section numbering.
   - Update Unicode -> LaTeX translations.
   - Fix bug with topic directive (thanks to Alan G Isaac for reporting).
-
-__ docs/ref/restructuredtext.html#inline-literals
 
 * docutils/writers/manpage.py
 
@@ -5020,6 +5013,13 @@ test/test_rst); and all modifications required to make it all work.
 .. _use_latex_abstract: docs/user/config.html#use-latex-abstract
 .. _use_latex_toc: docs/user/config.html#use-latex-toc
 .. _view_mode: docs/user/config.html#view-mode
+
+.. _backslash escapes: docs/ref/rst/restructuredtext.html#escaping-mechanism
+.. _bibliographic field:
+    docs/ref/rst/restructuredtext.html#bibliographic-fields
+.. _inline literals: docs/ref/restructuredtext.html#inline-literals
+.. _length unit:
+.. _length units: docs/ref/rst/restructuredtext.html#length-units
 
 .. _<meta>: docs/ref/doctree.html#meta
 .. _<image>: docs/ref/doctree.html#image

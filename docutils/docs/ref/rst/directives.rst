@@ -2313,9 +2313,7 @@ Common Option Value Types
   `supported length units`_
 
   Handling of values without unit depends on the writer/output format.
-  See the writer specific documentation in the `user doc`__ for details.
-
-  __ ../../index.html#introductory-tutorial-material-for-end-users
+  Docutils writers default to "px".
 
 :_`path`: local filesystem path
 

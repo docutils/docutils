@@ -4509,12 +4509,10 @@ _`%measure`
   | A number which may be immediately followed by a unit or percent sign.
     ReStructuredText supports `CSS3 length units`_.
     Attributes may restrict the value to some range.
-    Handling of values without unit depends on the writer/output format
-    (see the writer-specific documentation in the `user documentation`__
-    for details). Resolves to CDATA_.
+    Handling of values without unit depends on the writer/output format,
+    Docutils writers default to "px".
+    Resolves to CDATA_.
   | Used in the `height`_ and `width`_ attributes.  Python data type: ``str``.
-
-  __ ../index.html#writer-specific
 
 _`%number`
   | The attribute value must be a positive interger.  Resolves to NMTOKEN_.

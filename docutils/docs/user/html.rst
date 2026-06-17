@@ -8,9 +8,6 @@ Docutils HTML writers
 
 This document describes the HTML writers provided by Docutils.
 
-The default `length unit`_ in HTML is "px" (pixels, 1 px = 1/96 in).
-
-.. _length unit: ../ref/rst/restructuredtext.html#length-units
 
 html
 ----

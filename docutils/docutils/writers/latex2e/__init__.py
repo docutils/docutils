@@ -2454,14 +2454,16 @@ class LaTeXTranslator(writers.DoctreeTranslator):
     def to_latex_length(self, length_str, node=None) -> str:
         """Convert "measure" `length_str` to LaTeX length specification.
 
-        Note: the default length unit will change from "bp"
+        Note: the default length unit changed from "bp"
         (Postscript point) to "px" in Docutils 1.0.
         """
         value, unit = nodes.parse_measure(length_str)
+        if not unit:
+            return f'{value}px'  # rST default length unit
         if unit in ('em', 'ex', 'cm', 'mm', 'in', 'pc', 'px',
                     'bp', 'cc', 'dd', 'sp', 'mu'):  # TeX unit == CSS unit
             return length_str
-        if unit in ('', 'pt'):  # no unit or "Postscript points"
+        if unit == 'pt':  # "Postscript points"
             return f'{value}bp'  # LaTeX uses symbol "bp"
         if unit == 'Q':
             return f'{value/4}mm'

@@ -131,11 +131,6 @@ Writers
 
 * "latex2e" writer:
 
-  - The `default length unit`__ will change from "bp" (DTP point)
-    to "px" (pixel unit) in Docutils 1.0.
-
-    __ docs/user/latex.html#length-units
-
   - Remove ``use_verbatim_when_possible`` setting
     (use literal_block_env_: verbatim) in Docutils 2.0.
 
@@ -256,6 +251,11 @@ HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
   - Use more specific CSS selectors for styling <aside> elements as
     topic, sidebar, admonition, or system-message.
+
+LaTeX writer:
+  - Change the `default length unit`__ from "bp" (DTP point) to "px".
+
+    __ docs/user/latex.html#length-units
 
 New objects:
   `transforms.references.MatchReferences`
