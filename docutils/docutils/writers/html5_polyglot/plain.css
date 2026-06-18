@@ -295,6 +295,17 @@ sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
 
 /* Hyperlink References */
 a { text-decoration: none; }
+*:hover > a.toc-backref:after,
+.topic-title:hover > a:after {
+  content: " \2191"; /* ↑ UPWARDS ARROW */
+  color: grey;
+}
+*:hover > a.self-link:after {
+  content: "\1F517"; /* LINK SYMBOL */
+  color: grey;
+  font-size: smaller;
+  margin-left: 0.2em;
+}
 
 /* External Targets       */
 /*   span.target.external */

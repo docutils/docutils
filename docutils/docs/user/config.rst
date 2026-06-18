@@ -1532,7 +1532,7 @@ Extend section headings with an empty <a> element with a ``href`` to
 the section.  See ``responsive.css`` for an example how this can be
 styled to show a symbol allowing users to copy the section's URL.
 
-:Default: False.
+:Default: True (since Docutils 1.0).
 :Options: ``--section-self-link``, ``--no-section-self-link``.
 
 New in Docutils 0.18.

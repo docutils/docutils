@@ -201,9 +201,8 @@ HTML5 Writer Options
 --image-loading=<strategy>
                         Suggest at which point images should be loaded:
                         "embed", "link" (default), or "lazy".
---section-self-link     Append a self-link to section headings.
+--section-self-link     Append a self-link to section headings. (default)
 --no-section-self-link  Do not append a self-link to section headings.
-                        (default)
 
 Docutils Application Options
 ----------------------------

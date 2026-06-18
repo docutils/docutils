@@ -334,6 +334,17 @@ a[href^="#system-message"] {
 a:link:hover {
   text-decoration: underline;
 }
+*:hover > a.toc-backref:after,
+.topic-title:hover > a:after {
+  content: " \2191"; /* ↑ UPWARDS ARROW */
+  color: grey;
+}
+*:hover > a.self-link:after {
+content: "\26AD"; /* MARRIAGE SYMBOL (LINK SYMBOL doesn't show up) */
+  color: grey;
+  margin-left: 0.2em;
+  text-decoration: none;
+}
 
 /* Block Alignment */
 /* Let content flow to the side of aligned images and figures */

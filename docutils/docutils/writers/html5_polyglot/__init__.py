@@ -97,10 +97,10 @@ class Writer(_html_base.Writer):
           {'metavar': '<strategy>', 'choices': ('embed', 'link', 'lazy'),
            # 'default': 'link'  # default set in _html_base.py
            }),
-         ('Append a self-link to section headings.',
+         ('Append a self-link to section headings. (default)',
           ['--section-self-link'],
-          {'default': False, 'action': 'store_true'}),
-         ('Do not append a self-link to section headings. (default)',
+          {'default': True, 'action': 'store_true'}),
+         ('Do not append a self-link to section headings.',
           ['--no-section-self-link'],
           {'dest': 'section_self_link', 'action': 'store_false'}),
          )

@@ -104,9 +104,6 @@ Writers
 
 * "html5" writer:
 
-  - The default of the self-link_ configuration setting will change to
-    "True" in Docutils 1.0.
-
   - Prefer explicit reference names as base for an HTML element's ID
     in Docutils 1.0. No change for internal cross-references.
     Cf. `Sphinx issue #1961`__
@@ -231,6 +228,7 @@ Document Tree / Docutils DTD:
 Configuration changes:
   - `Auto-detection`_ of the input encoding is no longer supported.
     The input_encoding_ value ``None`` now stands for "utf-8".
+  - The section_self_link_ setting now defaults to True.
   - The use_latex_citations_ setting now defaults to True.
   - The legacy_column_widths_ setting now defaults to False.
   - The initial_header_level_ setting default for the HTML5 writer
