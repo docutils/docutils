@@ -884,7 +884,7 @@ allowed (e.g. inside a directive).</p>
 </aside>
 <aside class="footnote brackets" id="footnote-18" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-32">18</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article">https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article</a></p>
+<p><a class="reference external" href="https://html.spec.whatwg.org/multipage/sections.html#outline">https://html.spec.whatwg.org/multipage/sections.html#outline</a></p>
 </aside>
 <aside class="footnote brackets" id="footnote-19" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-33">19</a><span class="fn-bracket">]</span></span>
@@ -1290,9 +1290,10 @@ space.</p></li>
 <li><p>Put subtitles in &lt;p&gt; elements.</p></li>
 <li><p>Use the new semantic tags &lt;main&gt;, &lt;section&gt;, &lt;header&gt;,
 &lt;footer&gt;, &lt;aside&gt;, &lt;figure&gt;, and &lt;figcaption&gt;.
-See <span class="docutils literal">minimal.css</span> and <span class="docutils literal">responsive.css</span> for styling rule examples.</p>
-<p>Change the <cite>initial_header_level</cite> setting default to &quot;2&quot;, as browsers
-use the <a class="reference external" href="https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article">same style for &lt;h1&gt; and &lt;h2&gt; when nested in a &lt;section&gt;</a> <a class="brackets" href="#footnote-18" id="footnote-reference-32" role="doc-noteref"><span class="fn-bracket">[</span>18<span class="fn-bracket">]</span></a>.</p>
+See <span class="docutils literal">minimal.css</span> and <span class="docutils literal">responsive.css</span> for styling rule examples.</p></li>
+<li><p>Change the &quot;initial_header_level&quot; setting default to &quot;auto&quot;
+(&lt;h2&gt; if there is a document title, else &lt;h1&gt;) to ensure
+the HTML document has a clean <a class="reference external" href="https://html.spec.whatwg.org/multipage/sections.html#outline">outline</a> <a class="brackets" href="#footnote-18" id="footnote-reference-32" role="doc-noteref"><span class="fn-bracket">[</span>18<span class="fn-bracket">]</span></a>.</p>
 </li>
 <li><p>Use HTML5 tags &lt;small&gt;, &lt;s&gt;, &lt;q&gt;, &lt;dfn&gt;, &lt;var&gt;, &lt;samp&gt;, &lt;kbd&gt;,
 &lt;i&gt;, &lt;b&gt;, &lt;u&gt;, &lt;mark&gt;, and &lt;bdi&gt; if a matching class value

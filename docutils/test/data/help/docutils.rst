@@ -167,7 +167,8 @@ HTML Writer Options
 --initial-header-level=<level>
                         Specify the initial header level. Does not affect
                         document title & subtitle (see --no-doc-title).
-                        (default: 2 for "<h2>")
+                        Default: "auto" (<h2> if there is a document title,
+                        else <h1>).
 --footnote-references=<format>
                         Format for footnote references: one of "superscript"
                         or "brackets". (default: "brackets")

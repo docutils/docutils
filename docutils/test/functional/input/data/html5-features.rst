@@ -23,10 +23,11 @@ Differences to the `html4css1` Writer
   <footer>, <aside>, <figure>, and <figcaption>.
   See ``minimal.css`` and ``responsive.css`` for styling rule examples.
 
-  Change the `initial_header_level` setting default to "2", as browsers
-  use the `same style for <h1> and <h2> when nested in a <section\>`__.
+* Change the "initial_header_level" setting default to "auto"
+  (<h2> if there is a document title, else <h1>) to ensure
+  the HTML document has a clean outline__.
 
-  __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article
+  __ https://html.spec.whatwg.org/multipage/sections.html#outline
 
 * Use HTML5 tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
   <i>, <b>, <u>, <mark>, and <bdi> if a matching class value

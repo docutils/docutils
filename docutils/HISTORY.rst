@@ -109,6 +109,8 @@ Release 1.0b1.dev (unpublished)
 
 * docutils/writers/html5_polyglot/*
 
+  - Change the default value of the initial_header_level_ setting to "auto"
+    (<h2> if there is a document title, else <h1>).
   - Use normal font size and colour in CSS for informal titles of type "rubric".
   - Use more specific CSS selectors for styling <aside> elements to avoid
     problems with other elements using "topic" as class value, e.g. a docinfo

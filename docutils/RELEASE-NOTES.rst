@@ -119,9 +119,6 @@ Writers
 
     __ https://html.spec.whatwg.org/#the-blockquote-element
 
-  - Change the default value of the initial_header_level_ setting to "auto"
-    (<h2> if there is a document title, else <h1>) in Docutils 1.0.
-
   - Remove option ``--embed-images`` (obsoleted by "image_loading_")
     in Docutils 2.0.
 
@@ -236,6 +233,8 @@ Configuration changes:
     The input_encoding_ value ``None`` now stands for "utf-8".
   - The use_latex_citations_ setting now defaults to True.
   - The legacy_column_widths_ setting now defaults to False.
+  - The initial_header_level_ setting default for the HTML5 writer
+    changed to "auto".
 
 Command line interface:
   - Option ``-o`` sets the `output file path <output_path_>`__

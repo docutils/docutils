@@ -71,9 +71,10 @@ class Writer(_html_base.Writer):
              'default': default_stylesheet_dirs}),
         initial_header_level=(
             'Specify the initial header level. Does not affect document '
-            'title & subtitle (see --no-doc-title). (default: 2 for "<h2>")',
+            'title & subtitle (see --no-doc-title). '
+            'Default: "auto" (<h2> if there is a document title, else <h1>).',
             ['--initial-header-level'],
-            {'choices': '1 2 3 4 5 6 auto'.split(), 'default': '2',
+            {'choices': '1 2 3 4 5 6 auto'.split(), 'default': 'auto',
              'metavar': '<level>'}),
         no_xml_declaration=(
             'Omit the XML declaration (default).',

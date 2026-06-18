@@ -966,19 +966,17 @@ details
     (``--no-doc-title`` option).  This will interpret your document
     differently from the standard settings, which might not be a good
     idea.  If you don't like the reuse of the H1 in the HTML output, you
-    can tweak the `initial_header_level`_ setting
-    (``--initial-header-level`` option) -- but unless you match its value
-    to your specific document, you might end up with bad HTML (e.g. H3
-    without H2).
+    can change the `initial_header_level`_ configuration setting
+    (``--initial-header-level`` option) to "auto"
+    (<h2> if there is a document title, else <h1>).
 
     .. _doctitle_xform: docs/user/config.html#doctitle-xform
     .. _initial_header_level: docs/user/config.html#initial-header-level
 
     (Thanks to Mark McEahern for the question and much of the answer.)
 
-    .. note:: For the `html5 writer`_, `initial_header_level`_ defaults to
-       ``2`` because this is what the `HTML5 standard`__ expects as
-       start value for headings nested in <section> elements.
+    .. note:: For the `html5 writer`_, `initial_header_level`_ defaults
+       to "auto" (since Docutils 1.0).
 
        .. Sectioning content elements are always considered subsections of
           their nearest ancestor *sectioning root* [#]_ or their nearest
@@ -991,7 +989,7 @@ details
 
           I.e., a top-level <section> is a subsection of <body>.
 
-       __ https://www.w3.org/TR/html53/sections.html#headings-and-sections
+          __ https://www.w3.org/TR/html53/sections.html#headings-and-sections
 
 
 How are lists formatted in HTML?

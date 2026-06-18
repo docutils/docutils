@@ -1203,7 +1203,7 @@ if the parser supports this option. [#override]_
 initial_header_level
 ~~~~~~~~~~~~~~~~~~~~
 The level of the first *section* heading element
-(the `document title`_ always uses <h1>).
+(the optional `document title`_ always uses <h1>).
 Supported values:
 
 :1, ..., 6: <h1>, ..., <h6>,
@@ -1498,13 +1498,11 @@ Writer Specific Defaults
 """"""""""""""""""""""""
 .. class:: run-in narrow
 
-:initial_header_level_:  2 (reserve <h1> for the `document title`_). [#]_
+:initial_header_level_:  "auto" (changed from "2" in Docutils 1.0).
 :`math_output`_:  "MathML" (changed from "HTML math.css"in Docutils 0.22).
 :`stylesheet_path <stylesheet_path [html writers]_>`__:
   "minimal.css, plain.css".
 :`xml_declaration <xml_declaration [html writers]_>`__:  False.
-
-.. [#] The default will change to "auto" in Docutils 1.0.
 
 image_loading
 """""""""""""
