@@ -25,10 +25,13 @@ from docutils.utils import new_document
 
 
 class TransformTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_transforms(self):
         parser = Parser()
         settings = get_default_settings(Parser)
         settings.warning_stream = ''
+        settings.report_level = 1
         for name, (transforms, cases) in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
@@ -78,6 +81,31 @@ document by the test framework.)
         <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
             <paragraph>
                 Undefined substitution referenced: "unknown substitution".
+"""],
+["""\
+.. note:: Directive content above
+   :class: custom
+
+   and below directive options can be confusing.
+""",
+"""\
+<document source="test data">
+    <note classes="custom">
+        <paragraph>
+            Directive content above
+        <paragraph>
+            and below directive options can be confusing.
+    <section classes="system-messages">
+        <title>
+            Docutils System Messages
+        <system_message level="1" line="3" source="test data" type="INFO">
+            <paragraph>
+                Directive content before and after options.
+            <literal_block xml:space="preserve">
+                Directive content above
+                :class: custom
+                \n\
+                and below directive options can be confusing.
 """],
 ])
 

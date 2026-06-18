@@ -77,6 +77,8 @@ Release 1.0b1.dev (unpublished)
 
   - Do not add "name" attribute to `<reference>` elements
     nor set the internal attribute `indirect_reference_name`.
+  - Report INFO message, if a directive that does not take
+    arguments has content above and below directive options.
 
 * docutils/readers/standalone.py
 

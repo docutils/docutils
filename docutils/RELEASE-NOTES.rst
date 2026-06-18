@@ -79,10 +79,6 @@ Document Tree / Docutils DTD
 Parsers
 -------
 
-* The "rst" parser will issue an INFO, if a directive that does not take
-  arguments has content above and below directive options in
-  Docutils 0.24 or later.
-
 * The "rst" parser will warn if a `"figure"`_ directive is missing both
   caption and legend in Docutils 1.0.
 

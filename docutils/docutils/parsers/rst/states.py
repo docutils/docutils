@@ -2326,6 +2326,11 @@ class Body(RSTState):
             options = {}
         if arg_block and not (directive.required_arguments
                               or directive.optional_arguments):
+            if options and content:
+                self.reporter.info(
+                    'Directive content before and after options.',
+                    nodes.literal_block('', '\n'.join(indented)),
+                    line=content_offset)
             content = arg_block + indented[i:]
             content_offset = line_offset
             arg_block = []
