@@ -62,7 +62,6 @@ functional_tests_settings_spec.settings_default_overrides = {
     '_disable_config': True,
     'halt_level': 5,
     'warning_stream': '',
-    'input_encoding': 'utf-8',  # skip auto-detection
     'embed_stylesheet': False,
     'syntax_highlight': 'none'  # avoid "Pygments not found" warning
     }

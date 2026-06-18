@@ -319,7 +319,7 @@ rST parser:
 
 HTML5 writer:
   - If a section has several IDs, use the last one (from the first
-    preceding `explicit target`__) as self-link_.
+    preceding `explicit target`__) as section_self_link_.
 
     __ docs/ref/rst/restructuredtext.html#explicit-hyperlink-targets
 
@@ -370,7 +370,7 @@ See HISTORY_ for details.
 Release 0.22.3 (2025-11-06)
 ===========================
 
-Rst parser:
+rST parser:
   - Ignore combining characters when parsing the grid table structure.
 
   - Allow for auxiliary elements like `sphinx.addnodes.only`
@@ -386,7 +386,7 @@ Remove a spurious vim .swp-file.
 Release 0.22.1 (2025-09-17)
 ===========================
 
-Rst parser:
+rST parser:
   - Relax "section title" system messages from SEVERE to ERROR.
   - New attribute `parsers.rst.states.NestedStateMachine.parent_state_machine`.
 
@@ -1663,7 +1663,7 @@ Release 0.3.5 (2004-07-29)
 .. _parser: docs/user/config.html#parser
 .. _reference_label: docs/user/config.html#reference-label
 .. _root_prefix: docs/user/config.html#root-prefix
-.. _self-link: docs/user/config.html#section-self-link
+.. _section_self_link: docs/user/config.html#section-self-link
 .. _SmartQuotes: docs/user/config.html#smart-quotes
 .. _sources: docs/user/config.html#sources
 .. _use_latex_citations: docs/user/config.html#use-latex-citations

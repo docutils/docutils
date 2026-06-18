@@ -108,7 +108,6 @@ include_literal = mydir('include_literal.rst')
 include_md = mydir('include.md')
 include_xml = mydir('includes/include.xml')
 include = TEST_ROOT/'data/include.rst'
-latin2 = TEST_ROOT/'data/latin2.rst'
 utf_16_file = TEST_ROOT/'data/utf-16-le-sig.rst'
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xff "
                     "in position 0: ordinal not in range(128)")

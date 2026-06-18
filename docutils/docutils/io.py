@@ -90,13 +90,12 @@ class Input(TransformSpec):
 
     default_source_path: ClassVar[str | None] = None
 
-    def __init__(
-        self,
-        source: str | TextIO | nodes.document | None = None,
-        source_path: StrPath | None = None,
-        encoding: str | None = 'utf-8',
-        error_handler: str | None = 'strict',
-    ) -> None:
+    def __init__(self,
+                 source: str | TextIO | nodes.document | None = None,
+                 source_path: StrPath | None = None,
+                 encoding: str | None = 'utf-8',
+                 error_handler: str | None = 'strict',
+                 ) -> None:
         self.encoding = encoding
         """Text encoding for the input source."""
 
@@ -154,13 +153,12 @@ class Output(TransformSpec):
 
     default_destination_path: ClassVar[str | None] = None
 
-    def __init__(
-        self,
-        destination: TextIO | str | bytes | None = None,
-        destination_path: StrPath | None = None,
-        encoding: str | None = None,
-        error_handler: str | None = 'strict',
-    ) -> None:
+    def __init__(self,
+                 destination: TextIO | str | bytes | None = None,
+                 destination_path: StrPath | None = None,
+                 encoding: str | None = None,
+                 error_handler: str | None = 'strict',
+                 ) -> None:
         self.encoding: str | None = encoding
         """Text encoding for the output destination."""
 
@@ -211,13 +209,12 @@ class ErrorOutput:
     failsafe de- and encoding of `str`, `bytes`, and `Exception` instances.
     """
 
-    def __init__(
-        self,
-        destination: TextIO | BinaryIO | str | Literal[False] | None = None,
-        encoding: str | None = None,
-        encoding_errors: str = 'backslashreplace',
-        decoding_errors: str = 'replace',
-    ) -> None:
+    def __init__(self,
+                 destination: TextIO|BinaryIO|str|Literal[False]|None = None,
+                 encoding: str | None = None,
+                 encoding_errors: str = 'backslashreplace',
+                 decoding_errors: str = 'replace',
+                 ) -> None:
         """
         :Parameters:
             - `destination`: a file-like object,
@@ -238,12 +235,10 @@ class ErrorOutput:
         self.destination: TextIO | BinaryIO | Literal[False] = destination
         """Where warning output is sent."""
 
-        self.encoding: str = (
-            encoding
-            or getattr(destination, 'encoding', None)
-            or _locale_encoding
-            or 'ascii'
-        )
+        self.encoding: str = (encoding
+                              or getattr(destination, 'encoding', None)
+                              or _locale_encoding
+                              or 'ascii')
         """The output character encoding."""
 
         self.encoding_errors: str = encoding_errors
@@ -311,15 +306,14 @@ class FileInput(Input):
     """
     Input for single, simple file-like objects.
     """
-    def __init__(
-        self,
-        source: TextIO | None = None,
-        source_path: StrPath | None = None,
-        encoding: str | Literal['unicode'] | None = 'utf-8',
-        error_handler: str | None = 'strict',
-        autoclose: bool = True,
-        mode: Literal['r', 'rb', 'br'] = 'r'
-    ) -> None:
+    def __init__(self,
+                 source: TextIO | None = None,
+                 source_path: StrPath | None = None,
+                 encoding: str | Literal['unicode'] | None = 'utf-8',
+                 error_handler: str | None = 'strict',
+                 autoclose: bool = True,
+                 mode: Literal['r', 'rb', 'br'] = 'r'
+                 ) -> None:
         """
         :Parameters:
             - `source`: either a file-like object (with `read()` and `close()`
@@ -543,7 +537,7 @@ class StringOutput(Output):
 
     default_destination_path: Final = '<string>'
 
-    def write(self, data: str | bytes) -> str | bytes:
+    def write(self, data: str|bytes) -> str | bytes:
         """Store `data` in `self.destination`, and return it.
 
         If `self.encoding` is set to the pseudo encoding name "unicode",

@@ -937,7 +937,7 @@ class Inliner:
                 if alias.endswith(r'\_'):
                     alias = alias[:-2] + '_'
                 target = nodes.target(match.group(1), refuri=alias)
-                target.referenced = 1
+                target.referenced = True
             if not aliastext:
                 raise ApplicationError('problem with embedded link: %r'
                                        % aliastext)

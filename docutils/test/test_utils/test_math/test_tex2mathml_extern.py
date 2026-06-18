@@ -90,7 +90,6 @@ class MathMLConverterTestCase(unittest.TestCase):
     which is open to change without warning.
     """
     settings = {'_disable_config': True,
-                'input_encoding': 'utf-8',  # skip auto-detection
                 'embed_stylesheet': False,
                 'warning_stream': '',
                 'report_level': 2,  # warning
