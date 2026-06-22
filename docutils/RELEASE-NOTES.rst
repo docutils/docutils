@@ -227,7 +227,8 @@ Document Tree / Docutils DTD:
 
 Configuration changes:
   - `Auto-detection`_ of the input encoding is no longer supported.
-    The input_encoding_ value ``None`` now stands for "utf-8".
+    The input_encoding_ value ``None`` now stands for "utf-8",
+    the empty string now leads to a LookupError.
   - The section_self_link_ setting now defaults to True.
   - The use_latex_citations_ setting now defaults to True.
   - The legacy_column_widths_ setting now defaults to False.

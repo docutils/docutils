@@ -32,6 +32,7 @@ Release 1.0b1.dev (unpublished)
   - Accept the short option ``-o`` for ``--output`` (settings.output_path).
   - Drop the second positional argument <destination>.
     Solves feature-request #36.
+  - End support for the special value ``""`` in `validate_encoding()`.
 
 * docutils/io.py
 

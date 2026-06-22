@@ -138,16 +138,10 @@ def validate_encoding(setting: str,
     # If there is only one positional argument, it is interpreted as `value`.
     if value is None:
         value = setting
-    if value == '':
-        warnings.warn('Input encoding detection will be removed and the '
-                      'special encoding values None and "" become invalid '
-                      'in Docutils 1.0.', FutureWarning, stacklevel=2)
-        return None
     try:
         codecs.lookup(value)
     except LookupError:
-        prefix = f'setting "{setting}":' if setting else ''
-        raise LookupError(f'{prefix} unknown encoding: "{value}"')
+        raise LookupError(f'unknown encoding: "{value}"')
     return value
 
 
