@@ -2036,9 +2036,9 @@ class document(Root, Element):
                         msgnode: Element | None = None,
                         explicit: bool = False,
                         ) -> None:
-        """Deprecated. Will be removed in Docutils 1.0."""
+        """Deprecated. Will be removed in Docutils 2.0."""
         warnings.warn('nodes.document.set_name_id_map() will be removed'
-                      ' in Docutils 1.0.', DeprecationWarning, stacklevel=2)
+                      ' in Docutils 2.0.', DeprecationWarning, stacklevel=2)
         self.note_names(node, msgnode, explicit)
         for name in node['names']:
             self.nameids[name] = id
