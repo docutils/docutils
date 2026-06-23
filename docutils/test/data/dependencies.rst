@@ -23,6 +23,10 @@ Image files are only recorded, if actually accessed
 .. figure:: ../docs/user/rst/images/title.png
    :figwidth: image
 
+   ..
+
+   Image width is read to determine figure width
+
 Scaled images without given size are recorded by the html writer:
 
 .. image:: ../docs/user/rst/images/biohazard.png

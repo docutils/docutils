@@ -63,6 +63,7 @@ class Html4WriterPublishPartsTestCase(unittest.TestCase):
                             'strict_visitor': True,
                             'stylesheet_path': '',
                             'section_self_link': True,
+                            'warning_stream': '',  # suppress warnings
                             **settings_overrides,
                         }
                     )
@@ -361,6 +362,9 @@ No caption nor legend.
 <div class="figure">
 <img alt="dummy.png" src="dummy.png" />
 </div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">&lt;string&gt;</tt>, line 1)</p>
+Figure without caption and legend. Use &quot;image&quot;?</div>
 <p>No caption nor legend.</p>
 """,
 ],
@@ -424,11 +428,14 @@ totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX,
 .. image:: /data/blue%20square.png
    :scale: 100%
 .. figure:: /data/blue%20square.png
+
+   Embedded image of a blue square.
 """,
 f"""\
 <img alt="/data/blue%20square.png" src="/data/blue%20square.png" {SCALING_OUTPUT}/>
 <div class="figure">
 <img alt="/data/blue%20square.png" src="/data/blue%20square.png" />
+<p class="caption">Embedded image of a blue square.</p>
 </div>
 """
 ],

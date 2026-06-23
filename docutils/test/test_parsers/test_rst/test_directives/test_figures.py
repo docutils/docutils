@@ -49,6 +49,9 @@ totest['figures'] = [
 <document source="test data">
     <figure>
         <image uri="picture.png">
+    <system_message level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Figure without caption and legend. Use "image"?
 """],
 ["""\
 .. figure:: picture.png
@@ -277,20 +280,29 @@ Testing for line-leaks:
 .. figure:: picture.png
 
    A picture with a caption.
-.. figure:: picture.png
 
-   A picture with a caption.
-.. figure:: picture.png
-
-   A picture with a caption.
-.. figure:: picture.png
-.. figure:: picture.png
-.. figure:: picture.png
 .. figure:: picture.png
 
    A picture with a caption.
 
 .. figure:: picture.png
+
+   A picture with a caption.
+
+.. figure:: picture.png
+.. figure:: picture.png
+
+   ..
+.. figure:: picture.png
+
+   ..
+.. figure:: picture.png
+
+   ..
+
+.. figure:: picture.png
+
+   ..
 
 .. figure:: picture.png
 
@@ -316,6 +328,13 @@ Testing for line-leaks:
             A picture with a caption.
     <figure>
         <image uri="picture.png">
+    <system_message level="2" line="15" source="test data" type="WARNING">
+        <paragraph>
+            Figure without caption and legend. Use "image"?
+    <figure>
+        <image uri="picture.png">
+    <figure>
+        <image uri="picture.png">
     <figure>
         <image uri="picture.png">
     <figure>
@@ -326,12 +345,9 @@ Testing for line-leaks:
             A picture with a caption.
     <figure>
         <image uri="picture.png">
-    <figure>
-        <image uri="picture.png">
-        <caption>
-            A picture with a caption.
-    <figure>
-        <image uri="picture.png">
+    <system_message level="2" line="34" source="test data" type="WARNING">
+        <paragraph>
+            Figure without caption and legend. Use "image"?
 """],
 ]
 

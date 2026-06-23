@@ -376,7 +376,7 @@ position if this helps the page layout.
        +-----------------------+-----------------------+
 
 There must be blank lines before the caption paragraph and before the
-legend.  To specify a legend without a caption, use an empty comment
+legend.  To specify an image without a caption, use an empty comment
 ("..") in place of the caption.
 
 .. _figure options:

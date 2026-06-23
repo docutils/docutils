@@ -79,9 +79,6 @@ Document Tree / Docutils DTD
 Parsers
 -------
 
-* The "rst" parser will warn if a `"figure"`_ directive is missing both
-  caption and legend in Docutils 1.0.
-
 * The `legacy_ids`_ configuration setting default will change to False
   in Docutils 2.0
 
@@ -240,6 +237,9 @@ Command line interface:
     (shortcut for ``--output``).
   - Drop the ``<destination>`` positional argument.
     Use ``-o <destination>`` or output redirection.
+
+rST parser:
+  - Warn if a `"figure"`_ directive is missing both caption and legend.
 
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".

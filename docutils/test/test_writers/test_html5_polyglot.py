@@ -85,6 +85,7 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
                             'strict_visitor': True,
                             'stylesheet_path': '',
                             'section_self_link': True,
+                            'warning_stream': '',  # suppress warnings
                             **settings_overrides,
                         }
                     )
@@ -388,6 +389,10 @@ No caption nor legend.
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 </figure>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
+<p>Figure without caption and legend. Use &quot;image&quot;?</p>
+</aside>
 <p>No caption nor legend.</p>
 """,
 ],
@@ -426,8 +431,12 @@ Lazy loading by default, overridden by :loading: option
 .. image:: dummy.png
    :loading: link
 .. figure:: dummy.png
+
+   Figure with lazy-loading image.
 .. figure:: dummy.png
    :loading: embed
+
+   Image not embedded, because it is unavailable.
 """,
 """\
 <p>Lazy loading by default, overridden by :loading: option
@@ -436,9 +445,15 @@ Lazy loading by default, overridden by :loading: option
 <img alt="dummy.png" src="dummy.png" />
 <figure>
 <img alt="dummy.png" loading="lazy" src="dummy.png" />
+<figcaption>
+<p>Figure with lazy-loading image.</p>
+</figcaption>
 </figure>
 <figure>
 <img alt="dummy.png" src="dummy.png" />
+<figcaption>
+<p>Image not embedded, because it is unavailable.</p>
+</figcaption>
 </figure>
 """,
 ],
@@ -453,6 +468,8 @@ totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX,
 .. image:: /data/blue%20square.png
    :scale: 100%
 .. figure:: /data/blue%20square.png
+
+   Figure with embedded blue square image.
 """,
 f'<img alt="/data/blue%20square.png" {HEIGHT_ATTR}src="data:image/png;base64,'
 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQ'
@@ -464,6 +481,9 @@ f' {WIDTH_ATTR}/>\n{NO_PIL_SYSTEM_MESSAGE}'
 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQ'
 'EAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAA'
 'SUVORK5CYII=" />\n'
+'<figcaption>\n'
+'<p>Figure with embedded blue square image.</p>\n'
+'</figcaption>\n'
 '</figure>\n',
 ],
 ])

@@ -58,10 +58,10 @@ many of those cases, a margin figure may be most appropriate.
 
    This is the legend.
 
-To place an image in the margin, use a marginal figure without caption.
+An image with option ``:class: marginal`` moves to the margin as well.
 
-.. figure:: ../../../docs/user/rst/images/biohazard.png
-   :figclass: marginal
+.. image:: ../../../docs/user/rst/images/biohazard.png
+   :class: marginal
    :width: 2em
 
 Marginal objects are placed to the right of the preceding main text

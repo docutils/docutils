@@ -14,3 +14,5 @@ Potentially dangerous features (security holes):
 .. csv-table:: :url: file:///etc/passwd
 .. figure:: picture.png
    :figwidth: image
+
+   This image is read by PIL to determine its width.

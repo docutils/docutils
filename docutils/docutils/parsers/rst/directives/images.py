@@ -155,7 +155,11 @@ class Figure(Image):
             self.state.document.note_explicit_target(figure_node, figure_node)
         if align:
             figure_node['align'] = align
-        if self.content:
+        if not self.content:
+            msg = self.reporter.warning('Figure without caption and legend. '
+                                        'Use "image"?', line=self.lineno)
+            return [figure_node, msg]
+        else:
             # optional caption (single paragraph or empty comment)
             # + optional legend (arbitrary body elements).
             node = nodes.Element()          # anonymous container for parsing

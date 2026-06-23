@@ -69,6 +69,7 @@ Release 1.0b1.dev (unpublished)
 
   - Do not add "name" attribute to `<reference>` elements
     nor set the internal attribute `indirect_reference_name`.
+  - Warn if a `"figure"`_ directive is missing both caption and legend.
 
 * docutils/parsers/rst/directives/tables.py
 
