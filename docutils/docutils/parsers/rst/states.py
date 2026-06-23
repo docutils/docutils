@@ -383,7 +383,7 @@ class RSTState(StateWS):
                           blank_finish,
                           blank_finish_state=None,
                           extra_settings={},
-                          match_titles=False,  # deprecated, will be removed
+                          match_titles=None,  # deprecated, will be removed
                           state_machine_class=None,
                           state_machine_kwargs=None):
         """
@@ -397,11 +397,10 @@ class RSTState(StateWS):
         Return new offset and a boolean indicating whether there was a
         blank final line.
         """
-        if match_titles:
+        if match_titles is not None:
             warnings.warn('The "match_titles" argument of '
                           'parsers.rst.states.RSTState.nested_list_parse() '
-                          'will be ignored in Docutils 1.0 '
-                          'and removed in Docutils 2.0.',
+                          'is ignored and will be removed in Docutils 2.0.',
                           PendingDeprecationWarning, stacklevel=2)
         if state_machine_class is None:
             state_machine_class = self.nested_sm
@@ -417,8 +416,7 @@ class RSTState(StateWS):
         my_state_machine.states[blank_finish_state].blank_finish = blank_finish
         for key, value in extra_settings.items():
             setattr(my_state_machine.states[initial_state], key, value)
-        my_state_machine.run(block, input_offset, memo=self.memo,
-                             node=node, match_titles=match_titles)
+        my_state_machine.run(block, input_offset, memo=self.memo, node=node)
         blank_finish = my_state_machine.states[blank_finish_state].blank_finish
         my_state_machine.unlink()
         return my_state_machine.abs_line_offset(), blank_finish
