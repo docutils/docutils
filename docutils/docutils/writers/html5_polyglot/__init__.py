@@ -151,9 +151,10 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     def depart_authors(self, node) -> None:
         self.depart_docinfo_item()
 
-    # use the <figcaption> semantic tag.
+    # Wrap in a <figcaption> semantic tag (together with optional <legend>).
     def visit_caption(self, node) -> None:
-        if isinstance(node.parent, nodes.figure):
+        if isinstance(node.parent, nodes.figure
+                      ) and node.parent.children.index(node) == 1:
             self.body.append(self.starttag(node, 'figcaption'))
         self.body.append('<p>')
 
@@ -211,7 +212,9 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         self.body.append(self.starttag(node, 'figure', **atts))
 
     def depart_figure(self, node) -> None:
-        if len(node) > 1:
+        # <caption> and <legend> in position 1 start a <figcaption>
+        if len(node) > 1 and isinstance(node.children[1],
+                                        (nodes.caption, nodes.legend)):
             self.body.append('</figcaption>\n')
         self.body.append('</figure>\n')
 
@@ -279,7 +282,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
 
     # place inside HTML5 <figcaption> element (together with caption)
     def visit_legend(self, node) -> None:
-        if not isinstance(node.previous_sibling(), nodes.caption):
+        if node.parent.children.index(node) == 1:
             self.body.append('<figcaption>\n')
         self.body.append(self.starttag(node, 'div', CLASS='legend'))
 

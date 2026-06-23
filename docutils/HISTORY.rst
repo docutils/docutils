@@ -121,6 +121,7 @@ Release 1.0b1.dev (unpublished)
   - Use more specific CSS selectors for styling <aside> elements to avoid
     problems with other elements using "topic" as class value, e.g. a docinfo
     item "topic" in Enhancement Reports.
+  - More robust handling of figure captions.
 
 * docutils/writers/latex2e/__init__.py
 
