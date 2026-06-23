@@ -17,7 +17,7 @@ Latex code is processed by latex and turned into a png.
 import locale
 try:
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 from docutils.core import publish_cmdline, Publisher, default_description

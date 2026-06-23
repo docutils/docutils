@@ -10,7 +10,7 @@ from lxml import etree as etree
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 class NoRunException(Exception):
