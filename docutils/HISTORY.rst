@@ -69,7 +69,7 @@ Release 1.0b1.dev (unpublished)
 
   - Do not add "name" attribute to `<reference>` elements
     nor set the internal attribute `indirect_reference_name`.
-  - Warn if a `"figure"`_ directive is missing both caption and legend.
+  - Warn if a "figure" directive is missing both caption and legend.
 
 * docutils/parsers/rst/directives/tables.py
 
@@ -113,7 +113,7 @@ Release 1.0b1.dev (unpublished)
 * docutils/writers/html5_polyglot/*
 
   - Change the default value of the initial_header_level_ setting to "auto"
-    (<h2> if there is a document title, else <h1>).
+    (<h2> if there is a document title, else <h1>). Adapt "responsive.css".
   - Change the default value of the "section_self_link" setting to True.
   - Add CSS rules for back-link and self-link symbols from
     "responsive.css" also in "plain.css" and "tuftig.css".

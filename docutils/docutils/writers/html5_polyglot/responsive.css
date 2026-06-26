@@ -292,10 +292,10 @@ a:hover {
   margin-left: 0.2em;
 }
 /* highlight specific targets of the current URL */
-section:target > h2, section:target > h3, section:target > h4,
-section:target > h5, section:target > h6,
-span:target + h2, span:target + h3, span:target + h4,
-span:target + h5, span:target + h6,
+section:target > h1, section:target > h2, section:target > h3,
+section:target > h4, section:target > h5, section:target > h6,
+span:target + h1,  span:target + h2, span:target + h3,
+span:target + h4, span:target + h5, span:target + h6,
 dt:target, span:target, p:target,
 .contents :target,
 .contents:target > .topic-title,
