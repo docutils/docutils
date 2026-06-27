@@ -580,20 +580,20 @@ class HTMLTranslator(writers.DoctreeTranslator):
         if ids:
             atts['id'] = ids[0]
             for id in ids[1:]:
-                # Add empty "span" elements for additional IDs.  Note
-                # that we cannot use empty "a" elements because there
-                # may be targets inside of references, but nested "a"
-                # elements aren't allowed in XHTML (even if they do
-                # not all have a "href" attribute).
+                # Add empty "span" elements for additional IDs:
                 if empty or isinstance(node, (nodes.Sequential,
                                               nodes.docinfo,
                                               nodes.table)):
                     # Insert target right in front of element.
                     prefix.append('<span id="%s"></span>' % id)
+                    if suffix.startswith('\n'):
+                        prefix.append('\n')
                 else:
                     # Non-empty tag.  Place the auxiliary <span> tag
                     # *inside* the element, as the first child.
-                    suffix += '<span id="%s"></span>' % id
+                    suffix += f'<span id="{id}"></span>'
+                    if suffix.startswith('\n'):
+                        suffix += '\n'
         attlist = sorted(atts.items())
         parts = [tagname]
         for name, value in attlist:

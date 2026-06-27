@@ -520,6 +520,9 @@ Release 0.22 (2025-07-29)
   - Add "px" to unitless table "width" values.
   - Fix error when determining the document metadata title from the
     source path and the internal `source` attribute is None.
+  - `HTMLTranslator.starttag()`: Add newlines to the `<span>` elements
+    used for additional IDs if the `suffix` argument starts with "\n"
+    (indicating that it is OK to add whitespace).
 
 * docutils/writers/html4css1/__init__.py
 
