@@ -39,11 +39,11 @@ class Writer(writers.Writer):
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Omit the XML declaration.  Use with caution.',
           ['--no-xml-declaration'],
-          {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',
+          {'dest': 'xml_declaration', 'default': True, 'action': 'store_false',
            'validator': frontend.validate_boolean}),
          ('Omit the DOCTYPE declaration.',
           ['--no-doctype'],
-          {'dest': 'doctype_declaration', 'default': 1,
+          {'dest': 'doctype_declaration', 'default': True,
            'action': 'store_false', 'validator': frontend.validate_boolean}),))
 
     settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace'}

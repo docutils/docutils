@@ -29,9 +29,8 @@ class Parser(Component):
         (('Disable directives that insert the contents of an external file; '
           'replaced with a "warning" system message.',
           ['--no-file-insertion'],
-          {'action': 'store_false', 'default': True,
-           'dest': 'file_insertion_enabled',
-           'validator': frontend.validate_boolean}),
+          {'dest': 'file_insertion_enabled', 'action': 'store_false',
+           'default': True, 'validator': frontend.validate_boolean}),
          ('Enable directives that insert the contents '
           'of an external file. (default)',
           ['--file-insertion-enabled'],
@@ -39,7 +38,7 @@ class Parser(Component):
          ('Disable the "raw" directive; '
           'replaced with a "warning" system message.',
           ['--no-raw'],
-          {'action': 'store_false', 'default': True, 'dest': 'raw_enabled',
+          {'dest': 'raw_enabled', 'action': 'store_false', 'default': True,
            'validator': frontend.validate_boolean}),
          ('Enable the "raw" directive. (default)',
           ['--raw-enabled'],
@@ -50,20 +49,17 @@ class Parser(Component):
            'validator': frontend.validate_nonnegative_int}),
          ('Keep identifiers backwards compatible. (default)',
           ['--legacy-ids'],
-          {'action': 'store_true',
-           'validator': frontend.validate_boolean,
-           'default': True}),
+          {'action': 'store_true', 'default': True,
+           'validator': frontend.validate_boolean}),
          ('Explicit targets use identifiers matching the reference name.',
           ['--matching-ids'],
-          {'action': 'store_false',
-           'dest': 'legacy_ids'}),
+          {'dest': 'legacy_ids', 'action': 'store_false'}),
          ('Validate the document tree after parsing.',
           ['--validate'],
-          {'action': 'store_true',
-           'validator': frontend.validate_boolean}),
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Do not validate the document tree. (default)',
           ['--no-validation'],
-          {'action': 'store_false', 'dest': 'validate'}),
+          {'dest': 'validate', 'action': 'store_false'}),
          )
         )
     component_type: Final = 'parser'

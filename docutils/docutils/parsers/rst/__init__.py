@@ -116,7 +116,7 @@ class Parser(docutils.parsers.Parser):
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Leave spaces before footnote references.',
           ['--leave-footnote-reference-space'],
-          {'action': 'store_false', 'dest': 'trim_footnote_reference_space'}),
+          {'dest': 'trim_footnote_reference_space', 'action': 'store_false'}),
          ('Token name set for parsing code with Pygments: one of '
           '"long", "short", or "none" (no parsing).  (default: "long")',
           ['--syntax-highlight'],
@@ -137,13 +137,13 @@ class Parser(docutils.parsers.Parser):
           'Force character-level inline markup recognition with '
           '"\\ " (backslash + space).  (default)',
           ['--word-level-inline-markup'],
-          {'action': 'store_false', 'dest': 'character_level_inline_markup'}),
+          {'dest': 'character_level_inline_markup', 'action': 'store_false',
+           'validator': frontend.validate_boolean}),
          ('Inline markup recognized anywhere, regardless of surrounding '
           'characters. Backslash-escapes must be used to avoid unwanted '
           'markup recognition. Useful for East Asian languages. ',
           ['--character-level-inline-markup'],
-          {'action': 'store_true', 'default': False,
-           'dest': 'character_level_inline_markup'}),
+          {'action': 'store_true'}),
          )
         )
 
