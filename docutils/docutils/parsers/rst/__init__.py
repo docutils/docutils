@@ -118,12 +118,12 @@ class Parser(docutils.parsers.Parser):
           ['--leave-footnote-reference-space'],
           {'action': 'store_false', 'dest': 'trim_footnote_reference_space'}),
          ('Token name set for parsing code with Pygments: one of '
-          '"long", "short", or "none" (no parsing). Default is "long".',
+          '"long", "short", or "none" (no parsing).  (default: "long")',
           ['--syntax-highlight'],
           {'choices': ['long', 'short', 'none'],
            'default': 'long', 'metavar': '<format>'}),
          ('Change straight quotation marks to typographic form: '
-          'one of "yes", "no", "alt[ernative]" (default "no").',
+          'one of "yes", "no", "alt[ernative]".  (default: "no")',
           ['--smart-quotes'],
           {'default': False, 'metavar': '<yes/no/alt>',
            'validator': frontend.validate_ternary}),
@@ -135,13 +135,12 @@ class Parser(docutils.parsers.Parser):
          ('Inline markup recognized at word boundaries only '
           '(adjacent to punctuation or whitespace). '
           'Force character-level inline markup recognition with '
-          '"\\ " (backslash + space). Default.',
+          '"\\ " (backslash + space).  (default)',
           ['--word-level-inline-markup'],
           {'action': 'store_false', 'dest': 'character_level_inline_markup'}),
          ('Inline markup recognized anywhere, regardless of surrounding '
           'characters. Backslash-escapes must be used to avoid unwanted '
-          'markup recognition. Useful for East Asian languages. '
-          'Experimental.',
+          'markup recognition. Useful for East Asian languages. ',
           ['--character-level-inline-markup'],
           {'action': 'store_true', 'default': False,
            'dest': 'character_level_inline_markup'}),

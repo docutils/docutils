@@ -45,15 +45,15 @@ class Writer(writers.Writer):
     settings_spec = (
         'LaTeX-Specific Options',
         None,
-        (('Specify LaTeX documentclass.  Default: "article".',
+        (('Specify LaTeX documentclass.  (default: "article")',
           ['--documentclass'],
           {'metavar': '<documentclass>', 'default': 'article'}),
          ('Specify document options.  Multiple options can be given, '
-          'separated by commas.  Default: "a4paper".',
+          'separated by commas.  (default: "a4paper")',
           ['--documentoptions'],
           {'metavar': '<options>', 'default': 'a4paper'}),
          ('Format for footnote references: one of "superscript" or '
-          '"brackets".  Default: "superscript".',
+          '"brackets".  (default: "superscript")',
           ['--footnote-references'],
           {'choices': ['superscript', 'brackets'], 'default': 'superscript',
            'metavar': '<format>',
@@ -68,7 +68,7 @@ class Writer(writers.Writer):
           {'dest': 'use_latex_citations', 'action': 'store_false',
            'validator': frontend.validate_boolean}),
          ('Format for block quote attributions: one of "dash" (em-dash '
-          'prefix), "parentheses"/"parens", or "none".  Default: "dash".',
+          'prefix), "parentheses"/"parens", or "none".  (default: "dash")',
           ['--attribution'],
           {'choices': ['dash', 'parentheses', 'parens', 'none'],
            'default': 'dash', 'metavar': '<format>'}),
@@ -96,8 +96,8 @@ class Writer(writers.Writer):
           {'default': False, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Comma-separated list of directories where stylesheets are found. '
-          'Used by --stylesheet-path when expanding relative path arguments. '
-          'Default: ".".',
+          'Used by --stylesheet-path when expanding relative path arguments.  '
+          '(default: ".")',
           ['--stylesheet-dirs'],
           {'metavar': '<dir[,dir,...]>',
            'validator': frontend.validate_comma_separated_list,
@@ -106,10 +106,10 @@ class Writer(writers.Writer):
           'Default: select PDF standard fonts (Times, Helvetica, Courier).',
           ['--latex-preamble'],
           {'metavar': '<preamble>', 'default': default_preamble}),
-         ('Specify the template file. Default: "%s".' % default_template,
+         (f'Specify the template file.  (default: "{default_template}")',
           ['--template'],
           {'default': default_template, 'metavar': '<file>'}),
-         ('Table of contents by LaTeX. (default)',
+         ('Table of contents by LaTeX.  (default)',
           ['--use-latex-toc'],
           {'default': True, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
@@ -162,7 +162,7 @@ class Writer(writers.Writer):
           ['--no-section-prefix-for-enumerators'],
           {'action': 'store_false', 'dest': 'section_prefix_for_enumerators'}),
          ('Set the separator between section number and enumerator '
-          'for compound enumerated lists.  Default: "-".',
+          'for compound enumerated lists.  (default: "-")',
           ['--section-enumerator-separator'],
           {'default': '-', 'metavar': '<char>'}),
          ('When possible, use the specified environment for literal-blocks. '
@@ -175,15 +175,15 @@ class Writer(writers.Writer):
            'validator': frontend.validate_boolean}),
          ('Table style. "standard" with horizontal and vertical lines, '
           '"booktabs" (LaTeX booktabs style) only horizontal lines '
-          'above and below the table and below the header, or "borderless". '
-          'Default: "standard"',
+          'above and below the table and below the header, or "borderless".  '
+          '(default: "standard")',
           ['--table-style'],
           {'default': ['standard'],
            'metavar': '<format>',
            'action': 'append',
            'validator': frontend.validate_comma_separated_list,
            'choices': table_style_values}),
-         ('LaTeX graphicx package option. Default: "".',
+         ('LaTeX graphicx package option.  (default: "")',
           ['--graphicx-option'],
           {'metavar': '<option>', 'default': ''}),
          ('LaTeX font encoding. '

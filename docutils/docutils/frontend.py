@@ -685,7 +685,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
     settings_spec = (
         'General Docutils Options',
         None,
-        (('Output destination name.  Default: None (stdout).',
+        (('Output destination name.  (default: stdout)',
           ['--output', '-o'], {'metavar': '<destination>',
                                'dest': 'output_path'}),
          ('Specify the document title as metadata.',
@@ -706,7 +706,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           ['--no-datestamp'], {'action': 'store_const', 'const': None,
                                'dest': 'datestamp'}),
          ('Base directory for absolute paths when reading '
-          'from the local filesystem. Default "".',
+          'from the local filesystem.  (default: "")',
           ['--root-prefix'],
           {'default': '', 'metavar': '<path>'}),
          ('Include a "View document source" link.',
@@ -750,13 +750,13 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           {'action': 'store_false', 'dest': 'strip_comments'}),
          ('Remove all elements with classes="<class>" from the document tree. '
           'Warning: potentially dangerous; use with caution. '
-          '(Multiple-use option.)',
+          '(multiple-use option.)',
           ['--strip-elements-with-class'],
           {'action': 'append', 'dest': 'strip_elements_with_classes',
            'metavar': '<class>', 'validator': validate_strip_class}),
          ('Remove all classes="<class>" attributes from elements in the '
           'document tree. Warning: potentially dangerous; use with caution. '
-          '(Multiple-use option.)',
+          '(multiple-use option.)',
           ['--strip-class'],
           {'action': 'append', 'dest': 'strip_classes',
            'metavar': '<class>', 'validator': validate_strip_class}),
@@ -798,28 +798,28 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          ('Disable Python tracebacks.  (default)',
           ['--no-traceback'], {'dest': 'traceback', 'action': 'store_false'}),
          ('Specify the encoding and optionally the '
-          'error handler of input text.  Default: utf-8.',
+          'error handler of input text.  (default: utf-8)',
           ['--input-encoding'],
           {'metavar': '<name[:handler]>', 'default': 'utf-8',
            'validator': validate_encoding_and_error_handler}),
          (SUPPRESS_HELP, ['--input-encoding-error-handler'],
           {'default': 'strict', 'validator': validate_encoding_error_handler}),
          ('Specify the text encoding and optionally the error handler for '
-          'output.  Default: utf-8.',
+          'output.  (default: utf-8)',
           ['--output-encoding'],
           {'metavar': '<name[:handler]>', 'default': 'utf-8',
            'validator': validate_encoding_and_error_handler}),
          (SUPPRESS_HELP, ['--output-encoding-error-handler'],
           {'default': 'strict', 'validator': validate_encoding_error_handler}),
          ('Specify text encoding and optionally the error handler'
-          f' for error output.  Default: {default_error_encoding}.',
+          f' for error output.  (default: {default_error_encoding})',
           ['--error-encoding', '-e'],
           {'metavar': '<name[:handler]>', 'default': default_error_encoding,
            'validator': validate_encoding_and_error_handler}),
          (SUPPRESS_HELP, ['--error-encoding-error-handler'],
           {'default': default_error_encoding_error_handler,
            'validator': validate_encoding_error_handler}),
-         ('Specify the language (as BCP 47 language tag).  Default: en.',
+         ('Specify the language (as BCP 47 language tag).  (default: en)',
           ['--language', '-l'], {'dest': 'language_code', 'default': 'en',
                                  'metavar': '<tag>'}),
          ('Write output file dependencies to <file>.',
