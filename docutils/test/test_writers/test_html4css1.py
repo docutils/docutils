@@ -364,7 +364,9 @@ No caption nor legend.
 </div>
 <div class="system-message">
 <p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">&lt;string&gt;</tt>, line 1)</p>
-Figure without caption and legend. Use &quot;image&quot;?</div>
+<p>Figure without caption and legend.</p>
+<p>Try the &quot;image&quot; directive (or cheat with an empty comment).</p>
+</div>
 <p>No caption nor legend.</p>
 """,
 ],

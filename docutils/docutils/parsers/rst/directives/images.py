@@ -156,8 +156,10 @@ class Figure(Image):
         if align:
             figure_node['align'] = align
         if not self.content:
-            msg = self.reporter.warning('Figure without caption and legend. '
-                                        'Use "image"?', line=self.lineno)
+            msg = self.reporter.warning('Figure without caption and legend.',
+                                        line=self.lineno)
+            msg.append(nodes.paragraph('', 'Try the "image" directive '
+                                       '(or cheat with an empty comment).'))
             return [figure_node, msg]
         else:
             # optional caption (single paragraph or empty comment)

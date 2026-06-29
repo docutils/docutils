@@ -51,7 +51,9 @@ totest['figures'] = [
         <image uri="picture.png">
     <system_message level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Figure without caption and legend. Use "image"?
+            Figure without caption and legend.
+        <paragraph>
+            Try the "image" directive (or cheat with an empty comment).
 """],
 ["""\
 .. figure:: picture.png
@@ -330,7 +332,9 @@ Testing for line-leaks:
         <image uri="picture.png">
     <system_message level="2" line="15" source="test data" type="WARNING">
         <paragraph>
-            Figure without caption and legend. Use "image"?
+            Figure without caption and legend.
+        <paragraph>
+            Try the "image" directive (or cheat with an empty comment).
     <figure>
         <image uri="picture.png">
     <figure>
@@ -347,7 +351,9 @@ Testing for line-leaks:
         <image uri="picture.png">
     <system_message level="2" line="34" source="test data" type="WARNING">
         <paragraph>
-            Figure without caption and legend. Use "image"?
+            Figure without caption and legend.
+        <paragraph>
+            Try the "image" directive (or cheat with an empty comment).
 """],
 ]
 

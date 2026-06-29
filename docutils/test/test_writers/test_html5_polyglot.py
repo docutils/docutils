@@ -391,7 +391,8 @@ No caption nor legend.
 </figure>
 <aside class="system-message">
 <p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
-<p>Figure without caption and legend. Use &quot;image&quot;?</p>
+<p>Figure without caption and legend.</p>
+<p>Try the &quot;image&quot; directive (or cheat with an empty comment).</p>
 </aside>
 <p>No caption nor legend.</p>
 """,
