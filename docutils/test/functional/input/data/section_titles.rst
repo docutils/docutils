@@ -34,7 +34,6 @@ level 8
 <<<<<<<
 Unsupported in ODT.
 
-.. _references:
 
 Section titles with inline markup
 ==================================
@@ -45,6 +44,8 @@ Section titles with inline markup
 Substitutions |fail|
 --------------------
 .. |fail| replace:: work
+
+.. _references:
 
 Note, that the "reference name" for this section is derived from the
 content *before* substitution. You can link to it with the `phrase
