@@ -2399,6 +2399,9 @@
         <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="99" source="functional/input/data/standard.rst" type="ERROR">
             <paragraph>
                 Undefined substitution referenced: "problematic".
+        <system_message level="1" line="159" source="functional/input/data/standard.rst" type="INFO">
+            <paragraph>
+                Cannot propagate target "target" to next element
         <system_message backrefs="footnote-reference-8" ids="system-message-2" level="3" line="390" source="functional/input/data/standard.rst" type="ERROR">
             <paragraph>
                 Unknown target name: "5".

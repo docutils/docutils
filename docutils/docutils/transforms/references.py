@@ -78,6 +78,9 @@ class PropagateTargets(Transform):
             if (next_node is None
                 or isinstance(next_node, (nodes.Invisible, nodes.Targetable))
                 and not isinstance(next_node, nodes.target)):
+                self.document.reporter.info(
+                    f'Cannot propagate target "{" ".join(target["names"])}" '
+                    'to next element', base_node=target)
                 continue
             next_node['ids'].extend(target['ids'])
             next_node['names'].extend(target['names'])

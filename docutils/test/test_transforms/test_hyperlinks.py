@@ -569,6 +569,9 @@ See `Element \\<a>`_, `Element <b\\>`_, and `Element <c>\\ `_.
             Footnote; \n\
             <reference refid="target">
                 target
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Cannot propagate target "target" to next element
 """],
 ["""\
 .. _target:
@@ -585,6 +588,9 @@ See `Element \\<a>`_, `Element <b\\>`_, and `Element <c>\\ `_.
             Citation; \n\
             <reference refid="target">
                 target
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Cannot propagate target "target" to next element
 """],
 ])
 

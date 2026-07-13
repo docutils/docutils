@@ -100,6 +100,8 @@ Release 1.0b1.dev (unpublished)
     `references.ReportDanglingReferences` and
     `references.ReportUnreferencedLinks`,
     obsolete `references.DanglingReferences`.
+  - Add INFO system_message if a <target> cannot be propagated
+    to the next node.
 
 * docutils/transforms/universal.py
 
