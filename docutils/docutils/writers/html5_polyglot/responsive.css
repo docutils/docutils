@@ -299,11 +299,9 @@ span:target + h4, span:target + h5, span:target + h6,
 dt:target, span:target, p:target,
 .contents :target,
 .contents:target > .topic-title,
-aside.system-message:target,
+aside:target,
 [role="doc-biblioentry"]:target,
 [role="doc-biblioref"]:target,
-[role="note"]:target, /* Docutils 0.18 and 0.19 */
-[role="doc-footnote"]:target, /* Docutils >= 0.20 */
 [role="doc-noteref"]:target {
   background-color: #d2e6ec;
 }

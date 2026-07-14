@@ -347,8 +347,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     # use the new HTML5 element <section>
     def visit_section(self, node) -> None:
         self.section_level += 1
-        self.body.append(
-            self.starttag(node, 'section'))
+        self.body.append(self.starttag(node, 'section'))
 
     def depart_section(self, node) -> None:
         self.section_level -= 1
@@ -356,8 +355,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
 
     # use the new HTML5 element <aside>
     def visit_sidebar(self, node) -> None:
-        self.body.append(
-            self.starttag(node, 'aside', CLASS='sidebar'))
+        self.body.append(self.starttag(node, 'aside', CLASS='sidebar'))
         self.in_sidebar = True
 
     def depart_sidebar(self, node) -> None:
@@ -394,7 +392,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         start_tag, close_tag = super().section_title_tags(node)
         ids = node.parent['ids']
         if (ids and getattr(self.settings, 'section_self_link', None)
-            and not isinstance(node.parent, nodes.document)):
+            and isinstance(node.parent, nodes.section)):
             self_link = ('<a class="self-link" title="link to this section"'
                          f' href="#{ids[-1]}"></a>')
             close_tag = close_tag.replace('</h', self_link + '</h')

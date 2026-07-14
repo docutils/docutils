@@ -64,11 +64,11 @@ class PropagateTargets(Transform):
     def apply(self) -> None:
         for target in self.document.findall(nodes.target):
             # Only block-level targets without reference (like ".. _target:"):
-            if (isinstance(target.parent, nodes.TextElement)
-                or (target.hasattr('refid') or target.hasattr('refuri')
-                    or target.hasattr('refname'))):
+            if (len(target) or isinstance(target.parent, nodes.TextElement)
+                or 'refid' in target
+                or 'refname' in target
+                or 'refuri' in target):
                 continue
-            assert len(target) == 0, 'error: block-level target has children'
             next_node = target.next_node(ascend=True)
             # skip system messages (may be removed by universal.FilterMessages)
             while isinstance(next_node, nodes.system_message):
@@ -96,6 +96,7 @@ class PropagateTargets(Transform):
                 # target shall be marked as referenced.
                 next_node.expect_referenced_by_id[id] = target
             for name in target['names']:
+                self.document.names[name] = next_node
                 next_node.expect_referenced_by_name[name] = target
             # If there are any expect_referenced_by_... attributes
             # in target set, copy them to next_node.
@@ -264,12 +265,12 @@ class IndirectHyperlinks(Transform):
         if (isinstance(reftarget, nodes.target)
             and not reftarget.resolved
             and reftarget.hasattr('refname')):
-            if hasattr(target, 'multiply_indirect'):
+            if hasattr(target, 'multiple_indirect'):
                 self.circular_indirect_reference(target)
                 return
-            target.multiply_indirect = 1
-            self.resolve_indirect_target(reftarget)  # multiply indirect
-            del target.multiply_indirect
+            target.multiple_indirect = True
+            self.resolve_indirect_target(reftarget)  # multiple redirection
+            del target.multiple_indirect
         if reftarget.hasattr('refuri'):
             target['refuri'] = reftarget['refuri']
             if 'refid' in target:
@@ -277,13 +278,12 @@ class IndirectHyperlinks(Transform):
         elif reftarget.hasattr('refid'):
             target['refid'] = reftarget['refid']
             self.document.note_refid(target)
+        elif reftarget['ids']:
+            target['refid'] = refid
+            self.document.note_refid(target)
         else:
-            if reftarget['ids']:
-                target['refid'] = refid
-                self.document.note_refid(target)
-            else:
-                self.nonexistent_indirect_target(target)
-                return
+            self.nonexistent_indirect_target(target)
+            return
         if refname is not None:
             del target['refname']
         target.resolved = True
@@ -403,7 +403,7 @@ class InternalTargets(Transform):
 
     def apply(self) -> None:
         for target in self.document.findall(nodes.target):
-            if not target.hasattr('refuri') and not target.hasattr('refid'):
+            if 'refid' not in target and 'refuri' not in target:
                 self.resolve_reference_ids(target)
 
     def resolve_reference_ids(self, target) -> None:
@@ -809,7 +809,7 @@ class TargetNotes(Transform):
         nodelist = []
         for target in self.document.findall(nodes.target):
             # Only external targets.
-            if not target.hasattr('refuri'):
+            if 'refuri' not in target:
                 continue
             names = target['names']
             refs = []
@@ -1050,7 +1050,7 @@ class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
         pass
 
     def visit_reference(self, node) -> None:
-        if node.resolved or not node.hasattr('refname'):
+        if node.resolved or 'refname' not in node:
             return
         refname = node['refname']
         id = self.document.nameids.get(refname, '')

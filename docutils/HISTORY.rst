@@ -94,12 +94,10 @@ Release 1.0b1.dev (unpublished)
 
 * docutils/transforms/references.py
 
-  - Do not call `unknown_reference_resolvers` in
-    `IndirectHyperlinks.resolve_indirect_target()`.
-  - 3 new transforms, `references.MatchReferences`,
-    `references.ReportDanglingReferences` and
-    `references.ReportUnreferencedLinks`,
-    obsolete `references.DanglingReferences`.
+  - `IndirectHyperlinks.resolve_indirect_target()` no longer calls
+    `unknown_reference_resolvers` and only sets IDs if required.
+  - 3 new transforms, `MatchReferences`, `ReportDanglingReferences`,
+    and `ReportUnreferencedLinks` obsolete `DanglingReferences`.
   - Add INFO system_message if a <target> cannot be propagated
     to the next node.
 
@@ -119,10 +117,11 @@ Release 1.0b1.dev (unpublished)
   - Change the default value of the "section_self_link" setting to True.
   - Add CSS rules for back-link and self-link symbols from
     "responsive.css" also in "plain.css" and "tuftig.css".
-  - Use normal font size and colour in CSS for informal titles of type "rubric".
+  - Use normal font size and colour in CSS for informal titles
+    of type "rubric".
   - Use more specific CSS selectors for styling <aside> elements to avoid
-    problems with other elements using "topic" as class value, e.g. a docinfo
-    item "topic" in Enhancement Reports.
+    problems with other elements using "topic" as class value (e.g. a
+    docinfo item "topic" in Enhancement Reports).
   - More robust handling of figure captions.
 
 * docutils/writers/latex2e/__init__.py

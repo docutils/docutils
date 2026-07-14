@@ -474,7 +474,7 @@ For example, the following `hyperlink references`_ are equivalent::
       Hyperlink`_
 
 Hyperlinks_, footnotes_, and citations_ all share the same namespace
-for reference names. [#substitution-text]_
+for `reference names`_. [#substitution-text]_
 This means that a footnote defined as "``.. [#note]``" can be referred to
 by the `footnote reference`_ ``[#note]_`` as well as a plain `hyperlink
 reference`_ ``note_``. Of course, each type of reference (hyperlink,
@@ -629,8 +629,8 @@ in its use of section titles: once a hierarchy of title styles is
 established, sections must use that hierarchy. [#]_
 
 Each section title automatically generates a hyperlink target pointing
-to the section.  The text of the hyperlink target (the "reference
-name") is the same as that of the section title.  See `Implicit
+to the section.  The text of the hyperlink target (the `reference name`_)
+is the same as that of the section title.  See `Implicit
 Hyperlink Targets`_ for a complete description.
 
 Sections may contain `body elements`_, transitions_, and nested

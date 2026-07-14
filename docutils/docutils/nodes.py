@@ -686,7 +686,7 @@ class Element(Node):
     def __len__(self) -> int:
         return len(self.children)
 
-    def __contains__(self, key) -> bool:
+    def __contains__(self, key: str | Node) -> bool:
         # Test for both, children and attributes with operator ``in``.
         if isinstance(key, str):
             return key in self.attributes
@@ -1209,17 +1209,13 @@ class Element(Node):
         `name` or id `id`."""
         self.referenced = True
         # Element.expect_referenced_by_* dictionaries map names or ids
-        # to nodes whose ``referenced`` attribute is set to true as
-        # soon as this node is referenced by the given name or id.
-        # Needed for target propagation.
-        by_name = getattr(self, 'expect_referenced_by_name', {}).get(name)
-        by_id = getattr(self, 'expect_referenced_by_id', {}).get(id)
-        if by_name:
-            assert name is not None
-            by_name.referenced = True
-        if by_id:
-            assert id is not None
-            by_id.referenced = True
+        # that were "propagated" to this element to the elements that
+        # had these attributes before.  Mark them as ``referenced``
+        # when this node is referenced by the respective names or ids.
+        if relay := getattr(self, 'expect_referenced_by_name', {}).get(name):
+            relay.referenced = True
+        if relay := getattr(self, 'expect_referenced_by_id', {}).get(id):
+            relay.referenced = True
 
     @classmethod
     def is_not_list_attribute(cls, attr: str) -> bool:
@@ -1972,7 +1968,7 @@ class document(Root, Element):
         Check/set identifiers of element `node`. Return last identifier.
 
         Check `node`s identifiers for duplicates,
-        create a new identifier if there are none.
+        create a new identifier if there are no identifiers.
         Update `document.ids` and `document.nameids`.
 
         Provisional.
@@ -2168,7 +2164,7 @@ class document(Root, Element):
                 self.nametypes.setdefault(name, explicit)
 
     def has_name(self, name: str) -> bool:
-        # TODO: deprecate? (use ``name in document.names``)
+        # TODO: deprecate in Docutils 2.0 (use ``name in document.names``)
         return name in self.names
 
     # "note" here is an imperative verb: "take note of".
@@ -2576,9 +2572,7 @@ class figure(General, Element):
                             (legend, '?'),
                             )
     # (image, ((caption, legend?) | legend))
-    # TODO: According to the DTD, a caption or legend is required
-    # but rST allows "bare" figures which are formatted differently from
-    # images (floating in LaTeX, nested in a <figure> in HTML). [bugs: #489]
+    # A caption or legend is required (cf. [bugs: #489]).
 
 
 # Tables

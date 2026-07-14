@@ -255,9 +255,6 @@ a number is added for disambiguation. With the default, the third
 :Default: "%" (use Doctree element name; changed from "id" in Docutils 0.18).
 :Option:  ``--auto-id-prefix`` (hidden, intended mainly for programmatic use).
 
-.. _identifier normalization:
-   ../ref/rst/directives.html#identifier-normalization
-
 
 datestamp
 ---------
@@ -806,7 +803,7 @@ identifiers_ may have a disambiguating number added to the normalized
 `reference name`_.
 
 :Default: True; will change to False in Docutils 2.0.
-:Option:  ``--legacy-ids``, ``--matching-ids``.
+:Options:  ``--legacy-ids``, ``--matching-ids``.
 
 New in Docutils 0.23. Provisional.
 
@@ -2158,7 +2155,7 @@ always "UTF-8".
 .. _ODT Writer: odt.html
 .. _OpenDocument: https://en.wikipedia.org/wiki/OpenDocument
 
-add-syntax_highlighting
+add_syntax_highlighting
 ~~~~~~~~~~~~~~~~~~~~~~~
 Add syntax highlighting in literal code blocks.
 See section "`Syntax highlighting`__" in the ODT Writer documentation
@@ -2610,6 +2607,8 @@ See the `inspecting_codecs`_ package for a replacement.
 .. _Document Tree: ../ref/doctree.html
 .. _Doctree: ../ref/doctree.html
 .. _class attribute: ../ref/doctree.html#classes
+.. _identifier:
+.. _element identifiers:
 .. _identifiers: ../ref/doctree.html#identifiers
 .. _reference name:
 .. _reference names: ../ref/doctree.html#reference-names
@@ -2670,7 +2669,7 @@ See the `inspecting_codecs`_ package for a replacement.
 .. _footnote references: ../ref/rst/restructuredtext.html#footnote-references
 .. _hyperlink references: ../ref/rst/restructuredtext.html#hyperlink-references
 .. _implicit target:
-.. _implicit targets:  ../ref/rst/restructuredtext.html#implicit-hyperlink-targets
+.. _implicit targets: ../ref/rst/restructuredtext.html#implicit-hyperlink-targets
 .. _interpreted text role: ../ref/rst/restructuredtext.html#interpreted-text
 .. _inline markup recognition rules:
     ../ref/rst/restructuredtext.html#inline-markup-recognition-rules

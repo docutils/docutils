@@ -71,11 +71,6 @@ Document Tree / Docutils DTD
   <substitution_definition>, and <target> elements when warning about
   transitions at the start or end of the document or a section.
 
-* In case of name conflicts, an explicit target will not only override
-  the "name" attribute of an implicit target but also its name-based "id".
-  Use case: "sane" anchors for links from an external source to a fragment
-  of the document.  Cf. https://github.com/sphinx-doc/sphinx/issues/1961
-
 Parsers
 -------
 
@@ -100,12 +95,6 @@ Writers
   __ docs/user/html.html#html
 
 * "html5" writer:
-
-  - Prefer explicit reference names as base for an HTML element's ID
-    in Docutils 1.0. No change for internal cross-references.
-    Cf. `Sphinx issue #1961`__
-
-    __ https://github.com/sphinx-doc/sphinx/issues/1961
 
   - Move attribution behind the blockquote to comply with the
     `"HTML living standard"`__ [#]_ and adapt CSS stylesheets
@@ -1638,17 +1627,16 @@ Release 0.3.5 (2004-07-29)
 .. _datestamp: docs/user/config.html#datestamp
 .. _embed_images: docs/user/config.html#embed-images
 .. _graphicx_option: docs/user/config.html#graphicx-option
-.. _legacy_class_functions: docs/user/config.html#legacy-class-functions
-.. _literal_block_env: docs/user/config.html#literal-block-env
 .. _id_prefix: docs/user/config.html#id-prefix
 .. _image_loading: docs/user/config.html#image-loading
 .. _initial_header_level: docs/user/config.html#initial-header-level
 .. _input_encoding: docs/user/config.html#input-encoding
 .. _[latex writers]: docs/user/config.html#latex-writers
 .. _latex_footnotes: docs/user/config.html#latex-footnotes
+.. _legacy_class_functions: docs/user/config.html#legacy-class-functions
 .. _legacy_column_widths: docs/user/config.html#legacy-column-widths
 .. _legacy_ids: docs/user/config.html#legacy-ids
-.. _text_references: docs/user/config.html#text-references
+.. _literal_block_env: docs/user/config.html#literal-block-env
 .. _math_output: docs/user/config.html#math-output
 .. _old-format configuration files:
     docs/user/config.html#old-format-configuration-files
@@ -1660,6 +1648,7 @@ Release 0.3.5 (2004-07-29)
 .. _section_self_link: docs/user/config.html#section-self-link
 .. _SmartQuotes: docs/user/config.html#smart-quotes
 .. _sources: docs/user/config.html#sources
+.. _text_references: docs/user/config.html#text-references
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 .. _validate: docs/user/config.html#validate
 .. _"writer" setting: docs/user/config.html#writer-buildhtml-application
