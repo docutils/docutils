@@ -51,7 +51,8 @@ class Parser(Component):
           ['--legacy-ids'],
           {'action': 'store_true', 'default': True,
            'validator': frontend.validate_boolean}),
-         ('Generate IDs for implicit targets only if required.',
+         ('Generate IDs for implicit targets only if required; '
+          'no IDs for external and indirect targets.',
           ['--lazy-ids'],
           {'dest': 'legacy_ids', 'action': 'store_false'}),
          ('Validate the document tree after parsing.',
@@ -101,7 +102,7 @@ PARSER_ALIASES = {  # short names for known parsers
                   'xml': 'docutils.parsers.docutils_xml',
                   # 3rd-party Markdown parsers
                   'myst': 'myst_parser.docutils_',
-                  # 'pycmark': works out of the box
+                  # 'pycmark': works out of the box (with `legacy_ids`)
                   # dispatcher for 3rd-party Markdown parsers
                   'commonmark': 'docutils.parsers.commonmark_wrapper',
                   'markdown': 'docutils.parsers.commonmark_wrapper',

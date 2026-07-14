@@ -594,7 +594,8 @@ See `Element \\<a>`_, `Element <b\\>`_, and `Element <c>\\ `_.
 """],
 ])
 
-totest['explicit hyperlinks legacy'] = ({'legacy_ids': True}, [
+# explicit internal hyperlinks are not affected by "legacy_ids"
+totest['explicit internal hyperlinks (legacy_ids)'] = ({'legacy_ids': True}, [
 ["""\
 .. _internal hyperlink:
 
@@ -641,24 +642,6 @@ The results of the transform are not visible at the XML level.
          reference.
     <paragraph>
         The results of the transform are not visible at the XML level.
-"""],
-["""\
-.. _chained:
-__ http://anonymous
-
-Anonymous__ and chained_ both refer to the same URI.
-""",
-"""\
-<document source="test data">
-    <target refid="chained">
-    <target anonymous="1" ids="target-1 chained" names="chained" refuri="http://anonymous">
-    <paragraph>
-        <reference anonymous="1" refuri="http://anonymous">
-            Anonymous
-         and \n\
-        <reference refuri="http://anonymous">
-            chained
-         both refer to the same URI.
 """],
 ["""\
 .. _a:
@@ -730,6 +713,196 @@ a_\\ b_
             b
 """],
 ["""\
+Unknown reference_.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Unknown \n\
+        <problematic ids="problematic-1" refid="system-message-1">
+            reference_
+        .
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Unknown target name: "reference".
+"""],
+["""\
+Duplicate manual footnote labels, with reference ([1]_):
+
+.. [1] Footnote.
+
+.. [1] Footnote.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Duplicate manual footnote labels, with reference (
+        <problematic ids="footnote-reference-1" refid="system-message-1">
+            [1]_
+        ):
+    <footnote dupnames="1" ids="footnote-1">
+        <label>
+            1
+        <paragraph>
+            Footnote.
+    <footnote dupnames="1" ids="footnote-2">
+        <label>
+            1
+        <system_message backrefs="footnote-2" level="2" line="5" source="test data" type="WARNING">
+            <paragraph>
+                Duplicate explicit target name: "1".
+        <paragraph>
+            Footnote.
+    <system_message backrefs="footnote-reference-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Duplicate target name, cannot be used as a unique reference: "1".
+"""],
+])
+
+totest['explicit internal hyperlinks (lazy_ids)'] = ({'legacy_ids': False},
+    # all samples compile as before
+    totest['explicit internal hyperlinks (legacy_ids)'][1])
+
+# implicit, indirect, and external hyperlinks get IDs with "legacy_ids"
+totest['various hyperlinks (legacy_ids)'] = ({'legacy_ids': True}, [
+["""\
+.. contents:: Table of Contents
+.. _indirect reference to the table of contents: `table of contents`_
+
+Section
+=======
+
+Testing an `indirect reference to the table of contents`_.
+""",
+"""\
+<document source="test data">
+    <topic classes="contents" ids="table-of-contents" names="table\\ of\\ contents">
+        <title>
+            Table of Contents
+        <bullet_list>
+            <list_item>
+                <paragraph>
+                    <reference ids="toc-entry-1" refid="section">
+                        Section
+    <target ids="indirect-reference-to-the-table-of-contents" names="indirect\\ reference\\ to\\ the\\ table\\ of\\ contents" refid="table-of-contents">
+    <section ids="section" names="section">
+        <title refid="toc-entry-1">
+            Section
+        <paragraph>
+            Testing an \n\
+            <reference refid="table-of-contents">
+                indirect reference to the table of contents
+            .
+"""],
+["""\
+.. _explicit target:
+
+Title
+-----
+
+Let's reference the `explicit target`_ to avoid an irrelevant error.
+""",
+"""\
+<document source="test data">
+    <target refid="explicit-target">
+    <section ids="title explicit-target" names="title explicit\\ target">
+        <title>
+            Title
+        <paragraph>
+            Let's reference the \n\
+            <reference refid="explicit-target">
+                explicit target
+             to avoid an irrelevant error.
+"""],
+["""\
+target1_ should be an alias of target2_, not the Title.
+
+.. _target1:
+.. _target2: URI
+
+Title
+=====
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference refuri="URI">
+            target1
+         should be an alias of \n\
+        <reference refuri="URI">
+            target2
+        , not the Title.
+    <target refid="target1">
+    <target ids="target2 target1" names="target2 target1" refuri="URI">
+    <section ids="title" names="title">
+        <title>
+            Title
+"""],
+["""\
+foo
+---
+
+With legacy_ids = True, an explicit target _`foo` overrides a
+homonymous implicit target but gets a "diambiguated" identifier.
+
+The reference foo_ points to the explicit target.
+Referencing from an external document requires the
+non-obvious fragment identifier "#foo-1".
+""",
+"""\
+<document source="test data">
+    <section dupnames="foo" ids="foo">
+        <title>
+            foo
+        <system_message backrefs="foo-1" level="1" line="5" source="test data" type="INFO">
+            <paragraph>
+                Target name overrides implicit target name "foo".
+        <paragraph>
+            With legacy_ids = True, an explicit target \n\
+            <target ids="foo-1" names="foo">
+                foo
+             overrides a
+            homonymous implicit target but gets a "diambiguated" identifier.
+        <paragraph>
+            The reference \n\
+            <reference refid="foo-1">
+                foo
+             points to the explicit target.
+            Referencing from an external document requires the
+            non-obvious fragment identifier "#foo-1".
+"""],
+["""\
+foo
+---
+
+If an implicit target precedes a homonymous explicit target _`foo`,
+the explicit target takes over the reference name but not the identifier.
+
+The reference foo_ points to the explicit target. However, referencing from
+an external document requires the non-obvious fragment identifier "#foo-1".
+""",
+"""\
+<document source="test data">
+    <section dupnames="foo" ids="foo">
+        <title>
+            foo
+        <system_message backrefs="foo-1" level="1" line="5" source="test data" type="INFO">
+            <paragraph>
+                Target name overrides implicit target name "foo".
+        <paragraph>
+            If an implicit target precedes a homonymous explicit target \n\
+            <target ids="foo-1" names="foo">
+                foo
+            ,
+            the explicit target takes over the reference name but not the identifier.
+        <paragraph>
+            The reference \n\
+            <reference refid="foo-1">
+                foo
+             points to the explicit target. However, referencing from
+            an external document requires the non-obvious fragment identifier "#foo-1".
+"""],
+["""\
 .. _external hyperlink: http://uri
 
 `External hyperlink`_ reference.
@@ -741,112 +914,6 @@ a_\\ b_
         <reference refuri="http://uri">
             External hyperlink
          reference.
-"""],
-["""\
-.. _external hyperlink: http://uri
-.. _indirect target: `external hyperlink`_
-""",
-"""\
-<document source="test data">
-    <target ids="external-hyperlink" names="external\\ hyperlink" refuri="http://uri">
-    <target ids="indirect-target" names="indirect\\ target" refuri="http://uri">
-    <system_message level="1" line="2" source="test data" type="INFO">
-        <paragraph>
-            Hyperlink target "indirect target" is not referenced.
-"""],
-["""\
-.. _chained:
-.. _external hyperlink: http://uri
-
-`External hyperlink`_ reference
-and a chained_ reference too.
-""",
-"""\
-<document source="test data">
-    <target refid="chained">
-    <target ids="external-hyperlink chained" names="external\\ hyperlink chained" refuri="http://uri">
-    <paragraph>
-        <reference refuri="http://uri">
-            External hyperlink
-         reference
-        and a \n\
-        <reference refuri="http://uri">
-            chained
-         reference too.
-"""],
-["""\
-.. _external hyperlink: http://uri
-.. _indirect hyperlink: `external hyperlink`_
-
-`Indirect hyperlink`_ reference.
-""",
-"""\
-<document source="test data">
-    <target ids="external-hyperlink" names="external\\ hyperlink" refuri="http://uri">
-    <target ids="indirect-hyperlink" names="indirect\\ hyperlink" refuri="http://uri">
-    <paragraph>
-        <reference refuri="http://uri">
-            Indirect hyperlink
-         reference.
-"""],
-["""\
-.. _external hyperlink: http://uri
-.. _chained:
-.. _indirect hyperlink: `external hyperlink`_
-
-Chained_ `indirect hyperlink`_ reference.
-""",
-"""\
-<document source="test data">
-    <target ids="external-hyperlink" names="external\\ hyperlink" refuri="http://uri">
-    <target refuri="http://uri">
-    <target ids="indirect-hyperlink chained" names="indirect\\ hyperlink chained" refuri="http://uri">
-    <paragraph>
-        <reference refuri="http://uri">
-            Chained
-         \n\
-        <reference refuri="http://uri">
-            indirect hyperlink
-         reference.
-"""],
-["""\
-.. __: http://full
-__
-__ http://simplified
-.. _external: http://indirect.external
-__ external_
-__
-
-`Full syntax anonymous external hyperlink reference`__,
-`chained anonymous external reference`__,
-`simplified syntax anonymous external hyperlink reference`__,
-`indirect anonymous hyperlink reference`__,
-`internal anonymous hyperlink reference`__.
-""",
-"""\
-<document source="test data">
-    <target anonymous="1" ids="target-1" refuri="http://full">
-    <target anonymous="1" refid="target-2">
-    <target anonymous="1" ids="target-3 target-2" refuri="http://simplified">
-    <target ids="external" names="external" refuri="http://indirect.external">
-    <target anonymous="1" ids="target-4" refuri="http://indirect.external">
-    <target anonymous="1" refid="target-5">
-    <paragraph ids="target-5">
-        <reference anonymous="1" refuri="http://full">
-            Full syntax anonymous external hyperlink reference
-        ,
-        <reference anonymous="1" refuri="http://simplified">
-            chained anonymous external reference
-        ,
-        <reference anonymous="1" refuri="http://simplified">
-            simplified syntax anonymous external hyperlink reference
-        ,
-        <reference anonymous="1" refuri="http://indirect.external">
-            indirect anonymous hyperlink reference
-        ,
-        <reference anonymous="1" refid="target-5">
-            internal anonymous hyperlink reference
-        .
 """],
 ["""\
 Duplicate external target_'s (different URIs):
@@ -889,27 +956,71 @@ Duplicate external targets (different URIs) without reference:
     <target dupnames="target" ids="target-1" refuri="second">
 """],
 ["""\
-Several__ anonymous__ hyperlinks__, but not enough targets.
+.. _chained:
+.. _external hyperlink: http://uri
 
-__ http://example.org
+`External hyperlink`_ reference
+and a chained_ reference too.
 """,
 """\
 <document source="test data">
+    <target refid="chained">
+    <target ids="external-hyperlink chained" names="external\\ hyperlink chained" refuri="http://uri">
     <paragraph>
-        <problematic ids="problematic-1" refid="system-message-1">
-            Several__
-         \n\
-        <problematic ids="problematic-2" refid="system-message-1">
-            anonymous__
-         \n\
-        <problematic ids="problematic-3" refid="system-message-1">
-            hyperlinks__
-        , but not enough targets.
-    <target anonymous="1" ids="target-1" refuri="http://example.org">
-    <system_message backrefs="problematic-1 problematic-2 problematic-3" ids="system-message-1" level="3" source="test data" type="ERROR">
+        <reference refuri="http://uri">
+            External hyperlink
+         reference
+        and a \n\
+        <reference refuri="http://uri">
+            chained
+         reference too.
+"""],
+["""\
+.. _external hyperlink: http://uri
+.. _indirect target: `external hyperlink`_
+""",
+"""\
+<document source="test data">
+    <target ids="external-hyperlink" names="external\\ hyperlink" refuri="http://uri">
+    <target ids="indirect-target" names="indirect\\ target" refuri="http://uri">
+    <system_message level="1" line="2" source="test data" type="INFO">
         <paragraph>
-            Anonymous hyperlink mismatch: 3 references but 1 targets.
-            See "backrefs" attribute for IDs.
+            Hyperlink target "indirect target" is not referenced.
+"""],
+["""\
+.. _external hyperlink: http://uri
+.. _indirect hyperlink: `external hyperlink`_
+
+`Indirect hyperlink`_ reference.
+""",
+"""\
+<document source="test data">
+    <target ids="external-hyperlink" names="external\\ hyperlink" refuri="http://uri">
+    <target ids="indirect-hyperlink" names="indirect\\ hyperlink" refuri="http://uri">
+    <paragraph>
+        <reference refuri="http://uri">
+            Indirect hyperlink
+         reference.
+"""],
+["""\
+.. _external hyperlink: http://uri
+.. _chained:
+.. _indirect hyperlink: `external hyperlink`_
+
+Chained_ `indirect hyperlink`_ reference.
+""",
+"""\
+<document source="test data">
+    <target ids="external-hyperlink" names="external\\ hyperlink" refuri="http://uri">
+    <target refuri="http://uri">
+    <target ids="indirect-hyperlink chained" names="indirect\\ hyperlink chained" refuri="http://uri">
+    <paragraph>
+        <reference refuri="http://uri">
+            Chained
+         \n\
+        <reference refuri="http://uri">
+            indirect hyperlink
+         reference.
 """],
 ["""\
 .. _external: http://uri
@@ -1036,57 +1147,89 @@ Anonymous__ and `named link`_ to an image with target (sic!).
          to an image with target (sic!).
 """],
 ["""\
-Unknown reference_.
+.. __: http://full
+__
+__ http://simplified
+.. _external: http://indirect.external
+__ external_
+__
+
+`Full syntax anonymous external hyperlink reference`__,
+`chained anonymous external reference`__,
+`simplified syntax anonymous external hyperlink reference`__,
+`indirect anonymous hyperlink reference`__,
+`internal anonymous hyperlink reference`__.
 """,
 """\
 <document source="test data">
-    <paragraph>
-        Unknown \n\
-        <problematic ids="problematic-1" refid="system-message-1">
-            reference_
+    <target anonymous="1" ids="target-1" refuri="http://full">
+    <target anonymous="1" refid="target-2">
+    <target anonymous="1" ids="target-3 target-2" refuri="http://simplified">
+    <target ids="external" names="external" refuri="http://indirect.external">
+    <target anonymous="1" ids="target-4" refuri="http://indirect.external">
+    <target anonymous="1" refid="target-5">
+    <paragraph ids="target-5">
+        <reference anonymous="1" refuri="http://full">
+            Full syntax anonymous external hyperlink reference
+        ,
+        <reference anonymous="1" refuri="http://simplified">
+            chained anonymous external reference
+        ,
+        <reference anonymous="1" refuri="http://simplified">
+            simplified syntax anonymous external hyperlink reference
+        ,
+        <reference anonymous="1" refuri="http://indirect.external">
+            indirect anonymous hyperlink reference
+        ,
+        <reference anonymous="1" refid="target-5">
+            internal anonymous hyperlink reference
         .
-    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Unknown target name: "reference".
 """],
 ["""\
-Duplicate manual footnote labels, with reference ([1]_):
+.. _chained:
+__ http://anonymous
 
-.. [1] Footnote.
+Anonymous__ and chained_ both refer to the same URI.
+""",
+"""\
+<document source="test data">
+    <target refid="chained">
+    <target anonymous="1" ids="target-1 chained" names="chained" refuri="http://anonymous">
+    <paragraph>
+        <reference anonymous="1" refuri="http://anonymous">
+            Anonymous
+         and \n\
+        <reference refuri="http://anonymous">
+            chained
+         both refer to the same URI.
+"""],
+["""\
+Several__ anonymous__ hyperlinks__, but not enough targets.
 
-.. [1] Footnote.
+__ http://example.org
 """,
 """\
 <document source="test data">
     <paragraph>
-        Duplicate manual footnote labels, with reference (
-        <problematic ids="footnote-reference-1" refid="system-message-1">
-            [1]_
-        ):
-    <footnote dupnames="1" ids="footnote-1">
-        <label>
-            1
+        <problematic ids="problematic-1" refid="system-message-1">
+            Several__
+         \n\
+        <problematic ids="problematic-2" refid="system-message-1">
+            anonymous__
+         \n\
+        <problematic ids="problematic-3" refid="system-message-1">
+            hyperlinks__
+        , but not enough targets.
+    <target anonymous="1" ids="target-1" refuri="http://example.org">
+    <system_message backrefs="problematic-1 problematic-2 problematic-3" ids="system-message-1" level="3" source="test data" type="ERROR">
         <paragraph>
-            Footnote.
-    <footnote dupnames="1" ids="footnote-2">
-        <label>
-            1
-        <system_message backrefs="footnote-2" level="2" line="5" source="test data" type="WARNING">
-            <paragraph>
-                Duplicate explicit target name: "1".
-        <paragraph>
-            Footnote.
-    <system_message backrefs="footnote-reference-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Duplicate target name, cannot be used as a unique reference: "1".
+            Anonymous hyperlink mismatch: 3 references but 1 targets.
+            See "backrefs" attribute for IDs.
 """],
 ])
 
-totest['explicit hyperlinks'] = ({'legacy_ids': False},
-                                 # all samples compile as before
-                                 totest['explicit hyperlinks legacy'][1])
-
-totest['implicit hyperlinks legacy'] = ({'legacy_ids': True}, [
+# implicit, indirect, and external hyperlinks get *no* IDs with "lazy_ids"
+totest['various hyperlinks (lazy_ids)'] = ({'legacy_ids': False}, [
 ["""\
 .. contents:: Table of Contents
 .. _indirect reference to the table of contents: `table of contents`_
@@ -1106,141 +1249,7 @@ Testing an `indirect reference to the table of contents`_.
                 <paragraph>
                     <reference ids="toc-entry-1" refid="section">
                         Section
-    <target ids="indirect-reference-to-the-table-of-contents" names="indirect\\ reference\\ to\\ the\\ table\\ of\\ contents" refid="table-of-contents">
-    <section ids="section" names="section">
-        <title refid="toc-entry-1">
-            Section
-        <paragraph>
-            Testing an \n\
-            <reference refid="table-of-contents">
-                indirect reference to the table of contents
-            .
-"""],
-["""\
-.. _explicit target:
-
-Title
------
-
-Let's reference it (`explicit target`_) to avoid an irrelevant error.
-""",
-"""\
-<document source="test data">
-    <target refid="explicit-target">
-    <section ids="title explicit-target" names="title explicit\\ target">
-        <title>
-            Title
-        <paragraph>
-            Let's reference it (
-            <reference refid="explicit-target">
-                explicit target
-            ) to avoid an irrelevant error.
-"""],
-["""\
-target1_ should refer to target2_, not the Title.
-
-.. _target1:
-.. _target2: URI
-
-Title
-=====
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        <reference refuri="URI">
-            target1
-         should refer to \n\
-        <reference refuri="URI">
-            target2
-        , not the Title.
-    <target refid="target1">
-    <target ids="target2 target1" names="target2 target1" refuri="URI">
-    <section ids="title" names="title">
-        <title>
-            Title
-"""],
-["""\
-An explicit target _`foo` overrides a homonymous implicit target.
-
-foo
----
-
-The reference foo_ points to the explicit target.
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        An explicit target \n\
-        <target ids="foo" names="foo">
-            foo
-         overrides a homonymous implicit target.
-    <section dupnames="foo" ids="foo-1">
-        <title>
-            foo
-        <system_message backrefs="foo-1" level="1" line="4" source="test data" type="INFO">
-            <paragraph>
-                Duplicate implicit target name: "foo".
-        <paragraph>
-            The reference \n\
-            <reference refid="foo">
-                foo
-             points to the explicit target.
-"""],
-["""\
-foo
----
-
-If an implicit target precedes a homonymous explicit target _`foo`,
-the explicit target takes over the reference name but not the identifier.
-
-The reference foo_ points to the explicit target. However, referencing from
-an external document requires the non-obvious fragment identifier "#foo-1".
-""",
-"""\
-<document source="test data">
-    <section dupnames="foo" ids="foo">
-        <title>
-            foo
-        <system_message backrefs="foo-1" level="1" line="5" source="test data" type="INFO">
-            <paragraph>
-                Target name overrides implicit target name "foo".
-        <paragraph>
-            If an implicit target precedes a homonymous explicit target \n\
-            <target ids="foo-1" names="foo">
-                foo
-            ,
-            the explicit target takes over the reference name but not the identifier.
-        <paragraph>
-            The reference \n\
-            <reference refid="foo-1">
-                foo
-             points to the explicit target. However, referencing from
-            an external document requires the non-obvious fragment identifier "#foo-1".
-"""],
-])
-
-totest['implicit hyperlinks'] = ({'legacy_ids': False}, [
-["""\
-.. contents:: Table of Contents
-.. _indirect reference to the table of contents: `table of contents`_
-
-Section
-=======
-
-Testing an `indirect reference to the table of contents`_.
-""",
-"""\
-<document source="test data">
-    <topic classes="contents" ids="table-of-contents" names="table\\ of\\ contents">
-        <title>
-            Table of Contents
-        <bullet_list>
-            <list_item>
-                <paragraph>
-                    <reference ids="toc-entry-1" refid="section">
-                        Section
-    <target ids="indirect-reference-to-the-table-of-contents" names="indirect\\ reference\\ to\\ the\\ table\\ of\\ contents" refid="table-of-contents">
+    <target names="indirect\\ reference\\ to\\ the\\ table\\ of\\ contents" refid="table-of-contents">
     <section ids="section" names="section">
         <title refid="toc-entry-1">
             Section
@@ -1274,7 +1283,7 @@ References to the section (title_) use the ID from the `explicit target`_.
             .
 """],
 ["""\
-target1_ should refer to target2_, not the Title.
+target1_ should be an alias of target2_, not the Title.
 
 .. _target1:
 .. _target2: URI
@@ -1287,12 +1296,12 @@ Title
     <paragraph>
         <reference refuri="URI">
             target1
-         should refer to \n\
+         should be an alias of \n\
         <reference refuri="URI">
             target2
         , not the Title.
     <target refid="target1">
-    <target ids="target2 target1" names="target2 target1" refuri="URI">
+    <target ids="target1" names="target2 target1" refuri="URI">
     <section names="title">
         <title>
             Title
@@ -1329,6 +1338,232 @@ using the matching fragment identifier "#foo".
              points to the explicit target.
             Referencing from an external document can be done
             using the matching fragment identifier "#foo".
+"""],
+["""\
+.. _external hyperlink: http://uri
+
+`External hyperlink`_ reference.
+""",
+"""\
+<document source="test data">
+    <target names="external\\ hyperlink" refuri="http://uri">
+    <paragraph>
+        <reference refuri="http://uri">
+            External hyperlink
+         reference.
+"""],
+["""\
+Duplicate external target_'s (different URIs):
+
+.. _target: first
+
+.. _target: second
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Duplicate external \n\
+        <problematic ids="problematic-1" refid="system-message-1">
+            target_
+        's (different URIs):
+    <target dupnames="target" refuri="first">
+    <system_message level="2" line="5" source="test data" type="WARNING">
+        <paragraph>
+            Duplicate explicit target name: "target".
+    <target dupnames="target" refuri="second">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Duplicate target name, cannot be used as a unique reference: "target".
+"""],
+["""\
+Duplicate external targets (different URIs) without reference:
+
+.. _target: first
+
+.. _target: second
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Duplicate external targets (different URIs) without reference:
+    <target dupnames="target" refuri="first">
+    <system_message level="2" line="5" source="test data" type="WARNING">
+        <paragraph>
+            Duplicate explicit target name: "target".
+    <target dupnames="target" refuri="second">
+"""],
+["""\
+.. _chained:
+.. _external hyperlink: http://uri
+
+`External hyperlink`_ reference
+and a chained_ reference too.
+""",
+"""\
+<document source="test data">
+    <target refid="chained">
+    <target ids="chained" names="external\\ hyperlink chained" refuri="http://uri">
+    <paragraph>
+        <reference refuri="http://uri">
+            External hyperlink
+         reference
+        and a \n\
+        <reference refuri="http://uri">
+            chained
+         reference too.
+"""],
+["""\
+.. _external hyperlink: http://uri
+.. _indirect target: `external hyperlink`_
+""",
+"""\
+<document source="test data">
+    <target names="external\\ hyperlink" refuri="http://uri">
+    <target names="indirect\\ target" refuri="http://uri">
+    <system_message level="1" line="2" source="test data" type="INFO">
+        <paragraph>
+            Hyperlink target "indirect target" is not referenced.
+"""],
+["""\
+.. _external hyperlink: http://uri
+.. _indirect hyperlink: `external hyperlink`_
+
+`Indirect hyperlink`_ reference.
+""",
+"""\
+<document source="test data">
+    <target names="external\\ hyperlink" refuri="http://uri">
+    <target names="indirect\\ hyperlink" refuri="http://uri">
+    <paragraph>
+        <reference refuri="http://uri">
+            Indirect hyperlink
+         reference.
+"""],
+["""\
+.. _external hyperlink: http://uri
+.. _chained:
+.. _indirect hyperlink: `external hyperlink`_
+
+Chained_ `indirect hyperlink`_ reference.
+""",
+"""\
+<document source="test data">
+    <target names="external\\ hyperlink" refuri="http://uri">
+    <target refuri="http://uri">
+    <target ids="chained" names="indirect\\ hyperlink chained" refuri="http://uri">
+    <paragraph>
+        <reference refuri="http://uri">
+            Chained
+         \n\
+        <reference refuri="http://uri">
+            indirect hyperlink
+         reference.
+"""],
+["""\
+.. _external: http://uri
+.. _indirect: external_
+.. _internal:
+
+.. image:: picture.png
+   :target: external_
+
+.. image:: picture.png
+   :target: indirect_
+
+.. image:: picture.png
+   :target: internal_
+""",
+"""\
+<document source="test data">
+    <target names="external" refuri="http://uri">
+    <target names="indirect" refuri="http://uri">
+    <target refid="internal">
+    <reference ids="internal" names="internal" refuri="http://uri">
+        <image uri="picture.png">
+    <reference refuri="http://uri">
+        <image uri="picture.png">
+    <reference refid="internal">
+        <image uri="picture.png">
+"""],
+["""\
+.. __: http://full
+__
+__ http://simplified
+.. _external: http://indirect.external
+__ external_
+__
+
+`Full syntax anonymous external hyperlink reference`__,
+`chained anonymous external reference`__,
+`simplified syntax anonymous external hyperlink reference`__,
+`indirect anonymous hyperlink reference`__,
+`internal anonymous hyperlink reference`__.
+""",
+"""\
+<document source="test data">
+    <target anonymous="1" refuri="http://full">
+    <target anonymous="1" refid="target-1">
+    <target anonymous="1" ids="target-1" refuri="http://simplified">
+    <target names="external" refuri="http://indirect.external">
+    <target anonymous="1" refuri="http://indirect.external">
+    <target anonymous="1" refid="target-2">
+    <paragraph ids="target-2">
+        <reference anonymous="1" refuri="http://full">
+            Full syntax anonymous external hyperlink reference
+        ,
+        <reference anonymous="1" refuri="http://simplified">
+            chained anonymous external reference
+        ,
+        <reference anonymous="1" refuri="http://simplified">
+            simplified syntax anonymous external hyperlink reference
+        ,
+        <reference anonymous="1" refuri="http://indirect.external">
+            indirect anonymous hyperlink reference
+        ,
+        <reference anonymous="1" refid="target-2">
+            internal anonymous hyperlink reference
+        .
+"""],
+["""\
+.. _chained:
+__ http://anonymous
+
+Anonymous__ and chained_ both refer to the same URI.
+""",
+"""\
+<document source="test data">
+    <target refid="chained">
+    <target anonymous="1" ids="chained" names="chained" refuri="http://anonymous">
+    <paragraph>
+        <reference anonymous="1" refuri="http://anonymous">
+            Anonymous
+         and \n\
+        <reference refuri="http://anonymous">
+            chained
+         both refer to the same URI.
+"""],
+["""\
+Several__ anonymous__ hyperlinks__, but not enough targets.
+
+__ http://example.org
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <problematic ids="problematic-1" refid="system-message-1">
+            Several__
+         \n\
+        <problematic ids="problematic-2" refid="system-message-1">
+            anonymous__
+         \n\
+        <problematic ids="problematic-3" refid="system-message-1">
+            hyperlinks__
+        , but not enough targets.
+    <target anonymous="1" refuri="http://example.org">
+    <system_message backrefs="problematic-1 problematic-2 problematic-3" ids="system-message-1" level="3" source="test data" type="ERROR">
+        <paragraph>
+            Anonymous hyperlink mismatch: 3 references but 1 targets.
+            See "backrefs" attribute for IDs.
 """],
 ])
 

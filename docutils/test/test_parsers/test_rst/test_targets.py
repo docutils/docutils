@@ -86,11 +86,11 @@ External hyperlink targets:
 <document source="test data">
     <paragraph>
         External hyperlink targets:
-    <target ids="one-liner" names="one-liner" refuri="http://structuredtext.sourceforge.net">
-    <target ids="starts-on-this-line" names="starts-on-this-line" refuri="http://structuredtext.sourceforge.net">
-    <target ids="entirely-below" names="entirely-below" refuri="http://structuredtext.sourceforge.net">
-    <target ids="escaped-whitespace" names="escaped-whitespace" refuri="http://example.org/a path with spaces.html">
-    <target ids="not-indirect" names="not-indirect" refuri="uri_">
+    <target names="one-liner" refuri="http://structuredtext.sourceforge.net">
+    <target names="starts-on-this-line" refuri="http://structuredtext.sourceforge.net">
+    <target names="entirely-below" refuri="http://structuredtext.sourceforge.net">
+    <target names="escaped-whitespace" refuri="http://example.org/a path with spaces.html">
+    <target names="not-indirect" refuri="uri_">
 """],
 ["""\
 Indirect hyperlink targets:
@@ -103,8 +103,8 @@ Indirect hyperlink targets:
 <document source="test data">
     <paragraph>
         Indirect hyperlink targets:
-    <target ids="target1" names="target1" refname="reference">
-    <target ids="target2" names="target2" refname="phrase-link reference">
+    <target names="target1" refname="reference">
+    <target names="target2" refname="phrase-link reference">
 """],
 ["""\
 .. _a long target name:
@@ -156,7 +156,7 @@ External hyperlink:
 <document source="test data">
     <paragraph>
         External hyperlink:
-    <target ids="target" names="target" refuri="http://www.python.org/">
+    <target names="target" refuri="http://www.python.org/">
 """],
 ["""\
 .. _email: jdoe@example.com
@@ -166,8 +166,8 @@ External hyperlink:
 """,
 """\
 <document source="test data">
-    <target ids="email" names="email" refuri="mailto:jdoe@example.com">
-    <target ids="multi-line-email" names="multi-line\\ email" refuri="mailto:jdoe@example.com">
+    <target names="email" refuri="mailto:jdoe@example.com">
+    <target names="multi-line\\ email" refuri="mailto:jdoe@example.com">
 """],
 ["""\
 Malformed target:
@@ -189,7 +189,7 @@ Target beginning with an underscore:
             malformed hyperlink target.
     <paragraph>
         Target beginning with an underscore:
-    <target ids="target" names="_target" refuri="OK">
+    <target names="_target" refuri="OK">
 """],
 ["""\
 Duplicate external targets (different URIs):
@@ -202,11 +202,11 @@ Duplicate external targets (different URIs):
 <document source="test data">
     <paragraph>
         Duplicate external targets (different URIs):
-    <target dupnames="target" ids="target" refuri="first">
+    <target dupnames="target" refuri="first">
     <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "target".
-    <target dupnames="target" ids="target-1" refuri="second">
+    <target dupnames="target" refuri="second">
 """],
 ["""\
 Duplicate external targets (same URIs):
@@ -219,11 +219,11 @@ Duplicate external targets (same URIs):
 <document source="test data">
     <paragraph>
         Duplicate external targets (same URIs):
-    <target ids="target" names="target" refuri="first">
+    <target names="target" refuri="first">
     <system_message level="1" line="5" source="test data" type="INFO">
         <paragraph>
             Duplicate name "target" for external target "first".
-    <target dupnames="target" ids="target-1" refuri="first">
+    <target dupnames="target" refuri="first">
 """],
 ["""\
 Duplicate external targets (embedded/explicit, same URIs):
@@ -250,7 +250,7 @@ See the example_
     <system_message level="1" line="7" source="test data" type="INFO">
         <paragraph>
             Duplicate name "example" for external target "example.rst".
-    <target dupnames="example" ids="example-1" refuri="example.rst">
+    <target dupnames="example" refuri="example.rst">
 """],
 ["""\
 Duplicate indirect _`targets` (same refname):
@@ -268,11 +268,11 @@ do not conflict. The reference name can be used in a link_.
         <target ids="targets" names="targets">
             targets
          (same refname):
-    <target ids="link" names="link" refname="targets">
+    <target names="link" refname="targets">
     <system_message level="1" line="5" source="test data" type="INFO">
         <paragraph>
             Duplicate name "link" for external target "targets".
-    <target dupnames="link" ids="link-1" refname="targets">
+    <target dupnames="link" refname="targets">
     <paragraph>
         do not conflict. The reference name can be used in a \n\
         <reference refname="link">
@@ -477,15 +477,15 @@ Explicit internal target.
         <system_message level="2" line="16" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "target".
-        <target dupnames="target" ids="target-3" refuri="Explicit_external_target">
+        <target dupnames="target" refuri="Explicit_external_target">
         <line_block>
             <line>
                 Do not insert <system_message> element for duplicate
             <line>
-                <target dupnames="target" ids="target-4">
+                <target dupnames="target" ids="target-3">
                     target
                 , if this results in an invalid doctree.
-        <rubric dupnames="target" ids="target-5">
+        <rubric dupnames="target" ids="target-4">
             directive with target
         <field_list>
             <field>
@@ -496,7 +496,7 @@ Explicit internal target.
                         with
             <field>
                 <field_name>
-                    <target dupnames="target" ids="target-6">
+                    <target dupnames="target" ids="target-5">
                         target
                 <field_body>
                     <paragraph>
@@ -523,8 +523,8 @@ Explicit internal target.
     <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             malformed hyperlink target.
-    <target ids="escaped-colon" names="escaped\\ colon:" refuri="OK">
-    <target ids="unescaped-colon-quoted" names="unescaped\\ colon,\\ quoted:" refuri="OK">
+    <target names="escaped\\ colon:" refuri="OK">
+    <target names="unescaped\\ colon,\\ quoted:" refuri="OK">
 """],
 ])
 
@@ -768,7 +768,7 @@ Anonymous external hyperlink target:
 <document source="test data">
     <paragraph>
         Anonymous external hyperlink target:
-    <target anonymous="1" ids="target-1" refuri="http://w3c.org/">
+    <target anonymous="1" refuri="http://w3c.org/">
 """],
 ["""\
 Anonymous external hyperlink target:
@@ -779,7 +779,7 @@ __ http://w3c.org/
 <document source="test data">
     <paragraph>
         Anonymous external hyperlink target:
-    <target anonymous="1" ids="target-1" refuri="http://w3c.org/">
+    <target anonymous="1" refuri="http://w3c.org/">
 """],
 ["""\
 Anonymous indirect hyperlink target:
@@ -790,7 +790,7 @@ Anonymous indirect hyperlink target:
 <document source="test data">
     <paragraph>
         Anonymous indirect hyperlink target:
-    <target anonymous="1" ids="target-1" refname="reference">
+    <target anonymous="1" refname="reference">
 """],
 ["""\
 Anonymous external hyperlink target, not indirect:
@@ -803,8 +803,8 @@ __ this URI ends with an underscore_
 <document source="test data">
     <paragraph>
         Anonymous external hyperlink target, not indirect:
-    <target anonymous="1" ids="target-1" refuri="uri_">
-    <target anonymous="1" ids="target-2" refuri="thisURIendswithanunderscore_">
+    <target anonymous="1" refuri="uri_">
+    <target anonymous="1" refuri="thisURIendswithanunderscore_">
 """],
 ["""\
 Anonymous indirect hyperlink targets:
@@ -817,8 +817,8 @@ __ `a very long
 <document source="test data">
     <paragraph>
         Anonymous indirect hyperlink targets:
-    <target anonymous="1" ids="target-1" refname="reference">
-    <target anonymous="1" ids="target-2" refname="a very long reference">
+    <target anonymous="1" refname="reference">
+    <target anonymous="1" refname="a very long reference">
 """],
 ["""\
 Mixed anonymous & named indirect hyperlink targets:
@@ -839,19 +839,19 @@ no blank line
 <document source="test data">
     <paragraph>
         Mixed anonymous & named indirect hyperlink targets:
-    <target anonymous="1" ids="target-1" refname="reference">
-    <target anonymous="1" ids="target-2" refname="reference">
-    <target anonymous="1" ids="target-3" refname="reference">
-    <target ids="target1" names="target1" refname="reference">
+    <target anonymous="1" refname="reference">
+    <target anonymous="1" refname="reference">
+    <target anonymous="1" refname="reference">
+    <target names="target1" refname="reference">
     <system_message level="2" line="7" source="test data" type="WARNING">
         <paragraph>
             Explicit markup ends without a blank line; unexpected unindent.
     <paragraph>
         no blank line
-    <target ids="target2" names="target2" refname="reference">
-    <target anonymous="1" ids="target-4" refname="reference">
-    <target anonymous="1" ids="target-5" refname="reference">
-    <target anonymous="1" ids="target-6" refname="reference">
+    <target names="target2" refname="reference">
+    <target anonymous="1" refname="reference">
+    <target anonymous="1" refname="reference">
+    <target anonymous="1" refname="reference">
     <system_message level="2" line="13" source="test data" type="WARNING">
         <paragraph>
             Explicit markup ends without a blank line; unexpected unindent.

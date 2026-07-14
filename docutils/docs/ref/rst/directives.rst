@@ -57,6 +57,7 @@ Docutils defines a `generic admonition`_ as well as a set of
 `specific admonitions`_.
 
 
+.. _specific admonitions:
 .. _attention:
 .. _caution:
 .. _danger:
@@ -760,7 +761,7 @@ The "pull-quote" directive produces a "pull-quote"-class block quote.
 See Epigraph_ above for an analogous example.
 
 
-.. compound:
+.. _compound:
 
 Compound Paragraph
 ==================
@@ -1152,8 +1153,7 @@ Recognizes the common options `class <class option_>`_ and name_ as well as
  Document Parts
 ----------------
 
-.. A ``_contents:`` hyperlink here became id "contents-1"
-   (name clash with the generated ToC)
+.. _contents:
 
 Table of Contents
 =================
@@ -1795,6 +1795,7 @@ as well as
     A URI reference to a raw data file to be included.
 
 
+.. _class:
 .. _class directive:
 .. _rst-class:
 
@@ -2257,8 +2258,7 @@ options:
          :alt:   example picture
          :class: large-pics
 
-    is the recommended syntax alternative to a preceding
-    `class directive`_ ::
+    is the recommended syntax alternative to a preceding "class_" directive ::
 
       .. class:: large-pics
       .. image:: bild.png

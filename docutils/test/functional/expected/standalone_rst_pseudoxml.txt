@@ -497,8 +497,8 @@
                     <reference refid="subtitle">
                         subtitle
                     .
-                <target anonymous="1" ids="target-1" refuri="http://www.python.org/">
-                <target anonymous="1" ids="target-2" refuri="https://docutils.sourceforge.io/">
+                <target anonymous="1" refuri="http://www.python.org/">
+                <target anonymous="1" refuri="https://docutils.sourceforge.io/">
                 <paragraph>
                     The default role for interpreted text is 
                     <title_reference>
@@ -1054,7 +1054,7 @@
                     <reference anonymous="1" refid="label">
                         hyperlink reference
                     .
-                <target anonymous="1" ids="target-3" refid="label">
+                <target anonymous="1" refid="label">
             <footnote auto="1" backrefs="footnote-reference-2" ids="footnote-2" names="3">
                 <label>
                     3
@@ -1142,7 +1142,7 @@
                 <footnote_reference auto="1" ids="footnote-reference-11" refid="footnote-6">
                     5
                 ".
-            <target ids="python" names="python" refuri="http://www.python.org/">
+            <target names="python" refuri="http://www.python.org/">
             <paragraph>
                 Targets may be indirect and anonymous.  Thus 
                 <reference anonymous="1" refid="another-target">
@@ -1152,7 +1152,7 @@
                 <reference refid="another-target">
                     Targets
                  section.
-            <target anonymous="1" ids="target-4" refid="another-target">
+            <target anonymous="1" refid="another-target">
             <paragraph>
                 Here's a 
                 <problematic ids="problematic-2" refid="system-message-4">
@@ -1265,7 +1265,7 @@
                 <footnote_reference auto="1" ids="footnote-reference-16" refid="footnote-9">
                     8
                 .
-            <target anonymous="1" ids="target-5" refuri="https://docutils.sourceforge.io/docs/ref/rst/directives.html">
+            <target anonymous="1" refuri="https://docutils.sourceforge.io/docs/ref/rst/directives.html">
             <section ids="document-parts" names="document\ parts">
                 <title auto="1" refid="toc-entry-43">
                     <generated classes="sectnum">
@@ -1627,7 +1627,7 @@
                         And, by the way...
                     <paragraph>
                         You can make up your own admonition too.
-                    <target ids="docutils" names="docutils" refuri="https://docutils.sourceforge.io/">
+                    <target names="docutils" refuri="https://docutils.sourceforge.io/">
             <section ids="topics-sidebars-and-rubrics" names="topics,\ sidebars,\ and\ rubrics">
                 <title auto="1" refid="toc-entry-47">
                     <generated classes="sectnum">
@@ -2004,7 +2004,7 @@
                     <inline classes="ln">
                         2 
                     .. footer:: Document footer
-                <target ids="pygments" names="pygments" refuri="http://pygments.org/">
+                <target names="pygments" refuri="http://pygments.org/">
             <section ids="meta" names="meta">
                 <title auto="1" refid="toc-entry-53">
                     <generated classes="sectnum">
@@ -2019,7 +2019,7 @@
                         9
                      is used to specify metadata to be stored in,
                     e.g., HTML META tags or ODT file properties.
-                <target anonymous="1" ids="target-6" refuri="https://docutils.sourceforge.io/docs/ref/rst/directives.html#metadata">
+                <target anonymous="1" refuri="https://docutils.sourceforge.io/docs/ref/rst/directives.html#metadata">
         <section ids="substitution-definitions" names="substitution\ definitions">
             <title auto="1" refid="toc-entry-34">
                 <generated classes="sectnum">

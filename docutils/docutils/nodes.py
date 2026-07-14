@@ -2177,7 +2177,9 @@ class document(Root, Element):
     def note_explicit_target(self, target: Element,
                              msgnode: Element|None = None) -> None:
         self.note_names(target, msgnode, explicit=True)
-        self.set_id(target, msgnode)
+        if (getattr(self.settings, "legacy_ids", True)
+            or 'refuri' not in target and 'refname' not in target):
+            self.set_id(target, msgnode)
 
     def note_refname(self, node: Element) -> None:
         self.refnames.setdefault(node['refname'], []).append(node)
@@ -2191,7 +2193,9 @@ class document(Root, Element):
             self.note_refname(target)
 
     def note_anonymous_target(self, target: target) -> None:
-        self.set_id(target)
+        if (getattr(self.settings, "legacy_ids", True)
+                or 'refuri' not in target and 'refname' not in target):
+            self.set_id(target)
 
     def note_autofootnote(self, footnote: footnote) -> None:
         self.set_id(footnote)

@@ -799,9 +799,10 @@ legacy_ids
 Keep element identifiers_ compatible to Docutils ≤ 0.22.
 
 If "legacy_ids" is False or with the command line option ``--lazy-ids``,
-the generation of identifiers_ from the `reference names`_ of
-`implicit targets`_ is done after parsing is complete and only
-if required by an internal cross-link [#cross-link]_.
+no identifiers_ are generated for `external <external targets_>`__ and
+`indirect targets`_.  The generation of identifiers_ from the
+`reference names`_ of `implicit targets`_ is done after parsing is
+complete and only if required by an internal cross-link [#cross-link]_.
 An existing identifier from an `explicit target`_ is re-used instead of
 generating an additional identifier for the "implicit" reference name.
 
@@ -2689,6 +2690,7 @@ See the `inspecting_codecs`_ package for a replacement.
 .. _explicit target:
 .. _explicit targets: ../ref/rst/restructuredtext.html#explicit-hyperlink-targets
 .. _explicit internal target: ../ref/rst/restructuredtext.html#internal-hyperlink-targets
+.. _external targets: ../ref/rst/restructuredtext.html#external-hyperlink-targets
 .. _field lists: ../ref/rst/restructuredtext.html#field-lists
 .. _field names: ../ref/rst/restructuredtext.html#field-names
 .. _footnotes: ../ref/rst/restructuredtext.html#footnotes
@@ -2697,6 +2699,7 @@ See the `inspecting_codecs`_ package for a replacement.
 .. _implicit hyperlink targets:
 .. _implicit target:
 .. _implicit targets: ../ref/rst/restructuredtext.html#implicit-hyperlink-targets
+.. _indirect targets: ../ref/rst/restructuredtext.html#indirect-hyperlink-targets
 .. _interpreted text role: ../ref/rst/restructuredtext.html#interpreted-text
 .. _inline markup recognition rules:
     ../ref/rst/restructuredtext.html#inline-markup-recognition-rules

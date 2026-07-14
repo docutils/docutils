@@ -233,6 +233,8 @@ standalone reader:
 
 rST parser:
   - Warn if a `"figure"`_ directive is missing both caption and legend.
+  - Don't generate identifiers for indirect or external targets
+    (unless legacy_ids_ is True).
   - Generate identifiers for implicit targets (mainly sections) only if
     there is a cross-link to the target [#cross-links]_ and no "explicit"
     identifier (unless legacy_ids_ is True).

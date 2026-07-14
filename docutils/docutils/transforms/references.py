@@ -178,8 +178,12 @@ class AnonymousHyperlinks(Transform):
                     break
                 else:
                     if not target['ids']:
-                        # Propagated target.
-                        target = self.document.ids[target['refid']]
+                        if 'refid' in target:  # propagated target
+                            target = self.document.ids[target['refid']]
+                        elif 'refname' in target:  # indirect target
+                            target = self.document.names[target['refname']]
+                        else:
+                            self.document.set_id(target)
                         continue
                     ref['refid'] = target['ids'][0]
                     self.document.note_refid(ref)
@@ -254,13 +258,17 @@ class IndirectHyperlinks(Transform):
             reftarget = self.document.ids.get(refid)
         else:
             reftarget = self.document.names.get(refname)
-            refid = self.document.nameids.get(refname)
-            if reftarget and not refid:
-                refid = self.document.set_id(reftarget)
+            if getattr(self.document.settings, "legacy_ids", True):
+                refid = self.document.nameids.get(refname)
         if not reftarget:
             self.nonexistent_indirect_target(target)
             return
-        reftarget.note_referenced_by(id=refid)
+
+        if refid:
+            reftarget.note_referenced_by(id=refid)
+        else:
+            reftarget.note_referenced_by(name=refname)
+
         if (isinstance(reftarget, nodes.target)
             and not reftarget.resolved
             and reftarget.hasattr('refname')):
@@ -277,12 +285,12 @@ class IndirectHyperlinks(Transform):
         elif reftarget.hasattr('refid'):
             target['refid'] = reftarget['refid']
             self.document.note_refid(target)
-        elif reftarget['ids']:
+        else:  # internal target
+            if not refid:
+                refid = self.document.set_id(reftarget)
             target['refid'] = refid
             self.document.note_refid(target)
-        else:
-            self.nonexistent_indirect_target(target)
-            return
+        # Mark target as resolved:
         if refname is not None:
             del target['refname']
         target.resolved = True
@@ -1003,9 +1011,9 @@ class ReportUnreferencedTargets(Transform):
             elif target['ids']:
                 naming = target['ids'][0]
             else:
-                # Hack: Propagated targets always have their refid
-                # attribute set.
-                naming = target['refid']
+                # Propagated target: "ids" and "names" attributes moved
+                # to the node indicated by "refid" or "refname".
+                naming = target.get('refid') or target.get('refname', '???')
             self.document.reporter.info(
                 f'Hyperlink target "{naming}" is not referenced.',
                 base_node=target)

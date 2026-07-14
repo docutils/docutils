@@ -44,7 +44,7 @@ class ParserTestCase(unittest.TestCase):
         settings = get_default_settings(Parser)
         settings.warning_stream = ''
         settings.halt_level = 5
-        settings.legacy_ids = False
+        settings.legacy_ids = False  # except for pycmark (see below)
         for name, cases in totest.items():
             if name == 'with transforms':
                 continue  # see test_publish() below
@@ -55,7 +55,10 @@ class ParserTestCase(unittest.TestCase):
                         self.skipTest('no markdown parser available')
                     if name == 'include_parsed_code' and not with_pygments:
                         self.skipTest('syntax highlight requires pygments')
-                    document = new_document('test data', settings.copy())
+                    mysettings = settings.copy()
+                    if name == 'include_markdown':
+                        mysettings.legacy_ids = True  # keep pycmark happy
+                    document = new_document('test data', mysettings)
                     parser.parse(case_input, document)
                     output = document.pformat()
                     self.assertEqual(case_expected, output)
@@ -1567,7 +1570,7 @@ A paragraph.
 <document source="test data">
     <paragraph>
         Include Markdown source.
-    <section depth="1">
+    <section depth="1" ids="section-1">
         <title>
             Title 1
         <paragraph>
