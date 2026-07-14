@@ -937,6 +937,104 @@ __ http://example.org
     <reference refid="internal">
         <image uri="picture.png">
 """],
+# TODO: Anonymous links to a "clickable image should go
+#       to the image, not the image's click-target!
+["""\
+.. _img1:
+.. image:: pic1.png
+   :target: uri1.html
+__
+.. image:: pic2.png
+__
+.. image:: pic3.png
+   :target: uri3.html
+
+Named link to img1_ with target and anonymous links to
+the targetless img2__ and
+img3__ with target (sic!).
+""",
+"""\
+<document source="test data">
+    <target refid="img1">
+    <reference ids="img1" names="img1" refuri="uri1.html">
+        <image uri="pic1.png">
+    <target anonymous="1" refid="target-1">
+    <image ids="target-1" uri="pic2.png">
+    <target anonymous="1" refid="target-2">
+    <reference ids="target-2" refuri="uri3.html">
+        <image uri="pic3.png">
+    <paragraph>
+        Named link to \n\
+        <reference refid="img1">
+            img1
+         with target and anonymous links to
+        the targetless \n\
+        <reference anonymous="1" refid="target-1">
+            img2
+         and
+        <reference anonymous="1" refuri="uri3.html">
+            img3
+         with target (sic!).
+"""],
+["""\
+__
+__
+.. image:: pic1.png
+   :target: uri1.html
+
+Two anonymous__ links to an `image with target`__ (sic!).
+
+.. _named:
+__
+.. image:: pic2.png
+   :target: uri2.html
+
+Named_ and anonymous__ link to an image with target (sic!).
+
+__
+.. _named link:
+.. image:: pic3.png
+   :target: uri3.html
+
+Anonymous__ and `named link`_ to an image with target (sic!).
+""",
+"""\
+<document source="test data">
+    <target anonymous="1" refid="target-1">
+    <target anonymous="1" refid="target-2">
+    <reference ids="target-2 target-1" refuri="uri1.html">
+        <image uri="pic1.png">
+    <paragraph>
+        Two \n\
+        <reference anonymous="1" refuri="uri1.html">
+            anonymous
+         links to an \n\
+        <reference anonymous="1" refuri="uri1.html">
+            image with target
+         (sic!).
+    <target refid="named">
+    <target anonymous="1" refid="target-3">
+    <reference ids="target-3 named" names="named" refuri="uri2.html">
+        <image uri="pic2.png">
+    <paragraph>
+        <reference refid="named">
+            Named
+         and \n\
+        <reference anonymous="1" refuri="uri2.html">
+            anonymous
+         link to an image with target (sic!).
+    <target anonymous="1" refid="target-4">
+    <target refid="named-link">
+    <reference ids="named-link target-4" names="named\\ link" refuri="uri3.html">
+        <image uri="pic3.png">
+    <paragraph>
+        <reference anonymous="1" refuri="uri3.html">
+            Anonymous
+         and \n\
+        <reference refid="named-link">
+            named link
+         to an image with target (sic!).
+"""],
 ["""\
 .. contents:: Table of Contents
 .. _indirect reference to the table of contents: `table of contents`_
