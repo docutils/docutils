@@ -1,7 +1,7 @@
-<document ids="restructuredtext-test-document doctitle" names="restructuredtext\ test\ document doctitle" source="functional/input/standalone_rst_pseudoxml.rst" title="reStructuredText Test Document">
+<document ids="doctitle" names="restructuredtext\ test\ document doctitle" source="functional/input/standalone_rst_pseudoxml.rst" title="reStructuredText Test Document">
     <title>
         reStructuredText Test Document
-    <subtitle ids="examples-of-syntax-constructs subtitle" names="examples\ of\ syntax\ constructs subtitle">
+    <subtitle ids="subtitle" names="examples\ of\ syntax\ constructs subtitle">
         Examples of Syntax Constructs
     <meta content="reStructuredText, test, parser" name="keywords">
     <meta content="A test document, containing at least one example of each reStructuredText construct." lang="en" name="description">
@@ -204,7 +204,7 @@
                                 Citations
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-19" refid="targets">
+                            <reference ids="toc-entry-19" refid="another-target">
                                 <generated classes="sectnum">
                                     2.13   
                                 Targets
@@ -358,7 +358,7 @@
                 <generated classes="sectnum">
                     1.1   
                 Section Title
-            <subtitle ids="section-subtitle" names="section\ subtitle">
+            <subtitle names="section\ subtitle">
                 Section Subtitle
             <paragraph>
                 Lone subsections are converted to a section subtitle by a transform
@@ -475,7 +475,7 @@
                         inline hyperlink targets
                     
                     (see 
-                    <reference refid="targets">
+                    <reference refid="another-target">
                         Targets
                      below for a reference back to here).  Character-level
                     inline markup is also possible (although exceedingly ugly!) in 
@@ -1109,7 +1109,7 @@
                 
                 citation.
             <target refid="another-target">
-        <section ids="targets another-target" names="targets another\ target">
+        <section ids="another-target" names="targets another\ target">
             <title auto="1" refid="toc-entry-19">
                 <generated classes="sectnum">
                     2.13   
@@ -1127,7 +1127,7 @@
                  are also possible.
             <paragraph>
                 Section headers are implicit targets, referred to by name. See
-                <reference refid="targets">
+                <reference refid="another-target">
                     Targets
                 , which is a subsection of 
                 <reference refid="body-elements">
@@ -1145,14 +1145,14 @@
             <target ids="python" names="python" refuri="http://www.python.org/">
             <paragraph>
                 Targets may be indirect and anonymous.  Thus 
-                <reference anonymous="1" refid="targets">
+                <reference anonymous="1" refid="another-target">
                     this phrase
                  may also
                 refer to the 
-                <reference refid="targets">
+                <reference refid="another-target">
                     Targets
                  section.
-            <target anonymous="1" ids="target-4" refid="targets">
+            <target anonymous="1" ids="target-4" refid="another-target">
             <paragraph>
                 Here's a 
                 <problematic ids="problematic-2" refid="system-message-4">
@@ -2417,9 +2417,6 @@
         <system_message level="1" line="159" source="functional/input/data/standard.rst" type="INFO">
             <paragraph>
                 Hyperlink target "target" is not referenced.
-        <system_message level="1" line="404" source="functional/input/data/standard.rst" type="INFO">
-            <paragraph>
-                Hyperlink target "another-target" is not referenced.
         <system_message level="1" line="474" source="functional/input/data/standard.rst" type="INFO">
             <paragraph>
                 Hyperlink target "image-target-1" is not referenced.

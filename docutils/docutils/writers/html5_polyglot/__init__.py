@@ -347,6 +347,11 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     # use the new HTML5 element <section>
     def visit_section(self, node) -> None:
         self.section_level += 1
+        # ensure the element has an ID if we want to add a self-link:
+        if (getattr(self.settings, 'section_self_link', None)
+            and not getattr(self.settings, 'legacy_ids', None)
+            and 'system-messages' not in node['classes']):
+            node.document.set_id(node)
         self.body.append(self.starttag(node, 'section'))
 
     def depart_section(self, node) -> None:

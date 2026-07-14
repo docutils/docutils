@@ -57,7 +57,7 @@ misc_.ClassAttribute                   `"class"`_ (d/p)              _`210`
 
 references_.Substitutions              standalone_ (r), pep_ (r)     _`220`
 
-references_.SectionIDs                 standalone_ (r), pep_ (r)     _`240`
+references_.SectionIDs                 *not used*                    _`240`
 
 references_.PropagateTargets           standalone_ (r), pep_ (r)     _`260`
 

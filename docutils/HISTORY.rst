@@ -51,6 +51,7 @@ Release 1.0b1.dev (unpublished)
 * docutils/parsers/__init__.py
 
   - Remove `recommonmark` from `PARSER_ALIASES`.
+  - Rename command line option ``--matching-ids`` to ``--lazy-ids``.
 
 * docutils/parsers/commonmark_wrapper.py
 
@@ -87,10 +88,16 @@ Release 1.0b1.dev (unpublished)
 
   - Update `Reader.get_transforms()` to load the three transforms
     obsoleting `references.DanglingReferences` (see below).
+  - Do not load `transforms.references.SectionIDs`.
 
 * docutils/transforms/__init__.py
 
   - Remove `Transformer.unknown_reference_resolvers`.
+
+* docutils/transforms/parts.py:
+
+  - `Contents.build_contents()`: ensure sections have an ID and prefer
+    IDs from external targets with "lazy IDs" (`legacy_ids`_ False).
 
 * docutils/transforms/references.py
 
@@ -100,6 +107,8 @@ Release 1.0b1.dev (unpublished)
     and `ReportUnreferencedLinks` obsolete `DanglingReferences`.
   - Add INFO system_message if a <target> cannot be propagated
     to the next node.
+  - support "lazy IDs": Handle hyperlink targets without ID;
+    if required, generate and set one.
 
 * docutils/transforms/universal.py
 
@@ -123,6 +132,7 @@ Release 1.0b1.dev (unpublished)
     problems with other elements using "topic" as class value (e.g. a
     docinfo item "topic" in Enhancement Reports).
   - More robust handling of figure captions.
+  - Support "lazy IDs": ensure sections have an ID when adding a self-link.
 
 * docutils/writers/latex2e/__init__.py
 

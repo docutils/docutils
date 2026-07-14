@@ -220,6 +220,7 @@ Configuration changes:
   - The legacy_column_widths_ setting now defaults to False.
   - The initial_header_level_ setting default for the HTML5 writer
     changed to "auto".
+  - Rename command line option ``--matching-ids`` to ``--lazy-ids``.
 
 Command line interface:
   - Option ``-o`` sets the `output file path <output_path_>`__
@@ -227,8 +228,14 @@ Command line interface:
   - Drop the ``<destination>`` positional argument.
     Use ``-o <destination>`` or output redirection.
 
+standalone reader:
+  - Do not load the `SectionIDs` transform.
+
 rST parser:
   - Warn if a `"figure"`_ directive is missing both caption and legend.
+  - Generate identifiers for implicit targets (mainly sections) only if
+    there is a cross-link to the target [#cross-links]_ and no "explicit"
+    identifier (unless legacy_ids_ is True).
 
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
@@ -285,6 +292,9 @@ Removed objects:
   `writers.latex2e.SortableDict`
       Not used and deprecated since Docutils 0.22.
 
+.. [#cross-links] This includes links from the table of contents_ and
+   "`section self-links <section_self_link_>`_" added by the HTML5
+   writer.
 
 Release 0.23 (2026-05-27)
 =========================

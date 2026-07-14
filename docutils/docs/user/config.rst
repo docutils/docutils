@@ -798,14 +798,36 @@ legacy_ids
 
 Keep element identifiers_ compatible to Docutils ≤ 0.22.
 
-In case of a name conflict with an `implicit target`_ (section heading),
-identifiers_ may have a disambiguating number added to the normalized
-`reference name`_.
+If "legacy_ids" is False or with the command line option ``--lazy-ids``,
+the generation of identifiers_ from the `reference names`_ of
+`implicit targets`_ is done after parsing is complete and only
+if required by an internal cross-link [#cross-link]_.
+An existing identifier from an `explicit target`_ is re-used instead of
+generating an additional identifier for the "implicit" reference name.
 
-:Default: True; will change to False in Docutils 2.0.
-:Options:  ``--legacy-ids``, ``--matching-ids``.
+* Less "noise" in generated output documents.
+* Less cluttered identifier namespace: `explicit targets`_ have a better
+  chance to get an identifier_ matching their `reference name`_. [#]_
 
-New in Docutils 0.23. Provisional.
+.. caution:: Changing this setting may alter IDs in the output document
+   and hence break incoming "deep" hyperlinks that use "implicit"
+   identifiers in their `URI fragment`_.
+
+:Default: True (will change to False in Docutils 2.0).
+:Options: ``--legacy-ids``,
+          ``--lazy-ids`` (name changed in Docutils 1.0).
+
+New in Docutils 0.23.  Provisional.
+
+.. [#cross-link]
+   Internal cross-links include links from `hyperlink references`_,
+   the `table of contents`_, and "`self-links <section_self_link_>`_"
+   added by the HTML5 writer.
+.. [#]
+   Due to the `identifier normalization`_, different `reference names`_
+   may compete for the same identifier_, e.g. the reference names
+   ``"legacy ids"`` and ``"legacy-ids"`` would get the
+   identifiers ``"legacy-ids"`` and ``"legacy-ids-1"``.
 
 
 raw_enabled
@@ -2634,6 +2656,8 @@ See the `inspecting_codecs`_ package for a replacement.
 .. _"code": ../ref/rst/directives.html#code
 .. _"csv-table": ../ref/rst/directives.html#csv-table
 .. _"figure": ../ref/rst/directives.html#figure
+.. _identifier normalization:
+   ../ref/rst/directives.html#identifier-normalization
 .. _images:
 .. _"image": ../ref/rst/directives.html#image
 .. _"include": ../ref/rst/directives.html#include
@@ -2662,12 +2686,15 @@ See the `inspecting_codecs`_ package for a replacement.
 .. _citations: ../ref/rst/restructuredtext.html#citations
 .. _document title: ../ref/rst/restructuredtext.html#document-title
 .. _enumerated lists: ../ref/rst/restructuredtext.html#enumerated-lists
-.. _explicit target:  ../ref/rst/restructuredtext.html#explicit-hyperlink-targets
+.. _explicit target:
+.. _explicit targets: ../ref/rst/restructuredtext.html#explicit-hyperlink-targets
+.. _explicit internal target: ../ref/rst/restructuredtext.html#internal-hyperlink-targets
 .. _field lists: ../ref/rst/restructuredtext.html#field-lists
 .. _field names: ../ref/rst/restructuredtext.html#field-names
 .. _footnotes: ../ref/rst/restructuredtext.html#footnotes
 .. _footnote references: ../ref/rst/restructuredtext.html#footnote-references
 .. _hyperlink references: ../ref/rst/restructuredtext.html#hyperlink-references
+.. _implicit hyperlink targets:
 .. _implicit target:
 .. _implicit targets: ../ref/rst/restructuredtext.html#implicit-hyperlink-targets
 .. _interpreted text role: ../ref/rst/restructuredtext.html#interpreted-text
@@ -2675,6 +2702,7 @@ See the `inspecting_codecs`_ package for a replacement.
     ../ref/rst/restructuredtext.html#inline-markup-recognition-rules
 .. _literal blocks: ../ref/rst/restructuredtext.html#literal-blocks
 .. _option lists: ../ref/rst/restructuredtext.html#option-lists
+.. _sections: ../ref/rst/restructuredtext.html#sections
 .. _tables: ../ref/rst/restructuredtext.html#tables
 
 .. _Docutils HTML writers: html.html
@@ -2701,3 +2729,5 @@ See the `inspecting_codecs`_ package for a replacement.
 .. _standard encodings:
     https://docs.python.org/3/library/codecs.html#standard-encodings
 .. _inspecting_codecs: https://codeberg.org/milde/inspecting-codecs
+.. _URI fragment:
+    https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment

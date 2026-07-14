@@ -20,7 +20,7 @@ if __name__ == '__main__':
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
 from docutils.transforms.references import (
-        SectionIDs, PropagateTargets, AnonymousHyperlinks, IndirectHyperlinks,
+        PropagateTargets, AnonymousHyperlinks, IndirectHyperlinks,
         ExternalTargets, InternalTargets, DanglingReferences, MatchReferences,
         ReportDanglingReferences, ReportUnreferencedTargets)
 from docutils.transforms.universal import TestMessages
@@ -33,7 +33,7 @@ class TransformTestCase(unittest.TestCase):
     transforms = (PropagateTargets, AnonymousHyperlinks, IndirectHyperlinks,
                   ExternalTargets, InternalTargets, MatchReferences,
                   ReportDanglingReferences, ReportUnreferencedTargets,
-                  SectionIDs, TestMessages)
+                  TestMessages)
 
     def test_transforms(self):
         parser = Parser()
@@ -594,7 +594,7 @@ See `Element \\<a>`_, `Element <b\\>`_, and `Element <c>\\ `_.
 """],
 ])
 
-totest['hyperlinks legacy'] = ({'legacy_ids': True}, [
+totest['explicit hyperlinks legacy'] = ({'legacy_ids': True}, [
 ["""\
 .. _internal hyperlink:
 
@@ -1036,6 +1036,58 @@ Anonymous__ and `named link`_ to an image with target (sic!).
          to an image with target (sic!).
 """],
 ["""\
+Unknown reference_.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Unknown \n\
+        <problematic ids="problematic-1" refid="system-message-1">
+            reference_
+        .
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Unknown target name: "reference".
+"""],
+["""\
+Duplicate manual footnote labels, with reference ([1]_):
+
+.. [1] Footnote.
+
+.. [1] Footnote.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Duplicate manual footnote labels, with reference (
+        <problematic ids="footnote-reference-1" refid="system-message-1">
+            [1]_
+        ):
+    <footnote dupnames="1" ids="footnote-1">
+        <label>
+            1
+        <paragraph>
+            Footnote.
+    <footnote dupnames="1" ids="footnote-2">
+        <label>
+            1
+        <system_message backrefs="footnote-2" level="2" line="5" source="test data" type="WARNING">
+            <paragraph>
+                Duplicate explicit target name: "1".
+        <paragraph>
+            Footnote.
+    <system_message backrefs="footnote-reference-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Duplicate target name, cannot be used as a unique reference: "1".
+"""],
+])
+
+totest['explicit hyperlinks'] = ({'legacy_ids': False},
+                                 # all samples compile as before
+                                 totest['explicit hyperlinks legacy'][1])
+
+totest['implicit hyperlinks legacy'] = ({'legacy_ids': True}, [
+["""\
 .. contents:: Table of Contents
 .. _indirect reference to the table of contents: `table of contents`_
 
@@ -1109,51 +1161,6 @@ Title
             Title
 """],
 ["""\
-Unknown reference_.
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        Unknown \n\
-        <problematic ids="problematic-1" refid="system-message-1">
-            reference_
-        .
-    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Unknown target name: "reference".
-"""],
-["""\
-Duplicate manual footnote labels, with reference ([1]_):
-
-.. [1] Footnote.
-
-.. [1] Footnote.
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        Duplicate manual footnote labels, with reference (
-        <problematic ids="footnote-reference-1" refid="system-message-1">
-            [1]_
-        ):
-    <footnote dupnames="1" ids="footnote-1">
-        <label>
-            1
-        <paragraph>
-            Footnote.
-    <footnote dupnames="1" ids="footnote-2">
-        <label>
-            1
-        <system_message backrefs="footnote-2" level="2" line="5" source="test data" type="WARNING">
-            <paragraph>
-                Duplicate explicit target name: "1".
-        <paragraph>
-            Footnote.
-    <system_message backrefs="footnote-reference-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Duplicate target name, cannot be used as a unique reference: "1".
-"""],
-["""\
 An explicit target _`foo` overrides a homonymous implicit target.
 
 foo
@@ -1213,9 +1220,83 @@ an external document requires the non-obvious fragment identifier "#foo-1".
 """],
 ])
 
-totest['hyperlinks'] = ({'legacy_ids': False},
-                        # all but the last sample compile as before
-                        totest['hyperlinks legacy'][1][:-1] + [
+totest['implicit hyperlinks'] = ({'legacy_ids': False}, [
+["""\
+.. contents:: Table of Contents
+.. _indirect reference to the table of contents: `table of contents`_
+
+Section
+=======
+
+Testing an `indirect reference to the table of contents`_.
+""",
+"""\
+<document source="test data">
+    <topic classes="contents" ids="table-of-contents" names="table\\ of\\ contents">
+        <title>
+            Table of Contents
+        <bullet_list>
+            <list_item>
+                <paragraph>
+                    <reference ids="toc-entry-1" refid="section">
+                        Section
+    <target ids="indirect-reference-to-the-table-of-contents" names="indirect\\ reference\\ to\\ the\\ table\\ of\\ contents" refid="table-of-contents">
+    <section ids="section" names="section">
+        <title refid="toc-entry-1">
+            Section
+        <paragraph>
+            Testing an \n\
+            <reference refid="table-of-contents">
+                indirect reference to the table of contents
+            .
+"""],
+["""\
+.. _explicit target:
+
+Title
+-----
+
+References to the section (title_) use the ID from the `explicit target`_.
+""",
+"""\
+<document source="test data">
+    <target refid="explicit-target">
+    <section ids="explicit-target" names="title explicit\\ target">
+        <title>
+            Title
+        <paragraph>
+            References to the section (
+            <reference refid="explicit-target">
+                title
+            ) use the ID from the \n\
+            <reference refid="explicit-target">
+                explicit target
+            .
+"""],
+["""\
+target1_ should refer to target2_, not the Title.
+
+.. _target1:
+.. _target2: URI
+
+Title
+=====
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference refuri="URI">
+            target1
+         should refer to \n\
+        <reference refuri="URI">
+            target2
+        , not the Title.
+    <target refid="target1">
+    <target ids="target2 target1" names="target2 target1" refuri="URI">
+    <section names="title">
+        <title>
+            Title
+"""],
 ["""\
 foo
 ---
@@ -1229,7 +1310,7 @@ using the matching fragment identifier "#foo".
 """,
 """\
 <document source="test data">
-    <section dupnames="foo" ids="foo-1">
+    <section dupnames="foo">
         <title>
             foo
         <system_message backrefs="foo" level="1" line="5" source="test data" type="INFO">

@@ -16,4 +16,5 @@ settings_overrides = {
     # location of stylesheets (relative to ``docutils/test/``)
     'stylesheet_dirs': ('functional/input/data', ),
     'section_self_link': False,
+    'legacy_ids': False,
     }

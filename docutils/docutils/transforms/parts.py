@@ -118,12 +118,16 @@ class Contents(Transform):
         sections = [sect for sect in node if isinstance(sect, nodes.section)]
         entries = []
         depth = self.startnode.details.get('depth', sys.maxsize)
+        legacy_ids = getattr(self.document.settings, "legacy_ids", True)
         for section in sections:
             title = section[0]
             auto = title.get('auto')    # May be set by SectNum.
             entrytext = self.copy_and_filter(title)
-            reference = nodes.reference('', '', refid=section['ids'][0],
-                                        *entrytext)
+            if legacy_ids:  # get first (backwards compatible)
+                sect_id = section['ids'][0]
+            else:  # ensure there is an ID, get last
+                sect_id = self.document.set_id(section)
+            reference = nodes.reference('', '', refid=sect_id, *entrytext)
             ref_id = self.document.set_id(reference,
                                           suggested_prefix='toc-entry')
             entry = nodes.paragraph('', '', reference)

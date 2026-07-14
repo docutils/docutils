@@ -90,9 +90,8 @@ Generic Parser Options
 --line-length-limit=<length>
                         Maximal number of characters in an input line.
                         (default 10 000)
---legacy-ids            Keep identifiers backwards compatible. (default)
---matching-ids          Explicit targets use identifiers matching the
-                        reference name.
+--legacy-ids            Keep IDs backwards compatible. (default)
+--lazy-ids              Generate IDs for implicit targets only if required.
 --validate              Validate the document tree after parsing.
 --no-validation         Do not validate the document tree. (default)
 

@@ -56,7 +56,6 @@ class Reader(readers.Reader):
     def get_transforms(self) -> list[type[Transform]]:
         return super().get_transforms() + [
             references.Substitutions,
-            references.SectionIDs,
             references.PropagateTargets,
             frontmatter.DocTitle,
             frontmatter.DocInfo,
