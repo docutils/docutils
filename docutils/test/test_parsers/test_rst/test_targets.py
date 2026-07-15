@@ -53,7 +53,7 @@ totest['targets'] = ({}, [
 """,
 """\
 <document source="test data">
-    <target ids="target" names="target">
+    <target names="target">
     <paragraph>
         (Internal hyperlink target.)
 """],
@@ -62,7 +62,7 @@ totest['targets'] = ({}, [
 """,
 """\
 <document source="test data">
-    <target ids="optional-space-before-colon" names="optional\\ space\\ before\\ colon">
+    <target names="optional\\ space\\ before\\ colon">
 """],
 [r"""
 External hyperlink targets:
@@ -115,9 +115,9 @@ Indirect hyperlink targets:
 """,
 """\
 <document source="test data">
-    <target ids="a-long-target-name" names="a\\ long\\ target\\ name">
-    <target ids="a-target-name-including-a-colon-quoted" names="a\\ target\\ name:\\ including\\ a\\ colon\\ (quoted)">
-    <target ids="a-target-name-including-a-colon-escaped" names="a\\ target\\ name:\\ including\\ a\\ colon\\ (escaped)">
+    <target names="a\\ long\\ target\\ name">
+    <target names="a\\ target\\ name:\\ including\\ a\\ colon\\ (quoted)">
+    <target names="a\\ target\\ name:\\ including\\ a\\ colon\\ (escaped)">
 """],
 ["""\
 .. _`target: No matching backquote.
@@ -144,8 +144,8 @@ Indirect hyperlink targets:
 """,
 """\
 <document source="test data">
-    <target ids="a-very-long-target-name-split-across-lines" names="a\\ very\\ long\\ target\\ name,\\ split\\ across\\ lines">
-    <target ids="and-another-with-backquotes" names="and\\ another,\\ with\\ backquotes">
+    <target names="a\\ very\\ long\\ target\\ name,\\ split\\ across\\ lines">
+    <target names="and\\ another,\\ with\\ backquotes">
 """],
 ["""\
 External hyperlink:
@@ -265,7 +265,7 @@ do not conflict. The reference name can be used in a link_.
 <document source="test data">
     <paragraph>
         Duplicate indirect \n\
-        <target ids="targets" names="targets">
+        <target names="targets">
             targets
          (same refname):
     <target names="link" refname="targets">
@@ -330,7 +330,7 @@ Paragraph.
         <system_message level="1" line="6" source="test data" type="INFO">
             <paragraph>
                 Target name overrides implicit target name "title".
-        <target ids="title" names="title">
+        <target names="title">
         <paragraph>
             Paragraph.
 """],
@@ -376,19 +376,19 @@ Third.
 <document source="test data">
     <paragraph>
         Duplicate explicit targets.
-    <target dupnames="title" ids="title">
+    <target dupnames="title">
     <paragraph>
         First.
     <system_message level="2" line="7" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "title".
-    <target dupnames="title" ids="title-1">
+    <target dupnames="title">
     <paragraph>
         Second.
     <system_message level="2" line="11" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "title".
-    <target dupnames="title" ids="title-2">
+    <target dupnames="title">
     <paragraph>
         Third.
 """],
@@ -409,7 +409,7 @@ The system message is left dangling
 <document source="test data">
     <paragraph>
         Duplicate explicit/directive targets.
-    <target dupnames="title" ids="title">
+    <target dupnames="title">
     <paragraph>
         First.
     <rubric dupnames="title" ids="title-1">
@@ -471,7 +471,7 @@ Explicit internal target.
         <system_message level="2" line="12" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "target".
-        <target dupnames="target" ids="target-2">
+        <target dupnames="target">
         <paragraph>
             Explicit internal target.
         <system_message level="2" line="16" source="test data" type="WARNING">
@@ -482,10 +482,10 @@ Explicit internal target.
             <line>
                 Do not insert <system_message> element for duplicate
             <line>
-                <target dupnames="target" ids="target-3">
+                <target dupnames="target" ids="target-2">
                     target
                 , if this results in an invalid doctree.
-        <rubric dupnames="target" ids="target-4">
+        <rubric dupnames="target" ids="target-3">
             directive with target
         <field_list>
             <field>
@@ -496,7 +496,7 @@ Explicit internal target.
                         with
             <field>
                 <field_name>
-                    <target dupnames="target" ids="target-5">
+                    <target dupnames="target" ids="target-4">
                         target
                 <field_body>
                     <paragraph>

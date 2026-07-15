@@ -227,7 +227,7 @@ substitution_definition.
         Title
     <substitution_definition names="foo">
         bar
-    <target ids="invisible-target" names="invisible\\ target">
+    <target names="invisible\\ target">
     <paragraph>
         This title should be the document title despite the
         substitution_definition.

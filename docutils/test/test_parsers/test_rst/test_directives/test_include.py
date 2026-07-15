@@ -179,7 +179,7 @@ f"""\
     <section names="include\\ test">
         <title>
             Include Test
-        <literal_block classes="test" ids="my-name" names="my\\ name" source="{include1}" xml:space="preserve">
+        <literal_block classes="test" names="my\\ name" source="{include1}" xml:space="preserve">
             Inclusion 1
             -----------
             \n\
@@ -244,7 +244,7 @@ f"""\
 <document source="test data">
     <paragraph>
         Include code
-    <literal_block classes="code test" ids="my-name" names="my\\ name" source="{include1}" xml:space="preserve">
+    <literal_block classes="code test" names="my\\ name" source="{include1}" xml:space="preserve">
         Inclusion 1
         -----------
         \n\

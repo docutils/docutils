@@ -1168,10 +1168,10 @@ Embedded URI: named `<file.txt>`_ and anonymous `<file.html>`__.
         Report duplicate refname.
     <paragraph>
         Explicit targets: \n\
-        <target ids="file-txt" names="file.txt">
+        <target names="file.txt">
             file.txt
         , \n\
-        <target ids="file-html" names="file.html">
+        <target names="file.html">
             file.html
         .
     <system_message level="1" line="6" source="test data" type="INFO">
@@ -1295,10 +1295,10 @@ No clash with anonymous reference `link <tg1_>`__.
         Duplicate refnames in references with embedded alias.
     <paragraph>
         Explicit targets: \n\
-        <target ids="tg1" names="tg1">
+        <target names="tg1">
             tg1
          and \n\
-        <target ids="tg2" names="tg2">
+        <target names="tg2">
             tg2
         .
     <system_message level="1" line="6" source="test data" type="INFO">
@@ -1334,19 +1334,19 @@ _`Here is  a    TaRgeT` with case and spacial difficulties.
 """\
 <document source="test data">
     <paragraph>
-        <target ids="target" names="target">
+        <target names="target">
             target
     <paragraph>
         Here is \n\
-        <target ids="another-target" names="another\\ target">
+        <target names="another\\ target">
             another target
          in some text. And \n\
-        <target ids="yet-another-target" names="yet\\ another\\ target">
+        <target names="yet\\ another\\ target">
             yet
             another target
         , spanning lines.
     <paragraph>
-        <target ids="here-is-a-target" names="here\\ is\\ a\\ target">
+        <target names="here\\ is\\ a\\ target">
             Here is  a    TaRgeT
          with case and spacial difficulties.
 """],
@@ -1357,10 +1357,10 @@ l'_`target1` and l\u2019_`target2` with apostrophe
 <document source="test data">
     <paragraph>
         l'
-        <target ids="target1" names="target1">
+        <target names="target1">
             target1
          and l\u2019
-        <target ids="target2" names="target2">
+        <target names="target2">
             target2
          with apostrophe
 """],
@@ -1373,21 +1373,21 @@ quoted \xab_`target5`\xbb
 <document source="test data">
     <paragraph>
         quoted '
-        <target ids="target1" names="target1">
+        <target names="target1">
             target1
         ', quoted "
-        <target ids="target2" names="target2">
+        <target names="target2">
             target2
         ",
         quoted \u2018
-        <target ids="target3" names="target3">
+        <target names="target3">
             target3
         \u2019, quoted \u201c
-        <target ids="target4" names="target4">
+        <target names="target4">
             target4
         \u201d,
         quoted \xab
-        <target ids="target5" names="target5">
+        <target names="target5">
             target5
         \xbb
 """],
@@ -1399,19 +1399,19 @@ _`\xabtarget5\xbb` with quotes
 """\
 <document source="test data">
     <paragraph>
-        <target ids="target1" names="'target1'">
+        <target names="'target1'">
             'target1'
          with quotes, \n\
-        <target ids="target2" names=""target2"">
+        <target names=""target2"">
             "target2"
          with quotes,
-        <target ids="target3" names="\u2018target3\u2019">
+        <target names="\u2018target3\u2019">
             \u2018target3\u2019
          with quotes, \n\
-        <target ids="target4" names="\u201ctarget4\u201d">
+        <target names="\u201ctarget4\u201d">
             \u201ctarget4\u201d
          with quotes,
-        <target ids="target5" names="\xabtarget5\xbb">
+        <target names="\xabtarget5\xbb">
             \xabtarget5\xbb
          with quotes
 """],

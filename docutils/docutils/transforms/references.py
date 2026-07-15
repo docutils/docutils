@@ -42,14 +42,15 @@ class PropagateTargets(Transform):
 
     Given the following nodes::
 
-        <target ids="internal1" names="internal1">
+        <target names="internal1">
         <target anonymous="1" ids="id1">
-        <target ids="internal2" names="internal2">
+        <target names="internal2">
         <paragraph>
             This is a test.
 
-    `PropagateTargets` propagates the ids and names of the internal
-    targets preceding the paragraph to the paragraph itself::
+    `PropagateTargets` ensures internal targets have an ID and propagates
+    the IDs and names of the internal targets preceding the paragraph
+    to the paragraph itself::
 
         <target refid="internal1">
         <target anonymous="1" refid="id1">
@@ -61,6 +62,17 @@ class PropagateTargets(Transform):
     default_priority = 260
 
     def apply(self) -> None:
+        # Ensure explicit internal targets ("named" elements) have an ID:
+        if not getattr(self.document.settings, "legacy_ids", True):
+            for name, node in self.document.names.items():
+                # Skip targets with duplicate or implicit names:
+                if node is None or not self.document.nametypes[name]:
+                    continue
+                # Skip external or indirect targets:
+                if 'refid' in node or 'refname' in node or 'refuri' in node:
+                    continue
+                self.document.set_id(node)
+        # Now propatate internal <target>s:
         for target in self.document.findall(nodes.target):
             # Only block-level targets without reference (like ".. _target:"):
             if (len(target) or isinstance(target.parent, nodes.TextElement)
@@ -590,8 +602,9 @@ class Footnotes(Transform):
                     ref.replace_self(prb)
                 break
             ref += nodes.Text(label)
-            id = self.document.nameids[label]
-            footnote = self.document.ids[id]
+            footnote = self.document.names[label]
+            id = (self.document.nameids.get(label)
+                  or self.document.set_id(footnote))
             ref['refid'] = id
             self.document.note_refid(ref)
             assert len(ref['ids']) == 1

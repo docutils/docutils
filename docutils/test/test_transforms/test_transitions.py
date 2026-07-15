@@ -198,7 +198,7 @@ Moving and invisible elements don't count.
     <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Transition at the end of the document.
-    <target ids="anchor" names="anchor">
+    <target names="anchor">
     <substitution_definition names="substitution\\ reference">
         is invisible
 """],
@@ -316,7 +316,7 @@ and invisible elements don't count).
         <footer>
             <paragraph>
                 will move away
-    <target ids="anchor" names="anchor">
+    <target names="anchor">
     <substitution_definition names="substitution\\ reference">
         is invisible
     <transition classes="classy">

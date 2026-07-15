@@ -2177,8 +2177,7 @@ class document(Root, Element):
     def note_explicit_target(self, target: Element,
                              msgnode: Element|None = None) -> None:
         self.note_names(target, msgnode, explicit=True)
-        if (getattr(self.settings, "legacy_ids", True)
-            or 'refuri' not in target and 'refname' not in target):
+        if getattr(self.settings, "legacy_ids", True):
             self.set_id(target, msgnode)
 
     def note_refname(self, node: Element) -> None:
