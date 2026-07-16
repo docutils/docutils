@@ -69,7 +69,7 @@ class PropagateTargets(Transform):
                 if node is None or not self.document.nametypes[name]:
                     continue
                 # Skip external or indirect targets:
-                if 'refid' in node or 'refname' in node or 'refuri' in node:
+                if not self.is_internal(node):
                     continue
                 self.document.set_id(node)
         # Now propatate internal <target>s:
@@ -80,15 +80,8 @@ class PropagateTargets(Transform):
                 or 'refname' in target
                 or 'refuri' in target):
                 continue
-            next_node = target.next_node(ascend=True)
-            # skip system messages (may be removed by universal.FilterMessages)
-            while isinstance(next_node, nodes.system_message):
-                next_node = next_node.next_node(ascend=True, descend=False)
-            # Do not move names and ids into Invisibles (we'd lose the
-            # attributes) or different Targetables (e.g. footnotes).
-            if (next_node is None
-                or isinstance(next_node, (nodes.Invisible, nodes.Targetable))
-                and not isinstance(next_node, nodes.target)):
+            next_node = self.next_suitable_node(target)
+            if next_node is None:
                 self.document.reporter.info(
                     f'Cannot propagate target "{" ".join(target["names"])}" '
                     'to next element', base_node=target)
@@ -135,12 +128,36 @@ class PropagateTargets(Transform):
                 self.document.note_refname(target)
             elif next_node['names']:
                 target['refname'] = next_node['names'][0]
-            else:
+            elif 'anonymous' not in next_node:
                 target['refid'] = self.document.set_id(next_node)
             target['names'] = []
 
+    def next_suitable_node(self, target: nodes.Element) -> nodes.Element:
+        if not isinstance(target, nodes.target):
+            return None  # only <target> ids/names are propagated
+        candidate = target.next_node(ascend=True)
+        # skip system messages (may be removed by universal.FilterMessages)
+        while isinstance(candidate, nodes.system_message):
+            candidate = candidate.next_node(ascend=True, descend=False)
+        # Do not move names and ids into Invisibles (we'd lose the
+        # attributes) or Targetables (<citation>, <footnote>).
+        # Other <target>s are OK.  TODO: why no citations and footnotes?
+        if (isinstance(candidate, (nodes.Invisible, nodes.Targetable))
+            and not isinstance(candidate, nodes.target)):
+            return None
+        return candidate
 
-class AnonymousHyperlinks(Transform):
+    def is_internal(self, node: nodes.Element) -> bool:
+        # Return True, if `node` is an internal hyperlink target.
+        if 'refid' in node or 'refname' in node or 'refuri' in node:
+            return False  # node is indirect or external target
+        # check destination of chained targets:
+        if next_node := self.next_suitable_node(node):
+            return self.is_internal(next_node)
+        return True
+
+
+class AnonymousHyperlinks(PropagateTargets):
 
     """
     Link anonymous references to targets.  Given::
@@ -186,6 +203,7 @@ class AnonymousHyperlinks(Transform):
                 msg.add_backref(prbid)
                 ref.replace_self(prb)
             return
+
         for ref, target in zip(anonymous_refs, anonymous_targets):
             if ref.hasattr('refid') or ref.hasattr('refuri'):
                 continue
@@ -201,6 +219,8 @@ class AnonymousHyperlinks(Transform):
                             target = self.document.ids[target['refid']]
                         elif 'refname' in target:  # indirect target
                             target = self.document.names[target['refname']]
+                        elif next_node := self.next_suitable_node(target):
+                            target = next_node
                         else:
                             self.document.set_id(target)
                         continue
@@ -1032,8 +1052,8 @@ class ReportUnreferencedTargets(Transform):
                 naming = target['ids'][0]
             else:
                 # Propagated target: "ids" and "names" attributes moved
-                # to the node indicated by "refid" or "refname".
-                naming = target.get('refid') or target.get('refname', '???')
+                # to the node indicated by "refname" or "refid".
+                naming = target.get('refname') or target.get('refid', '???')
             self.document.reporter.info(
                 f'Hyperlink target "{naming}" is not referenced.',
                 base_node=target)

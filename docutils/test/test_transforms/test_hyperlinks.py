@@ -1300,8 +1300,8 @@ Title
         <reference refuri="URI">
             target2
         , not the Title.
-    <target refid="target1">
-    <target ids="target1" names="target2 target1" refuri="URI">
+    <target refuri="URI">
+    <target names="target2 target1" refuri="URI">
     <section names="title">
         <title>
             Title
@@ -1401,8 +1401,8 @@ and a chained_ reference too.
 """,
 """\
 <document source="test data">
-    <target refid="chained">
-    <target ids="chained" names="external\\ hyperlink chained" refuri="http://uri">
+    <target refuri="http://uri">
+    <target names="external\\ hyperlink chained" refuri="http://uri">
     <paragraph>
         <reference refuri="http://uri">
             External hyperlink
@@ -1450,7 +1450,7 @@ Chained_ `indirect hyperlink`_ reference.
 <document source="test data">
     <target names="external\\ hyperlink" refuri="http://uri">
     <target refuri="http://uri">
-    <target ids="chained" names="indirect\\ hyperlink chained" refuri="http://uri">
+    <target names="indirect\\ hyperlink chained" refuri="http://uri">
     <paragraph>
         <reference refuri="http://uri">
             Chained
@@ -1477,7 +1477,7 @@ Chained_ `indirect hyperlink`_ reference.
 <document source="test data">
     <target names="external" refuri="http://uri">
     <target names="indirect" refuri="http://uri">
-    <target refid="internal">
+    <target refname="internal">
     <reference ids="internal" names="internal" refuri="http://uri">
         <image uri="picture.png">
     <reference refuri="http://uri">
@@ -1503,7 +1503,7 @@ img3__ with target (sic!).
 """,
 """\
 <document source="test data">
-    <target refid="img1">
+    <target refname="img1">
     <reference ids="img1" names="img1" refuri="uri1.html">
         <image uri="pic1.png">
     <target anonymous="1" refid="image-1">
@@ -1548,9 +1548,9 @@ Anonymous__ and `named link`_ to an image with target (sic!).
 """,
 """\
 <document source="test data">
-    <target anonymous="1" refid="target-1">
-    <target anonymous="1" refid="target-1">
-    <reference ids="target-1" refuri="uri1.html">
+    <target anonymous="1">
+    <target anonymous="1" refid="reference-1">
+    <reference ids="reference-1" refuri="uri1.html">
         <image uri="pic1.png">
     <paragraph>
         Two \n\
@@ -1560,8 +1560,8 @@ Anonymous__ and `named link`_ to an image with target (sic!).
         <reference anonymous="1" refuri="uri1.html">
             image with target
          (sic!).
-    <target refid="named">
-    <target anonymous="1" refid="named">
+    <target refname="named">
+    <target anonymous="1" refname="named">
     <reference ids="named" names="named" refuri="uri2.html">
         <image uri="pic2.png">
     <paragraph>
@@ -1572,7 +1572,7 @@ Anonymous__ and `named link`_ to an image with target (sic!).
             anonymous
          link to an image with target (sic!).
     <target anonymous="1" refname="named link">
-    <target refid="named-link">
+    <target refname="named link">
     <reference ids="named-link" names="named\\ link" refuri="uri3.html">
         <image uri="pic3.png">
     <paragraph>
@@ -1590,20 +1590,23 @@ __ http://simplified
 .. _external: http://indirect.external
 __ external_
 __
+__
 
 `Full syntax anonymous external hyperlink reference`__,
 `chained anonymous external reference`__,
 `simplified syntax anonymous external hyperlink reference`__,
 `indirect anonymous hyperlink reference`__,
-`internal anonymous hyperlink reference`__.
+`internal anonymous hyperlink reference`__,
+`second internal anonymous hyperlink reference`__.
 """,
 """\
 <document source="test data">
     <target anonymous="1" refuri="http://full">
-    <target anonymous="1" refid="target-1">
-    <target anonymous="1" ids="target-1" refuri="http://simplified">
+    <target anonymous="1">
+    <target anonymous="1" refuri="http://simplified">
     <target names="external" refuri="http://indirect.external">
     <target anonymous="1" refuri="http://indirect.external">
+    <target anonymous="1">
     <target anonymous="1" refid="paragraph-1">
     <paragraph ids="paragraph-1">
         <reference anonymous="1" refuri="http://full">
@@ -1620,6 +1623,9 @@ __
         ,
         <reference anonymous="1" refid="paragraph-1">
             internal anonymous hyperlink reference
+        ,
+        <reference anonymous="1" refid="paragraph-1">
+            second internal anonymous hyperlink reference
         .
 """],
 ["""\
@@ -1630,8 +1636,8 @@ Anonymous__ and chained_ both refer to the same URI.
 """,
 """\
 <document source="test data">
-    <target refid="chained">
-    <target anonymous="1" ids="chained" names="chained" refuri="http://anonymous">
+    <target refuri="http://anonymous">
+    <target anonymous="1" names="chained" refuri="http://anonymous">
     <paragraph>
         <reference anonymous="1" refuri="http://anonymous">
             Anonymous

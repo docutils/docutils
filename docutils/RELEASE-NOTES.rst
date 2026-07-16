@@ -233,11 +233,9 @@ standalone reader:
 
 rST parser:
   - Warn if a `"figure"`_ directive is missing both caption and legend.
-  - Don't generate identifiers for indirect or external targets
-    (unless legacy_ids_ is True).
-  - Generate identifiers for implicit targets (mainly sections) only if
-    there is a cross-link to the target [#cross-links]_ and no "explicit"
-    identifier (unless legacy_ids_ is True).
+  - "lazy IDs": Generate target ids_ in transforms -- after parsing and
+    only if required in the output document.
+    Keep behaviour backwards compatible with the legacy_ids_ setting.
 
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
@@ -297,6 +295,7 @@ Removed objects:
 .. [#cross-links] This includes links from the table of contents_ and
    "`section self-links <section_self_link_>`_" added by the HTML5
    writer.
+
 
 Release 0.23 (2026-05-27)
 =========================
@@ -1609,8 +1608,9 @@ Release 0.3.5 (2004-07-29)
 .. _Docutils Document Model:
 .. _Docutils XML: docs/ref/doctree.html
 .. _"colwidth" attribute: docs/ref/doctree.html#colwidth
-.. _identifier: docs/ref/doctree.html#identifiers
 .. _<doctest_block>: docs/ref/doctree.html#doctest-block
+.. _identifier: docs/ref/doctree.html#identifiers
+.. _ids: docs/ref/doctree.html#ids
 .. _reference names:  docs/ref/doctree.html#reference-names
 .. _<target>: docs/ref/doctree.html#target
 

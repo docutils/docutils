@@ -99,18 +99,18 @@ Release 1.0b1.dev (unpublished)
 
 * docutils/transforms/parts.py:
 
-  - `Contents.build_contents()`: ensure sections have an ID and prefer
-    IDs from external targets with "lazy IDs" (`legacy_ids`_ False).
+  - "lazy IDs": `Contents.build_contents()` ensures sections have an ID
+    and prefers IDs from external targets if `legacy_ids`_ is False.
 
 * docutils/transforms/references.py
 
   - `IndirectHyperlinks.resolve_indirect_target()` no longer calls
-    `unknown_reference_resolvers` and only sets IDs if required.
+    the `unknown_reference_resolvers` hook.
   - 3 new transforms, `MatchReferences`, `ReportDanglingReferences`,
     and `ReportUnreferencedLinks` obsolete `DanglingReferences`.
   - Add INFO system_message if a <target> cannot be propagated
     to the next node.
-  - support "lazy IDs": Handle hyperlink targets without ID;
+  - "lazy IDs": Handle hyperlink targets without ID;
     if required, generate and set one.
 
 * docutils/transforms/universal.py
