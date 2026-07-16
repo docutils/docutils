@@ -1526,7 +1526,7 @@ class HTMLTranslator(writers.DoctreeTranslator):
             atts['classes'].append('external')
         else:
             assert 'refid' in node, \
-                   'References must have "refuri" or "refid" attribute.'
+                   f'Reference without "refuri" or "refid" attribute: {node}'
             atts['href'] = '#' + node['refid']
             atts['classes'].append('internal')
         if len(node) == 1 and isinstance(node[0], nodes.image):

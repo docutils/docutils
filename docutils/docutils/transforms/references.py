@@ -133,8 +133,11 @@ class PropagateTargets(Transform):
             target['names'] = []
 
     def next_suitable_node(self, target: nodes.Element) -> nodes.Element:
-        if not isinstance(target, nodes.target):
-            return None  # only <target> ids/names are propagated
+        # Return the next suitable element for the transfer of the
+        # "names" and "ids" attributes from an empty "internal" <target>
+        # (target propagation).
+        if not isinstance(target, nodes.target) or len(target):
+            return None
         candidate = target.next_node(ascend=True)
         # skip system messages (may be removed by universal.FilterMessages)
         while isinstance(candidate, nodes.system_message):
@@ -147,8 +150,10 @@ class PropagateTargets(Transform):
             return None
         return candidate
 
-    def is_internal(self, node: nodes.Element) -> bool:
-        # Return True, if `node` is an internal hyperlink target.
+    def is_internal(self, node: nodes.Node) -> bool:
+        # Return True, if `node` is a potential internal hyperlink target.
+        if not isinstance(node, nodes.Element):
+            return False
         if 'refid' in node or 'refname' in node or 'refuri' in node:
             return False  # node is indirect or external target
         # check destination of chained targets:

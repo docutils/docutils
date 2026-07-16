@@ -94,6 +94,14 @@ class NodeTests(unittest.TestCase):
         e[0][1] += nodes.Text('some text')
         e += nodes.Element()
         e += nodes.Element()
+        # Tree                      Index         testlist
+        # <Element>                 e
+        #     <Element>             e[0]          skip
+        #         <Element>         e[0][0]
+        #         <TextElement>     e[0][1]       skip
+        #             <Text>        e[0][1][0]
+        #     <Element>             e[1]          skip
+        #     <Element>             e[2]
         self.testlist = [e[0], e[0][1], e[1]]
         compare = [(e, e[0][0]),
                    (e[0], e[0][0]),

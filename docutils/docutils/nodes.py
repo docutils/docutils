@@ -688,6 +688,9 @@ class Element(Node):
 
     def __contains__(self, key: str | Node) -> bool:
         # Test for both, children and attributes with operator ``in``.
+        #
+        # Caution: Document Tree traversal also returns Text nodes where
+        # ``in`` looks for substrings in the text content.
         if isinstance(key, str):
             return key in self.attributes
         return key in self.children
