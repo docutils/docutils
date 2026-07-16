@@ -43,7 +43,7 @@ class PropagateTargets(Transform):
     Given the following nodes::
 
         <target names="internal1">
-        <target anonymous="1" ids="id1">
+        <target anonymous="1">
         <target names="internal2">
         <paragraph>
             This is a test.
@@ -53,9 +53,9 @@ class PropagateTargets(Transform):
     to the paragraph itself::
 
         <target refid="internal1">
-        <target anonymous="1" refid="id1">
+        <target anonymous="1" refid="internal1">
         <target refid="internal2">
-        <paragraph ids="internal2 id1 internal1" names="internal2 internal1">
+        <paragraph ids="internal2 internal1" names="internal2 internal1">
             This is a test.
     """
 
@@ -124,13 +124,20 @@ class PropagateTargets(Transform):
                     next_node, nodes.caption):
                 target.parent.remove(target)
                 continue
-            # Set refid to point to the first former ID of target
-            # which is now an ID of next_node.
-            target['refid'] = target['ids'][0]
+            # Set refid or refname to point to the next_node.
             # Clear ids and names; they have been moved to next_node.
-            target['ids'] = []
+            if target['ids']:
+                target['refid'] = target['ids'][0]
+                self.document.note_refid(target)
+                target['ids'] = []
+            elif target['names']:
+                target['refname'] = target['names'][0]
+                self.document.note_refname(target)
+            elif next_node['names']:
+                target['refname'] = next_node['names'][0]
+            else:
+                target['refid'] = self.document.set_id(next_node)
             target['names'] = []
-            self.document.note_refid(target)
 
 
 class AnonymousHyperlinks(Transform):

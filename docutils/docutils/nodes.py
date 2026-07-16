@@ -2192,8 +2192,7 @@ class document(Root, Element):
             self.note_refname(target)
 
     def note_anonymous_target(self, target: target) -> None:
-        if (getattr(self.settings, "legacy_ids", True)
-                or 'refuri' not in target and 'refname' not in target):
+        if getattr(self.settings, "legacy_ids", True):
             self.set_id(target)
 
     def note_autofootnote(self, footnote: footnote) -> None:

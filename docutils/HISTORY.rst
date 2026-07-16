@@ -47,9 +47,9 @@ Release 1.0b1.dev (unpublished)
 
   - Remove "name" from `reference.valid_attributes`.
   - Remove the internal attribute `Targetable.indirect_reference_name`.
-  - "lazy IDs": `document.note_explicit_target()` and
-    `document.note_anonymous_target()` generate identifiers for indirect
-    or external targets only if the `legacy_ids`_ setting is True.
+  - "lazy IDs":
+    `document.note_explicit_target()` and `document.note_anonymous_target()`
+    generate identifiers only if the `legacy_ids`_ setting is True.
 
 * docutils/parsers/__init__.py
 
