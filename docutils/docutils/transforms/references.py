@@ -218,20 +218,18 @@ class AnonymousHyperlinks(PropagateTargets):
                     ref['refuri'] = target['refuri']
                     ref.resolved = True
                     break
-                else:
-                    if not target['ids']:
-                        if 'refid' in target:  # propagated target
-                            target = self.document.ids[target['refid']]
-                        elif 'refname' in target:  # indirect target
-                            target = self.document.names[target['refname']]
-                        elif next_node := self.next_suitable_node(target):
-                            target = next_node
-                        else:
-                            self.document.set_id(target)
-                        continue
+                if target['ids']:
                     ref['refid'] = target['ids'][0]
                     self.document.note_refid(ref)
                     break
+                if 'refid' in target:  # propagated target
+                    target = self.document.ids[target['refid']]
+                elif 'refname' in target:  # indirect target
+                    target = self.document.names[target['refname']]
+                elif next_node := self.next_suitable_node(target):
+                    target = next_node
+                else:
+                    self.document.set_id(target)
 
 
 class IndirectHyperlinks(Transform):
