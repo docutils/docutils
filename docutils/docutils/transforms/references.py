@@ -148,6 +148,11 @@ class PropagateTargets(Transform):
         if (isinstance(candidate, (nodes.Invisible, nodes.Targetable))
             and not isinstance(candidate, nodes.target)):
             return None
+        # If the next element is a "clickable" image (a <reference>
+        # wrapped around an <image>), return the <image>
+        if (isinstance(candidate, nodes.reference) and len(candidate) == 1
+            and isinstance(candidate[0], nodes.image)):
+            return candidate[0]
         return candidate
 
     def is_internal(self, node: nodes.Node) -> bool:

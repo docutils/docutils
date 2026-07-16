@@ -1041,15 +1041,13 @@ Chained_ `indirect hyperlink`_ reference.
     <target ids="external" names="external" refuri="http://uri">
     <target ids="indirect" names="indirect" refuri="http://uri">
     <target refid="internal">
-    <reference ids="internal" names="internal" refuri="http://uri">
-        <image uri="picture.png">
+    <reference refuri="http://uri">
+        <image ids="internal" names="internal" uri="picture.png">
     <reference refuri="http://uri">
         <image uri="picture.png">
     <reference refid="internal">
         <image uri="picture.png">
 """],
-# TODO: Anonymous links to a "clickable image should go
-#       to the image, not the image's click-target!
 ["""\
 .. _img1:
 .. image:: pic1.png
@@ -1062,18 +1060,18 @@ __
 
 Named link to img1_ with target and anonymous links to
 the targetless img2__ and
-img3__ with target (sic!).
+img3__ with target.
 """,
 """\
 <document source="test data">
     <target refid="img1">
-    <reference ids="img1" names="img1" refuri="uri1.html">
-        <image uri="pic1.png">
+    <reference refuri="uri1.html">
+        <image ids="img1" names="img1" uri="pic1.png">
     <target anonymous="1" refid="target-1">
     <image ids="target-1" uri="pic2.png">
     <target anonymous="1" refid="target-2">
-    <reference ids="target-2" refuri="uri3.html">
-        <image uri="pic3.png">
+    <reference refuri="uri3.html">
+        <image ids="target-2" uri="pic3.png">
     <paragraph>
         Named link to \n\
         <reference refid="img1">
@@ -1083,9 +1081,9 @@ img3__ with target (sic!).
         <reference anonymous="1" refid="target-1">
             img2
          and
-        <reference anonymous="1" refuri="uri3.html">
+        <reference anonymous="1" refid="target-2">
             img3
-         with target (sic!).
+         with target.
 """],
 ["""\
 __
@@ -1093,58 +1091,58 @@ __
 .. image:: pic1.png
    :target: uri1.html
 
-Two anonymous__ links to an `image with target`__ (sic!).
+Two anonymous__ links to an `image with target`__.
 
 .. _named:
 __
 .. image:: pic2.png
    :target: uri2.html
 
-Named_ and anonymous__ link to an image with target (sic!).
+Named_ and anonymous__ link to an image with target.
 
 __
 .. _named link:
 .. image:: pic3.png
    :target: uri3.html
 
-Anonymous__ and `named link`_ to an image with target (sic!).
+Anonymous__ and `named link`_ to an image with target.
 """,
 """\
 <document source="test data">
     <target anonymous="1" refid="target-1">
     <target anonymous="1" refid="target-2">
-    <reference ids="target-2 target-1" refuri="uri1.html">
-        <image uri="pic1.png">
+    <reference refuri="uri1.html">
+        <image ids="target-2 target-1" uri="pic1.png">
     <paragraph>
         Two \n\
-        <reference anonymous="1" refuri="uri1.html">
+        <reference anonymous="1" refid="target-2">
             anonymous
          links to an \n\
-        <reference anonymous="1" refuri="uri1.html">
+        <reference anonymous="1" refid="target-2">
             image with target
-         (sic!).
+        .
     <target refid="named">
     <target anonymous="1" refid="target-3">
-    <reference ids="target-3 named" names="named" refuri="uri2.html">
-        <image uri="pic2.png">
+    <reference refuri="uri2.html">
+        <image ids="target-3 named" names="named" uri="pic2.png">
     <paragraph>
         <reference refid="named">
             Named
          and \n\
-        <reference anonymous="1" refuri="uri2.html">
+        <reference anonymous="1" refid="target-3">
             anonymous
-         link to an image with target (sic!).
+         link to an image with target.
     <target anonymous="1" refid="target-4">
     <target refid="named-link">
-    <reference ids="named-link target-4" names="named\\ link" refuri="uri3.html">
-        <image uri="pic3.png">
+    <reference refuri="uri3.html">
+        <image ids="named-link target-4" names="named\\ link" uri="pic3.png">
     <paragraph>
-        <reference anonymous="1" refuri="uri3.html">
+        <reference anonymous="1" refid="named-link">
             Anonymous
          and \n\
         <reference refid="named-link">
             named link
-         to an image with target (sic!).
+         to an image with target.
 """],
 ["""\
 .. __: http://full
@@ -1477,9 +1475,9 @@ Chained_ `indirect hyperlink`_ reference.
 <document source="test data">
     <target names="external" refuri="http://uri">
     <target names="indirect" refuri="http://uri">
-    <target refname="internal">
-    <reference ids="internal" names="internal" refuri="http://uri">
-        <image uri="picture.png">
+    <target refid="internal">
+    <reference refuri="http://uri">
+        <image ids="internal" names="internal" uri="picture.png">
     <reference refuri="http://uri">
         <image uri="picture.png">
     <reference refid="internal">
@@ -1499,18 +1497,18 @@ __
 
 Named link to img1_ with target and anonymous links to
 the targetless img2__ and
-img3__ with target (sic!).
+img3__ with target.
 """,
 """\
 <document source="test data">
-    <target refname="img1">
-    <reference ids="img1" names="img1" refuri="uri1.html">
-        <image uri="pic1.png">
+    <target refid="img1">
+    <reference refuri="uri1.html">
+        <image ids="img1" names="img1" uri="pic1.png">
     <target anonymous="1" refid="image-1">
     <image ids="image-1" uri="pic2.png">
-    <target anonymous="1" refid="reference-1">
-    <reference ids="reference-1" refuri="uri3.html">
-        <image uri="pic3.png">
+    <target anonymous="1" refid="image-2">
+    <reference refuri="uri3.html">
+        <image ids="image-2" uri="pic3.png">
     <paragraph>
         Named link to \n\
         <reference refid="img1">
@@ -1520,9 +1518,9 @@ img3__ with target (sic!).
         <reference anonymous="1" refid="image-1">
             img2
          and
-        <reference anonymous="1" refuri="uri3.html">
+        <reference anonymous="1" refid="image-2">
             img3
-         with target (sic!).
+         with target.
 """],
 ["""\
 __
@@ -1530,58 +1528,58 @@ __
 .. image:: pic1.png
    :target: uri1.html
 
-Two anonymous__ links to an `image with target`__ (sic!).
+Two anonymous__ links to an `image with target`__.
 
 .. _named:
 __
 .. image:: pic2.png
    :target: uri2.html
 
-Named_ and anonymous__ link to an image with target (sic!).
+Named_ and anonymous__ link to an image with target.
 
 __
 .. _named link:
 .. image:: pic3.png
    :target: uri3.html
 
-Anonymous__ and `named link`_ to an image with target (sic!).
+Anonymous__ and `named link`_ to an image with target.
 """,
 """\
 <document source="test data">
     <target anonymous="1">
-    <target anonymous="1" refid="reference-1">
-    <reference ids="reference-1" refuri="uri1.html">
-        <image uri="pic1.png">
+    <target anonymous="1" refid="image-1">
+    <reference refuri="uri1.html">
+        <image ids="image-1" uri="pic1.png">
     <paragraph>
         Two \n\
-        <reference anonymous="1" refuri="uri1.html">
+        <reference anonymous="1" refid="image-1">
             anonymous
          links to an \n\
-        <reference anonymous="1" refuri="uri1.html">
+        <reference anonymous="1" refid="image-1">
             image with target
-         (sic!).
-    <target refname="named">
-    <target anonymous="1" refname="named">
-    <reference ids="named" names="named" refuri="uri2.html">
-        <image uri="pic2.png">
+        .
+    <target refid="named">
+    <target anonymous="1" refid="named">
+    <reference refuri="uri2.html">
+        <image ids="named" names="named" uri="pic2.png">
     <paragraph>
         <reference refid="named">
             Named
          and \n\
-        <reference anonymous="1" refuri="uri2.html">
+        <reference anonymous="1" refid="named">
             anonymous
-         link to an image with target (sic!).
+         link to an image with target.
     <target anonymous="1" refname="named link">
-    <target refname="named link">
-    <reference ids="named-link" names="named\\ link" refuri="uri3.html">
-        <image uri="pic3.png">
+    <target refid="named-link">
+    <reference refuri="uri3.html">
+        <image ids="named-link" names="named\\ link" uri="pic3.png">
     <paragraph>
-        <reference anonymous="1" refuri="uri3.html">
+        <reference anonymous="1" refid="named-link">
             Anonymous
          and \n\
         <reference refid="named-link">
             named link
-         to an image with target (sic!).
+         to an image with target.
 """],
 ["""\
 .. __: http://full

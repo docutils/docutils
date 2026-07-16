@@ -108,10 +108,13 @@ Release 1.0b1.dev (unpublished)
     the `unknown_reference_resolvers` hook.
   - 3 new transforms, `MatchReferences`, `ReportDanglingReferences`,
     and `ReportUnreferencedLinks` obsolete `DanglingReferences`.
-  - Add INFO system_message if a <target> cannot be propagated
-    to the next node.
   - "lazy IDs": Handle hyperlink targets without ID;
     if required, generate and set one.
+  - Add INFO system_message if a <target> cannot be propagated
+    to the next node.
+  - Fix anonymous hyperlinks to "clickable" images: "Propagation" of a
+    <target> in front of a "clickable" image now transfers "ids" and
+    "names" to the `<image>`, not the wrapping `<reference>`.
 
 * docutils/transforms/universal.py
 
