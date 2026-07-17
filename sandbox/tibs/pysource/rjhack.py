@@ -13,7 +13,7 @@ A front end to the Docutils Publisher, taking Python source and producing HTML.
 import os, locale
 try:
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 import visit, transform

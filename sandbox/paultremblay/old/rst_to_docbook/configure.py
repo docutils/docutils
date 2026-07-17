@@ -18,7 +18,7 @@ def configure():
                 )
         try:
             os.remove('var_file')
-        except:
+        except Exception:
             pass
         sys.exit(1)
     make_var_file(target)
@@ -83,7 +83,7 @@ def determine_processor(processor = None):
             from Ft.Xml import InputSource
             from Ft.Xml.Xslt.Processor import Processor
             return '4suite'
-        except:
+        except Exception:
             sys.stderr.write('4suite does not appear to be set up correctly on your system\n'
                     'Could not find the Ft.Xml libraries\n'
                     'Script cannot work without an xslt procesor!\n'
@@ -94,7 +94,7 @@ def determine_processor(processor = None):
             import libxml2
             import libxslt
             return 'xmllint'
-        except:
+        except Exception:
             sys.stderr.write('You either choose xmllint as your processor, or xmllint was tested because not other\n'
                     'processor was found\n'
                     'However, the libraries "libxml2" and or "libxslt" cannot be found.\n'

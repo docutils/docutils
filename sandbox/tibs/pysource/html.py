@@ -353,7 +353,7 @@ class Writer:
                     "Alpha"  : "A"}
         try:
             enumtype = typedict[element["enumtype"]]
-        except:
+        except Exception:
             enumtype = "1"
 
         # Does this match how DOCUTILS nodes work?
@@ -373,7 +373,7 @@ class Writer:
                       "+" : "square"}
         try:
             bullet = bulletdict[element["bullet"]]
-        except:
+        except Exception:
             bullet = None
 
         if bullet:
@@ -589,7 +589,7 @@ class Writer:
         """
         try:
             name = element["name"]
-        except:
+        except Exception:
             name = "**no target name**"
 
         ##if not self.in_paragraph:
@@ -881,7 +881,7 @@ class Writer:
         try:
             name = names[level]
             colour = self.colours[name]
-        except:
+        except Exception:
             name = "Unrecognised warning level %d"%level
             colour = self.colours["Fatal"]
         bgcolour = self.colours["WarningBG"]
@@ -915,7 +915,7 @@ class Writer:
     def write_system_message(self,element,stream):
         try:
             target = element["refid"]
-        except:
+        except Exception:
             target = None
         if target:
             self.html.add("a","",name="%s"%target)
@@ -1012,7 +1012,7 @@ class PythonWriter(Writer):
 
         try:
             style = element["style"]
-        except:
+        except Exception:
             style = None
 
         if style == "docstring":
@@ -1059,7 +1059,7 @@ class PythonWriter(Writer):
 
         try:
             style = element["style"]
-        except:
+        except Exception:
             style = None
 
         if style in ["package","module","class","method","function"]:
@@ -1075,7 +1075,7 @@ class PythonWriter(Writer):
 
         try:
             colour = self.python_colours[style]
-        except:
+        except Exception:
             colour = self.colours["default"]
 
         self.html.start("table",width="100%",cellspacing="0")

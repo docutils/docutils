@@ -15,7 +15,7 @@ deleting all the messy temporary files that this process generates.
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 # stdlib imports

@@ -399,7 +399,7 @@ def main():
     try:
         opts, args = getopt.getopt(args, 'hrlpdo',
             ['help', 'rest', 'latex', 'pager', 'over'])
-    except:
+    except Exception:
         usage()
     target = None
     usePager = None
