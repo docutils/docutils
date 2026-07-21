@@ -3900,7 +3900,7 @@ It is defined in the `Exchange Table Model`_.
 
 :Attributes: The <table> element may contain the frame_, colsep_,
              rowsep_, and pgwide_ attributes (ignored by Docutils)
-             and (via the `%bodyatt`_ parameter entity)
+             and (via the `%tbl.table.att`_ parameter entity)
              the `common attributes`_, align_, and width_.
 
 __ https://www.oasis-open.org/specs/tm9901.html#AEN142
@@ -5344,9 +5344,8 @@ parameter entity in their attribute lists.
 The ``%bodyatt`` parameter entity is defined in the `Exchange Table Model`_
 to allow customization of the `\<table>`_ element's attribute list.
 
-The `Docutils Generic DTD`_ redefines it to add align_, width_, and the
-`common attributes`_.  (In Docutils versions ≥ 1.0, the `%tbl.table.att`_
-parameter entity will be redefined instead.)
+It was used (instead of `%tbl.table.att`_) in Docutils versions < 1.0 to
+add align_, width_, and the `common attributes`_.
 
 
 ``%fixedspace.att``
@@ -5480,8 +5479,8 @@ The ``%tbl.table.att`` parameter entity is defined in the `Exchange Table
 Model`_ to allow customization of the `\<table>`_ element's attribute
 list.
 
-Docutils versions ≥ 1.0 will use ``%tbl.table.att`` (instead of the
-obsolete `%bodyatt`_) to add align_, width_, and the `common attributes`_.
+The `Docutils Generic DTD`_ redefines it to add align_, width_, and the
+`common attributes`_ (Docutils versions < 1.0 used `%bodyatt`_ instead).
 
 
 ``%tbl.tbody.att``

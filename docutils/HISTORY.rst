@@ -17,6 +17,11 @@
 Release 1.0b1.dev (unpublished)
 ===============================
 
+* docs/ref/docutils.dtd
+
+  - Use the ``%tbl.table.att`` parameter entity instead of ``%bodyatt``
+    to customize the <table> element's attribute list.
+
 * docutils/__init__.py
 
   - Remove `TransformSpec.unknown_reference_resolvers`.

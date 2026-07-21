@@ -46,9 +46,6 @@ Command line interface
 Document Tree / Docutils DTD
 ----------------------------
 
-* Use the ``%tbl.table.att`` parameter entity instead of ``%bodyatt``
-  to customize the <table> element's attribute list in Docutils 1.0.
-
 * The <footnote> element's first child (<label>) will become mandatory
   in Docutils 1.0.
 
@@ -210,6 +207,8 @@ Release 1.0b1.dev (unpublished)
 
 Document Tree / Docutils DTD:
   - Drop the `name` attribute from <reference> nodes.
+  - Use the ``%tbl.table.att`` parameter entity instead of ``%bodyatt``
+    to customize the <table> element's attribute list in Docutils 1.0.
 
 Configuration changes:
   - `Auto-detection`_ of the input encoding is no longer supported.
@@ -291,6 +290,8 @@ Removed objects:
       ..
   `writers.latex2e.SortableDict`
       Not used and deprecated since Docutils 0.22.
+
+Bugfixes and improvements (see HISTORY_).
 
 .. [#cross-links] This includes links from the table of contents_ and
    "`section self-links <section_self_link_>`_" added by the HTML5

@@ -218,16 +218,13 @@ Technical Memorandum 9901:1999 "XML Exchange Table Model DTD",
 http://www.oasis-open.org/html/tm9901.htm).
 -->
 
-<!ENTITY % calstblx PUBLIC
-    "-//OASIS//DTD XML Exchange Table Model 19990315//EN"
-    "soextblx.dtd">
-
 <!-- These parameter entities customize the table model DTD. -->
-<!-- table element TODO: use %tbl.table.att.  Keep or drop pgwide? -->
-<!ENTITY % bodyatt
+<!-- table element the "pgwide" attribute is ignored by Docutils -->
+<!ENTITY % tbl.table.att
   " %basic.atts;
     %align-h.att;
-    width     %measure;  #IMPLIED ">
+    width     %measure;  #IMPLIED
+    pgwide    %yesorno;  #IMPLIED ">
 <!-- 1 colspec element is expected per table column: -->
 <!ENTITY % tbl.tgroup.mdl       "colspec+,thead?,tbody">
 <!ENTITY % tbl.tgroup.att       " %basic.atts; ">
@@ -242,6 +239,10 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ENTITY % tbl.entry.att
   " %basic.atts;
     morecols  %number;  #IMPLIED ">
+
+<!ENTITY % calstblx PUBLIC
+    "-//OASIS//DTD XML Exchange Table Model 19990315//EN"
+    "soextblx.dtd">
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
