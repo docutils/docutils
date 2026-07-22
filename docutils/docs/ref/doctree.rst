@@ -2049,14 +2049,14 @@ The corresponding footnote mark in running text is set by the
 :Parents:    all elements employing `%body.elements`_ or
              `%structure.model`_ in their content models
 
-:Children:   <footnote> elements begin with an optional [#]_ `\<label>`_
+:Children:   <footnote> elements begin with a `\<label>`_ [#]_
              and contain `body elements`_::
 
-                 (label?, (%body.elements;)+)
+                 (label, (%body.elements;)+)
 
 :Attributes: the `common attributes`_ plus auto_ and backrefs_.
 
-.. [#] The footnote label will become mandatory in Docutils 1.0.
+.. [#] The footnote label was optional in Docutils < 1.0.
 
 Examples
 --------

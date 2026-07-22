@@ -2536,9 +2536,9 @@ class label(Part, PureTextElement):
 class footnote(General, BackLinkable, Element, Labeled, Targetable):
     """Labelled note providing additional context (footnote or endnote)."""
     valid_attributes: Final = Element.valid_attributes + ('auto', 'backrefs')
-    content_model: Final = ((label, '?'), (Body, '+'))
-    # (label?, (%body.elements;)+)
-    # The label will become required in Docutils 1.0.
+    content_model: Final = ((label, '.'), (Body, '+'))
+    # (label, (%body.elements;)+)
+    # The label was optional in Docutils < 1.0.
 
 
 class citation(General, BackLinkable, Element, Labeled, Targetable):

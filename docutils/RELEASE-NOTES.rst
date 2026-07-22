@@ -46,9 +46,6 @@ Command line interface
 Document Tree / Docutils DTD
 ----------------------------
 
-* The <footnote> element's first child (<label>) will become mandatory
-  in Docutils 1.0.
-
 * Inline `\<target>`_ elements and <target> elements with content will be
   deprecated in Docutils 1.0 and invalid in Docutils 2.0.
   The "rst" parser will use <inline> elements for inline targets
@@ -207,6 +204,7 @@ Release 1.0b1.dev (unpublished)
 
 Document Tree / Docutils DTD:
   - Drop the `name` attribute from <reference> nodes.
+  - The <footnote> element's first child (<label>) is now mandatory.
   - Use the ``%tbl.table.att`` parameter entity instead of ``%bodyatt``
     to customize the <table> element's attribute list in Docutils 1.0.
 

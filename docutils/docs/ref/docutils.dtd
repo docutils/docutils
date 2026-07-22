@@ -515,7 +515,7 @@ that is typeset as mathematical notation (display formula).
 <!ELEMENT admonition (title, (%body.elements;)+)>
 <!ATTLIST admonition %basic.atts;>
 
-<!ELEMENT footnote (label?, (%body.elements;)+)>
+<!ELEMENT footnote (label, (%body.elements;)+)>
 <!ATTLIST footnote
     %basic.atts;
     %backrefs.att;

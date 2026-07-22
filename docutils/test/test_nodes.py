@@ -766,15 +766,11 @@ class ElementValidationTests(unittest.TestCase):
         note.append(nodes.enumerated_list())
         self.assertEqual(note.validate_content(), [])
 
-        # footnote: (label?, (%body.elements;)+)
-        # TODO: use case for footnote without label (make it required?)
-        #       rST parser can generate footnotes without body elements!
-        footnote = nodes.footnote('', hint)
+        # footnote: (label, (%body.elements;)+)
+        footnote = nodes.footnote('', nodes.label('', '1'), hint)
         self.assertEqual(footnote.validate_content(), [])
 
         # citation: (label, (%body.elements;)+)
-        # TODO: rST parser allows empty citation
-        #       (see test_rst/test_citations.py). Is this sensible?
         citation = nodes.citation('', hint)
         with self.assertRaisesRegex(nodes.ValidationError,
                                     'Expecting child of type <label>,'
