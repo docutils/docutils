@@ -160,12 +160,12 @@ cannot be used in \emph{explicit} targets:
 \texttt{\_`4`} and \texttt{\_`exi`} would lead to a \textquotedbl{}duplicate target name\textquotedbl{} ERROR .
 
 The markup characters for auto-labeled footnotes \textquotedbl{}%
-\phantomsection\label{target-1}*\textquotedbl{} and \textquotedbl{}%
-\phantomsection\label{target-2}\#\textquotedbl{} and
+\phantomsection\label{inline-1}*\textquotedbl{} and \textquotedbl{}%
+\phantomsection\label{inline-2}\#\textquotedbl{} and
 the symbols selected by auto-symbol footnotes \textquotedbl{}%
-\phantomsection\label{target-3}†\textquotedbl{} do not become
+\phantomsection\label{inline-3}†\textquotedbl{} do not become
 reference names. They can be used in other hyperref targets allowing
-links to \hyperref[target-1]{*}, \hyperref[target-2]{\#} and \hyperref[target-3]{†}.
+links to \hyperref[inline-1]{*}, \hyperref[inline-2]{\#} and \hyperref[inline-3]{†}.
 
 
 \subsection{5%
@@ -174,9 +174,9 @@ links to \hyperref[target-1]{*}, \hyperref[target-2]{\#} and \hyperref[target-3]
 
 Both, explicit and implicit targets with a number as reference name (e.g.
 the inline target \textquotedbl{}%
-\phantomsection\label{target-4}2\textquotedbl{} and the section title \textquotedbl{}5\textquotedbl{} above) cause a gap in
+\phantomsection\label{inline-4}2\textquotedbl{} and the section title \textquotedbl{}5\textquotedbl{} above) cause a gap in
 footnote auto-numbering.\footref{latex}  The number can be used in a
-footnote-reference although it does not refer to a footnote!\textsuperscript{\hyperref[section-2]{5}}\textsuperscript{\hyperref[target-4]{2}}
+footnote-reference although it does not refer to a footnote!\textsuperscript{\hyperref[section-2]{5}}\textsuperscript{\hyperref[inline-4]{2}}
 
 \begin{DUclass}{admonition-todo}
 \begin{DUadmonition}

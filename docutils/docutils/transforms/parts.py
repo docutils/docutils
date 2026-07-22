@@ -162,6 +162,17 @@ class ContentsFilter(nodes.TreeCopyVisitor):
     def get_entry_text(self):
         return self.get_tree_copy().children
 
+    def default_visit(self, node) -> None:
+        # Copy the current node, and make it the new acting parent.
+        # remove "names" and "ids" (must be unique)
+        super().default_visit(node)
+        self.parent['names'] = []
+        self.parent['ids'] = []
+
+    def visit_Text(self, node):
+        # Text nodes have no attributes, just copy
+        super().default_visit(node)
+
     def visit_citation_reference(self, node):
         raise nodes.SkipNode
 

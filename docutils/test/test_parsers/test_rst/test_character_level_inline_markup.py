@@ -326,7 +326,7 @@ underscore.
         This isn't a _target; targets require backquotes.
     <paragraph>
         With simple-inline-markup, \n\
-        <target ids="this" names="this">
+        <inline ids="this" names="this">
             this
         _ is a a target followed by an
         underscore.

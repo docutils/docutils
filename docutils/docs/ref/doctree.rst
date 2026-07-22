@@ -310,7 +310,7 @@ text data, most inline elements may also contain further inline elements.
   `\<footnote_reference>`_, `\<generated>`_, `\<image>`_, `\<inline>`_,
   `\<literal>`_, `\<math>`_, `\<problematic>`_, `\<raw>`_, `\<reference>`_,
   `\<strong>`_, `\<subscript>`_, `\<substitution_reference>`_,
-  `\<superscript>`_, `\<target>`_, `\<title_reference>`_
+  `\<superscript>`_, `\<target>`_ [#inline-targets]_, `\<title_reference>`_
 :Docutils class:
   ``nodes.Inline``
 :Parameter Entities:
@@ -2316,8 +2316,8 @@ The <inline> element is a generic inline container.
 :Category:   `Inline Elements`_
 :Analogues:  <inline> is analogous to the HTML_ <span> element and the
              DocBook_ <phrase> element.
-:Processing: Writers_ typically pass the classes_ attribute to the output
-             document and leave styling to the backend or a custom
+:Processing: Writers_ typically pass the classes_ and ids_ attributes to the
+             output document and leave styling to the backend or a custom
              stylesheet_. They may also process the classes_ attribute
              and convert the <inline> element to a specific element or
              render the content distinctly for specific class values.
@@ -2345,6 +2345,9 @@ Pseudo-XML_ fragment from simple parsing::
         An example of using
         <inline classes="custom">
             interpreted text
+
+See `\<target>`_ for an example of an <inline> element used as
+`inline target`_ (anchor).
 
 
 <label>
@@ -3238,7 +3241,7 @@ Pseudo-XML_ fragment from simple parsing::
         .
     <paragraph>
         Matching targets must exist in the document, e.g., a
-        <target ids="simple" names="simple">
+        <inline ids="simple" names="simple">
             simple
          inline target or the explicit targets below.
     <target ids="phrase-refs" names="phrase\ refs" refuri="doctree.rst">
@@ -3260,7 +3263,7 @@ replace the refname_ with a refid_ or refuri_::
         .
     <paragraph>
         Matching targets must exist in the document, e.g., a
-        <target ids="simple" names="simple">
+        <inline ids="simple" names="simple">
             simple
          inline target or the explicit targets below.
     <target ids="phrase-refs" names="phrase\ refs" refuri="doctree.rst">
@@ -3956,18 +3959,16 @@ The <target> element provides an end-point for a hypertext `\<reference>`_.
              provides ids_ or names_ for its content or, if empty, the
              next element.
 :Parents:    all elements employing `%body.elements`_, `%structure.model`_,
-             or `%text.model`_ in their content models
-:Children:   only text data [#target-content]_
+             or `%text.model`_ [#inline-targets]_ in their content models
+:Children:   inline targets may contain text data [#target-content]_
 :Attributes: anonymous_, refid_, refname_, refuri_, and
              the `common attributes`_.
 
 
-.. [#inline-targets] Inline <target> elements will be deprecated in
-   Docutils 1.0 and invalid in Docutils 2.0.  The "rst" parser will
-   use `\<inline>`_ elements for inline targets.
-
-.. [#target-content] <target> elements with content will be deprecated in
-   Docutils 1.0 and invalid in Docutils 2.0.
+.. [#inline-targets] Inline <target> elements are deprecated and
+   will be invalid in Docutils 2.0.
+.. [#target-content] <target> elements with content are deprecated
+   and will be invalid in Docutils 2.0.
 
 Examples
 --------
@@ -3992,7 +3993,7 @@ Pseudo-XML_ fragment from simple parsing::
     <paragraph>
         The hyperlink target above points to this paragraph
         with an
-        <target ids="inline-target" names="inline\ target">
+        <inline ids="inline-target" names="inline\ target">
             inline target
         .
 
@@ -4006,7 +4007,7 @@ two IDs, transferred from the preceding targets::
     <paragraph ids="explicit-target alias" names="explicit\ target alias">
         The hyperlink target above points to this paragraph
         with an
-        <target ids="inline-target" names="inline\ target">
+        <inline ids="inline-target" names="inline\ target">
             inline target
         .
 
@@ -5573,6 +5574,7 @@ The ``%inline.elements`` parameter entity contains an OR-list of all
    :end-before:
    :literal:
 
+Inline <target> elements are deprecated. [#inline-targets]_
 The `%additional.inline.elements`_ placeholder can be used by
 wrapper DTDs to extend ``%inline.elements``.
 
@@ -5706,7 +5708,8 @@ models of the following elements: `\<abbreviation>`_,
 `\<reference>`_, `\<revision>`_, `\<rubric>`_,
 `\<status>`_, `\<strong>`_, `\<subscript>`_, `\<substitution_definition>`_,
 `\<substitution_reference>`_, `\<subtitle>`_, `\<superscript>`_,
-`\<target>`_, `\<term>`_, `\<title>`_, `\<title_reference>`_, `\<version>`_
+`\<target>`_ [#target-content]_, `\<term>`_, `\<title>`_,
+`\<title_reference>`_, `\<version>`_
 
 
 .. _%additional.basic.atts:
@@ -5970,6 +5973,7 @@ Bibliography
 .. _hyperlink references:   rst/restructuredtext.html#hyperlink-references
 .. _implicit hyperlink targets: rst/restructuredtext.html#implicit-hyperlink-targets
 .. _indirect target:        rst/restructuredtext.html#indirect-hyperlink-targets
+.. _inline target:          rst/restructuredtext.html#inline-internal-targets
 .. _inline literals:        rst/restructuredtext.html#inline-literals
 .. _inline markup:          rst/restructuredtext.html#inline-markup
 .. _internal hyperlink targets: rst/restructuredtext.html#internal-hyperlink-targets

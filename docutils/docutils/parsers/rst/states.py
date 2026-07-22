@@ -833,9 +833,10 @@ class Inliner:
             node = nodeclass(rawsource, text)
             return (string[:matchstart], [node],
                     string[textend:], [], endmatch.group(1))
+        role = 'target' if string[matchstart] == '_' else nodeclass.__name__
         msg = self.reporter.warning(
-              'Inline %s start-string without end-string.'
-              % nodeclass.__name__, line=lineno)
+              f'Inline {role} start-string without end-string.',
+              line=lineno)
         text = unescape(string[matchstart:matchend], True)
         prb = self.problematic(text, text, msg)
         return string[:matchstart], [prb], string[matchend:], [msg], ''
@@ -1009,13 +1010,13 @@ class Inliner:
 
     def inline_internal_target(self, match, lineno):
         before, inlines, remaining, sysmessages, endstring = self.inline_obj(
-              match, lineno, self.patterns.target, nodes.target)
-        if inlines and isinstance(inlines[0], nodes.target):
+              match, lineno, self.patterns.target, nodes.inline)
+        if inlines and isinstance(inlines[0], nodes.inline):
             assert len(inlines) == 1
-            target = inlines[0]
-            name = normalize_name(target.astext())
-            target['names'].append(name)
-            self.document.note_explicit_target(target, self.parent)
+            inline_target = inlines[0]
+            name = normalize_name(inline_target.astext())
+            inline_target['names'].append(name)
+            self.document.note_explicit_target(inline_target, self.parent)
         return before, inlines, remaining, sysmessages
 
     def substitution_reference(self, match, lineno):

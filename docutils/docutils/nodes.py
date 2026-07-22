@@ -2653,7 +2653,7 @@ class abbreviation(Inline, TextElement): pass
 class acronym(Inline, TextElement): pass
 class emphasis(Inline, TextElement): pass
 class generated(Inline, TextElement): pass
-class inline(Inline, TextElement): pass
+class inline(Inline, TextElement, Targetable): pass
 class literal(Inline, TextElement): pass
 class strong(Inline, TextElement): pass
 class subscript(Inline, TextElement): pass

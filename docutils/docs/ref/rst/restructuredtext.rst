@@ -2965,7 +2965,7 @@ reference text::
 Inline Internal Targets
 ------------------------
 
-:Doctree element:   `\<target>`_
+:Doctree element:   `\<inline>`_
 :Start/End strings: ``_```   `````
 :See also:          `hyperlink targets`_
 

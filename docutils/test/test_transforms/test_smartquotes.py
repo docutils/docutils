@@ -239,7 +239,7 @@ Do not drop characters from intra-word inline markup like
         <list_item>
             <paragraph>
                 Around “
-                <target ids="targets" names="targets">
+                <inline ids="targets" names="targets">
                     targets
                 ”, “
                 <emphasis>
@@ -292,7 +292,7 @@ Do not convert context-character at inline-tag boundaries
         (in French, smart quotes expand to two characters).
     <paragraph classes="language-fr-ch-x-altquot">
         Around «\u202f
-        <target ids="targets" names="targets">
+        <inline ids="targets" names="targets">
             targets
         \u202f», «\u202f
         <emphasis>

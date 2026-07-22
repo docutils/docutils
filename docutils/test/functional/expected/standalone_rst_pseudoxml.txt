@@ -471,7 +471,7 @@
                         (U+2665):
                     ♥
                     ), and 
-                    <target ids="inline-hyperlink-targets" names="inline\ hyperlink\ targets">
+                    <inline ids="inline-hyperlink-targets" names="inline\ hyperlink\ targets">
                         inline hyperlink targets
                     
                     (see 
@@ -1920,7 +1920,7 @@
                     <footnote_reference ids="footnote-reference-9" refid="footnote-1">
                         1
                     , 
-                    <target ids="hyperlink-targets" names="hyperlink\ targets">
+                    <inline ids="hyperlink-targets" names="hyperlink\ targets">
                         hyperlink targets
                     , and 
                     <reference refuri="http://www.python.org/">

@@ -125,7 +125,7 @@ For *completeness*, _`let's` ``test`` **other** forms_
         <emphasis>
             completeness
         , \n\
-        <target ids="let-s" names="let's">
+        <inline ids="let-s" names="let's">
             let's
          \n\
         <literal>

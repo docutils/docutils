@@ -188,6 +188,7 @@ resolve to either an internal or external reference.
     | table | target | tip | warning
     %additional.body.elements; ">
 
+<!-- inline targets are deprecated and will be invalid in Docutils 2.0 -->
 <!ENTITY % additional.inline.elements "">
 <!ENTITY % inline.elements
   " abbreviation | acronym | citation_reference | emphasis
@@ -533,6 +534,7 @@ that is typeset as mathematical notation (display formula).
 <!ATTLIST rubric %basic.atts;>
 
 <!-- Empty except when used as an inline element. -->
+<!-- target content is deprecated and will be invalid in Docutils 2.0 -->
 <!ELEMENT target %text.model;>
 <!ATTLIST target
     %basic.atts;

@@ -1168,10 +1168,10 @@ Embedded URI: named `<file.txt>`_ and anonymous `<file.html>`__.
         Report duplicate refname.
     <paragraph>
         Explicit targets: \n\
-        <target names="file.txt">
+        <inline names="file.txt">
             file.txt
         , \n\
-        <target names="file.html">
+        <inline names="file.html">
             file.html
         .
     <system_message level="1" line="6" source="test data" type="INFO">
@@ -1295,10 +1295,10 @@ No clash with anonymous reference `link <tg1_>`__.
         Duplicate refnames in references with embedded alias.
     <paragraph>
         Explicit targets: \n\
-        <target names="tg1">
+        <inline names="tg1">
             tg1
          and \n\
-        <target names="tg2">
+        <inline names="tg2">
             tg2
         .
     <system_message level="1" line="6" source="test data" type="INFO">
@@ -1334,19 +1334,19 @@ _`Here is  a    TaRgeT` with case and spacial difficulties.
 """\
 <document source="test data">
     <paragraph>
-        <target names="target">
+        <inline names="target">
             target
     <paragraph>
         Here is \n\
-        <target names="another\\ target">
+        <inline names="another\\ target">
             another target
          in some text. And \n\
-        <target names="yet\\ another\\ target">
+        <inline names="yet\\ another\\ target">
             yet
             another target
         , spanning lines.
     <paragraph>
-        <target names="here\\ is\\ a\\ target">
+        <inline names="here\\ is\\ a\\ target">
             Here is  a    TaRgeT
          with case and spacial difficulties.
 """],
@@ -1357,10 +1357,10 @@ l'_`target1` and l\u2019_`target2` with apostrophe
 <document source="test data">
     <paragraph>
         l'
-        <target names="target1">
+        <inline names="target1">
             target1
          and l\u2019
-        <target names="target2">
+        <inline names="target2">
             target2
          with apostrophe
 """],
@@ -1373,21 +1373,21 @@ quoted \xab_`target5`\xbb
 <document source="test data">
     <paragraph>
         quoted '
-        <target names="target1">
+        <inline names="target1">
             target1
         ', quoted "
-        <target names="target2">
+        <inline names="target2">
             target2
         ",
         quoted \u2018
-        <target names="target3">
+        <inline names="target3">
             target3
         \u2019, quoted \u201c
-        <target names="target4">
+        <inline names="target4">
             target4
         \u201d,
         quoted \xab
-        <target names="target5">
+        <inline names="target5">
             target5
         \xbb
 """],
@@ -1399,19 +1399,19 @@ _`\xabtarget5\xbb` with quotes
 """\
 <document source="test data">
     <paragraph>
-        <target names="'target1'">
+        <inline names="'target1'">
             'target1'
          with quotes, \n\
-        <target names=""target2"">
+        <inline names=""target2"">
             "target2"
          with quotes,
-        <target names="\u2018target3\u2019">
+        <inline names="\u2018target3\u2019">
             \u2018target3\u2019
          with quotes, \n\
-        <target names="\u201ctarget4\u201d">
+        <inline names="\u201ctarget4\u201d">
             \u201ctarget4\u201d
          with quotes,
-        <target names="\xabtarget5\xbb">
+        <inline names="\xabtarget5\xbb">
             \xabtarget5\xbb
          with quotes
 """],

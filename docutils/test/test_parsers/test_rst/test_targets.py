@@ -265,7 +265,7 @@ do not conflict. The reference name can be used in a link_.
 <document source="test data">
     <paragraph>
         Duplicate indirect \n\
-        <target names="targets">
+        <inline names="targets">
             targets
          (same refname):
     <target names="link" refname="targets">
@@ -482,7 +482,7 @@ Explicit internal target.
             <line>
                 Do not insert <system_message> element for duplicate
             <line>
-                <target dupnames="target" ids="target-2">
+                <inline dupnames="target" ids="target-2">
                     target
                 , if this results in an invalid doctree.
         <rubric dupnames="target" ids="target-3">
@@ -496,7 +496,7 @@ Explicit internal target.
                         with
             <field>
                 <field_name>
-                    <target dupnames="target" ids="target-4">
+                    <inline dupnames="target" ids="target-4">
                         target
                 <field_body>
                     <paragraph>
@@ -735,7 +735,7 @@ Explicit internal target.
             <line>
                 Do not insert <system_message> element for duplicate
             <line>
-                <target dupnames="target" ids="target-5">
+                <inline dupnames="target" ids="target-5">
                     target
                 , if this results in an invalid doctree.
         <rubric dupnames="target" ids="target-6">
@@ -749,7 +749,7 @@ Explicit internal target.
                         with
             <field>
                 <field_name>
-                    <target dupnames="target" ids="target-7">
+                    <inline dupnames="target" ids="target-7">
                         target
                 <field_body>
                     <paragraph>
@@ -946,7 +946,7 @@ do not conflict. The reference name can be used in a link_.
 <document source="test data">
     <paragraph>
         Duplicate indirect \n\
-        <target ids="targets" names="targets">
+        <inline ids="targets" names="targets">
             targets
          (same refname):
     <target ids="link" names="link" refname="targets">
@@ -1163,7 +1163,7 @@ Explicit internal target.
             <line>
                 Do not insert <system_message> element for duplicate
             <line>
-                <target dupnames="target" ids="id5">
+                <inline dupnames="target" ids="id5">
                     target
                 , if this results in an invalid doctree.
         <rubric dupnames="target" ids="id6">
@@ -1177,7 +1177,7 @@ Explicit internal target.
                         with
             <field>
                 <field_name>
-                    <target dupnames="target" ids="id7">
+                    <inline dupnames="target" ids="id7">
                         target
                 <field_body>
                     <paragraph>

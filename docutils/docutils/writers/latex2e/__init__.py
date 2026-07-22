@@ -2546,6 +2546,10 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         set_anchor = not (isinstance(node.parent, anchor_nodes)
                           or isinstance(node, anchor_nodes))
         add_newline = isinstance(node, nodes.paragraph)
+        # wrap line before inline target
+        if isinstance(node, nodes.inline) and node['ids']:
+            self.out.append('%')
+            self.out.append('\n')
         self.out += self.ids_to_labels(node, set_anchor, newline=add_newline)
         # Handle "classes" attribute:
         for cls in node['classes']:
@@ -3153,7 +3157,7 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.duclass_close(node)
 
     def visit_target(self, node) -> None:
-        # Skip indirect targets:
+        # Skip external and indirect targets:
         if ('refuri' in node        # external hyperlink
             or 'refid' in node      # resolved internal link
             or 'refname' in node):  # unresolved internal link

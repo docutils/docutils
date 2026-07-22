@@ -56,6 +56,8 @@ Release 1.0b1.dev (unpublished)
   - "lazy IDs":
     `document.note_explicit_target()` and `document.note_anonymous_target()`
     generate identifiers only if the `legacy_ids`_ setting is True.
+  - Add `Targetable` to parent classes of `inline` to allow test whether
+    inline internal targets are referenced.
 
 * docutils/parsers/__init__.py
 
@@ -92,6 +94,7 @@ Release 1.0b1.dev (unpublished)
   - Generate INFO message, if a directive that does not take
     arguments has content above and below directive options.
   - Ignore the "match_titles" argument of `RSTState.nested_list_parse()`.
+  - Use <inline> elements in `inline_internal_target()`.
 
 * docutils/readers/standalone.py
 
@@ -107,6 +110,8 @@ Release 1.0b1.dev (unpublished)
 
   - "lazy IDs": `Contents.build_contents()` ensures sections have an ID
     and prefers IDs from external targets if `legacy_ids`_ is False.
+  - Clear "ids" and "names" in `ContentsFilter` so ids and names stay
+    unique when copying section title content for the ToC entry.
 
 * docutils/transforms/references.py
 
@@ -121,6 +126,8 @@ Release 1.0b1.dev (unpublished)
   - Fix anonymous hyperlinks to "clickable" images: "Propagation" of a
     <target> in front of a "clickable" image now transfers "ids" and
     "names" to the `<image>`, not the wrapping `<reference>`.
+  - Also check `nodes.inline` instances in `ReportUnreferencedTargets`
+    to keep reporting unreferenced inline links.
 
 * docutils/transforms/universal.py
 

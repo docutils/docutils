@@ -859,7 +859,7 @@ non-obvious fragment identifier "#foo-1".
                 Target name overrides implicit target name "foo".
         <paragraph>
             With legacy_ids = True, an explicit target \n\
-            <target ids="foo-1" names="foo">
+            <inline ids="foo-1" names="foo">
                 foo
              overrides a
             homonymous implicit target but gets a "diambiguated" identifier.
@@ -891,7 +891,7 @@ an external document requires the non-obvious fragment identifier "#foo-1".
                 Target name overrides implicit target name "foo".
         <paragraph>
             If an implicit target precedes a homonymous explicit target \n\
-            <target ids="foo-1" names="foo">
+            <inline ids="foo-1" names="foo">
                 foo
             ,
             the explicit target takes over the reference name but not the identifier.
@@ -1325,7 +1325,7 @@ using the matching fragment identifier "#foo".
                 Target name overrides implicit target name "foo".
         <paragraph>
             With legacy_ids = False, an explicit target \n\
-            <target ids="foo" names="foo">
+            <inline ids="foo" names="foo">
                 foo
              takes over the
             reference name and identifier of a homonymous implicit target.

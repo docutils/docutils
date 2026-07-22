@@ -1043,11 +1043,13 @@ class ReportUnreferencedTargets(Transform):
     This makes it unsuited for applications like `Sphinx`, that manage
     hyperlinks between a set of related documents.
     """
+    # TODO: also check names set with the ":name:" directive options?
+
     # Apply after `MatchReferences` (730) but before `Messages` (860):
     default_priority = 855
 
     def apply(self) -> None:
-        for target in self.document.findall(nodes.target):
+        for target in self.document.findall((nodes.target, nodes.inline)):
             if target.referenced:
                 continue
             if target.get('anonymous'):
@@ -1058,6 +1060,8 @@ class ReportUnreferencedTargets(Transform):
                 naming = target['names'][0]
             elif target['ids']:
                 naming = target['ids'][0]
+            elif isinstance(target, nodes.inline):
+                continue
             else:
                 # Propagated target: "ids" and "names" attributes moved
                 # to the node indicated by "refname" or "refid".

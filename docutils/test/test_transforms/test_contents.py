@@ -26,6 +26,8 @@ from docutils.utils import new_document
 
 
 class TransformTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_transforms(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -86,7 +88,8 @@ Paragraph 4.
                             <list_item>
                                 <paragraph>
                                     <reference ids="toc-entry-3" refid="title-3">
-                                        Title
+                                        <inline>
+                                            Title
                                          3
                     <list_item>
                         <paragraph>
@@ -106,7 +109,7 @@ Paragraph 4.
                 Paragraph 2.
             <section ids="title-3" names="title\\ 3">
                 <title refid="toc-entry-3">
-                    <target ids="title" names="title">
+                    <inline ids="title" names="title">
                         Title
                      3
                 <paragraph>

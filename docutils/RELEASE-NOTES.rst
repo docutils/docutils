@@ -46,10 +46,9 @@ Command line interface
 Document Tree / Docutils DTD
 ----------------------------
 
-* Inline `\<target>`_ elements and <target> elements with content will be
-  deprecated in Docutils 1.0 and invalid in Docutils 2.0.
-  The "rst" parser will use <inline> elements for inline targets
-  in Docutils 1.0.
+* Inline `\<target>`_ elements and <target> elements with content are
+  deprecated and will be invalid in Docutils 2.0. (The "rst" parser
+  uses <inline> elements for `inline targets`_ since Docutils 1.0.)
 
 * To match the definition in the "Exchange Table Model", the
   `"colwidth" attribute`_ will be stored as a `str` (instead of
@@ -207,6 +206,8 @@ Document Tree / Docutils DTD:
   - The <footnote> element's first child (<label>) is now mandatory.
   - Use the ``%tbl.table.att`` parameter entity instead of ``%bodyatt``
     to customize the <table> element's attribute list in Docutils 1.0.
+  - Inline `\<target>`_ elements and <target> elements with content are
+    deprecated.
 
 Configuration changes:
   - `Auto-detection`_ of the input encoding is no longer supported.
@@ -233,6 +234,7 @@ rST parser:
   - "lazy IDs": Generate target ids_ in transforms -- after parsing and
     only if required in the output document.
     Keep behaviour backwards compatible with the legacy_ids_ setting.
+  - Use <inline> elements for `inline targets`_.
 
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
@@ -1616,7 +1618,6 @@ Release 0.3.5 (2004-07-29)
 .. _"class": docs/ref/rst/directives.html#class
 .. _csv-table: docs/ref/rst/directives.html#csv-table
 .. _"date": docs/ref/rst/directives.html#date
-.. _doctest block: docs/ref/rst/restructuredtext.html#doctest-blocks
 .. _"figure": docs/ref/rst/directives.html#figure
 .. _identifier normalization:
     docs/ref/rst/directives.html#identifier-normalization
@@ -1631,6 +1632,10 @@ Release 0.3.5 (2004-07-29)
 .. _semantic inline markup roles:
     docs/ref/rst/definitions.html#semantic-inline-markup-roles
 .. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
+
+.. _doctest block: docs/ref/rst/restructuredtext.html#doctest-blocks
+.. _inline targets:
+    docs/ref/rst/restructuredtext.html#inline-internal-targets
 
 .. _configuration settings: docs/user/config.html
 .. _auto-detection: docs/user/config.html#auto-detect
