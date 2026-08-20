@@ -90,7 +90,7 @@ class Writer(html4css1.Writer):
 
     def assemble_parts(self) -> None:
         html4css1.Writer.assemble_parts(self)
-        self.parts['title'] = [self.title]
+        self.parts['title'] = self.title
         self.parts['pepnum'] = self.pepnum
 
 

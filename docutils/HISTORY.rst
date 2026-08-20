@@ -167,6 +167,13 @@ Release 1.0b1.dev (unpublished)
   - Update `Reader.get_transforms()` to remove two of the transforms
     obsoleting `references.DanglingReferences`.
 
+* docutils/writers/pep_html/__init__.py
+
+  - Change the type of the "title" part returned by
+    `.Writer.assemble_parts()` from `list` to `str`.
+    (`The Docutils Publisher` says: "all parts returned
+    by the HTML writers are of data type str.")
+
 
 Release 0.23 (2026-05-27)
 =========================

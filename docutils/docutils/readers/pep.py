@@ -44,11 +44,11 @@ class Reader(standalone.Reader):
     inliner_class = rst.states.Inliner
 
     def __init__(self, parser=None, parser_name=None) -> None:
-        """`parser` should be ``None``, `parser_name` is ignored.
+        """
+        Initialize the "rst" parser with PEP-specific settings.
 
-        The default parser is "rst" with PEP-specific settings
-        (since Docutils 0.3). Since Docutils 0.22, `parser` is ignored,
-        if it is a `str` instance.
+        A custom parser instance may be passed as `parser`.  The argument
+        `parser_name` and string-values for `parser` are ignored.
         """
         if parser is None or isinstance(parser, str):
             parser = rst.Parser(rfc2822=True, inliner=self.inliner_class())
