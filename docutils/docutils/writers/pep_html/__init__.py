@@ -10,6 +10,7 @@ from __future__ import annotations
 
 __docformat__ = 'reStructuredText'
 
+import html
 import os
 import os.path
 
@@ -66,12 +67,12 @@ class Writer(html4css1.Writer):
         index = self.document.first_child_matching_class(nodes.field_list)
         header = self.document[index]
         self.pepnum = header[0][1].astext()
-        subs['pep'] = self.pepnum
+        subs['pep'] = html.escape(self.pepnum)
         try:
             subs['pepnum'] = '%04i' % int(self.pepnum)
         except ValueError:
             subs['pepnum'] = self.pepnum
-        self.title = header[1][1].astext()
+        self.title = html.escape(header[1][1].astext())
         subs['title'] = self.title
         subs['body'] = ''.join(
             self.body_pre_docinfo + self.docinfo + self.body)

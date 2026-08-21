@@ -319,8 +319,8 @@ def mask_email(ref, pepno=None):
         if ref['refuri'][8:] in non_masked_addresses:
             replacement = ref[0]
         else:
-            replacement_text = ref.astext().replace('@', '&#32;&#97;t&#32;')
-            replacement = nodes.raw('', replacement_text, format='html')
+            replacement_text = ref.astext().replace('@', ' at ')
+            replacement = nodes.Text(replacement_text)
         if pepno is None:
             return replacement
         else:

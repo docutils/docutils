@@ -113,6 +113,10 @@ Release 1.0b1.dev (unpublished)
   - Clear "ids" and "names" in `ContentsFilter` so ids and names stay
     unique when copying section title content for the ToC entry.
 
+* docutils/transforms/peps.py:
+
+  - Don't use raw HTML for masked email addresses.
+
 * docutils/transforms/references.py
 
   - `IndirectHyperlinks.resolve_indirect_target()` no longer calls
@@ -173,6 +177,7 @@ Release 1.0b1.dev (unpublished)
     `.Writer.assemble_parts()` from `list` to `str`.
     (`The Docutils Publisher` says: "all parts returned
     by the HTML writers are of data type str.")
+  - HTML-escape `interpolation_dict` values extracted from the index.
 
 
 Release 0.23 (2026-05-27)
