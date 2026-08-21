@@ -148,6 +148,15 @@ Removals
 * Drop short option ``-e`` in Docutils 2.0.
   Use the long equivalent ``--error-encoding``.
 
+* Remove the configuration settings `no_random`, `pep_home`, and
+  `python_home` of the "pep_html" writer in Docutils 2.0.
+  The first two are ignored since Docutils 0.19, the Python home URL
+  is pretty stable by now and can be adapted in a custom template.
+
+  Remove `transforms.peps.PEPZero` and `transforms.peps.PEPZeroSpecial`
+  in Docutils 2.0.
+  PEP 0 (the PEP index) is no longer generated from a rST source.
+
 * Remove the "reader_name", "parser_name", and "writer_name" arguments of
   `core.Publisher.__init__()` and the `core.publish_*()` convenience
   functions as well as the "parser_name" argument of `Reader.__init__()`

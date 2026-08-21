@@ -1444,8 +1444,8 @@ template
 Path [#pwd]_ to template file, which must be encoded in UTF-8.
 See also `template [latex writers]`_.
 
-:Default: "template.txt" in the writer's directory (installed automatically)
-          For the exact machine-specific path, use the ``--help`` option).
+:Default: "template.txt" in the writer's directory (installed automatically).
+          [#machine-specific-path]_
 :Option:  ``--template``.
 
 
@@ -1569,29 +1569,33 @@ Writer Specific Defaults
 .. class:: run-in narrow
 
 :`initial_header_level`_:  1 (for "<h1>").
-:`stylesheet_path <stylesheet_path [html writers]_>`__:  "pep.css".
+:`stylesheet_path <stylesheet_path [html writers]_>`__:
+  ``docutils/writers/pep_html/pep.css`` in the installation directory.
+  [#machine-specific-path]_
 :`template <template [html writers]_>`__:
   ``docutils/writers/pep_html/template.txt`` in the installation directory.
-  For the exact machine-specific path, use the ``--help`` option.
+  [#machine-specific-path]_
 
 no_random
 """""""""
-Do not use a random banner image.  Mainly used to get predictable
-results when testing.
+Ignored since Docutils 0.19.  Will be removed in Docutils 2.0.
 
-*Default*: None (use random banner).  *Options*: ``--no-random`` (hidden).
+*Default*: None.  *Options*: ``--no-random`` (hidden).
 
 pep_home
 """"""""
-Home URL prefix for PEPs.
+Ignored since Docutils 0.19.  Will be removed in Docutils 2.0.
 
-*Default*: "." (current directory).  *Option*: ``--pep-home``.
+*Default*: "." *Option*: ``--pep-home`` (hidden).
 
 python_home
 """""""""""
 Python's home URL.
+Deprecated (if required, the URL can be adapted in a custom `template
+<template [html writers]_>`__).
+Will be removed in Docutils 2.0.
 
-*Default*: "https://www.python.org".  *Option*: ``--python-home``.
+*Default*: "https://www.python.org".  *Option*: ``--python-home`` (hidden).
 
 
 [s5_html writer]
@@ -1606,8 +1610,7 @@ Writer Specific Defaults
 
 :compact_lists_:  disable compact lists.
 :template__:      ``docutils/writers/s5_html/template.txt`` in the
-                  installation directory.  For the exact machine-specific
-                  path, use the ``--help`` option.
+                  installation directory. [#machine-specific-path]_
 
 __ `template [html writers]`_
 
@@ -2579,8 +2582,12 @@ No default. [#SectNum]_
    buildhtml_ application are resolved relative to the directory of
    the respective configuration file.
 
+.. [#machine-specific-path] The ``--help`` command line option shows the
+   actual, machine-specific path.
+
 .. [#SectNum] Added by the `SectNum` transform_, if and only if there
    is a `"sectnum" directive`_ in the source document.
+
 
 __ https://docs.python.org/3/library/codecs.html#codecs.register
 

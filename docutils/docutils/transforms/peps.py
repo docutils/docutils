@@ -18,6 +18,8 @@ __docformat__ = 'reStructuredText'
 import os
 import re
 import time
+import warnings
+
 from docutils import nodes, utils, languages
 from docutils import DataError
 from docutils.transforms import Transform
@@ -222,9 +224,16 @@ class PEPZero(Transform):
 
     """
     Special processing for PEP 0.
+
+    Deprecated. Will be removed in Docutils 2.0.
     """
 
     default_priority = 760
+
+    def __init__(self, document, startnode=None) -> None:
+        warnings.warn('The `peps.PEPZero` transform will be removed '
+                      'in Docutils 2.0.', DeprecationWarning, stacklevel=2)
+        super().__init__(document, startnode)
 
     def apply(self) -> None:
         visitor = PEPZeroSpecial(self.document)
@@ -241,9 +250,16 @@ class PEPZeroSpecial(nodes.SparseNodeVisitor):
 
     - Link PEP numbers in the second column of 4-column tables to the PEPs
       themselves.
+
+    Deprecated. Will be removed in Docutils 2.0.
     """
 
     pep_url = Headers.pep_url
+
+    def __init__(self, document, startnode=None) -> None:
+        warnings.warn('The `peps.PEPZeroSpecial` transform will be removed '
+                      'in Docutils 2.0.', DeprecationWarning, stacklevel=2)
+        super().__init__(document, startnode)
 
     def unknown_visit(self, node) -> None:
         pass

@@ -32,19 +32,18 @@ class Writer(html4css1.Writer):
         os.path.join(os.path.dirname(__file__), default_template))
 
     settings_spec = html4css1.Writer.settings_spec + (
-        'PEP/HTML Writer Options',
+        'PEP/HTML Writer Option Defaults',
         'For the PEP/HTML writer, the default value for the --stylesheet-path '
         'option is "%s", and the default value for --template is "%s". '
         'See HTML Writer Options above.'
         % (default_stylesheet_path, default_template_path),
-        (('Python\'s home URL.  Default is "https://www.python.org".',
+        ((frontend.SUPPRESS_HELP,  # deprecated
           ['--python-home'],
           {'default': 'https://www.python.org', 'metavar': '<URL>'}),
-         ('Home URL prefix for PEPs.  Default is "." (current directory).',
+         (frontend.SUPPRESS_HELP,  # ignored since Docutils 0.19 (2022-07-05)
           ['--pep-home'],
           {'default': '.', 'metavar': '<URL>'}),
-         # For testing.
-         (frontend.SUPPRESS_HELP,
+         (frontend.SUPPRESS_HELP,  # ignored since Docutils 0.19 (2022-07-05)
           ['--no-random'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
@@ -64,20 +63,10 @@ class Writer(html4css1.Writer):
         settings = self.document.settings
         pyhome = settings.python_home
         subs['pyhome'] = pyhome
-        subs['pephome'] = settings.pep_home
-        if pyhome == '..':
-            subs['pepindex'] = '.'
-        else:
-            subs['pepindex'] = pyhome + '/dev/peps'
         index = self.document.first_child_matching_class(nodes.field_list)
         header = self.document[index]
         self.pepnum = header[0][1].astext()
         subs['pep'] = self.pepnum
-        if settings.no_random:
-            subs['banner'] = 0
-        else:
-            import random
-            subs['banner'] = random.randrange(64)
         try:
             subs['pepnum'] = '%04i' % int(self.pepnum)
         except ValueError:
