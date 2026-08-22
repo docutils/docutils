@@ -179,6 +179,11 @@ Release 1.0b1.dev (unpublished)
     by the HTML writers are of data type str.")
   - HTML-escape `interpolation_dict` values extracted from the index.
 
+* docutils/writers/docutils_xml.py
+
+  - Do not activate the "external-general-entities" feature of the
+    SAX parser used to check raw XML content.  Fixes bug #521.
+
 
 Release 0.23 (2026-05-27)
 =========================
