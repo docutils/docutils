@@ -20,7 +20,9 @@ from docutils.parsers.rst.languages import en as _fallback_language_module
 
 TYPE_CHECKING = False
 if TYPE_CHECKING:
-    from collections.abc import Callable, Sequence
+    from collections.abc import Callable, Container, Sequence
+    from typing import Any
+    from docutils.parsers.rst.languages import RSTLanguageModule
 
 
 _directive_registry = {
@@ -80,7 +82,10 @@ _directives = {}
 """Cache of imported directives."""
 
 
-def directive(directive_name, language_module, document):
+def directive(directive_name: str,
+              language_module: RSTLanguageModule,
+              document: nodes.document,
+              ) -> tuple[parsers.rst.Directive, list[nodes.system_message]]:
     """
     Locate and return a directive function from its language-dependent name.
     If not found in the current language, check English.  Return None if the
@@ -139,7 +144,7 @@ def directive(directive_name, language_module, document):
     return directive, messages
 
 
-def register_directive(name, directive) -> None:
+def register_directive(name: str, directive: Callable) -> None:
     """
     Register a nonstandard application-defined directive function.
     Language lookups are not needed for such functions.
@@ -153,7 +158,7 @@ def register_directive(name, directive) -> None:
 # see also `parsers.rst.Directive` in ../__init__.py.
 
 
-def flag(argument: str) -> None:
+def flag(argument: str|None) -> None:
     """
     Check for a valid flag option (no argument) and return ``None``.
     (Directive option conversion function.)
@@ -166,7 +171,7 @@ def flag(argument: str) -> None:
         return None
 
 
-def unchanged_required(argument: str) -> str:
+def unchanged_required(argument: str|None) -> str:
     """
     Return the argument text, unchanged.
 
@@ -180,7 +185,7 @@ def unchanged_required(argument: str) -> str:
         return argument  # unchanged!
 
 
-def unchanged(argument: str) -> str:
+def unchanged(argument: str|None) -> str:
     """
     Return the argument text, unchanged.
     (Directive option conversion function.)
@@ -193,7 +198,7 @@ def unchanged(argument: str) -> str:
         return argument  # unchanged!
 
 
-def path(argument: str) -> str:
+def path(argument: str|None) -> str:
     """
     Return the path argument unwrapped (with newlines removed).
     (Directive option conversion function.)
@@ -206,7 +211,7 @@ def path(argument: str) -> str:
         return ''.join(s.strip() for s in argument.splitlines())
 
 
-def uri(argument: str) -> str:
+def uri(argument: str|None) -> str:
     """
     Return the URI argument with unescaped whitespace removed.
     (Directive option conversion function.)
@@ -221,7 +226,7 @@ def uri(argument: str) -> str:
                         for part in parts)
 
 
-def nonnegative_int(argument: str) -> int:
+def nonnegative_int(argument: str|int|None) -> int:
     """
     Check for a nonnegative integer argument; raise ``ValueError`` if not.
     (Directive option conversion function.)
@@ -232,7 +237,7 @@ def nonnegative_int(argument: str) -> int:
     return value
 
 
-def percentage(argument: str) -> int:
+def percentage(argument: str|int|None) -> int:
     """
     Check for an integer percentage value with optional percent sign.
     (Directive option conversion function.)
@@ -254,7 +259,7 @@ __ https://www.w3.org/TR/css-values-3/#lengths
 """
 
 
-def get_measure(argument, units):
+def get_measure(argument: str|None, units: Container[str]) -> str:
     """
     Check for a positive argument of one of the `units`.
 
@@ -271,11 +276,12 @@ def get_measure(argument, units):
     return f'{value}{unit}'
 
 
-def length_or_unitless(argument: str) -> str:
+def length_or_unitless(argument: str|None) -> str:
     return get_measure(argument, CSS3_LENGTH_UNITS + ('',))
 
 
-def length_or_percentage_or_unitless(argument, default=''):
+def length_or_percentage_or_unitless(argument: str|None,
+                                     default: str = '') -> str:
     """
     Return normalized string of a length or percentage unit.
     (Directive option conversion function.)
@@ -301,7 +307,7 @@ def length_or_percentage_or_unitless(argument, default=''):
             raise error
 
 
-def class_option(argument: str) -> list[str]:
+def class_option(argument: str|None) -> list[str]:
     """
     Convert the argument into a list of ID-compatible strings and return it.
     (Directive option conversion function.)
@@ -324,7 +330,7 @@ unicode_pattern = re.compile(
     r'(?:0x|x|\\x|U\+?|\\u)([0-9a-f]+)$|&#x([0-9a-f]+);$', re.IGNORECASE)
 
 
-def unicode_code(code):
+def unicode_code(code: str|None) -> str:
     r"""
     Convert a Unicode character code to a Unicode character.
     (Directive option conversion function.)
@@ -349,7 +355,7 @@ def unicode_code(code):
         raise ValueError('code too large (%s)' % detail)
 
 
-def single_char_or_unicode(argument: str) -> str:
+def single_char_or_unicode(argument: str|None) -> str:
     """
     A single character is returned as-is.  Unicode character codes are
     converted as in `unicode_code`.  (Directive option conversion function.)
@@ -361,7 +367,7 @@ def single_char_or_unicode(argument: str) -> str:
     return char
 
 
-def single_char_or_whitespace_or_unicode(argument: str) -> str:
+def single_char_or_whitespace_or_unicode(argument: str|None) -> str:
     """
     As with `single_char_or_unicode`, but "tab" and "space" are also supported.
     (Directive option conversion function.)
@@ -375,7 +381,7 @@ def single_char_or_whitespace_or_unicode(argument: str) -> str:
     return char
 
 
-def positive_int(argument: str) -> int:
+def positive_int(argument: str|None|int) -> int:
     """
     Converts the argument into an integer.  Raises ValueError for negative,
     zero, or non-integer values.  (Directive option conversion function.)
@@ -386,7 +392,7 @@ def positive_int(argument: str) -> int:
     return value
 
 
-def positive_int_list(argument: str) -> list[int]:
+def positive_int_list(argument: str|None) -> list[int]:
     """
     Converts a space- or comma-separated list of values into a Python list
     of integers.
@@ -401,7 +407,7 @@ def positive_int_list(argument: str) -> list[int]:
     return [positive_int(entry) for entry in entries]
 
 
-def encoding(argument: str) -> str:
+def encoding(argument: str|None) -> str:
     """
     Verifies the encoding argument by lookup.
     (Directive option conversion function.)
@@ -415,7 +421,7 @@ def encoding(argument: str) -> str:
     return argument
 
 
-def choice(argument, values):
+def choice(argument: str|None, values: Sequence[str]) -> str:
     """
     Directive option utility function, supplied to enable options whose
     argument must be a member of a finite set of possible values (must be
@@ -442,26 +448,27 @@ def choice(argument, values):
                          % (argument, format_values(values)))
 
 
-def format_values(values) -> str:
+def format_values(values: Sequence[str]) -> str:
     return '%s, or "%s"' % (', '.join('"%s"' % s for s in values[:-1]),
                             values[-1])
 
 
-def value_or(values: Sequence[str], other: type) -> Callable:
+def value_or(values: Container[str], other: Callable) -> Callable:
     """
     Directive option conversion function.
 
-    The argument can be any of `values` or `argument_type`.
+    The argument can be any of `values` or a value compatible with the
+    directive option conversion function `other`.
     """
-    def auto_or_other(argument: str):
+    def one_or_other(argument: str|None) -> Any:
         if argument in values:
             return argument
         else:
             return other(argument)
-    return auto_or_other
+    return one_or_other
 
 
-def parser_name(argument: str) -> type[parsers.Parser]:
+def parser_name(argument: str|None) -> type[parsers.Parser]:
     """
     Return a docutils parser whose name matches the argument.
     (Directive option conversion function.)

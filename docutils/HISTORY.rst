@@ -168,8 +168,7 @@ Release 1.0b1.dev (unpublished)
 
 * docutils/writers/odf_odt/__init__.py
 
-  - Update `Reader.get_transforms()` to remove two of the transforms
-    obsoleting `references.DanglingReferences`.
+  - Update `Reader.get_transforms()`.
 
 * docutils/writers/pep_html/__init__.py
 

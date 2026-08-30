@@ -33,7 +33,7 @@ Command line interface
 
   .. code:: diff
 
-       - COMMAND [OPTIONS] [SOURCE [DESTINATION]]
+       - COMMAND [OPTIONS] [SOURCE]
        + COMMAND [OPTIONS] [SOURCE [SOURCE2 [...]]]
 
 
