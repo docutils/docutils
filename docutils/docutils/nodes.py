@@ -2613,9 +2613,19 @@ class colspec(Part, Element):
 
         __ https://docutils.sourceforge.io/docs/ref/doctree.html#colwidth
         """
-        # Move current implementation of validate_colwidth() here
-        # in Docutils 1.0
-        return validate_colwidth(self.get('colwidth', ''))
+        measure = self.get('colwidth', '')
+        if isinstance(measure, (int, float)):
+            value = measure
+        elif measure in ('*', ''):  # short for '1*'
+            value = 1
+        else:
+            try:
+                value, _unit = parse_measure(measure, unit_pattern='[*]?')
+            except ValueError:
+                value = -1
+        if value <= 0:
+            raise ValueError(f'"{measure}" is no proportional measure.')
+        return value
 
 
 class thead(Part, Element):
@@ -3227,29 +3237,27 @@ def validate_measure(measure: str) -> str:
     return f'{value}{unit}'
 
 
-def validate_colwidth(measure: str|int|float) -> int|float:
+def validate_colwidth(measure: str|int|float) -> str:
     """Validate the "colwidth__" attribute.
 
     Provisional:
-        `measure` must be a `str` and will be returned as normalized `str`
-        (with unit "*" for proportional values) in Docutils 1.0.
-
-        The default unit will change to "pt" in Docutils 2.0.
+        Accept fixed length units in Docutils 2.0.
+        The default unit will change to "pt" in Docutils 3.0.
 
     __ https://docutils.sourceforge.io/docs/ref/doctree.html#colwidth
     """
     if isinstance(measure, (int, float)):
-        value = measure
+        value, unit = measure, ''
     elif measure in ('*', ''):  # short for '1*'
-        value = 1
+        value, unit = 1, ''
     else:
         try:
-            value, _unit = parse_measure(measure, unit_pattern='[*]?')
+            value, unit = parse_measure(measure, unit_pattern='[*]?')
         except ValueError:
             value = -1
     if value <= 0:
         raise ValueError(f'"{measure}" is no proportional measure.')
-    return value
+    return f'{value}{unit}'
 
 
 def validate_NMTOKEN(value: str) -> str:

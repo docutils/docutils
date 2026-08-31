@@ -399,6 +399,8 @@ def positive_int_list(argument: str|None) -> list[int]:
     (Directive option conversion function.)
 
     Raises ValueError for non-positive-integer values.
+
+    Provisional. May be removed in Docutils 2.0 or later.
     """
     if ',' in argument:
         entries = argument.split(',')
@@ -482,3 +484,23 @@ def parser_name(argument: str|None) -> type[parsers.Parser]:
         return parsers.get_parser_class(argument)
     except ImportError as err:
         raise ValueError(str(err))
+
+
+def column_widths(argument: str) -> list[str]:
+    """
+    Conversion function for the ``widths`` option of the table directives.
+
+    Converts string with a space- or comma-separated list of proportional
+    width values (with optional unit symbol "*") into a list of values.
+    Raises ValueError for non-positive and non-integer values.
+
+    Provisional.
+    See docs/ref/rst/directives.html#table-options
+    and docs/ref/doctree.html#colwidth.
+    """
+    # remove optional "proportional unit" symbol:
+    argument = argument.replace('*', '')
+    # extract values:
+    widths = positive_int_list(argument)
+    # return list of strings
+    return [f'{width}' for width in widths]

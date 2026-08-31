@@ -1915,7 +1915,7 @@ class Body(RSTState):
         tgroup = nodes.tgroup(cols=len(colwidths))
         table += tgroup
         for colwidth in colwidths:
-            colspec = nodes.colspec(colwidth=colwidth)
+            colspec = nodes.colspec(colwidth=str(colwidth))
             if stub_columns:
                 colspec.attributes['stub'] = True
                 stub_columns -= 1

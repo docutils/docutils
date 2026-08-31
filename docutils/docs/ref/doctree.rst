@@ -4733,13 +4733,13 @@ The attribute is defined in the `Exchange Table Model`_
 (positive number followed by "*", e.g., "5*" for 5 times the
 `unit proportion`_ , or just "*" for one unit proportion)
 or a *fixed measure* (e.g., 2.5cm).
+
 Docutils supports only proportional measures.
 
 .. important::
-   Currently, Docutils stores "colwidth" values as numbers and
-   interprets unitless values as proportional measures while the
-   `Exchange Table Model` uses the default unit "pt".
-   This will change__ in future versions of Docutils.
+   Currently, Docutils interprets unitless values as proportional
+   measures while the `Exchange Table Model` uses the default unit "pt".
+   This will change__ in future versions.
 
 __ https://www.oasis-open.org/specs/tm9901.html#AEN530
 __ ../../RELEASE-NOTES.html#document-tree-docutils-dtd

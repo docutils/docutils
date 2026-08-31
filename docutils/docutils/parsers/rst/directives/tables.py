@@ -39,7 +39,7 @@ class Table(Directive):
                    'align': align,
                    'width': directives.length_or_percentage_or_unitless,
                    'widths': directives.value_or(('auto', 'grid'),
-                                                 directives.positive_int_list)}
+                                                 directives.column_widths)}
     has_content = True
 
     def make_title(self):
@@ -108,7 +108,7 @@ class Table(Directive):
                 raise SystemMessagePropagation(error)
             col_widths = self.widths
         elif n_cols:
-            col_widths = [100 // n_cols] * n_cols
+            col_widths = [f'{100//n_cols}'] * n_cols
         else:
             error = self.reporter.error('No table data detected in CSV file.',
                 nodes.literal_block(self.block_text, self.block_text),
@@ -181,7 +181,7 @@ class CSVTable(Table):
                    'header': directives.unchanged,
                    'width': directives.length_or_percentage_or_unitless,
                    'widths': directives.value_or(('auto', ),
-                                                 directives.positive_int_list),
+                                                 directives.column_widths),
                    'file': directives.path,
                    'url': directives.uri,
                    'encoding': directives.encoding,
@@ -377,7 +377,7 @@ class ListTable(Table):
                    'stub-columns': directives.nonnegative_int,
                    'width': directives.length_or_percentage_or_unitless,
                    'widths': directives.value_or(('auto', ),
-                                                 directives.positive_int_list),
+                                                 directives.column_widths),
                    'class': directives.class_option,
                    'name': directives.unchanged,
                    'align': align}

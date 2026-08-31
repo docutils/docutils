@@ -165,12 +165,12 @@ class XmlAttributesTestCase(unittest.TestCase):
         # from the Exchange Table Model. This will eventually change
         # (see https://docutils.sourceforge.io/docs/ref/doctree.html#colwidth).
         xml = '<colspec colwidth="33*" stub="1" />'
-        expected = {'colwidth': 33, 'stub': 1}
+        expected = {'colwidth': '33*', 'stub': True}
         node = docutils_xml.parse_element(xml)
         self.assertEqual(node.attributes, self.common_attributes | expected)
         # Note: the upstream default unit is "pt", not "*".
         xml = '<colspec colwidth="33" stub="1" />'
-        expected = {'colwidth': 33, 'stub': 1}
+        expected = {'colwidth': '33', 'stub': True}
         node = docutils_xml.parse_element(xml)
         self.assertEqual(node.attributes, self.common_attributes | expected)
 

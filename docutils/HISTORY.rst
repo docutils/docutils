@@ -58,6 +58,7 @@ Release 1.0b1.dev (unpublished)
     generate identifiers only if the `legacy_ids`_ setting is True.
   - Add `Targetable` to parent classes of `inline` to allow test whether
     inline internal targets are referenced.
+  - `validate_colwidth()` now returns a `str`.
 
 * docutils/parsers/__init__.py
 
@@ -76,6 +77,8 @@ Release 1.0b1.dev (unpublished)
 * docutils/parsers/rst/directives/__init__.py
 
   - Remove `length_units` (replaced by the tuple CSS3_LENGTH_UNITS).
+  - New option conversion function `column_widths()` (provisional):
+    ignore "proportional unit symbol" ``*``, return list of strings.
 
 * docutils/parsers/rst/directives/images.py
 
@@ -95,6 +98,8 @@ Release 1.0b1.dev (unpublished)
     arguments has content above and below directive options.
   - Ignore the "match_titles" argument of `RSTState.nested_list_parse()`.
   - Use <inline> elements in `inline_internal_target()`.
+  - The "colwidth_" attribute of `nodes.colspec` instances
+    is now stored as a `str` (instead of numerical) value .
 
 * docutils/readers/standalone.py
 
@@ -182,6 +187,8 @@ Release 1.0b1.dev (unpublished)
 
   - Do not activate the "external-general-entities" feature of the
     SAX parser used to check raw XML content.  Fixes bug #521.
+  - Add the "proportional unit" ``*`` to "colwidth_" attribute values
+    (to comply with with the CALS `Exchange Table Model`).
 
 
 Release 0.23 (2026-05-27)
@@ -5081,10 +5088,11 @@ test/test_rst); and all modifications required to make it all work.
 .. _length unit:
 .. _length units: docs/ref/rst/restructuredtext.html#length-units
 
-.. _<meta>: docs/ref/doctree.html#meta
+.. _colwidth: docs/ref/doctree.html#colwidth
 .. _<image>: docs/ref/doctree.html#image
 .. _<inline>: docs/ref/doctree.html#inline
 .. _<literal>: docs/ref/doctree.html#literal
+.. _<meta>: docs/ref/doctree.html#meta
 
 
 .. Emacs settings

@@ -50,10 +50,9 @@ Document Tree / Docutils DTD
   deprecated and will be invalid in Docutils 2.0. (The "rst" parser
   uses <inline> elements for `inline targets`_ since Docutils 1.0.)
 
-* To match the definition in the "Exchange Table Model", the
-  `"colwidth" attribute`_ will be stored as a `str` (instead of
-  numerical) value in Python element instances in Docutils 1.0.
-  Proportional values will be stored with unit "*" in Docutils 2.0.
+* To match the definition in the "Exchange Table Model", values of the
+  `"colwidth" attribute`_ will be stored with the "proportional unit
+  symbol" ``*`` and accept fixed length units in Docutils 2.0.
   The default unit will change to "pt" in Docutils 3.0.
 
 * The `\<doctest_block>`_ element will be deprecated in Docutils 1.0.
@@ -217,6 +216,9 @@ Document Tree / Docutils DTD:
     to customize the <table> element's attribute list in Docutils 1.0.
   - Inline `\<target>`_ elements and <target> elements with content are
     deprecated.
+  - The `"colwidth" attribute`_ of `nodes.colspec` instances
+    is now stored as a `str` (instead of `int`) value.
+    The XML writer adds the "proportional unit symbol" ``*``.
 
 Configuration changes:
   - `Auto-detection`_ of the input encoding is no longer supported.

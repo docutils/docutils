@@ -157,6 +157,18 @@ class XMLTranslator(nodes.GenericNodeVisitor):
     def depart_Text(self, node) -> None:
         pass
 
+    def visit_colspec(self, node):
+        # add the "proportional unit" (``*``)
+        # provisional, will be removed in Docutils 2.0
+        cspec = node.copy()
+        cwidth = cspec['colwidth']
+        if cwidth and cwidth[-1].isdigit():
+            cspec['colwidth'] = f"{cwidth}*"
+        self.default_visit(cspec)
+
+    def depart_cospec(self, node):
+        self.default_departure(node)
+
     def visit_raw(self, node):
         if 'xml' not in node.get('format', '').split():
             # skip other raw content?

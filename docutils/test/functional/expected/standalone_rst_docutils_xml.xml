@@ -853,8 +853,8 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                     <legend>
                         <table>
                             <tgroup cols="2">
-                                <colspec colwidth="12"></colspec>
-                                <colspec colwidth="47"></colspec>
+                                <colspec colwidth="12*"></colspec>
+                                <colspec colwidth="47*"></colspec>
                                 <tbody>
                                     <row>
                                         <entry>
@@ -929,8 +929,8 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                 <table align="left">
                     <title>left-aligned table</title>
                     <tgroup cols="2">
-                        <colspec colwidth="5"></colspec>
-                        <colspec colwidth="5"></colspec>
+                        <colspec colwidth="5*"></colspec>
+                        <colspec colwidth="5*"></colspec>
                         <thead>
                             <row>
                                 <entry>
@@ -964,8 +964,8 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                 <table align="center">
                     <title>center-aligned table</title>
                     <tgroup cols="2">
-                        <colspec colwidth="5"></colspec>
-                        <colspec colwidth="5"></colspec>
+                        <colspec colwidth="5*"></colspec>
+                        <colspec colwidth="5*"></colspec>
                         <thead>
                             <row>
                                 <entry>
@@ -999,8 +999,8 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                 <table align="right">
                     <title>right-aligned table</title>
                     <tgroup cols="2">
-                        <colspec colwidth="5"></colspec>
-                        <colspec colwidth="5"></colspec>
+                        <colspec colwidth="5*"></colspec>
+                        <colspec colwidth="5*"></colspec>
                         <thead>
                             <row>
                                 <entry>
@@ -1038,9 +1038,9 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                 <target refid="target2"></target>
                 <table classes="colwidths-auto" ids="target2 target1" names="target2 target1">
                     <tgroup cols="3">
-                        <colspec colwidth="7"></colspec>
-                        <colspec colwidth="7"></colspec>
-                        <colspec colwidth="10"></colspec>
+                        <colspec colwidth="7*"></colspec>
+                        <colspec colwidth="7*"></colspec>
+                        <colspec colwidth="10*"></colspec>
                         <thead>
                             <row>
                                 <entry>
@@ -1254,9 +1254,9 @@ This one starts with a literal block.</literal_block>
                         elements in one logical paragraph. First a table,</paragraph>
                     <table>
                         <tgroup cols="3">
-                            <colspec colwidth="20"></colspec>
-                            <colspec colwidth="20"></colspec>
-                            <colspec colwidth="20"></colspec>
+                            <colspec colwidth="20*"></colspec>
+                            <colspec colwidth="20*"></colspec>
+                            <colspec colwidth="20*"></colspec>
                             <tbody>
                                 <row>
                                     <entry>
@@ -1424,9 +1424,9 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
             <paragraph>This table has a cell spanning two columns:</paragraph>
             <table>
                 <tgroup cols="3">
-                    <colspec colwidth="5"></colspec>
-                    <colspec colwidth="5"></colspec>
-                    <colspec colwidth="6"></colspec>
+                    <colspec colwidth="5*"></colspec>
+                    <colspec colwidth="5*"></colspec>
+                    <colspec colwidth="6*"></colspec>
                     <thead>
                         <row>
                             <entry morecols="1">
@@ -1502,9 +1502,9 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
             <paragraph>Here's a table with cells spanning several rows:</paragraph>
             <table>
                 <tgroup cols="3">
-                    <colspec colwidth="24"></colspec>
-                    <colspec colwidth="12"></colspec>
-                    <colspec colwidth="18"></colspec>
+                    <colspec colwidth="24*"></colspec>
+                    <colspec colwidth="12*"></colspec>
+                    <colspec colwidth="18*"></colspec>
                     <thead>
                         <row>
                             <entry>
@@ -1559,10 +1559,10 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
             <paragraph>Here's a complex table, which should test all features.</paragraph>
             <table>
                 <tgroup cols="4">
-                    <colspec colwidth="24"></colspec>
-                    <colspec colwidth="12"></colspec>
-                    <colspec colwidth="10"></colspec>
-                    <colspec colwidth="10"></colspec>
+                    <colspec colwidth="24*"></colspec>
+                    <colspec colwidth="12*"></colspec>
+                    <colspec colwidth="10*"></colspec>
+                    <colspec colwidth="10*"></colspec>
                     <thead>
                         <row>
                             <entry>
@@ -1652,9 +1652,9 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
             <table classes="colwidths-given test" width="95%">
                 <title>list table with integral header</title>
                 <tgroup cols="3">
-                    <colspec colwidth="10" stub="1"></colspec>
-                    <colspec colwidth="8"></colspec>
-                    <colspec colwidth="20"></colspec>
+                    <colspec colwidth="10*" stub="1"></colspec>
+                    <colspec colwidth="8*"></colspec>
+                    <colspec colwidth="20*"></colspec>
                     <thead>
                         <row>
                             <entry>
@@ -1709,8 +1709,8 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
             <table align="center" classes="colwidths-auto">
                 <title>center aligned list table</title>
                 <tgroup cols="2">
-                    <colspec colwidth="50"></colspec>
-                    <colspec colwidth="50"></colspec>
+                    <colspec colwidth="50*"></colspec>
+                    <colspec colwidth="50*"></colspec>
                     <tbody>
                         <row>
                             <entry>
