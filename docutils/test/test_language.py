@@ -116,5 +116,27 @@ class LanguageTestCase(unittest.TestCase):
                         self.assertIn(name, set(module.roles.values()))
 
 
+class LanguageTestCase(unittest.TestCase):
+
+    def test_get_language_fallback(self):
+        # Return fallback (English) for unsupported languages ...
+        module = languages.get_language('xx-xxx')
+        self.assertEqual(module, languages.en)
+        # also, if there is an equally named module in the Python path.
+        module = languages.get_language('re')  # the regular expressions module
+        self.assertEqual(module, languages.en)
+
+
+class RstLanguageTestCase(unittest.TestCase):
+
+    def test_get_language_fallback(self):
+        # Return None for unsupported languages ...
+        module = rst_languages.get_language('xx-xxx')
+        self.assertEqual(module, None)
+        # also, if there is an equally named module in the Python path.
+        module = rst_languages.get_language('re')  # regular expressions module
+        self.assertEqual(module, None)
+
+
 if __name__ == '__main__':
     unittest.main()

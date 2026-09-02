@@ -55,8 +55,8 @@ class LanguageImporter:
         self.cache: dict[str, LanguageModuleT] = {}
 
     def import_from_packages(self, name: str, reporter: Reporter = None
-                             ) -> LanguageModuleT:
-        """Try loading module `name` from `self.packages`."""
+                             ) -> LanguageModuleT|None:
+        """Try loading language module `name` from `self.packages`."""
         module = None
         for package in self.packages:
             try:
@@ -70,6 +70,8 @@ class LanguageImporter:
                     reporter.info(f'Module "{package+name}" not found.')
                 continue
             break
+        else:
+            module = None
         return module
 
     @overload

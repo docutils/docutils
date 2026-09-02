@@ -49,6 +49,11 @@ Release 1.0b1.dev (unpublished)
   - Remove `BinaryFileOutput`. Use `FileOutput`
     (works with `bytes` since Docutils 0.20).
 
+* docutils/languages/__init__.py
+
+  - `get_language()` now returns ``None`` if the module found is not a
+    compatible language definitions module.  Fixes bug #522.
+
 * docutils/nodes.py
 
   - Remove "name" from `reference.valid_attributes`.
