@@ -941,10 +941,12 @@ class HTMLTranslator(writers.DoctreeTranslator):
         self.body.append('</dd>\n')
 
     def visit_doctest_block(self, node) -> None:
+        # Deprecated. Will be removed in Docutils 3.0
         self.body.append(self.starttag(node, 'pre', suffix='',
-                                       classes=['code', 'python', 'doctest']))
+                                       classes=['code', 'pycon', 'doctest']))
 
     def depart_doctest_block(self, node) -> None:
+        # Deprecated. Will be removed in Docutils 3.0
         self.body.append('\n</pre>\n')
 
     def visit_document(self, node) -> None:

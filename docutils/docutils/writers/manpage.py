@@ -673,10 +673,12 @@ class Translator(nodes.NodeVisitor):
         self.append_header()
 
     def visit_doctest_block(self, node) -> None:
+        # Deprecated. Will be removed in Docutils 3.0
         self.body.append(self.defs['literal_block'][0])
         self._in_literal = True
 
     def depart_doctest_block(self, node) -> None:
+        # Deprecated. Will be removed in Docutils 3.0
         self._in_literal = False
         self.body.append(self.defs['literal_block'][1])
 

@@ -51,7 +51,7 @@ Paragraph.
 <document source="test data">
     <paragraph>
         Paragraph.
-    <doctest_block xml:space="preserve">
+    <literal_block classes="code pycon doctest" xml:space="preserve">
         >>> print("Doctest block.")
         Doctest block.
     <paragraph>
@@ -67,7 +67,7 @@ Paragraph.
 <document source="test data">
     <paragraph>
         Paragraph.
-    <doctest_block xml:space="preserve">
+    <literal_block classes="code pycon doctest" xml:space="preserve">
         >>> print("    Indented output.")
             Indented output.
 """],
@@ -82,7 +82,7 @@ Paragraph.
     <paragraph>
         Paragraph.
     <block_quote>
-        <doctest_block xml:space="preserve">
+        <literal_block classes="code pycon doctest" xml:space="preserve">
             >>> print("    Indented block & output.")
                 Indented block & output.
 """],

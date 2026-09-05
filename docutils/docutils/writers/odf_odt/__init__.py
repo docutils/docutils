@@ -2637,6 +2637,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_literal_block(self, node) -> None:
         pass
 
+    # Deprecated. Will be removed in Docutils 3.0
     visit_doctest_block = visit_literal_block
     depart_doctest_block = depart_literal_block
 

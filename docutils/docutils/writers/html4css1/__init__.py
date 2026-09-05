@@ -367,9 +367,11 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     # add newline after opening tag
     def visit_doctest_block(self, node) -> None:
+        # Deprecated. Will be removed in Docutils 3.0
         self.body.append(self.starttag(node, 'pre', CLASS='doctest-block'))
 
     def depart_doctest_block(self, node) -> None:
+        # Deprecated. Will be removed in Docutils 3.0
         self.body.append('\n</pre>\n')
 
     # insert an NBSP into empty cells, ersatz for first/last

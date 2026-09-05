@@ -2485,7 +2485,15 @@ class option_list(Sequential, Element):
 # -------------------------
 
 class literal_block(General, FixedTextElement): pass
-class doctest_block(General, FixedTextElement): pass
+
+
+class doctest_block(General, FixedTextElement):
+    def __init__(self, rawsource='', text='', *children, **attributes):
+        warnings.warn('nodes.doctest_block is deprecated '
+                      'and will be removed in Docutils 3.0.\n'
+                      ' Hint: Use nodes.literal_block with classes arguments.',
+                      PendingDeprecationWarning, stacklevel=2)
+        super().__init__(rawsource, text, *children, **attributes)
 
 
 class math_block(General, FixedTextElement, PureTextElement):

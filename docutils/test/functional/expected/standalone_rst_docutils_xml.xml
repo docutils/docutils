@@ -683,10 +683,10 @@ should    be grouped    in pairs).</literal></paragraph>
         </section>
         <section ids="doctest-blocks" names="doctest\ blocks">
             <title auto="1" refid="toc-entry-16"><generated classes="sectnum">2.10   </generated>Doctest Blocks</title>
-            <doctest_block xml:space="preserve">&gt;&gt;&gt; print 'Python-specific usage examples; begun with "&gt;&gt;&gt;"'
+            <literal_block classes="code pycon doctest" xml:space="preserve">&gt;&gt;&gt; print 'Python-specific usage examples; begun with "&gt;&gt;&gt;"'
 Python-specific usage examples; begun with "&gt;&gt;&gt;"
 &gt;&gt;&gt; print '(cut and pasted from interactive Python sessions)'
-(cut and pasted from interactive Python sessions)</doctest_block>
+(cut and pasted from interactive Python sessions)</literal_block>
         </section>
         <section ids="footnotes" names="footnotes">
             <title auto="1" refid="toc-entry-17"><generated classes="sectnum">2.11   </generated>Footnotes</title>

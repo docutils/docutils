@@ -64,6 +64,7 @@ Release 1.0b1.dev (unpublished)
   - Add `Targetable` to parent classes of `inline` to allow test whether
     inline internal targets are referenced.
   - `validate_colwidth()` now returns a `str`.
+  - The `doctest_block` element is deprecated.
 
 * docutils/parsers/__init__.py
 
@@ -102,7 +103,8 @@ Release 1.0b1.dev (unpublished)
   - Generate INFO message, if a directive that does not take
     arguments has content above and below directive options.
   - Ignore the "match_titles" argument of `RSTState.nested_list_parse()`.
-  - Use <inline> elements in `inline_internal_target()`.
+  - Use <inline> elements in `inline_internal_target()` and <literal_block>
+    for "doctest blocks".
   - The "colwidth_" attribute of `nodes.colspec` instances
     is now stored as a `str` (instead of numerical) value .
 

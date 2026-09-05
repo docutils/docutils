@@ -50,14 +50,12 @@ Document Tree / Docutils DTD
   deprecated and will be invalid in Docutils 2.0. (The "rst" parser
   uses <inline> elements for `inline targets`_ since Docutils 1.0.)
 
+* The `\<doctest_block>`_ element will become invalid in Docutils 2.0.
+
 * To match the definition in the "Exchange Table Model", values of the
   `"colwidth" attribute`_ will be stored with the "proportional unit
   symbol" ``*`` and accept fixed length units in Docutils 2.0.
   The default unit will change to "pt" in Docutils 3.0.
-
-* The `\<doctest_block>`_ element will be deprecated in Docutils 1.0.
-  The rST parser will handle a `doctest block`_ similar to a "code" directive
-  with language "pycon" (Python console) and generate a <literal_block>.
 
 * The `Transitions` transform will ignore <pending>,
   <substitution_definition>, and <target> elements when warning about
@@ -179,6 +177,9 @@ Removals
   `frontend.store_multiple()`, and `frontend.read_config_file()` when
   migrating to argparse_ in Docutils 2.0 or later.
 
+* Remove the writer's `visit_doctest()` and `depart_doctest()` visitor
+  functions in Docutils 3.0.
+
 Misc
 ----
 
@@ -216,6 +217,8 @@ Document Tree / Docutils DTD:
     to customize the <table> element's attribute list in Docutils 1.0.
   - Inline `\<target>`_ elements and <target> elements with content are
     deprecated.
+  - The `\<doctest_block>`_ element is deprecated.
+    Use ``<literal_block classes="code pycon doctest">``.
   - The `"colwidth" attribute`_ of `nodes.colspec` instances
     is now stored as a `str` (instead of `int`) value.
     The XML writer adds the "proportional unit symbol" ``*``.
@@ -245,7 +248,8 @@ rST parser:
   - "lazy IDs": Generate target ids_ in transforms -- after parsing and
     only if required in the output document.
     Keep behaviour backwards compatible with the legacy_ids_ setting.
-  - Use <inline> elements for `inline targets`_.
+  - Use <inline> elements for `inline targets`_ and <literal_block>
+    for `doctest blocks`_.
 
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
@@ -1644,7 +1648,8 @@ Release 0.3.5 (2004-07-29)
     docs/ref/rst/definitions.html#semantic-inline-markup-roles
 .. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
 
-.. _doctest block: docs/ref/rst/restructuredtext.html#doctest-blocks
+.. _doctest block:
+.. _doctest blocks: docs/ref/rst/restructuredtext.html#doctest-blocks
 .. _inline targets:
     docs/ref/rst/restructuredtext.html#inline-internal-targets
 

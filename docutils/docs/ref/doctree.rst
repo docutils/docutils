@@ -1546,8 +1546,10 @@ for the various `bibliographic elements`_.
    adjacent to the <docinfo>.
 
 
-<doctest_block>
-===============
+.. _<doctest_block>:
+
+<doctest_block> (deprecated)
+============================
 
 The <doctest_block> element is a Python-specific variant of a
 `\<literal_block>`_.
@@ -1555,17 +1557,18 @@ The <doctest_block> element is a Python-specific variant of a
 :Category:   `Simple Body Elements`_
 :Analogues:  <doctest_block> is analogous to the HTML_ <pre> element
              and the  DocBook_ <programlisting> and <screen> elements.
-:Processing: As with `\<literal_block>`_, <doctest_block> elements are
-             typically rendered in a monospaced typeface.  It is crucial
-             that all whitespace and line breaks are preserved in the
-             rendered form.
+:Processing: See `\<literal_block>`_.
 :Parents:    all elements employing `%body.elements`_ or
              `%structure.model`_ in their content models
 :Children:   text data plus `inline elements`_ (`%text.model`_)
 :Attributes: the `common attributes`_ and `xml:space`_.
 
-Examples
---------
+
+The <doctest_block> is deprecated and will become invalid in Docutils 2.0.
+Use a `\<literal_block>`_ instead.
+
+Example
+-------
 
 A reStructuredText `doctest block`_::
 
@@ -1578,12 +1581,9 @@ Pseudo-XML_ fragment from simple parsing::
 
     <paragraph>
         This is an ordinary paragraph.
-    <doctest_block xml:space="preserve">
+    <literal_block classes="code pycon doctest" xml:space="preserve">
         >>> print('this is a Doctest block')
         this is a Doctest block
-
-The <doctest_block> will be deprecated in Docutils 1.0, the
-reStructuredText parser will use a `\<literal_block>`_ instead.
 
 
 <document>

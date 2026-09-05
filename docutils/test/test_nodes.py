@@ -504,6 +504,14 @@ class ElementTests(unittest.TestCase):
         self.assertEqual(len(parent), 5)
 
 
+class DoctestBlockTests(unittest.TestCase):
+
+    def test_deprecation_warning(self):
+        with self.assertWarnsRegex(PendingDeprecationWarning,
+                                   'will be removed'):
+            nodes.doctest_block('content', 'content')
+
+
 class ColspecTests(unittest.TestCase):
 
     def test_propwidth(self):

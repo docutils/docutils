@@ -1993,9 +1993,11 @@ class LaTeXTranslator(writers.DoctreeTranslator):
             self.out.append(' \\\\\n')
 
     def visit_doctest_block(self, node) -> None:
+        # Deprecated. Will be removed in Docutils 3.0
         self.visit_literal_block(node)
 
     def depart_doctest_block(self, node) -> None:
+        # Deprecated. Will be removed in Docutils 3.0
         self.depart_literal_block(node)
 
     def visit_document(self, node) -> None:

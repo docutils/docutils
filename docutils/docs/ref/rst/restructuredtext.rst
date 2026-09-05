@@ -1456,7 +1456,7 @@ Syntax diagram::
 Doctest Blocks
 --------------
 
-:Doctree element: `\<doctest_block>`_
+:Doctree element: `\<literal_block>`_
 
 Doctest blocks are interactive Python sessions cut-and-pasted into
 docstrings.  They are meant to illustrate usage by example, and
@@ -3320,7 +3320,6 @@ Markup errors are handled according to the specification in
 .. _`<definition_list_item>`: ../doctree.html#definition-list-item
 .. _`<description>`: ../doctree.html#description
 .. _`<docinfo>`: ../doctree.html#docinfo
-.. _`<doctest_block>`: ../doctree.html#doctest-block
 .. _`<document>`: ../doctree.html#document
 .. _`<entry>`: ../doctree.html#entry
 .. _`<emphasis>`: ../doctree.html#emphasis
@@ -3331,6 +3330,7 @@ Markup errors are handled according to the specification in
 .. _`<field_name>`: ../doctree.html#field-name
 .. _`<footnote>`: ../doctree.html#footnote
 .. _`<footnote_reference>`: ../doctree.html#footnote-reference
+.. _`<inline>`: ../doctree.html#inline
 .. _`<label>`: ../doctree.html#label
 .. _`<line>`: ../doctree.html#line
 .. _`<line_block>`: ../doctree.html#line-block

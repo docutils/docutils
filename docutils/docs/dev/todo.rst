@@ -2009,7 +2009,7 @@ nodes. This makes the document model and the writers somewhat simpler.
      subtypes of an admonition, i.e. we could remove 72 redundant
      methods (HTML, LaTeX, Manpage, ODF).
 
-  -1 the most unfortunately named of these directives will survive. [#]_
+  -1 the most unfortunately named of these elements will survive. [#]_
 
      .. [#] with "biblical touch" and hard to translate:
 
