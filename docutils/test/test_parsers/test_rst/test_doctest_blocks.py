@@ -23,9 +23,12 @@ from docutils.utils import new_document
 
 
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
+        settings.syntax_highlight = 'none'
         settings.warning_stream = ''
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):

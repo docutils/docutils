@@ -103,8 +103,8 @@ Release 1.0b1.dev (unpublished)
   - Generate INFO message, if a directive that does not take
     arguments has content above and below directive options.
   - Ignore the "match_titles" argument of `RSTState.nested_list_parse()`.
-  - Use <inline> elements in `inline_internal_target()` and <literal_block>
-    for "doctest blocks".
+  - Use <inline> elements for inline targets and <literal_block>
+    (with syntax highlight) for doctest blocks.
   - The "colwidth_" attribute of `nodes.colspec` instances
     is now stored as a `str` (instead of numerical) value .
 

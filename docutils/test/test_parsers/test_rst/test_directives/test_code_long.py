@@ -27,6 +27,8 @@ from test.test_parsers.test_rst.test_directives.test_code \
 
 @unittest.skipUnless(with_pygments, 'needs Pygments')
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -179,6 +181,39 @@ f"""\
 """],
 ]
 
+# Since Docutils 1.0, doctest blocks are highlighted, too:
+totest['doctest_blocks'] = [
+["""\
+Paragraph.
+
+>>> print("Doctest block.")
+Doctest block.
+
+Paragraph.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Paragraph.
+    <literal_block classes="code pycon doctest" xml:space="preserve">
+        <inline classes="generic prompt">
+            >>> \n\
+        <inline classes="name builtin">
+            print
+        <inline classes="punctuation">
+            (
+        <inline classes="literal string double">
+            "Doctest block."
+        <inline classes="punctuation">
+            )
+        <inline classes="whitespace">
+            \n\
+        <inline classes="generic output">
+            Doctest block.
+    <paragraph>
+        Paragraph.
+"""],
+]
 
 if __name__ == '__main__':
     unittest.main()

@@ -16,7 +16,7 @@ try:
 except ImportError:
     with_pygments = False
 
-from docutils import ApplicationError
+from docutils import ApplicationError, nodes
 
 # Filter the following token types from the list of class arguments:
 unstyled_tokens = ['token',  # Token (base token type)
@@ -138,3 +138,41 @@ class NumberLines:
                 lineno += 1
                 yield ['ln'], self.fmt_str % lineno
             yield ttype, lines[-1]
+
+
+def tag_code(content, language, settings, options=None) -> nodes.literal_block:
+    # Tokenize `content` as source in formal language `language`.
+    # Return a <literal_block> with tokens as <inline> elements
+    # with classes matching their syntax element category.
+    # Provisional.
+    if options is None:
+        options = {}
+    classes = ['code']
+    if language:
+        classes.append(language)
+    if 'class' in options:
+        classes.extend(options['class'])
+    # set up lexical analyzer
+    try:
+        tokens = Lexer('\n'.join(content), language, settings.syntax_highlight)
+    except LexerError:
+        if settings.report_level > 2:  # don't report warnings
+            # insert without syntax highlight
+            tokens = Lexer('\n'.join(content), language, 'none')
+        else:
+            raise
+    if 'number-lines' in options:
+        startline = options['number-lines']
+        if startline is None:
+            startline = 1
+        endline = startline + len(content)
+        # add linenumber filter:
+        tokens = NumberLines(tokens, startline, endline)
+    node = nodes.literal_block('\n'.join(content), classes=classes)
+    # analyze content and add tokens
+    for classes, value in tokens:
+        if classes:
+            node += nodes.inline(value, value, classes=classes)
+        else:
+            node += nodes.Text(value)
+    return node

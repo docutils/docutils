@@ -249,7 +249,7 @@ rST parser:
     only if required in the output document.
     Keep behaviour backwards compatible with the legacy_ids_ setting.
   - Use <inline> elements for `inline targets`_ and <literal_block>
-    for `doctest blocks`_.
+    (with syntax highlight) for `doctest blocks`_.
 
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".

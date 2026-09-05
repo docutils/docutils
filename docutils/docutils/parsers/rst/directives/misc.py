@@ -17,8 +17,8 @@ from urllib.error import URLError
 from docutils import frontend, io, nodes, statemachine, utils
 from docutils.parsers.rst import Directive, convert_directive_function
 from docutils.parsers.rst import directives, roles, states
-from docutils.parsers.rst.directives.body import CodeBlock, NumberLines
 from docutils.transforms import misc
+from docutils.utils.code_analyzer import tag_code, LexerError, NumberLines
 
 TYPE_CHECKING = False
 if TYPE_CHECKING:
@@ -197,24 +197,23 @@ class Include(Directive):
         return [literal_block]
 
     def as_code_block(self, text: str) -> list[nodes.literal_block]:
-        """Pass `text` to the `CodeBlock` directive class.
+        """Insert as code block with syntax highlight.
 
         Provisional.
         """
         # convert tabs to spaces unless `tab_width` is negative:
         if self.tab_width >= 0:
             text = text.expandtabs(self.tab_width)
-        codeblock = CodeBlock(self.name,
-                              [self.options.pop('code')],  # pass as argument
-                              self.options,
-                              [text.removesuffix('\n')],   # content
-                              self.lineno,
-                              self.content_offset,
-                              self.block_text,
-                              self.state,
-                              self.state_machine,
-                              )
-        return codeblock.run()
+        try:
+            node = tag_code(text.removesuffix('\n').splitlines(),
+                            language=self.options.pop('code'),
+                            settings=self.settings,
+                            options=self.options)
+        except LexerError as error:
+            raise self.warning(error)
+        self.add_name(node)
+        node['source'] = self.options['source']
+        return [node]
 
     def custom_parse(self, text: str) -> list:
         """Parse with custom parser.

@@ -15,7 +15,7 @@ from docutils import nodes
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.roles import normalize_options
-from docutils.utils.code_analyzer import Lexer, LexerError, NumberLines
+from docutils.utils.code_analyzer import LexerError, tag_code
 
 
 class BasePseudoSection(Directive):
@@ -161,51 +161,15 @@ class CodeBlock(Directive):
                    }
     has_content = True
 
-    def run(self):
+    def run(self) -> list[nodes.Element]:
         self.assert_has_content()
-        if self.arguments:
-            language = self.arguments[0]
-        else:
-            language = ''
-        options = normalize_options(self.options)
-        classes = ['code']
-        if language:
-            classes.append(language)
-        if 'classes' in options:
-            classes.extend(options['classes'])
-
-        # set up lexical analyzer
+        language = self.arguments[0] if self.arguments else ''
         try:
-            tokens = Lexer('\n'.join(self.content), language,
-                           self.state.document.settings.syntax_highlight)
+            node = tag_code(self.content, language,
+                            self.state.document.settings, self.options)
         except LexerError as error:
-            if self.state.document.settings.report_level > 2:
-                # don't report warnings -> insert without syntax highlight
-                tokens = Lexer('\n'.join(self.content), language, 'none')
-            else:
-                raise self.warning(error)
-
-        if 'number-lines' in options:
-            startline = self.options['number-lines']
-            if startline is None:
-                startline = 1
-            endline = startline + len(self.content)
-            # add linenumber filter:
-            tokens = NumberLines(tokens, startline, endline)
-
-        node = nodes.literal_block('\n'.join(self.content), classes=classes)
+            raise self.warning(error)
         self.add_name(node)
-        # if called from "include", set the source
-        if 'source' in options:
-            node.attributes['source'] = options['source']
-        # analyze content and add nodes for every token
-        for classes, value in tokens:
-            if classes:
-                node += nodes.inline(value, value, classes=classes)
-            else:
-                # insert as Text to decrease the verbosity of the output
-                node += nodes.Text(value)
-
         return [node]
 
 

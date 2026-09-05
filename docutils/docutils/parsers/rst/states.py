@@ -121,6 +121,7 @@ from docutils.utils import punctuation_chars, urischemes
 from docutils.utils import split_escaped_whitespace
 from docutils.utils._roman_numerals import (InvalidRomanNumeralError,
                                             RomanNumeral)
+from docutils.utils.code_analyzer import tag_code, LexerError
 
 TYPE_CHECKING = False
 if TYPE_CHECKING:
@@ -1692,9 +1693,12 @@ class Body(RSTState):
 
     def doctest(self, match, context, next_state):
         line = self.document.current_line
-        data = '\n'.join(self.state_machine.get_text_block())
-        n = nodes.literal_block(data, data)
-        n['classes'] += ['code', 'pycon', 'doctest']
+        data = self.state_machine.get_text_block()
+        try:
+            n = tag_code(data, 'pycon', self.document.settings,
+                         options={'class': ['doctest']})
+        except LexerError as error:
+            n = self.reporter.warning(error)
         n.line = line
         self.parent += n
         return [], next_state, []
