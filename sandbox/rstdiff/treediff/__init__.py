@@ -49,7 +49,7 @@ class HashableDescriptor(object):
                   + self.override)
         try:
             fct = self.hashableImpl.getFunction(self.override)
-        except:
+        except Exception:
             if self.debug:
                 print('***Exception***')
             raise AttributeError('Can not access method %r'

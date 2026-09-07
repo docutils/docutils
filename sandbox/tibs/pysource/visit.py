@@ -434,7 +434,7 @@ class ScopeMixin:
         """
         try:
             return self.scope_children[name]
-        except:
+        except Exception:
             return None
 
     def scope_get_type(self,name):
@@ -442,7 +442,7 @@ class ScopeMixin:
         """
         try:
             return self.scope_children[name].__class__.__name__
-        except:
+        except Exception:
             return None
 
     def scope_name_in_self(self,name):
@@ -1653,7 +1653,7 @@ class Class(Base):
             # Make the best of it we can, for now
             try:
                 names.append(base.name)
-            except:
+            except Exception:
                 names.append("???")
         return names
 

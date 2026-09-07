@@ -65,7 +65,7 @@ def publish_xml_cmdline (in_path = None, in_string = None, out_path = None, sett
     try:
         import locale
         locale.setlocale(locale.LC_ALL, '')
-    except:
+    except Exception:
         pass
 
 
