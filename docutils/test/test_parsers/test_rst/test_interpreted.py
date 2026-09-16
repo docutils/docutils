@@ -359,7 +359,7 @@ totest['references'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference refuri="https://tools.ietf.org/html/rfc2822.html">
+        <reference refuri="https://www.rfc-editor.org/info/rfc2822/">
             RFC 2822
 """],
 ["""\
@@ -375,12 +375,12 @@ totest['references'] = [
             RFC number must be a number greater than or equal to 1; "0" is invalid.
 """],
 ["""\
-:RFC:`2822#section1`
+:RFC:`2822#section-1`
 """,
 """\
 <document source="test data">
     <paragraph>
-        <reference refuri="https://tools.ietf.org/html/rfc2822.html#section1">
+        <reference refuri="https://www.rfc-editor.org/info/rfc2822/#section-1">
             RFC 2822
 """],
 ]

@@ -80,6 +80,10 @@ Release 1.0b1.dev (unpublished)
   - Removed. (Recommonmark is unmaintained since 2021 and deprecated in
     favour of the MyST parser.)
 
+* docutils/parsers/rst/__init__.py
+
+  - Update the RFC base URL to the canonical https://www.rfc-editor.org/info/.
+
 * docutils/parsers/rst/directives/__init__.py
 
   - Remove `length_units` (replaced by the tuple CSS3_LENGTH_UNITS).
@@ -107,6 +111,8 @@ Release 1.0b1.dev (unpublished)
     (with syntax highlight) for doctest blocks.
   - The "colwidth_" attribute of `nodes.colspec` instances
     is now stored as a `str` (instead of numerical) value .
+  - Drop ``.html`` file extension from the RFC URL template
+    `Inliner.rfc_url`; add a slash instead.
 
 * docutils/readers/standalone.py
 

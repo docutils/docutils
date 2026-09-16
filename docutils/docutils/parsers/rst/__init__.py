@@ -103,9 +103,9 @@ class Parser(docutils.parsers.Parser):
           ['--rfc-references'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Base URL for RFC references '
-          '(default "https://tools.ietf.org/html/").',
+          '(default "https://www.rfc-editor.org/info/").',
           ['--rfc-base-url'],
-          {'metavar': '<URL>', 'default': 'https://tools.ietf.org/html/',
+          {'metavar': '<URL>', 'default': 'https://www.rfc-editor.org/info/',
            'validator': frontend.validate_url_trailing_slash}),
          ('Set number of spaces for tab expansion (default 8).',
           ['--tab-width'],

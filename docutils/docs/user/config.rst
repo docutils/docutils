@@ -915,9 +915,11 @@ Recognize and link to standalone RFC references (like "RFC 822").
 
 rfc_base_url
 ~~~~~~~~~~~~
-Base URL for RFC references.
+Base URL for RFC references.  Docutils appends "rfc", the RFC number and
+a slash to form URLs like ``https://www.rfc-editor.org/info/rfc9920/``.
 
-*Default*: "https://tools.ietf.org/html/".  *Option*: ``--rfc-base-url``.
+:Default: "https://www.rfc-editor.org/info/".
+:Option:  ``--rfc-base-url``.
 
 smart_quotes
 ~~~~~~~~~~~~

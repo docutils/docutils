@@ -1122,7 +1122,7 @@ class Inliner:
                + self.document.settings.pep_file_url_template % pepnum)
         return [nodes.reference(unescape(text, True), text, refuri=ref)]
 
-    rfc_url = 'rfc%d.html'
+    rfc_url = 'rfc%d/'
 
     def rfc_reference(self, match, lineno):
         text = match.group(0)

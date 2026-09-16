@@ -232,6 +232,8 @@ Configuration changes:
   - The legacy_column_widths_ setting now defaults to False.
   - The initial_header_level_ setting default for the HTML5 writer
     changed to "auto".
+  - The rfc_base_url_ setting now defaults to
+    "https://www.rfc-editor.org/info/".
   - Rename command line option ``--matching-ids`` to ``--lazy-ids``.
 
 Command line interface:
@@ -250,6 +252,7 @@ rST parser:
     Keep behaviour backwards compatible with the legacy_ids_ setting.
   - Use <inline> elements for `inline targets`_ and <literal_block>
     (with syntax highlight) for `doctest blocks`_.
+  - Use new default rfc_base_url_; do not add ".html" to generated RFC URLs.
 
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
@@ -1676,6 +1679,7 @@ Release 0.3.5 (2004-07-29)
 .. _output_path: docs/user/config.html#output-path
 .. _parser: docs/user/config.html#parser
 .. _reference_label: docs/user/config.html#reference-label
+.. _rfc_base_url: docs/user/config.html#rfc-base-url
 .. _root_prefix: docs/user/config.html#root-prefix
 .. _section_self_link: docs/user/config.html#section-self-link
 .. _SmartQuotes: docs/user/config.html#smart-quotes

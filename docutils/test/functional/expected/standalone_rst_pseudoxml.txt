@@ -509,7 +509,7 @@
                         PEP 287
                     ); an
                     RFC reference (
-                    <reference refuri="https://tools.ietf.org/html/rfc2822.html">
+                    <reference refuri="https://www.rfc-editor.org/info/rfc2822/">
                         RFC 2822
                     ); an abbreviation (
                     <abbreviation>

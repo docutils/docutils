@@ -106,8 +106,8 @@ reStructuredText Parser Options
                         "pep-%04d")
 --rfc-references        Recognize and link to standalone RFC references (like
                         "RFC 822").
---rfc-base-url=<URL>    Base URL for RFC references (default
-                        "https://tools.ietf.org/html/").
+--rfc-base-url=<URL>    Base URL for RFC references (default "https://www.rfc-
+                        editor.org/info/").
 --tab-width=<width>     Set number of spaces for tab expansion (default 8).
 --trim-footnote-reference-space
                         Remove spaces before footnote references.
