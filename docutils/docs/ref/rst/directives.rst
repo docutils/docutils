@@ -1311,13 +1311,11 @@ currently support for only one header and footer.
    documentation generator like Sphinx_ rather than the "header" and
    "footer" directives.
 
-In addition to the use of these directives to populate header and
-footer content, content may also be added automatically by the
-processing system.  For example, if certain runtime settings are
-enabled, the document footer is populated with processing information
-such as a datestamp, a link to `the Docutils website`_, etc.
-
-.. _the Docutils website: https://docutils.sourceforge.io
+In addition to the use of these directives, content may also be added
+automatically by the processing system.  For example, if the
+corresponding runtime settings are enabled, the document footer
+is populated with processing information such as a datestamp_,
+a reference to the generator_ (i.e. Docutils), etc.
 
 
 ------------
@@ -1562,12 +1560,12 @@ Date
 :Directive Options: none
 :Directive Content: none
 
-The "date" directive generates the current local date and inserts it
+The "date" directive generates the current local date [#]_ and inserts it
 into the document as text.  This directive may be used in substitution
 definitions only.
 
 The optional directive content is interpreted as the desired date
-format, using the same codes as Python's `time.strftime()`__ function.  The
+format, using the same codes as Python's `time.strftime()`_ function.  The
 default format is "%Y-%m-%d" (ISO 8601 date), but time fields can also
 be used.  Examples::
 
@@ -1578,7 +1576,11 @@ be used.  Examples::
 
     This document was generated on |date| at |time|.
 
-__ https://docs.python.org/3/library/time.html#time.strftime
+.. [#] If the environment variable `SOURCE_DATE_EPOCH`_ is set, the
+   directive uses its value instead of the current date.
+
+.. _time.strftime(): https://docs.python.org/3/library/time.html#time.strftime
+.. _SOURCE_DATE_EPOCH: https://reproducible-builds.org/docs/source-date-epoch/
 
 
 ---------------
@@ -2382,9 +2384,10 @@ Common Option Value Types
 .. _"raw" role: roles.html#raw
 
 .. Docutils Configuration
-.. _use_bibtex: ../../user/config.html#use-bibtex
+.. _datestamp: ../../user/config.html#datestamp
 .. _file_insertion_enabled: ../../user/config.html#file-insertion-enabled
 .. _generate_oowriter_toc: ../../user/config.html#generate-oowriter-toc
+.. _generator: ../../user/config.html#generator
 .. _image_loading: ../../user/config.html#image-loading
 .. _input_encoding: ../../user/config.html#input-encoding
 .. _math_output: ../../user/config.html#math-output
@@ -2397,6 +2400,7 @@ Common Option Value Types
 .. _table_style: ../../user/config.html#table-style
 .. _"title" configuration setting: ../../user/config.html#title
 .. _toc_backlinks: ../../user/config.html#toc-backlinks
+.. _use_bibtex: ../../user/config.html#use-bibtex
 .. _use_latex_toc: ../../user/config.html#use-latex-toc
 .. _validate: ../../user/config.html#validate
 .. _writer names: ../../user/config.html#writer-docutils-application

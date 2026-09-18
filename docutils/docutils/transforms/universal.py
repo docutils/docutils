@@ -23,6 +23,7 @@ from __future__ import annotations
 
 __docformat__ = 'reStructuredText'
 
+import os
 import re
 import time
 from docutils import nodes, utils
@@ -56,10 +57,6 @@ class Decorations(Transform):
     def generate_footer(self):
         # @@@ Text is hard-coded for now.
         # Should be made dynamic (language-dependent).
-        # @@@ Use timestamp from the `SOURCE_DATE_EPOCH`_ environment variable
-        # for the datestamp?
-        # See https://sourceforge.net/p/docutils/patches/132/
-        # and https://reproducible-builds.org/specs/source-date-epoch/
         settings = self.document.settings
         if (settings.generator or settings.datestamp
             or settings.source_link or settings.source_url):
@@ -76,7 +73,15 @@ class Decorations(Transform):
                                     refuri=source),
                     nodes.Text('.\n')])
             if settings.datestamp:
-                datestamp = time.strftime(settings.datestamp, time.gmtime())
+                # If set, use timestamp from the `SOURCE_DATE_EPOCH`
+                # environment variable (cf. https://reproducible-builds.org/):
+                source_date_epoch = os.environ.get('SOURCE_DATE_EPOCH')
+                if source_date_epoch:
+                    timetuple = time.gmtime(int(source_date_epoch))
+                    datestamp = time.strftime(settings.datestamp, timetuple)
+                else:
+                    datestamp = time.strftime(settings.datestamp,
+                                              time.gmtime())
                 text.append(nodes.Text('Generated on: ' + datestamp + '.\n'))
             if settings.generator:
                 text.extend([

@@ -8,9 +8,10 @@
 Tests for the misc.py "date" directive.
 """
 
-import time
+import os
 from pathlib import Path
 import sys
+import time
 import unittest
 
 if __name__ == '__main__':
@@ -25,17 +26,25 @@ from docutils.utils import new_document
 
 
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
         settings.warning_stream = ''
         for name, cases in totest.items():
+            if name == 'source-date-epoch':
+                self.orig_environ = os.environ
+                os.environ = os.environ.copy()
+                os.environ['SOURCE_DATE_EPOCH'] = '5000000'
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     document = new_document('test data', settings.copy())
                     parser.parse(case_input, document)
                     output = document.pformat()
                     self.assertEqual(case_expected, output)
+            if name == 'source-date-epoch':
+                os.environ = self.orig_environ
 
 
 totest = {}
@@ -74,6 +83,24 @@ Today's date is |date|.
             Invalid context: the "date" directive can only be used within a substitution definition.
         <literal_block xml:space="preserve">
             .. date::
+"""],
+]
+
+totest['source-date-epoch'] = [
+["""\
+.. |date| date::
+
+Build date: |date|.
+""",
+"""\
+<document source="test data">
+    <substitution_definition names="date">
+        1970-02-27
+    <paragraph>
+        Build date: \n\
+        <substitution_reference refname="date">
+            date
+        .
 """],
 ]
 

@@ -15,6 +15,7 @@ Test parsing + transformations with `publish_string()`.
 """
 
 from pathlib import Path
+import os
 import sys
 import unittest
 
@@ -35,6 +36,14 @@ class XMLParserTests(unittest.TestCase):
                   'warning_stream': '',
                   }
 
+    def setUp(self):
+        self.orig_environ = os.environ
+        os.environ = os.environ.copy()
+        os.environ['SOURCE_DATE_EPOCH'] = '1000000'
+
+    def tearDown(self):
+        os.environ = self.orig_environ
+
     def test_publish(self):
         for name, (settings, cases) in totest.items():
             settings = self.mysettings | settings
@@ -48,8 +57,8 @@ class XMLParserTests(unittest.TestCase):
 
 totest = {}
 
-totest['decoration'] = ({'datestamp': 'pi-day'},  # generate footer
-[
+# generate timestamp with date set by SOURCE_DATE_EPOCH:
+totest['decoration'] = ({'datestamp': '%Y-%m-%d'}, [
 ["""\
 <decoration>
     <footer>
@@ -64,7 +73,7 @@ totest['decoration'] = ({'datestamp': 'pi-day'},  # generate footer
             <paragraph>
                 myfooter
             <paragraph>
-                Generated on: pi-day.
+                Generated on: 1970-01-12.
 """],
 ])
 

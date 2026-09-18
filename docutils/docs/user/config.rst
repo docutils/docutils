@@ -259,21 +259,28 @@ a number is added for disambiguation. With the default, the third
 datestamp
 ---------
 
-Include a time/datestamp in the document footer.  Contains a
-format string for Python's `time.strftime()`__.
+Include a time/datestamp in the document footer.
 
+Contains a format string for Python's `time.strftime()`__.
 Configuration file entry examples::
 
     # Equivalent to --date command-line option, results in
     # ISO 8601 extended format datestamp, e.g. "2001-12-21":
     datestamp: %Y-%m-%d
 
+::
+
     # Equivalent to --time command-line option, results in
     # date/timestamp like "2001-12-21 18:43 UTC":
     datestamp: %Y-%m-%d %H:%M UTC
 
+::
+
     # Disables datestamp; equivalent to --no-datestamp:
     datestamp:
+
+If the environment variable `SOURCE_DATE_EPOCH`_ is set,
+the timestamp uses its value instead of the current time.
 
 :Default: None.
 :Options: ``--date``, ``-d``, ``--time``, ``-t``, ``--no-datestamp``.
@@ -2741,5 +2748,6 @@ See the `inspecting_codecs`_ package for a replacement.
 .. _standard encodings:
     https://docs.python.org/3/library/codecs.html#standard-encodings
 .. _inspecting_codecs: https://codeberg.org/milde/inspecting-codecs
+.. _SOURCE_DATE_EPOCH: https://reproducible-builds.org/docs/source-date-epoch/
 .. _URI fragment:
     https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment

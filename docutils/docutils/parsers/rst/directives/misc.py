@@ -8,6 +8,7 @@ from __future__ import annotations
 
 __docformat__ = 'reStructuredText'
 
+import os
 import re
 import time
 from pathlib import Path
@@ -658,23 +659,14 @@ class Date(Directive):
                 'Invalid context: the "%s" directive can only be used within '
                 'a substitution definition.' % self.name)
         format_str = '\n'.join(self.content) or '%Y-%m-%d'
-        # @@@
-        # Use timestamp from the `SOURCE_DATE_EPOCH`_ environment variable?
-        # Pro: Docutils-generated documentation
-        #      can easily be part of `reproducible software builds`__
-        #
-        #      __ https://reproducible-builds.org/
-        #
-        # Con: Changes the specs, hard to predict behaviour,
-        #
-        # See also the discussion about \date \time \year in TeX
-        # http://tug.org/pipermail/tex-k/2016-May/002704.html
-        # source_date_epoch = os.environ.get('SOURCE_DATE_EPOCH')
-        # if (source_date_epoch):
-        #     text = time.strftime(format_str,
-        #                          time.gmtime(int(source_date_epoch)))
-        # else:
-        text = time.strftime(format_str)
+        # If set, use timestamp from the `SOURCE_DATE_EPOCH`_
+        # environment variable (cf. https://reproducible-builds.org/):
+        source_date_epoch = os.environ.get('SOURCE_DATE_EPOCH')
+        if (source_date_epoch):
+            text = time.strftime(format_str,
+                                 time.gmtime(int(source_date_epoch)))
+        else:
+            text = time.strftime(format_str)
         return [nodes.Text(text)]
 
 
