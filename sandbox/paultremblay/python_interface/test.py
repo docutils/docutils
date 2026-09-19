@@ -463,7 +463,7 @@ def main():
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 if FULL:

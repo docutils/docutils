@@ -14,7 +14,7 @@ A minimal front end to the Docutils Publisher, producing an .ht
 import locale
 try:
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 from docutils.core import publish_cmdline, default_description

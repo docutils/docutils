@@ -49,7 +49,7 @@ import os
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 from docutils.core import default_usage, default_description, Publisher

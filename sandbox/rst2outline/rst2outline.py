@@ -27,7 +27,7 @@ can then be transformed_ to PowerPoint.
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 from docutils import frontend, writers, nodes

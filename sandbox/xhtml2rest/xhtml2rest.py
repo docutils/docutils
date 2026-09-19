@@ -476,7 +476,7 @@ def handleAnchor(node):
         try:
             warnings.warn("Ignoring second appearance of anchor '" + result.text +
                                                     "' with different target")
-        except:
+        except Exception:
             pass
         return result
     hyperlinks[key] = target
