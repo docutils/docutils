@@ -192,20 +192,6 @@ Misc
 * Move math format conversion from docutils/utils/math (called from
   docutils/writers/_html_base.py) to a transform_.
 
-* If the environment variable `SOURCE_DATE_EPOCH`_ is set, the `"date"`_
-  directive and the timestamp inserted by the "datestamp_"
-  configuration setting will use its value instead of the current time to
-  support `reproducible builds`_ in Docutils 1.0. [#]_
-
-  .. _SOURCE_DATE_EPOCH:
-      https://reproducible-builds.org/docs/source-date-epoch/
-  .. _reproducible builds: https://reproducible-builds.org/
-
-.. [#] The `Debian package`__ python-docutils (0.21.2+dfsg-2)
-   contains a patch to implement this behaviour since May 2023.
-
-   __ https://packages.debian.org/source/trixie/python-docutils
-
 
 Release 1.0b1.dev (unpublished)
 ===============================
@@ -235,6 +221,8 @@ Configuration changes:
   - The rfc_base_url_ setting now defaults to
     "https://www.rfc-editor.org/info/".
   - Rename command line option ``--matching-ids`` to ``--lazy-ids``.
+  - If the environment variable `SOURCE_DATE_EPOCH`_ is set, a datestamp_
+    will use its value instead of the current time.
 
 Command line interface:
   - Option ``-o`` sets the `output file path <output_path_>`__
@@ -253,6 +241,8 @@ rST parser:
   - Use <inline> elements for `inline targets`_ and <literal_block>
     (with syntax highlight) for `doctest blocks`_.
   - Use new default rfc_base_url_; do not add ".html" to generated RFC URLs.
+  - If the environment variable `SOURCE_DATE_EPOCH`_ is set, the `"date"`_
+    directive uses its value instead of the current time.
 
 HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
@@ -314,6 +304,8 @@ Bugfixes and improvements (see HISTORY_).
 .. [#cross-links] This includes links from the table of contents_ and
    "`section self-links <section_self_link_>`_" added by the HTML5
    writer.
+
+.. _SOURCE_DATE_EPOCH: https://reproducible-builds.org/docs/source-date-epoch/
 
 
 Release 0.23 (2026-05-27)

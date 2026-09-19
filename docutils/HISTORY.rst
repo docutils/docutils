@@ -96,6 +96,11 @@ Release 1.0b1.dev (unpublished)
     nor set the internal attribute `indirect_reference_name`.
   - Warn if a "figure" directive is missing both caption and legend.
 
+* docutils/parsers/rst/directives/misc.py
+
+  - If the environment variable SOURCE_DATE_EPOCH is set, the
+    "date" directive uses its value instead of the current time.
+
 * docutils/parsers/rst/directives/tables.py
 
   - Remove class `HeaderDialect` (not used/deprecated since Docutils 0.20).
@@ -155,6 +160,8 @@ Release 1.0b1.dev (unpublished)
 
   - Change the default priority of the `SmartQuotes` transform
     from 855 (very late) to 510 (main).
+  - If the environment variable SOURCE_DATE_EPOCH is set, a datestamp
+    will use its value instead of the current time.
 
 * docutils/utils/__init__.py
 
