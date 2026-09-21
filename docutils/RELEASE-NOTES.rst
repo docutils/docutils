@@ -86,12 +86,6 @@ Writers
 
 * "html5" writer:
 
-  - Move attribution behind the blockquote to comply with the
-    `"HTML living standard"`__ [#]_ and adapt CSS stylesheets
-    in Docutils 1.0.
-
-    __ https://html.spec.whatwg.org/#the-blockquote-element
-
   - Remove option ``--embed-images`` (obsoleted by "image_loading_")
     in Docutils 2.0.
 
@@ -110,11 +104,6 @@ Writers
     and LaTeX writers: assume them relative to the *output* directory (as
     required for image references in HTML), not the *source* directory.
 
-.. [#] The now retired `HTML5 W3C recommendation`__ allows <cite> elements
-   inside a blockquote.
-
-__ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
-   #the-blockquote-element
 
 Removals
 --------
@@ -248,6 +237,10 @@ HTML5 writer:
   - Use normal font size and colour for informal titles of type "rubric".
   - Use more specific CSS selectors for styling <aside> elements as
     topic, sidebar, admonition, or system-message.
+  - Move attributions out of the attributed <blockquote> to comply with
+    the `"HTML living standard"`__; adapt CSS stylesheets.
+
+    __ https://html.spec.whatwg.org/#the-blockquote-element
 
 LaTeX writer:
   - Change the `default length unit`__ from "bp" (DTP point) to "px".

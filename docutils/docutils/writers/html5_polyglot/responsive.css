@@ -64,7 +64,8 @@ dl > dd, details > p:last-child {
 }
 
 /* Indented Blocks */
-blockquote, figure, aside.topic {
+blockquote, blockquote + p.attribution,
+figure, aside.topic {
   margin: 1em 2%;
   padding-left: 1em;
 }
@@ -94,10 +95,6 @@ div.dedication {
 }
 .dedication p.topic-title {
   display: none;
-}
-
-blockquote p.attribution {
-  text-align: right;
 }
 
 /* Table of Contents */

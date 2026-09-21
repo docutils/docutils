@@ -155,13 +155,6 @@ pre.math, pre.code {
   font-family: monospace;
 }
 
-/* Block Quotes and Topics */
-bockquote { margin: 1em 2em; }
-blockquote p.attribution {
-  text-align: right;
-  margin-left: 20%;
-}
-
 /* Tables */
 /* ====== */
 

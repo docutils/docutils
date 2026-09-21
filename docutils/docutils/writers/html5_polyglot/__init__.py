@@ -141,6 +141,20 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     def depart_acronym(self, node) -> None:
         self.body.append('</abbr>')
 
+    def visit_attribution(self, node) -> None:
+        prefix, suffix = self.attribution_formats[self.settings.attribution]
+        self.context.append(suffix)
+        # Move out of the enclosing block_quote to comply with
+        # https://html.spec.whatwg.org/#the-blockquote-element
+        if isinstance(node.parent, nodes.block_quote
+                      ) and node.next_node(descend=False) is None:
+            self.body.append('</blockquote>\n')
+        self.body.append(
+            self.starttag(node, 'p', prefix, CLASS='attribution'))
+
+    def depart_attribution(self, node) -> None:
+        self.body.append(self.context.pop() + '</p>\n')
+
     # no standard meta tag name in HTML5, use separate "author" meta tags
     # https://www.w3.org/TR/html5/document-metadata.html#standard-metadata-names
     def visit_authors(self, node) -> None:
@@ -151,6 +165,14 @@ class HTMLTranslator(_html_base.HTMLTranslator):
 
     def depart_authors(self, node) -> None:
         self.depart_docinfo_item()
+
+    def visit_block_quote(self, node) -> None:
+        self.body.append(self.starttag(node, 'blockquote'))
+
+    # closing tag may be already set by depart_attribution()`
+    def depart_block_quote(self, node) -> None:
+        if not isinstance(node.children[-1], nodes.attribution):
+            self.body.append('</blockquote>\n')
 
     # Wrap in a <figcaption> semantic tag (together with optional <legend>).
     def visit_caption(self, node) -> None:

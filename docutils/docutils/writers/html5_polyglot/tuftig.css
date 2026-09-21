@@ -65,7 +65,7 @@ p:last-child {
 }
 
 /* Indented Blocks */
-blockquote,
+blockquote, blockquote + p.attribution,
 aside.topic {
   /* background-color: Honeydew; */
   margin: 0.5em 2%;
@@ -142,11 +142,6 @@ div.dedication {
 /* div.abstract p.topic-title, */
 div.dedication p.topic-title {
   display: none;
-}
-
-/* Attribution */
-blockquote p.attribution {
-  text-align: right;
 }
 
 /* Table of Contents */

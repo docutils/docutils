@@ -167,11 +167,19 @@ Release 1.0b1.dev (unpublished)
 
   - Remove `decode_path()` and `get_stylesheet_reference()`.
 
-* docutils/writers/html5_polyglot/*
+* docutils/writers/html5_polyglot/__init__.py
 
   - Change the default value of the initial_header_level_ setting to "auto"
     (<h2> if there is a document title, else <h1>). Adapt "responsive.css".
   - Change the default value of the "section_self_link" setting to True.
+  - More robust handling of figure captions.
+  - Support "lazy IDs": ensure sections have an ID when adding a self-link.
+  - Move attributions out of the attributed <blockquote> to comply with the
+    "HTML living standard".
+
+* docutils/writers/html5_polyglot/\*.css
+
+  - Adapt "responsive.css" to work with initial_header_level_ "auto".
   - Add CSS rules for back-link and self-link symbols from
     "responsive.css" also in "plain.css" and "tuftig.css".
   - Use normal font size and colour in CSS for informal titles
@@ -179,8 +187,9 @@ Release 1.0b1.dev (unpublished)
   - Use more specific CSS selectors for styling <aside> elements to avoid
     problems with other elements using "topic" as class value (e.g. a
     docinfo item "topic" in Enhancement Reports).
-  - More robust handling of figure captions.
-  - Support "lazy IDs": ensure sections have an ID when adding a self-link.
+  - Left-align attributions and indent to the same level as the preceding
+    block-quote. (Right-alignined attributions do not not go well
+    together with ragged-right text.)
 
 * docutils/writers/latex2e/__init__.py
 

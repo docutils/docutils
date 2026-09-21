@@ -218,6 +218,7 @@ table.align-left, table.align-center, table.align-right {
 }
 
 /* Text Blocks */
+blockquote, blockquote + p.attribution,
 aside.topic { margin: 1em 2em; }
 aside.sidebar,
 aside.admonition,
