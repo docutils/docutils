@@ -13,7 +13,7 @@ IX_FILE_NAME = 'date_index.dat'
 
 try:
     db = pickle.load(file(IX_FILE_NAME))
-except:
+except Exception:
     db = {'filenames':[], 'index':[]}
 
 for fn in glob.glob(restblog.source_pattern):

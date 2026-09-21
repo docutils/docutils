@@ -56,12 +56,12 @@ from docutils.statemachine import StringList, string2lines
 
 try:
     from docutils.readers.python import moduleparser
-except:
+except Exception:
     moduleparser = None
 
 try:
     import mypdb as pdb
-except:
+except Exception:
     import pdb
 
 

@@ -19,7 +19,7 @@ try:
     import pygments
     from pygments import formatter, lexers
     pygmentsAvail = True
-except:
+except Exception:
     print 'Could not import pygments code highlighting will not work'
     pygmentsAvail = False
 import zipwrap
