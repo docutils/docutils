@@ -64,7 +64,7 @@ class RstWithInline:
         import locale
         try:
             locale.setlocale(locale.LC_ALL, '')
-        except:
+        except Exception:
             pass
         ##--no-doctype 
         argv = self.__docutils_opts
@@ -130,7 +130,7 @@ def print_help_message():
     import locale
     try:
         locale.setlocale(locale.LC_ALL, '')
-    except:
+    except Exception:
         pass
     argv = ['--help']
 

@@ -31,7 +31,7 @@ NAME = 'DocFactory'
 
 try:
     factory_path = os.path.dirname(__file__)
-except:
+except Exception:
     factory_path = os.path.abspath(sys.path[0])
 
 if not os.path.isdir(factory_path):
@@ -42,7 +42,7 @@ try:
     f = open(r'C:\conf.pth')
     DATA = f.readline().splitlines()[0]
     f.close()
-except:
+except Exception:
     DATA = os.path.join(factory_path, 'docfactory.dat')
 
 # need some IDs
@@ -384,7 +384,7 @@ class DocFactoryFrame(wxFrame):
                             self.preferences[pref] = cfg.getboolean('preferences', pref)
                         else:
                             self.preferences[pref] = cfg.get('preferences', pref)
-            except:
+            except Exception:
                 customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
         if not self.preferences.has_key('eol_markers'):
             self.preferences['eol_markers'] = 0
@@ -538,7 +538,7 @@ class DocFactoryFrame(wxFrame):
                     for i in range(len(cfg.options('tools'))):
                         self.tools[i+1] = [i+1] \
                                           + cfg.get('tools', str(i+1)).split(';')
-            except:
+            except Exception:
                 customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
     
     def init_tree(self):
@@ -651,7 +651,7 @@ class DocFactoryFrame(wxFrame):
             self.projects.remove(project)
         try:
             self.save_projects()
-        except:
+        except Exception:
             customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
         self.init_tree()
 
@@ -767,7 +767,7 @@ class DocFactoryFrame(wxFrame):
                 parent = self.tree.GetItemParent(self.activeitem)
                 self.tree.SetItemBold(parent, 1)
                 self.tree.SetItemTextColour(parent, wxBLUE)
-            except:
+            except Exception:
                 customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
         else:
             customMsgBox(self, 'Can not find %s.' % file, 'error')
@@ -788,7 +788,7 @@ class DocFactoryFrame(wxFrame):
         try:
             self.save_projects()
             self.projectdirty = 0
-        except:
+        except Exception:
             customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
 
     def publishFile(self, infile, outfile, outdir, writer):
@@ -857,7 +857,7 @@ class DocFactoryFrame(wxFrame):
             f = open(DATA, 'wt')
             cfg.write(f)
             f.close()
-        except:
+        except Exception:
             customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
 
     def save_projects(self):
@@ -893,7 +893,7 @@ class DocFactoryFrame(wxFrame):
                 cfg.read(docutils_conf)
                 if cfg.has_option('general', 'language_code'):
                     language_code = cfg.get('general', 'language_code')
-            except:
+            except Exception:
                 print '%s:\n%s\n%s' % sys.exc_info()
         self.editor.bibliographic_fields = get_rest_bibl_fields(language_code)        
 
@@ -943,7 +943,7 @@ class DocFactoryFrame(wxFrame):
             f = open(DATA, 'wt')
             cfg.write(f)
             f.close()
-        except:
+        except Exception:
             customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
 
     def on_copy(self, event):
@@ -1097,7 +1097,7 @@ class DocFactoryFrame(wxFrame):
                 self.tree.SetItemTextColour(self.activeitem, wxBLUE)
                 self.tree.EnsureVisible(self.activeitem)
                 self.tree.SelectItem(self.activeitem)
-            except:
+            except Exception:
                 customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(),
                              'error')
         dlg.Destroy()
@@ -1120,7 +1120,7 @@ class DocFactoryFrame(wxFrame):
         if result == wxID_YES:
             try:
                 os.remove(file)
-            except:
+            except Exception:
                 customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(),
                              'error')
         dlg.Destroy()
@@ -1205,7 +1205,7 @@ class DocFactoryFrame(wxFrame):
                     wxLogMessage('DESTINATION: %s' % outfile_fullpath)
                     try:
                         publish_document(writer, infile, outfile, outdir)
-                    except:
+                    except Exception:
                         wxLogMessage('ERROR: %s (%s)' % sys.exc_info()[:2])
                         error_files.append((infile, sys.exc_info()[1]))
                     count = count + 1
@@ -1454,7 +1454,7 @@ class DocFactoryFrame(wxFrame):
                 self.projects.append(self.project)
                 self.save_projects()
                 self.init_tree()
-            except:
+            except Exception:
                 customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
 
     def on_project_settings(self, event):
@@ -1530,7 +1530,7 @@ class DocFactoryFrame(wxFrame):
                 directory = tool[3]
                 for str in replmts.keys():
                     directory = directory.replace(str, replmts[str])
-            except:
+            except Exception:
                 go_ahead = 0
                 customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
         if go_ahead:
@@ -1544,7 +1544,7 @@ class DocFactoryFrame(wxFrame):
                 t = time.localtime(time.time())
                 st = time.strftime('%d-%b-%Y, %H:%M:%S', t)
                 wxLogMessage('%s: Finished.' % st)
-            except:
+            except Exception:
                 customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
             os.chdir(curdir)
 
@@ -1688,7 +1688,7 @@ class FactoryApp(wxApp):
                             if project.files == ['']:
                                 project.files = []
                         self.projects.append(project)
-            except:
+            except Exception:
                 f = open('error.txt', 'w')
                 f.write('%s:\n%s\n%s' % sys.exc_info())
                 f.close()

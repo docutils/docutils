@@ -26,7 +26,7 @@ publishers = { 'HTML': (None, 'html', '.html'),
 try:
     from docutils.writers import htmlnav
     publishers['HTML with navigation-bars'] = (None, 'htmlnav', '.html')
-except:
+except Exception:
     pass
 
 def get_rest_bibl_fields(language_code='en'):

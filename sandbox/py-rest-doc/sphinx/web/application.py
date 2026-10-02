@@ -269,7 +269,7 @@ class DocumentationApplication(object):
                     )
                     mail.attachments.add_string('patch.diff', diff_text, 'text/x-diff')
                     mail.send()
-                except:
+                except Exception:
                     import traceback
                     traceback.print_exc()
                     # XXX: how to report?

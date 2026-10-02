@@ -500,7 +500,7 @@ class configEditDlg(wxDialog):
         try:
             self.cfg = ConfigParser.ConfigParser()
             self.cfg.read(configfile)
-        except:
+        except Exception:
             customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
         if self.cfg.sections() == []:
             self.cfg.add_section('general')

@@ -27,7 +27,7 @@ for the_path in paths:
         try:
             first, second = entry.split()
             the_dict[first] = second
-        except:
+        except Exception:
             pass
 
 os.chdir(current_dir)

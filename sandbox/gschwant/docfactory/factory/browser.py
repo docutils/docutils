@@ -93,7 +93,7 @@ class HtmlPanel(wxPanel):
         htmlfile = self.html.GetOpenedPage()
         try:
             webbrowser.open('file:%s' % htmlfile, autoraise=1)
-        except:
+        except Exception:
             customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
             
     def OnPrint(self, event):
