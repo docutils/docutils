@@ -111,6 +111,16 @@ totest['inline'] = [
          week
 """],
 ["""\
+<paragraph>First line<line_break/>second line.</paragraph>
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        First line
+        <line_break>
+        second line.
+"""],
+["""\
 <document source="test data">
     <literal_block xml:space="preserve">  Inline element
 with <strong>  space at start,

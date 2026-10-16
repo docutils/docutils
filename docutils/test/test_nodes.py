@@ -588,6 +588,13 @@ class ElementValidationTests(unittest.TestCase):
                                     '  Child element <strong> not allowed '):
             label.validate()
 
+        line_break = nodes.line_break()
+        line_break.append(nodes.Text('silly'))
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Element <line_break> invalid:\n'
+                                    '  Spurious text: "silly".'):
+            line_break.validate()
+
     def test_validate_content(self):
         """Check, whether an element's children fit into its content model.
 
@@ -604,7 +611,11 @@ class ElementValidationTests(unittest.TestCase):
         self.assertEqual(image.validate_content(), [])
         image.append(text)
         self.assertEqual(image.validate_content(), [text])
-        #     ValueError, "Spurious Element <#text: 'explanation'>"):
+
+        line_break = nodes.line_break()
+        self.assertEqual(line_break.validate_content(), [])
+        line_break.append(text)
+        self.assertEqual(line_break.validate_content(), [text])
 
         # TextElement: (#PCDATA | %inline.elements;)*
         paragraph = nodes.paragraph()  # empty element

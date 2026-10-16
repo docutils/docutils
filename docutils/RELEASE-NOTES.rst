@@ -61,6 +61,9 @@ Document Tree / Docutils DTD
   <substitution_definition>, and <target> elements when warning about
   transitions at the start or end of the document or a section.
 
+* Raise error if a writer does not support the `\<line_break>`_ element
+  in Docutils 3.0.
+
 Parsers
 -------
 
@@ -186,10 +189,11 @@ Release 1.0b1.dev (unpublished)
 ===============================
 
 Document Tree / Docutils DTD:
+  - New element `\<line_break>`_.
   - Drop the `name` attribute from <reference> nodes.
   - The <footnote> element's first child (<label>) is now mandatory.
   - Use the ``%tbl.table.att`` parameter entity instead of ``%bodyatt``
-    to customize the <table> element's attribute list in Docutils 1.0.
+    to customize the <table> element's attribute list.
   - Inline `\<target>`_ elements and <target> elements with content are
     deprecated.
   - The `\<doctest_block>`_ element is deprecated.
@@ -1619,6 +1623,7 @@ Release 0.3.5 (2004-07-29)
 .. _<doctest_block>: docs/ref/doctree.html#doctest-block
 .. _identifier: docs/ref/doctree.html#identifiers
 .. _ids: docs/ref/doctree.html#ids
+.. _<line_break>: docs/ref/doctree.html#line-break
 .. _reference names:  docs/ref/doctree.html#reference-names
 .. _<target>: docs/ref/doctree.html#target
 

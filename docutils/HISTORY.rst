@@ -19,6 +19,7 @@ Release 1.0b1.dev (unpublished)
 
 * docs/ref/docutils.dtd
 
+  - New element <line_break>.
   - The <footnote> element's first child (<label>) is now mandatory.
   - Use the ``%tbl.table.att`` parameter entity instead of ``%bodyatt``
     to customize the <table> element's attribute list.
@@ -61,6 +62,7 @@ Release 1.0b1.dev (unpublished)
   - "lazy IDs":
     `document.note_explicit_target()` and `document.note_anonymous_target()`
     generate identifiers only if the `legacy_ids`_ setting is True.
+  - New element class `line_break`.
   - Add `Targetable` to parent classes of `inline` to allow test whether
     inline internal targets are referenced.
   - `validate_colwidth()` now returns a `str`.
@@ -171,6 +173,10 @@ Release 1.0b1.dev (unpublished)
 
   - Remove `decode_path()` and `get_stylesheet_reference()`.
 
+* docutils/writers/_html_base.py
+
+  - New methods `visit_line_break()` and `depart_line_break()`.
+
 * docutils/writers/html5_polyglot/__init__.py
 
   - Change the default value of the initial_header_level_ setting to "auto"
@@ -203,10 +209,12 @@ Release 1.0b1.dev (unpublished)
     (ignored since Docutils 0.22).
   - The "use_latex_citations" setting now defaults to True;
     the "legacy_column_widths_" setting now defaults to False.
+  - New methods `visit_line_break()` and `depart_line_break()`.
 
 * docutils/writers/odf_odt/__init__.py
 
   - Update `Reader.get_transforms()`.
+  - New methods `visit_line_break()` and `depart_line_break()`.
 
 * docutils/writers/pep_html/__init__.py
 

@@ -2532,6 +2532,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_line(self, node) -> None:
         self.set_to_parent()
 
+    def visit_line_break(self, node) -> None:
+        self.append_child('text:line-break')
+
+    def depart_line_break(self, node) -> None:
+        pass
+
     def visit_literal(self, node) -> None:
         el = SubElement(
             self.current_element, 'text:span',

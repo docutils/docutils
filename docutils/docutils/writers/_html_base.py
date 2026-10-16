@@ -1270,6 +1270,12 @@ class HTMLTranslator(writers.DoctreeTranslator):
     def depart_line_block(self, node) -> None:
         self.body.append('</div>\n')
 
+    def visit_line_break(self, node) -> None:
+        self.body.append(self.emptytag(node, 'br', suffix=''))
+
+    def depart_line_break(self, node) -> None:
+        pass
+
     def visit_list_item(self, node) -> None:
         self.body.append(self.starttag(node, 'li', ''))
 

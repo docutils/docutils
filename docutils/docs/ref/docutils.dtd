@@ -192,8 +192,8 @@ resolve to either an internal or external reference.
 <!ENTITY % additional.inline.elements "">
 <!ENTITY % inline.elements
   " abbreviation | acronym | citation_reference | emphasis
-    | footnote_reference | generated | image | inline | literal
-    | math | problematic | raw | reference
+    | footnote_reference | generated | image | inline
+    | line_break | literal | math | problematic | raw | reference
     | strong | subscript | substitution_reference | superscript
     | target | title_reference
     %additional.inline.elements; ">
@@ -578,6 +578,9 @@ that is typeset as mathematical notation (display formula).
 
 <!ELEMENT legend (%body.elements;)+>
 <!ATTLIST legend %basic.atts;>
+
+<!ELEMENT line_break EMPTY>
+<!ATTLIST line_break %basic.atts;>
 
 <!--
 Table elements: table, tgroup, colspec, thead, tbody, row, entry.

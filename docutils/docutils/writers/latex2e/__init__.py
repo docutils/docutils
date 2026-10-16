@@ -2604,6 +2604,16 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         self.out.append('\\end{DUlineblock}\n')
         self.duclass_close(node)
 
+    def visit_line_break(self, node) -> None:
+        self.body.append(r'\\')
+        nn = node.next_node(siblings=True)
+        if not (isinstance(nn, nodes.Text)
+                and nn.lstrip(' ').startswith('\n')):
+            self.body.append('\n')
+
+    def depart_line_break(self, node) -> None:
+        pass
+
     def visit_list_item(self, node) -> None:
         self.out += self.ids_to_labels(node, pre_nl=True)
         self.out.append('\n\\item ')
@@ -3432,7 +3442,5 @@ class LaTeXTranslator(writers.DoctreeTranslator):
         raise NotImplementedError('visiting unimplemented node type: %s' %
                                   node.__class__.__name__)
 
-#    def unknown_visit(self, node):
-#    def default_visit(self, node):
 
 # vim: set ts=4 et ai :

@@ -21,6 +21,7 @@ if __name__ == '__main__':
 
 import docutils
 import docutils.core
+from docutils.parsers import docutils_xml
 from docutils.parsers.rst.directives.images import PIL
 from docutils.utils.code_analyzer import with_pygments
 from docutils.writers import html5_polyglot
@@ -70,6 +71,12 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
     """Test case for HTML5 writer via the publish_parts() interface."""
 
     maxDiff = None
+    settings = {'_disable_config': True,
+                'strict_visitor': True,
+                'stylesheet_path': '',
+                'section_self_link': True,
+                'warning_stream': '',  # suppress warnings
+                }
 
     def test_publish(self):
         for name, (settings_overrides, cases) in totest.items():
@@ -80,19 +87,25 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
                     parts = docutils.core.publish_parts(
                         source=case_input,
                         writer=html5_polyglot.Writer(),
-                        settings_overrides={
-                            '_disable_config': True,
-                            'strict_visitor': True,
-                            'stylesheet_path': '',
-                            'section_self_link': True,
-                            'warning_stream': '',  # suppress warnings
-                            **settings_overrides,
-                        }
+                        settings_overrides=self.settings|settings_overrides,
+                    )
+                    self.assertEqual(case_expected, parts['body'])
+
+    def test_publish_x(self):
+        for name, (settings_overrides, cases) in totest_x.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'totest[{name!r}][{casenum}]'):
+                    parts = docutils.core.publish_parts(
+                        source=case_input,
+                        parser=docutils_xml.Parser(),
+                        writer=html5_polyglot.Writer(),
+                        settings_overrides=self.settings|settings_overrides,
                     )
                     self.assertEqual(case_expected, parts['body'])
 
 
 totest = {}  # expected samples contain only the "body" part of the HMTL output
+totest_x = {}  # Docutils-XML input samples
 
 totest['standard'] = ({}, [
 ["""\
@@ -702,6 +715,41 @@ totest['no_system_messages'] = ({'math_output': 'mathml',
 [r'Broken :math:`\sin \my`.',
 '<p>Broken <tt class="math">\\sin \\my</tt>.</p>\n'
 ],
+])
+
+
+totest_x['multiterm definition'] = ({}, [
+["""\
+<document source="test sample">
+    <definition_list>
+        <definition_list_item>
+            <term>term</term>
+            <term>alias</term>
+            <definition>
+                <paragraph>definition for term and alias</paragraph>
+            </definition>
+        </definition_list_item>
+    </definition_list>
+</document>
+""",
+"""\
+<dl class="simple">
+<dt>term</dt>
+<dt>alias</dt>
+<dd><p>definition for term and alias</p>
+</dd>
+</dl>
+"""],
+["""\
+<document source="test sample">
+   <paragraph>First line<line_break/>
+second line.</paragraph>
+</document>
+""",
+"""\
+<p>First line<br />
+second line.</p>
+"""],
 ])
 
 

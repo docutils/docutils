@@ -21,6 +21,7 @@ if __name__ == '__main__':
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from docutils.core import publish_parts
+from docutils.parsers import docutils_xml
 from docutils.writers import latex2e
 
 
@@ -46,8 +47,21 @@ class WriterPublishTestCase(unittest.TestCase):
                         )['body']
                     self.assertEqual(expected, output)
 
+    def test_body_x(self):
+        for name, (settings_overrides, cases) in samples_x.items():
+            for casenum, (rst_input, expected) in enumerate(cases):
+                with self.subTest(id=f'samples[{name!r}][{casenum}]'):
+                    output = publish_parts(
+                        source=rst_input,
+                        parser=docutils_xml.Parser(),
+                        writer=latex2e.Writer(),
+                        settings_overrides=self.settings|settings_overrides
+                        )['body']
+                    self.assertEqual(expected, output)
+
 
 samples = {}
+samples_x = {}
 
 
 samples['default'] = ({}, [
@@ -1076,6 +1090,49 @@ Ref to a new footnote%
 
 A second reference to the first one\footref{multi}.
 We can also write a hyperlink to \hyperref[multi]{multi}.
+"""],
+])
+
+
+samples_x['multiterm definition'] = ({}, [
+["""\
+<document source="test sample">
+    <definition_list>
+        <definition_list_item>
+            <term>term</term>
+            <term>alias</term>
+            <definition>
+                <paragraph>definition for term and alias</paragraph>
+            </definition>
+        </definition_list_item>
+    </definition_list>
+</document>
+""",
+"""
+\\begin{description}
+\\item[{term}] \n\
+\\item[{alias}] \n\
+definition for term and alias
+\\end{description}
+"""],
+["""\
+<document source="test sample">
+   <paragraph>First line<line_break/>
+second line with newline.</paragraph>
+</document>
+""",
+r"""
+First line\\
+second line with newline.
+"""],
+["""\
+<document source="test sample">
+   <paragraph>First line<line_break/>second line without newline.</paragraph>
+</document>
+""",
+r"""
+First line\\
+second line without newline.
 """],
 ])
 

@@ -136,8 +136,8 @@ _`Simple elements`
 
 _`Empty elements`
   | contain neither child elements nor text.
-  | Category members: `\<colspec>`_, `\<image>`_, `\<meta>`_,
-    `\<pending>`_, `\<transition>`_
+  | Category members: `\<colspec>`_, `\<image>`_, `\<line_break>`_,
+    `\<meta>`_, `\<pending>`_, `\<transition>`_
 
 .. [#] This is unlike the much looser HTML_ document model,
    where paragraphs and text data may occur at the same level.
@@ -300,7 +300,8 @@ Inline Elements
 
 Inline elements are contained within simple `body elements`_ or other
 inline elements.
-Inline elements are `simple elements`_: All inline elements may contain
+Inline elements are `empty <empty elements_>`_ or `simple elements`_:
+All inline elements except `\<line_break>`_ may contain
 text data, most inline elements may also contain further inline elements.
 
 .. class:: narrow run-in
@@ -308,8 +309,8 @@ text data, most inline elements may also contain further inline elements.
 :Category members:
   `\<abbreviation>`_, `\<acronym>`_, `\<citation_reference>`_, `\<emphasis>`_,
   `\<footnote_reference>`_, `\<generated>`_, `\<image>`_, `\<inline>`_,
-  `\<literal>`_, `\<math>`_, `\<problematic>`_, `\<raw>`_, `\<reference>`_,
-  `\<strong>`_, `\<subscript>`_, `\<substitution_reference>`_,
+  `\<line_break>`_, `\<literal>`_, `\<math>`_, `\<problematic>`_, `\<raw>`_,
+  `\<reference>`_, `\<strong>`_, `\<subscript>`_, `\<substitution_reference>`_,
   `\<superscript>`_, `\<target>`_ [#inline-targets]_, `\<title_reference>`_
 :Docutils class:
   ``nodes.Inline``
@@ -2494,6 +2495,44 @@ Pseudo-XML_ fragment from simple parsing::
                     <line>
         <line>
             Singing...
+
+
+<line_break>
+============
+
+The <line_break> element represents an explicit line break.
+
+:Category:   `Inline Elements`_
+:Analogues:  <line_break> is analogous to the HTML_ <br> element and
+             the DocBook_ <sbr> element.
+:Processing: Force a line break after the element.
+:Parents:    all elements employing `%text.model`_ in their content models
+:Children:   none (empty)
+:Attributes: only the `common attributes`_
+
+Example
+-------
+
+There is currently no syntax in reStructuredText that results in
+a <line_break> element.
+The recommended syntax for custom line breaks is a `line block`_,
+see `\<line_block>`_ above for an example.
+In CommonMark_, two spaces or a backslash at the end of a line stand for
+a `hard line break <https://spec.commonmark.org/0.31.2/#hard-line-breaks>`_.
+
+An address in CommonMark::
+
+    Max Muster\
+    12345 Neustadt
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        Max Muster
+        <line-break>
+        12345 Neustadt
+
+New in Docutils 1.0.
 
 
 <list_item>
@@ -5884,6 +5923,8 @@ Bibliography
                 W3C Recommendation,
                 https://www.w3.org/TR/xml/.
 
+
+.. _CommonMark: https://spec.commonmark.org/current/
 
 .. _DocBook: https://tdg.docbook.org/tdg/5.1/part2
 .. _DocBook <caution>: https://tdg.docbook.org/tdg/5.1/caution.html

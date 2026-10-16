@@ -2670,6 +2670,7 @@ class acronym(Inline, TextElement): pass
 class emphasis(Inline, TextElement): pass
 class generated(Inline, TextElement): pass
 class inline(Inline, TextElement, Targetable): pass
+class line_break(Inline, Element): pass
 class literal(Inline, TextElement): pass
 class strong(Inline, TextElement): pass
 class subscript(Inline, TextElement): pass
@@ -2718,7 +2719,7 @@ node_class_names: Sequence[str] = """
     generated
     header hint
     image important inline
-    label legend line line_block list_item literal literal_block
+    label legend line line_block line_break list_item literal literal_block
     math math_block meta
     note
     option option_argument option_group option_list option_list_item
@@ -2762,7 +2763,8 @@ class NodeVisitor:
        1995.
     """
 
-    optional: ClassVar[tuple[str, ...]] = ('meta',)
+    # TODO: remove 'line_block' in Docutils 3.0
+    optional: ClassVar[tuple[str, ...]] = ('meta', 'line_break')
     """
     Tuple containing node class names (as strings).
 
