@@ -59,7 +59,7 @@ for IN_F in $IN_DIR/$FILES ; do
   if echo $F_BASE | grep -q -- '-de\.' ; then
     OPT="$OPT -l de"
   fi
-  $CMD $OPT $IN_F $OUT_DIR/$F_BASE.man
+  $CMD $OPT $IN_F -o $OUT_DIR/$F_BASE.man
   if [ $? -eq 0 ] ; then
     diff -s -u $EXP_DIR/$F_BASE.man $OUT_DIR/$F_BASE.man
     if [ $? -ne 0 ] ; then
@@ -89,7 +89,7 @@ for L in "en" "de" ; do
     F_BASE=${BASE%.txt}
     OPT="-l $L"
     EXT="-l_$L"
-    $CMD $OPT $IN_F $OUT_DIR/$F_BASE$EXT.man
+    $CMD $OPT $IN_F -o $OUT_DIR/$F_BASE$EXT.man
     if [ $? -eq 0 ] ; then
       diff -s -u $EXP_DIR/$F_BASE$EXT.man $OUT_DIR/$F_BASE$EXT.man
       if [ $? -ne 0 ] ; then
@@ -105,7 +105,7 @@ for EXP_F in $EXP_DIR/*$EXT ; do
   BASE=`basename $EXP_F`
   F_BASE=${BASE%$EXT}
   OPT="--macro-references"
-  $CMD $OPT $IN_DIR/$F_BASE.txt $OUT_DIR/$BASE
+  $CMD $OPT $IN_DIR/$F_BASE.txt -o $OUT_DIR/$BASE
   if [ $? -eq 0 ] ; then
     diff -s -u $EXP_DIR/$BASE $OUT_DIR/$BASE
     if [ $? -ne 0 ] ; then
