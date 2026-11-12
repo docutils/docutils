@@ -17,6 +17,11 @@
 Release 1.0b1.dev (unpublished)
 ===============================
 
+* docs/dev/policies.rst
+
+  - Lay down `rules for the use of AI in contributions to Docutils
+    <docs/dev/policies.html#ai-policy>`_.
+
 * docs/ref/docutils.dtd
 
   - New element <line_break>.
