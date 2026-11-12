@@ -486,9 +486,9 @@ a distinctive and self-contained notice.
 :Category:   `Compound Body Elements`_
 :Analogues:  The generic <admonition> has no direct analogues in common DTDs.
              It can be emulated with primitives and type effects.
-             The specific admonitions `\<caution>`_, `\<note>`_,
-             `\<tip>`_, and `\<warning>`_ are analogous to the
-             respective DocBook_ elements.
+             The specific admonitions `\<caution>`_, `\<important>`_,
+             `\<note>`_, `\<tip>`_, and `\<warning>`_ are analogous to
+             the homonymous DocBook_ elements.
 :Processing: Rendered distinctly (inset and/or in a box, etc.).
 :Parents:    all elements employing `%body.elements`_ or
              `%structure.model`_ in their content models

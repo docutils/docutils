@@ -25,7 +25,6 @@ Requirements
 
 - Drop support for Python 3.9 and 3.10 in Docutils 2.0.
 
-
 Command line interface
 ----------------------
 
@@ -70,6 +69,16 @@ Parsers
 * The `legacy_ids`_ and `legacy_figure_align`_ configuration setting
   defaults will change to False in Docutils 2.0.
 
+* The `"include"`_ directive options ``start-after`` and ``end-before``
+  as well as the `"sectnum"`_ directive options ``prefix`` and ``suffix``
+  will strip one set of quotes from the value if the value is enclosed
+  in double quotes.  This allows specifying values with leading or trailing
+  whitespace like ::
+
+      :prefix: "Chapter "
+
+  (cf. feature-request #115).
+
 Writers
 -------
 
@@ -106,7 +115,6 @@ Writers
   - Align adjustment of relative image paths with the behaviour of HTML
     and LaTeX writers: assume them relative to the *output* directory (as
     required for image references in HTML), not the *source* directory.
-
 
 Removals
 --------
@@ -317,7 +325,7 @@ General:
 
 rST parser:
   - Problems with the "include" directive are reported as ERROR, not SEVERE.
-  - The "include" directive options :start-after: and :end-before: may now
+  - The "include" directive options ``start-after`` and ``end-before`` may now
     also be used without value (standing for an empty line).
   - The highlight language of a custom role based on the `"code" role`_
     defaults to the role's name (if supported by Pygments_).
@@ -485,7 +493,7 @@ New objects
      Provisional.
 
      Try ``docutils --parser=xml test/data/multiple-term-definitions.xml``
-     or use the :parser: option of the `"include"`_ directive to include
+     or use the ``parser`` option of the `"include"`_ directive to include
      an XML file in a rST document.
 
   `nodes.Element.validate()`
@@ -589,10 +597,10 @@ Release 0.21 (2024-04-09)
 
 * reStructuredText:
 
-  - Use the same CSV format for the ``:header:`` option and the main data
+  - Use the same CSV format for the ``header`` option and the main data
     of the "csv-table_" directive.
 
-  - New option "loading" for the "image_" directive.
+  - New option ``loading`` for the "image_" directive.
     Sets the new attribute loading__ of the <image> doctree element.
 
   __ docs/ref/doctree.html#loading
@@ -1634,8 +1642,8 @@ Release 0.3.5 (2004-07-29)
 .. _identifier normalization:
     docs/ref/rst/directives.html#identifier-normalization
 .. _image: docs/ref/rst/directives.html#image
-.. _"include":
-    docs/ref/rst/directives.html#including-an-external-document-fragment
+.. _"include": docs/ref/rst/directives.html#include
+.. _"sectnum": docs/ref/rst/directives.html#sectnum
 .. _"widths" option: docs/ref/rst/directives.html#table
 
 .. _"code" role: docs/ref/rst/roles.html#code
