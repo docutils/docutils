@@ -117,7 +117,7 @@ class CustomStyledTextCtrl(wxStyledTextCtrl):
                 self.SetText(text)
                 self.EmptyUndoBuffer()
                 self.IsModified = 0
-            except:
+            except Exception:
                 self.Clear()
                 customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
         finally:
@@ -134,7 +134,7 @@ class CustomStyledTextCtrl(wxStyledTextCtrl):
                 f.write(self.GetText())
                 f.close()
                 self.IsModified = 0
-            except:
+            except Exception:
                 return_value = 0
                 customMsgBox(self, 'Error when saving "%s".\n\n%s:\n%s\n%s' \
                              % (filename, sys.exc_info()[0], sys.exc_info()[1],

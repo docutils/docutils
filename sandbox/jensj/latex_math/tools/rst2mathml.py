@@ -7,7 +7,7 @@ A minimal front end to the Docutils Publisher, producing HTML + MathML.
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 from docutils.parsers.rst.roles import register_canonical_role

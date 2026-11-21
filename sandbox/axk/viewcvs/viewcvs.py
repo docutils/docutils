@@ -845,7 +845,7 @@ def markup_stream_rst(fp):
   import locale
   try:
     locale.setlocale(locale.LC_ALL, '')
-  except:
+  except Exception:
     pass
 
   try:
@@ -870,7 +870,7 @@ def markup_stream_rst(fp):
     
     from docutils.core import publish_file
     publish_file(reader=ViewCVSReader(fp), writer_name='html')
-  except:
+  except Exception:
     raise
 
 markup_streamers = {
@@ -2797,7 +2797,7 @@ def view_error(server):
       server.header(status=status)
       generate_page(None, cfg.templates.error, exc_dict)
       handled = 1
-  except:
+  except Exception:
     # get new exception data, more important than the first
     exc_dict = debug.GetExceptionData()
 
@@ -2818,7 +2818,7 @@ def main(server):
       request.run_viewcvs()
     except SystemExit, e:
       return
-    except:
+    except Exception:
       view_error(server)
 
   finally:
