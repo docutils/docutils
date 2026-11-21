@@ -1272,6 +1272,8 @@ class ViewList:
                              "from a list of size %s." % (n, len(self.data)))
         elif n < 0:
             raise IndexError('Trim size must be >= 0.')
+        if n == 0:
+            return
         del self.data[-n:]
         del self.items[-n:]
 
